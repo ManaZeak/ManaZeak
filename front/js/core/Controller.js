@@ -58,14 +58,17 @@ class Controller {
 
 
   changeTrack(options) {
-    this._playObject = options.playObject;
-    const track = options.playObject.tracks[0];
-    this._player.changeTrack(`/play/${track.id}/`);
-    this._playingId = track.id;
-    Evts.publish('ChangeTrack', {
-      id: track.id
+    return new Promise((resolve, reject) => {
+      this._playObject = options.playObject;
+      const track = options.playObject.tracks[0];
+      this._player.changeTrack(`/play/${track.id}/`).then(() => {
+        this._playingId = track.id;
+        Evts.publish('ChangeTrack', {
+          id: track.id
+        });
+        resolve(track);
+      }).catch(reject);
     });
-    return track;
   }
 
 
@@ -79,7 +82,7 @@ class Controller {
       return;
     }
     // Now check last playObject in memory for tracks to play
-    if (this._playObject.tracks.length > 0) {
+    if (this._playObject.tracks.length > 1) {
       const track = this._playObject.tracks.shift();
       mzk.changeTrack({
         id: track.id,
@@ -99,6 +102,7 @@ class Controller {
   stopPlayback() {
     this._player.stop();
     this._playingTrack = null;
+    this._playingId = -1;
   }
 
 

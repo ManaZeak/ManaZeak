@@ -54,29 +54,29 @@
           width: 13px;
         }
 
-        &.shuffle {
-          left: 4rem;
+        &.queue {
           position: absolute;
-        }
-
-        &.repeat {
           left: 0;
-          position: absolute;
-        }
-
-        &.speedometer {
-          position: absolute;
-          right: calc(3rem + (2 * var(--margin-tiny)));
+          width: 3rem;
 
           img {
             height: 100% !important;
           }
         }
 
-        &.queue {
+        &.shuffle {
+          left: calc(6rem + (4 * var(--margin-tiny)));
+          position: absolute;
+        }
+
+        &.repeat {
+          left: calc(3rem + (2 * var(--margin-tiny)));
+          position: absolute;
+        }
+
+        &.speedometer {
           position: absolute;
           right: 0;
-          width: 3rem;
 
           img {
             height: 100% !important;

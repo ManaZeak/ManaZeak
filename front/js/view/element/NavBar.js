@@ -103,10 +103,8 @@ class NavBar {
       } else {
         const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         const clientRectangle = this._controls.queue.getBoundingClientRect();
-
         this._queueContext.open({
-          rightOffset: windowWidth - (clientRectangle.x + clientRectangle.width),
-          queuedTracks: mzk.model.queuedTracks
+          leftOffset: clientRectangle.x
         });
       }
     });

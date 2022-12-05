@@ -177,21 +177,28 @@ class UserInterface {
   changeTrack(track) {
     this._navBar.updateMoodbar(track.mood);
     this.setPlay(true);
+    this.setPageTitle(`${track.artist} – ${track.title}`);
   }
 
 
   setPlay(playing) {
-    if (!this._navBar.progressBar.isActive) {
-      this._navBar.progressBar.activate();
+    if (mzk.ctrl.playingId !== -1) { // Only set play if payer is indeed playing
+      if (!this._navBar.progressBar.isActive) {
+        this._navBar.progressBar.activate();
+      }
+      this._navBar.updatePlayButton(playing);
+    } else if (this._scene.view.playFirstTrack) {
+      this._scene.view.playFirstTrack();
+    } else {
+      this._navBar.progressBar.deactivate();      
     }
-
-    this._navBar.updatePlayButton(playing);
   }
 
 
   stopPlayback() {
-    this.setPlay(false);
     this._navBar.progressBar.deactivate();
+    this._navBar.updatePlayButton(false);
+    this.setPageTitle(`Mzk | Welcome!`);
     if (this._scene.view.stopPlayback) {
       this._scene.view.stopPlayback();
     }
@@ -215,6 +222,11 @@ class UserInterface {
 
   setPlaybackRate(rate) {
     this._navBar.playbackRateContext.updatePlaybackRate(rate);
+  }
+
+
+  setPageTitle(string) {
+    document.title = string;
   }
 
 

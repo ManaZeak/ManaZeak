@@ -580,6 +580,10 @@
       justify-content: flex-start;
       width: 30rem;
 
+      p {
+        margin-top: 0;
+      }
+
       [class$="-picture"] {
         cursor: pointer;
         height: 20rem;

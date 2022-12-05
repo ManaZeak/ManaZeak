@@ -1,8 +1,9 @@
+import TrackView from '../utils/TrackView';
 import ScrollBar from '../../navigation/ScrollBar';
-import SceneView from '../utils/SceneView';
+import TrackContext from '../../context/TrackContext';
 
-/*TODO extend TrackBiew  */
-class GenreView extends SceneView {
+
+class GenreView extends TrackView {
 
 
   constructor(options) {
@@ -15,14 +16,11 @@ class GenreView extends SceneView {
 
     this._artists = [];
     this._albums = [];
-    this._tracks = [];
     this._scrolls = [];
-
-    this._changeTrackEvt = -1;
 
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
-      .then(this._prepareUi.bind(this))
+      //.then(this._prepareUi.bind(this))
       .then(this._events.bind(this))
       .then(this._viewReady)
       .catch(this._viewFailed);
@@ -32,7 +30,6 @@ class GenreView extends SceneView {
   destroy() {
     super.destroy();
     Utils.clearAllEvents(this._evtIds);
-    Evts.unsubscribe(this._changeTrackEvt);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -55,6 +52,17 @@ class GenreView extends SceneView {
           color: '#56D45B'
         }
       }));
+      // Track context on container
+      this._trackContext = new TrackContext({
+        target: this.dom.querySelector('#genre-content'),
+        name: 'track'
+      });
+      // Update playing track if necessary
+      if (mzk.ctrl.playingId) {
+        this._updatePlaying({
+          id: mzk.ctrl.playingId
+        });
+      }
 
       resolve();
     });
@@ -71,6 +79,7 @@ class GenreView extends SceneView {
 
 
   _events() {
+    super._events();
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#expand-all'), this._expandAll, this));
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#collapse-all'), this._collapseAll, this));
@@ -83,11 +92,6 @@ class GenreView extends SceneView {
         this._evtIds.push(Evts.addEvent('click', this._albums[i], this._albumClicked, this._albums[i]));
       }
 
-      for (let i = 0; i < this._tracks.length; ++i) {
-        this._tracks[i]._buildPlaybackObject = this._buildPlaybackObject.bind(this);
-        this._evtIds.push(Evts.addEvent('click', this._tracks[i], this._trackClicked, this._tracks[i]));
-      }
-
       const collapsers = this.dom.querySelectorAll('.collapse-artist');
       for (let i = 0; i < collapsers.length; ++i) {
         this._evtIds.push(Evts.addEvent('click', collapsers[i], this._toggleArtistExpansion.bind(this, collapsers[i]), this));
@@ -97,8 +101,6 @@ class GenreView extends SceneView {
       for (let i = 0; i < expanders.length; ++i) {
         this._evtIds.push(Evts.addEvent('click', expanders[i], this._expandArtist.bind(this, expanders[i]), this));
       }
-
-      this._changeTrackEvt = Evts.subscribe('ChangeTrack', this._trackChanged.bind(this));
 
       resolve();
     });    
@@ -121,10 +123,33 @@ class GenreView extends SceneView {
   }
 
 
-  _trackClicked() {
-    mzk.changeTrack({
-      playObject: this._buildPlaybackObject(this.dataset.id)
-    });
+  _buildPlaybackObject(currentId) {
+    const genre = {
+      type: 'genre',
+      cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
+      genre: this.dom.querySelector('#genre-name').innerHTML,
+      tracks: []
+    };
+
+    let currentReached = false;
+    for (let i = 0; i < this._tracks.length; ++i) {
+      if (this._tracks[i].dataset.id === currentId) {
+        currentReached = true;
+      }
+
+      if (currentReached === true) {
+        genre.tracks.push({
+          title: this._tracks[i].children[0].children[0].innerHTML,
+          // TODO track artist instead of release artist
+          artist: this._tracks[i].parentNode.parentNode.parentNode.children[1].firstElementChild.innerHTML,
+          duration: this._tracks[i].children[0].children[1].innerHTML,
+          id: this._tracks[i].dataset.id,
+          mood: this._tracks[i].dataset.mood
+        });
+      }
+    }
+
+    return genre;
   }
 
 
@@ -186,45 +211,6 @@ class GenreView extends SceneView {
     for (let i = 0; i < this._artists.length; ++i) {
       this._artists[i].parentNode.children[0].children[0].src = 'static/img/navigation/nav-down.svg';
       this._artists[i].parentNode.classList.add('collapsed');
-    }
-  }
-
-
-  _buildPlaybackObject(currentId) {
-    const genre = {
-      type: 'genre',
-      cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
-      genre: this.dom.querySelector('#genre-name').innerHTML,
-      tracks: []
-    };
-
-    let currentReached = false;
-    for (let i = 0; i < this._tracks.length; ++i) {
-      if (this._tracks[i].dataset.id === currentId) {
-        currentReached = true;
-      }
-
-      if (currentReached === true) {
-        genre.tracks.push({
-          name: this._tracks[i].children[0].children[0].innerHTML,
-          duration: this._tracks[i].children[0].children[1].innerHTML,
-          id: this._tracks[i].dataset.id,
-          mood: this._tracks[i].dataset.mood
-        });
-      }
-    }
-
-    return genre;
-  }
-
-
-  _trackChanged(data) {
-    for (let i = 0; i < this._tracks.length; ++i) {
-      this._tracks[i].classList.remove('playing');
-      if (this._tracks[i].dataset.id === data.id) {
-        this._tracks[i].classList.add('playing');
-        // Not breaking to properly remove playing on next tracks
-      }
     }
   }
 

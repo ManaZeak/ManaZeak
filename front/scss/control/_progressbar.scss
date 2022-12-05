@@ -43,12 +43,12 @@
       }
   
       .progress-hover {
-        background-color: var(--color-txt);
-        border: solid 1px black;
+        background-color: var(--color-bg);
+        border: solid 1px var(--color-txt);
         border-radius: 3px;
         bottom: 8px;
         box-sizing: border-box;
-        color: black;
+        color: var(--color-txt);
         font-size: 0.7em;
         height: 20px;
         left: 0;

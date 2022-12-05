@@ -1,9 +1,9 @@
+import TrackView from '../utils/TrackView';
 import ScrollBar from '../../navigation/ScrollBar';
-import SceneView from '../utils/SceneView';
 import TrackContext from '../../context/TrackContext';
 
 
-class AlbumView extends SceneView {
+class AlbumView extends TrackView {
 
 
   constructor(options) {
@@ -13,9 +13,6 @@ class AlbumView extends SceneView {
     });
 
     this._performers = [];
-    this._tracks = [];
-
-    this._changeTrackEvt = null;
 
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
@@ -27,9 +24,7 @@ class AlbumView extends SceneView {
 
   destroy() {
     super.destroy();
-    this._trackContext.destroy();
     Utils.clearAllEvents(this._evtIds);
-    Evts.unsubscribe(this._changeTrackEvt);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -91,6 +86,7 @@ class AlbumView extends SceneView {
 
 
   _events() {
+    super._events();
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
 
@@ -105,13 +101,6 @@ class AlbumView extends SceneView {
 
       const label = this.dom.querySelector('#album-label');
       this._evtIds.push(Evts.addEvent('click', label, this._labelClicked, label));
-
-      for (let i = 0; i < this._tracks.length; ++i) {
-        this._tracks[i]._buildPlaybackObject = this._buildPlaybackObject.bind(this);
-        this._evtIds.push(Evts.addEvent('click', this._tracks[i], this._trackClicked, this._tracks[i]));
-      }
-
-      this._changeTrackEvt = Evts.subscribe('ChangeTrack', this._updatePlaying.bind(this));
 
       this.dom.querySelector('#album-tracks').addEventListener('contextmenu', event => {
         event.preventDefault();
@@ -186,13 +175,6 @@ class AlbumView extends SceneView {
   /* Handling click on tracks and callbacks */
 
 
-  _trackClicked() {
-    mzk.changeTrack({
-      id: this.dataset.id,
-      playObject: this._buildPlaybackObject(this.dataset.id)
-    });
-  }
-
 
   _buildPlaybackObject(currentId) {
     const album = {
@@ -211,8 +193,9 @@ class AlbumView extends SceneView {
       
       if (currentReached === true) {
         album.tracks.push({
-          name: this._tracks[i].children[0].children[0].innerHTML,
+          title: this._tracks[i].children[0].children[0].innerHTML,
           // TODO track artist instead of release artist
+          artist: this.dom.querySelector('#release-artist').innerHTML,
           duration: this._tracks[i].children[0].children[1].innerHTML,
           id: this._tracks[i].dataset.id,
           mood: this._tracks[i].dataset.mood
@@ -223,23 +206,6 @@ class AlbumView extends SceneView {
     return album;
   }
 
-
-  _updatePlaying(data) {
-    for (let i = 0; i < this._tracks.length; ++i) {
-      this._tracks[i].classList.remove('playing');
-      if (this._tracks[i].dataset.id === data.id) {
-        this._tracks[i].classList.add('playing');
-        // Not breaking to properly remove playing on next tracks
-      }
-    }
-  }
-
-
-  stopPlayback() {
-    for (let i = 0; i < this._tracks.length; ++i) {
-      this._tracks[i].classList.remove('playing');
-    }
-  }
 
 }
 

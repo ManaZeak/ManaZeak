@@ -63,6 +63,10 @@ class ProgressBar {
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
     this._updateMouseOver = this._updateMouseOver.bind(this);
+
+    Evts.subscribe('TrackLoaded', () => {
+      this.updateDuration(mzk.ctrl.player.duration);
+    });
   }
 
 
@@ -81,10 +85,6 @@ class ProgressBar {
     this._progress.container.addEventListener('mouseleave', this._updateMouseOver);
     window.addEventListener('mousemove', this._mouseMove);
     window.addEventListener('mouseup', this._mouseUp);
-
-    Evts.subscribe('TrackLoaded', () => {
-      this.updateDuration(mzk.ctrl.player.duration);
-    });
   }
 
 

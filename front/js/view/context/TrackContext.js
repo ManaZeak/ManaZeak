@@ -66,7 +66,6 @@ constructor(options) {
     } else {
       this._commands.tapBpm.parentNode.removeChild(this._commands.tapBpm);
     }
-
   }
 
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="ie=edge" http-equiv="x-ua-compatible">
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="initial-scale=1" name="viewport">
   <meta name="description" th:content="#{mp.description}">
   <title th:text="#{mp.title}"></title>
@@ -16,11 +16,11 @@
     <div class="aside" id="aside">
       <div class="item-group">
         <div class="item tooltip" id="homepage-button">
-          <img alt="home-page" id="mzk-home-icon" src="/static/img/actions/random-roll.svg"/>
+          <img src="/static/img/actions/random-roll.svg" id="mzk-home-icon" alt="home-page">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.homepage}"></span>
         </div>
         <div class="item tooltip">
-          <img alt="lib-info" src="/static/img/logo/manazeak-logo-square.svg"/>
+          <img src="/static/img/logo/manazeak-logo-square.svg" alt="lib-info">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.library}"></span>
         </div>
       </div>
@@ -30,13 +30,13 @@
       </div>
       <div class="item-group">
         <div class="item tooltip" id="menupage-button">
-          <img alt="menu-page" src="/static/img/navigation/menu.svg"/>
+          <img src="/static/img/navigation/menu.svg" alt="menu-page">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.menu}"></span>
         </div>
         <div class="item tooltip">
           <form method="post" th:action="@{/logout}">
-            <img alt="user-logout" src="/static/img/actions/logout.svg"/>
-            <input type="submit" value=""/>
+            <img src="/static/img/actions/logout.svg" alt="user-logout">
+            <input type="submit" value="">
           </form>
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.logout}"></span>
         </div>
@@ -47,6 +47,9 @@
   <div class="navbar">
     <div class="playback-wrapper">
       <div class="top-line">
+        <div class="image-wrapper queue">
+          <img src="/static/img/player/queue.svg" id="queue" alt="player-queue">
+        </div>
         <div class="image-wrapper repeat">
           <img src="/static/img/player/repeat-off.svg" id="repeat" alt="player-repeat">
         </div>
@@ -54,19 +57,21 @@
           <img src="/static/img/player/shuffle-off.svg" id="shuffle" alt="player-shuffle">
         </div>
         <div class="image-wrapper">
-          <img id="previous" src="/static/img/player/track-previous.svg" alt="player-previous">
+          <img src="/static/img/player/track-previous.svg" id="previous" alt="player-previous">
         </div>
         <div class="image-wrapper">
-          <img id="stop" src="/static/img/player/stop.svg" alt="player-stop">
+          <img src="/static/img/player/stop.svg" id="stop" alt="player-stop">
         </div>
         <div class="image-wrapper">
-          <img id="play" src="/static/img/player/play.svg" alt="player-play">
+          <img src="/static/img/player/play.svg" id="play" alt="player-play">
         </div>
         <div class="image-wrapper">
-          <img id="next" src="/static/img/player/track-next.svg" alt="player-next">
+          <img src="/static/img/player/track-next.svg" id="next" alt="player-next">
         </div>
         <div id="volumebar-wrapper" class="volumebar-wrapper">
-          <div class="image-wrapper"><img id="volumebar-img" src="static/img/player/volume-full.svg" alt="player-volume"></div>
+          <div class="image-wrapper">
+            <img src="/static/img/player/volume-full.svg" id="volumebar-img" alt="player-volume">
+          </div>
           <div id="volumebar-container" class="volumebar-container">
             <div id="volumebar-current" class="volumebar-current full"></div>
             <div id="volumebar-thumb" class="volumebar-thumb"></div>
@@ -74,9 +79,6 @@
         </div>
         <div class="image-wrapper speedometer">
           <img src="/static/img/player/speedometer.svg" id="speedometer" alt="player-speedometer">
-        </div>
-        <div class="image-wrapper queue">
-          <img src="/static/img/player/queue.svg" id="queue" alt="player-queue">
         </div>
       </div>
       <div class="bottom-line">
