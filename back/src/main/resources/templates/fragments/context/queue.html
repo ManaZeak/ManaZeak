@@ -1,6 +1,10 @@
-<div class="context-transparent-overlay">
+<div class="context-transparent-overlay" xmlns:th="http://www.thymeleaf.org">
   <div class="queue-context">
-    <div class="tracks"></div>
-    <div class="play-object"></div>
+    <div class="queue">
+      <p><i th:text="#{nav.queue.empty_tracks}"></i></p>
+    </div>
+    <div class="play-object">
+      <p><i th:text="#{nav.queue.empty_play_object}"></i></p>
+    </div>
   </div>
 </div>

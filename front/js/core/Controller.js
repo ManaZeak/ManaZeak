@@ -147,7 +147,10 @@ class Controller {
 
 
   queue(data) {
-    this._queue.push(data);
+    if (data.type === 'track') {
+      const track = mzk.ui.getTrackById(data.id);
+      this._queue.push(track);
+    }
   }
 
 
@@ -163,6 +166,11 @@ class Controller {
 
   get player() {
     return this._player;
+  }
+
+
+  get queuedTracks() {
+    return this._queue;
   }
 
 

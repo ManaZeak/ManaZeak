@@ -37,8 +37,7 @@ constructor(options) {
     event.stopImmediatePropagation();
     mzk.queue({
       type: 'track',
-      id: this._targetId,
-      info: {}
+      id: this._targetId
     });
     this.close();
   }

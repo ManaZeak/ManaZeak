@@ -205,6 +205,18 @@ class UserInterface {
   }
 
 
+  queue(queuedTracks) {
+    this._navBar.queue(queuedTracks);
+  }
+
+
+  getTrackById(id) {
+    if (this._scene.view.getTrackById) {
+      return this._scene.view.getTrackById(id);
+    }
+  }
+
+
   setMute(player) {
     this._navBar.volumeBar.updateVolume(player.muted, player.volume);
   }

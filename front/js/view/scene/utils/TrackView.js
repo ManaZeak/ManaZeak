@@ -38,7 +38,12 @@ class TrackView extends SceneView {
 
 
   _buildPlaybackObject() {
-    //must be overriden in child class
+    // Must be overriden in child class
+  }
+
+
+  _buildTrackObject() {
+    // Must be overriden in child class    
   }
 
 
@@ -65,6 +70,17 @@ class TrackView extends SceneView {
       id: this._tracks[0].dataset.id,
       playObject: this._buildPlaybackObject(this._tracks[0].dataset.id)
     });    
+  }
+
+
+  getTrackById(id) {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      if (this._tracks[i].dataset.id === id) {
+        return this._buildTrackObject(this._tracks[i]);
+      }
+    }
+
+    return {};
   }
 
 

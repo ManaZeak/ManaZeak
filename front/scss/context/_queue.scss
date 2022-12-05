@@ -25,14 +25,18 @@
     left: 8px;
   }
 
-  .tracks {
-    height: 10rem;
+  .queue,
+  .play-object {
+    p {
+      margin: 0;
+    }
+  }
+
+  .queue {
+    padding: var(--padding);
   }
 
   .play-object {
     border-top: solid 1px var(--color-txt);
-    height: 5rem;
-    margin: 0 1rem;
-    width: 10rem;
   }
 }

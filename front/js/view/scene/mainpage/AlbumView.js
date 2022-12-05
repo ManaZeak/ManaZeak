@@ -148,23 +148,22 @@ class AlbumView extends TrackView {
   _contextClicked(event) {
     if (event.target.closest('.track')) {
       let title = event.target.parentNode.children[0].children;
+      let id = event.target.dataset.id;
       if (event.target.className !== 'track') {
         if (title.length === 0) {
           title = event.target.parentNode.parentNode.children[0].children[0]
+          id = event.target.parentNode.parentNode.dataset.id;
         } else {
           title = title[0];
+          id = event.target.parentNode.dataset.id;
         }
-        console.log(title)
-
         this._trackContext.open(event, {
-          id: event.target.parentNode.dataset.id,
+          id: id,
           name: `${document.getElementById('release-artist').innerHTML} - ${title.textContent}`
         });
       } else {
-        console.log(title)
-
         this._trackContext.open(event, {
-          id: event.target.dataset.id,
+          id: id,
           name: `${document.getElementById('release-artist').innerHTML} - ${title[0].textContent}`
         });
       }
@@ -192,18 +191,23 @@ class AlbumView extends TrackView {
       }
       
       if (currentReached === true) {
-        album.tracks.push({
-          title: this._tracks[i].children[0].children[0].innerHTML,
-          // TODO track artist instead of release artist
-          artist: this.dom.querySelector('#release-artist').innerHTML,
-          duration: this._tracks[i].children[0].children[1].innerHTML,
-          id: this._tracks[i].dataset.id,
-          mood: this._tracks[i].dataset.mood
-        });
+        album.tracks.push(this._buildTrackObject(this._tracks[i]));
       }
     }
 
     return album;
+  }
+
+
+  _buildTrackObject(track) {
+    return {
+      title: track.children[0].children[0].innerHTML,
+      // TODO track artist instead of release artist
+      artist: this.dom.querySelector('#release-artist').innerHTML,
+      duration: track.children[0].children[1].innerHTML,
+      id: track.dataset.id,
+      mood: track.dataset.mood
+    };
   }
 
 

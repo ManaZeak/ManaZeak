@@ -10,11 +10,15 @@ class QueueContext extends ContextMenu {
     // Contains all queued Track object in an array
     this._queuedTracks = [];
     this._playObject = {};
+
+    this._emptyQueueDom = null;
+    this._emptyPlayObjectDom = null;
   }
 
 
   setActions(doc) {
-/*    this._commands.download = doc.getElementsByClassName('download')[0];*/
+    this._emptyQueueDom = doc.getElementsByClassName('queue')[0].innerHTML;
+    this._emptyPlayObjectDom = doc.getElementsByClassName('play-object')[0].innerHTML;
   }
 
 
@@ -23,6 +27,11 @@ class QueueContext extends ContextMenu {
 //    this.dom.querySelector('.queue-context').innerHTML = '';
     this._dom.style.left = `${options.leftOffset}px`;
     this._target.appendChild(this._overlay);
+  }
+
+
+  updateQueuedTracks(tracks) {
+    console.log(tracks)
   }
 
 

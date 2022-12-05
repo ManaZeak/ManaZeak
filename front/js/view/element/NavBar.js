@@ -143,84 +143,81 @@ class NavBar {
 
 
 
-//  ------------------------------------------------------------------------------------------------//
-//  ---------------------------------------  QUEUE METHODS  --------------------------------------  //
-//  ------------------------------------------------------------------------------------------------//
+  //  ------------------------------------------------------------------------------------------------//
+  //  ---------------------------------------  QUEUE METHODS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
 
 
-/**
- * @method
- * @name updateQueueNumber
- * @public
- * @memberof FootBar
- * @author Arthur Beaulieu
- * @since March 2019
- * @description Updates the superscript queue length over the queue icon
- * @param {array} queue - The current session queue
- **/
-updateQueueNumber(queue) {
-  let length = queue.length;
+  /**
+   * @method
+   * @name updateQueueNumber
+   * @public
+   * @memberof FootBar
+   * @author Arthur Beaulieu
+   * @since March 2019
+   * @description Updates the superscript queue length over the queue icon
+   * @param {array} queue - The current session queue
+   **/
+  updateQueueNumber(length) {
+    if (length === 0) {
+      length = '';
+    }
 
-  if (length === 0) {
-    length = '';
+    this._controls.queue.parentNode.dataset.before = length;
   }
 
-  this._controls.queue.parentNode.dataset.before = length;
-}
 
-
-updateQueuedTracks(queuedTracks) {
-  if (this._queueContext.isOpen() === true) {
+  queue(queuedTracks) {
     this._queueContext.updateQueuedTracks(queuedTracks);
+    this.updateQueueNumber(queuedTracks.length);
   }
-}
 
 
-renderMoodFile(url) {
-  mzk.komunikator.getBinaryResponse(url)
-    .then((responseText) => {
-      try {
-        const rgb = [...Array((responseText.length / 3))];
+  renderMoodFile(url) {
+    mzk.komunikator.getBinaryResponse(url)
+      .then((responseText) => {
+        try {
+          const rgb = [...Array((responseText.length / 3))];
 
-        for (let i = 0; i < rgb.length; ++i) {
-          // `& 0xff` Force 8bit long integer (to fit rgb range of values)
-          const r = responseText.charCodeAt(i * 3) & 0xff;
-          const g = responseText.charCodeAt((i * 3) + 1) & 0xff;
-          const b = responseText.charCodeAt((i * 3) + 2) & 0xff;
+          for (let i = 0; i < rgb.length; ++i) {
+            // `& 0xff` Force 8bit long integer (to fit rgb range of values)
+            const r = responseText.charCodeAt(i * 3) & 0xff;
+            const g = responseText.charCodeAt((i * 3) + 1) & 0xff;
+            const b = responseText.charCodeAt((i * 3) + 2) & 0xff;
 
-          rgb[i] = { // Enhancement : Have fun here w/ colors and pref
-            offset: `${(i / rgb.length * 100)}%`,
-            color: `rgba(${r}, ${g}, ${b}, 1)`
-          };
+            rgb[i] = { // Enhancement : Have fun here w/ colors and pref
+              offset: `${(i / rgb.length * 100)}%`,
+              color: `rgba(${r}, ${g}, ${b}, 1)`
+            };
+          }
+
+          d3.select(this._progressBar.moodbarContainer.childNodes[1])
+            .selectAll('g')
+            .remove();
+          const svg = d3.select(this._progressBar.moodbarContainer.childNodes[1]).append('g');
+
+          svg.append('linearGradient')
+            .attr('id', `moodbar-gradient-${url[0] + url[1]}`)
+            .attr('gradientUnits', 'userSpaceOnUse')
+            .selectAll('stop')
+            .data(rgb)
+            .enter()
+            .append('stop')
+            .attr('offset', d => { return d.offset; })
+            .attr('stop-color', d => { return d.color; });
+
+          svg.append('rect')
+            .attr('fill', `url(#moodbar-gradient-${url[0] + url[1]})`)
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('height', '100%')
+            .attr('width', '100%');
+        } catch (e) {
+          // TODO catch this under a local storage property (debug one)
+          //console.error(`FootBar.renderMoodFile\n\tCan not render moodbar, invalid format.\n\t${e}`)
         }
-
-        d3.select(this._progressBar.moodbarContainer.childNodes[1])
-          .selectAll('g')
-          .remove();
-        const svg = d3.select(this._progressBar.moodbarContainer.childNodes[1]).append('g');
-
-        svg.append('linearGradient')
-          .attr('id', `moodbar-gradient-${url[0] + url[1]}`)
-          .attr('gradientUnits', 'userSpaceOnUse')
-          .selectAll('stop')
-          .data(rgb)
-          .enter()
-          .append('stop')
-          .attr('offset', d => { return d.offset; })
-          .attr('stop-color', d => { return d.color; });
-
-        svg.append('rect')
-          .attr('fill', `url(#moodbar-gradient-${url[0] + url[1]})`)
-          .attr('x', 0)
-          .attr('y', 0)
-          .attr('height', '100%')
-          .attr('width', '100%');
-      } catch (e) {
-        // TODO catch this under a local storage property (debug one)
-        //console.error(`FootBar.renderMoodFile\n\tCan not render moodbar, invalid format.\n\t${e}`)
-      }
-    });
-}
+      });
+  }
 
 
 
