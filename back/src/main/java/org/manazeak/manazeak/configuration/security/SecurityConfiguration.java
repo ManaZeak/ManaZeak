@@ -63,6 +63,7 @@ public class SecurityConfiguration {
                 .and()
                 .formLogin()
                 .loginPage("/login/")
+                .defaultSuccessUrl("/", true)
                 .and()
                 .logout().logoutSuccessUrl("/logoutSuccess/")
                 .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
