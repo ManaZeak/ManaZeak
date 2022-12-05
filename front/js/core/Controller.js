@@ -59,8 +59,12 @@ class Controller {
 
   changeTrack(options) {
     return new Promise((resolve, reject) => {
-      this._playObject = options.playObject;
-      const track = options.playObject.tracks[0];
+      let track = options.playObject.track;
+      if (options.playObject.type !== 'queue') { // Don't erase playObject if track to change came from queue
+        this._playObject = options.playObject;
+        track = options.playObject.tracks[0];
+      }
+
       this._player.changeTrack(`/play/${track.id}/`).then(() => {
         this._playingId = track.id;
         Evts.publish('ChangeTrack', {
@@ -79,7 +83,7 @@ class Controller {
         id: this._queue[this._queue.length - 1].id,
         playObject: {
           type: 'queue',
-          tracks: [ this._queue[this._queue.length - 1] ]
+          track: this._queue[this._queue.length - 1]
         }
       });
       this._queue.pop();
