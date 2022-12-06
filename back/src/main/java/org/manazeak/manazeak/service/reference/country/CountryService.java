@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.service.reference.country;
 
-import org.manazeak.manazeak.entity.dto.country.CountrySelectProjection;
+import org.manazeak.manazeak.entity.dto.country.CountrySelectDto;
 import org.manazeak.manazeak.entity.reference.Country;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface CountryService {
      *
      * @return get the list of countries.
      */
-    List<CountrySelectProjection> getCountryList();
+    List<CountrySelectDto> getCountryList();
 
     /**
      * Check if a country id is present in the database.

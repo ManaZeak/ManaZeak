@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.daos.reference;
 
-import org.manazeak.manazeak.entity.dto.country.CountrySelectProjection;
+import org.manazeak.manazeak.entity.dto.country.CountrySelectDto;
 import org.manazeak.manazeak.entity.reference.Country;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -15,8 +15,11 @@ import java.util.Optional;
  */
 public interface CountryDAO extends CrudRepository<Country, Long> {
 
-    @Query("select countryId as id, name as name from Country")
-    List<CountrySelectProjection> getAllCountrySelect();
+    @Query("select new org.manazeak.manazeak.entity.dto.country.CountrySelectDto(" +
+            "name, " +
+            "countryId) " +
+            "from Country")
+    List<CountrySelectDto> getAllCountrySelect();
 
     /**
      * Get a country by it's id.

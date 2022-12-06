@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.notification.reference.country.CountryNotificationEnum;
 import org.manazeak.manazeak.daos.reference.CountryDAO;
-import org.manazeak.manazeak.entity.dto.country.CountrySelectProjection;
+import org.manazeak.manazeak.entity.dto.country.CountrySelectDto;
 import org.manazeak.manazeak.entity.reference.Country;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class CountryServiceImpl implements CountryService {
      * {@inheritDoc}
      */
     @Override
-    public List<CountrySelectProjection> getCountryList() {
+    public List<CountrySelectDto> getCountryList() {
         return countryDAO.getAllCountrySelect();
     }
 
