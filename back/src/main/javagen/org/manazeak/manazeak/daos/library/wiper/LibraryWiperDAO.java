@@ -35,6 +35,7 @@ public class LibraryWiperDAO {
                 sb.append(",");
             }
         }
+        LOG.info("Wiping the all the tables of the application.");
         autonomousTransactionManager.runInTransaction(() -> jdbcTemplate.update(TRUNCATE_REQUEST + sb));
     }
 

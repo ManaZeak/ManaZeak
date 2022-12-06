@@ -70,7 +70,7 @@ public class AlbumIntegrationHelper {
         if (newAlbum.getAlbumId() == null) {
             newAlbum.setAlbumId(PkIdProvider.singleton().getNewPkId(Album.class));
             // Adding the new album id into the cache.
-            cacheAccessManager.put(CacheEnum.ALBUM_ID_BY_LOCATION, newAlbum.getLocation().toString(), newAlbum.getAlbumId());
+            cacheAccessManager.put(CacheEnum.ALBUM_ID_BY_LOCATION, newAlbum.getLocation(), newAlbum.getAlbumId());
         }
 
         // Adding the album to the album map.
