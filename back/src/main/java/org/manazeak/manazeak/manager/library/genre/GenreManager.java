@@ -79,7 +79,7 @@ public class GenreManager {
             GenreDetailAlbumDto album = artist.getAlbums().get(albumPos);
             if (album.getTracks().isEmpty()) {
                 album.addTrack(createMinimalTrackInfo(artistBuilder));
-            } else if (!album.getTracks().get(trackPos).getTrackId().equals(artistBuilder.getTrackId())) {
+            } else if (!album.getTracks().get(trackPos).trackId().equals(artistBuilder.getTrackId())) {
                 trackPos++;
                 album.addTrack(createMinimalTrackInfo(artistBuilder));
             }

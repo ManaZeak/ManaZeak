@@ -2,10 +2,13 @@ package org.manazeak.manazeak.manager.library.track;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.track.TrackDAO;
-import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
+import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,14 +20,32 @@ public class TrackManager {
 
     private final TrackDAO trackDAO;
 
+    private static ArtistMinimalInfoDto createPerformerFromTrack(AlbumTrackDbInfoDto dbTrack) {
+        return new ArtistMinimalInfoDto(dbTrack.performerId(), dbTrack.performerName(), dbTrack.performerPicture(),
+                dbTrack.performerIsLabel());
+    }
+
     /**
      * Get the list of tracks linked to the album.
      *
      * @param albumId The id of the album.
      * @return The list of tracks.
      */
-    public List<MinimalTrackInfoDto> getMinimalTrackInfoByAlbumId(Long albumId) {
-        return trackDAO.getMinimalTracksByAlbumId(albumId);
+    public List<AlbumTrackInfoDto> getAlbumTrackInfoByAlbumId(Long albumId) {
+        List<AlbumTrackDbInfoDto> dbTracks = trackDAO.getMinimalTracksByAlbumId(albumId);
+        Long lastTrackId = 0L;
+        List<AlbumTrackInfoDto> tracks = new ArrayList<>();
+        for (AlbumTrackDbInfoDto dbTrack : dbTracks) {
+            // If the track is new, adding it.
+            if (!lastTrackId.equals(dbTrack.trackId())) {
+                AlbumTrackInfoDto track = new AlbumTrackInfoDto(dbTrack.trackId(), dbTrack.title(), dbTrack.duration(), dbTrack.mood());
+                tracks.add(track);
+            }
+            // Adding the performer to the tracks.
+            tracks.get(tracks.size() - 1).addPerformer(createPerformerFromTrack(dbTrack));
+        }
+
+        return tracks;
     }
 
     /**

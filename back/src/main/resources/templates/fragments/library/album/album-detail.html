@@ -40,6 +40,12 @@
         <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">
           <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
           <img th:src='*{"/resources/moods/hd/"+track.mood}'>
+          <div th:each="performer : *{track.performers}" style="visibility: hidden">
+            <p th:text="*{performer.id}"></p>
+            <p th:text="*{performer.name}"></p>
+            <p th:text="*{performer.cover}"></p>
+            <p th:text="*{performer.isLabel}"></p>
+          </div>
         </div>
       </div>
     </div>

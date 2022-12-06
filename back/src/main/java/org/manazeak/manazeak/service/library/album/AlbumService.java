@@ -45,7 +45,7 @@ public class AlbumService {
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.album.not_found"));
 
         // Getting the tracks of the albums.
-        album.addTracks(trackManager.getMinimalTrackInfoByAlbumId(albumId));
+        album.addTracks(trackManager.getAlbumTrackInfoByAlbumId(albumId));
 
         return album;
     }

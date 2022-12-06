@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.entity.dto.country;
 
 /**
- * This is interface is used to get light countries for the database.
+ * This record is used to get the minimal info on countries from the database.
  */
 public record CountrySelectDto(String name, Long id) {
 }

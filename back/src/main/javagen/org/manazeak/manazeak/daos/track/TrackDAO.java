@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
+import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 import org.manazeak.manazeak.entity.track.Track;
@@ -26,15 +27,20 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
      * @param albumId The id of the album.
      * @return The list of the tracks contained on the album.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto(" +
-            "trk.trackId," +
-            "trk.title," +
+    @Query("select new org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto(" +
+            "trk.trackId, " +
+            "trk.title, " +
             "trk.duration, " +
-            "trk.mood) " +
+            "trk.mood," +
+            "perf.artistId, " +
+            "perf.name," +
+            "perf.pictureFilename," +
+            "perf.isLabel) " +
             "from Track trk " +
+            "join trk.performerList perf " +
             "where trk.album.albumId = :albumId " +
-            "order by trk.trackNumber")
-    List<MinimalTrackInfoDto> getMinimalTracksByAlbumId(@Param("albumId") Long albumId);
+            "order by trk.discNumber, trk.trackNumber")
+    List<AlbumTrackDbInfoDto> getMinimalTracksByAlbumId(@Param("albumId") Long albumId);
 
 
     /**
