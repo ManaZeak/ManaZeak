@@ -40,6 +40,7 @@ public class TrackManager {
             if (!lastTrackId.equals(dbTrack.trackId())) {
                 AlbumTrackInfoDto track = new AlbumTrackInfoDto(dbTrack.trackId(), dbTrack.title(), dbTrack.duration(), dbTrack.mood());
                 tracks.add(track);
+                lastTrackId = track.getTrackId();
             }
             // Adding the performer to the tracks.
             tracks.get(tracks.size() - 1).addPerformer(createPerformerFromTrack(dbTrack));
