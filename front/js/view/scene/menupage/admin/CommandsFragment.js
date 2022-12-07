@@ -31,8 +31,8 @@ class CommandsFragment {
 
 
   _scanClicked() {
-    mzk.kom.get('admin/library/scan/').then(response => {
-      Logger.raise(response.errors[0]); // Error is great succes in then case
+    mzk.kom.get('/admin/library/scan/').then(response => {
+      Logger.raise(response.notification[0]);
     }).catch(() => {
       Logger.raise('F_SCAN_REQUEST_ERROR');
     });
@@ -40,7 +40,11 @@ class CommandsFragment {
 
 
   _thumbsClicked() {
-    console.log('Regen thumbs clicked');
+    mzk.kom.get('/admin/library/regenThumbs/').then(response => {
+      Logger.raise(response.notification[0]);
+    }).catch(() => {
+      Logger.raise('F_SCAN_REQUEST_ERROR');
+    });
   }
 
 
