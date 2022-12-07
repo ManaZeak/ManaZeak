@@ -13,7 +13,10 @@
 <body class="dark-theme register">
 <div class="mzk-user">
   <img alt="manazeak-text-logo" src="/static/img/logo/manazeak-text.svg">
-  <p th:utext="#{user.register.header}"></p>
+  <p>
+    <span th:text="#{user.register.header}"></span>
+    <span><a href="/login/" alt="login-link"><span th:text="#{user.register.login}"></span></a></span>
+  </p>
   <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
   <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
   <form method="POST" th:object="${user}">
