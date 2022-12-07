@@ -182,6 +182,11 @@ class Controller {
   }
 
 
+  get playObject() {
+    return this._playObject;
+  }
+
+
   get playingId() {
     return this._playingId;
   }

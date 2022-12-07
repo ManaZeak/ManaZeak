@@ -12,7 +12,8 @@ public enum UiFragmentEnum {
     QUEUE_CONTEXT("fragments/context/queue.html"),
     PLAYBACK_RATE_CONTEXT("fragments/context/playbackrate.html"),
     TRACK_CONTEXT("fragments/context/track.html"),
-    QUEUE_TRACK_ENTRY("fragments/entry/queuetrack.html");
+    QUEUE_TRACK_ENTRY("fragments/entry/queuetrack.html"),
+    QUEUE_PLAY_OBJECT_ENTRY("fragments/entry/queueplayobject.html");
 
     private final String page;
 

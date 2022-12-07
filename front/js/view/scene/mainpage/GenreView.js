@@ -12,6 +12,7 @@ class GenreView extends TrackView {
       url: `/fragment/library/genre/${options.id}/`
     });
 
+    this._id = options.id;
     this._genre = '';
 
     this._artists = [];
@@ -125,9 +126,11 @@ class GenreView extends TrackView {
 
   _buildPlaybackObject(currentId) {
     const genre = {
-      type: 'genre',
-      cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
-      genre: this.dom.querySelector('#genre-name').innerHTML,
+      id: this._id,
+      type: 'Genre',
+      cover: this.dom.querySelector('#genre-picture').children[0].children[0].children[0].src,
+      title: this.dom.querySelector('#genre-name').innerHTML,
+      artist: '',
       tracks: []
     };
 
@@ -149,6 +152,7 @@ class GenreView extends TrackView {
       }
     }
 
+    genre.artist = genre.tracks[0].artist;
     return genre;
   }
 

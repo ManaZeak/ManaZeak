@@ -107,6 +107,30 @@
   /* User play object */
 
   .play-object {
-    /* */
+    cursor: pointer;
+
+    .queue-play-object-entry {
+      align-items: center;
+      display: flex;
+      
+      img {
+        height: 5rem;
+        width: 5rem;
+      }
+
+      .queue-play-object-info {
+        margin-left: var(--margin);
+
+        h2 {
+          padding: 0;
+        }
+  
+        h3 {
+          font-size: var(--font-size-small);
+          margin: 0;
+          margin-left: var(--margin-small);
+        }
+      }
+    }
   }
 }

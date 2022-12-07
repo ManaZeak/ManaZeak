@@ -11,6 +11,8 @@ class QueueContext extends ContextMenu {
     this._queuedTracks = [];
     this._playObject = {};
 
+    this._playObjectClickedId = -1;
+
     this._emptyQueueDom = null;
     this._emptyPlayObjectDom = null;
   }
@@ -35,7 +37,7 @@ class QueueContext extends ContextMenu {
     } else {
       queue.innerHTML = '';
       for (let i = 0; i < tracks.length; ++i) {
-        this._buildQueueTrackDom(tracks[i]).then(track => {
+        this._buildQueuedTrackDom(tracks[i]).then(track => {
           queue.appendChild(track);
         });
       }
@@ -43,7 +45,7 @@ class QueueContext extends ContextMenu {
   }
 
 
-  _buildQueueTrackDom(track) {
+  _buildQueuedTrackDom(track) {
     return new Promise(resolve => {
       mzk.kom.getText('/fragment/entry/queuetrack/').then(response => {
         const parser = new DOMParser();
@@ -55,6 +57,46 @@ class QueueContext extends ContextMenu {
         entry.querySelector('#queue-track-duration').innerHTML = track.duration;
         resolve(entry);
       });
+    });
+  }
+
+
+  updateQueuedPlayObject(playObject) {
+    const po = this._dom.getElementsByClassName('play-object')[0];
+    if (!playObject) {
+      po.innerHTML = this._emptyPlayObjectDom;
+    } else {
+      Evts.removeEvent(this._playObjectClickedId);
+      po.innerHTML = '';
+      this._buildQueuedPlayObjectDom(playObject).then(dom => {
+        po.appendChild(dom);
+        this._playObjectClickedId = Evts.addEvent('click', po, this._playObjectClicked.bind(this, playObject), this);
+      });
+    }
+  }
+
+
+  _buildQueuedPlayObjectDom(playObject) {
+    return new Promise(resolve => {
+      mzk.kom.getText('/fragment/entry/queueplayobject/').then(response => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(response, 'text/html');
+        const entry = doc.getElementsByClassName('queue-play-object-entry')[0];
+        entry.querySelector('#queue-play-object-cover').src = playObject.cover;
+        entry.querySelector('#queue-play-object-track').innerHTML = playObject.tracks[0].title;
+        entry.querySelector('#queue-play-object-artist').innerHTML = playObject.artist;
+        entry.querySelector('#queue-play-object-title').innerHTML = playObject.title;
+        resolve(entry);
+      });
+    });
+  }
+
+
+  _playObjectClicked(playObject) {
+    this.close();
+    mzk.setView({
+      name: playObject.type,
+      id: playObject.id
     });
   }
 

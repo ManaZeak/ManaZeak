@@ -175,7 +175,8 @@ class UserInterface {
 
 
   changeTrack(track) {
-    this._navBar.queue(mzk.ctrl.queuedTracks);
+    this._navBar.setQueuedTracks(mzk.ctrl.queuedTracks);
+    this._navBar.setQueuedPlayObject(mzk.ctrl.playObject);
     this._navBar.updateMoodbar(track.mood);
     this.setPlay(true);
     this.setPageTitle(`${track.artist} – ${track.title}`);
@@ -207,7 +208,7 @@ class UserInterface {
 
 
   queue(queuedTracks) {
-    this._navBar.queue(queuedTracks);
+    this._navBar.setQueuedTracks(queuedTracks);
   }
 
 

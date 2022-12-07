@@ -12,6 +12,7 @@ class AlbumView extends TrackView {
       url: `/fragment/library/album/${options.id}/`
     });
 
+    this._id = options.id;
     this._performers = [];
 
     this._fetchWrapper(this._url)
@@ -177,7 +178,8 @@ class AlbumView extends TrackView {
 
   _buildPlaybackObject(currentId) {
     const album = {
-      type: 'album',
+      id: this._id,
+      type: 'Album',
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       title: this.dom.querySelector('#album-title').innerHTML,
       artist: this.dom.querySelector('#release-artist').innerHTML,
