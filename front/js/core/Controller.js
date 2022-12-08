@@ -165,7 +165,7 @@ class Controller {
   download(options) {
     const link = document.createElement('A');
     link.download = options.name;
-    link.href = `/play/${options.id}`;
+    link.href = `/play/${options.id}/`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
