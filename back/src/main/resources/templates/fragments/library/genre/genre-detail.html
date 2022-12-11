@@ -28,6 +28,17 @@
             <h2><span th:text="*{album.albumTitle}"></span></h2>
           </div>
           <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">
+<!--
+          <div class="track-info">
+            <p th:text="*{track.title}" class="track-title"></p>
+            <p th:text="*{track.title}" class="track-performers">
+              <span th:each="performer : *{track.performers}">
+                <span th:text="*{performer.name}" th:attr="data-id=*{performer.id}"></span>
+              </span>
+            </p>
+            <p th:text="*{track.duration}" class="track-duration"></p>
+          </div>
+-->
             <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
           </div>
         </div>

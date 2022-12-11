@@ -302,25 +302,64 @@
         width: 5rem;
       }
 
-      p {
-        line-height: 5rem;
+      .track-info {
+        display: grid;
+        grid-template-columns: 1fr 7rem;
+        height: 5rem;
         margin: 0;
         padding: 0 var(--padding);
         padding-left: 5rem;
+
+        p, span {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          margin: 0;
+        }
+
+        .track-title {
+          align-items: flex-end;
+          display: flex;
+          margin-bottom: .1rem;
+        }
+
+        .track-performers {
+          align-items: flex-start;
+          color: var(--color-txt-darker);
+          display: flex;
+          font-size: var(--font-size-small);
+          font-style: italic;
+          margin-top: .1rem;
+          padding-left: var(--font-size);
+
+          span {
+            padding-right: var(--padding-small);
+            position: relative;
+            width: auto;
+
+            &::after {
+              content: ',';
+              position: absolute;
+              right: var(--padding-tiny);
+            }
+
+            &:last-child::after {
+              content: '';
+            }
+          }
+        }
+
+        .track-duration {
+          align-items: center;
+          display: flex;
+          grid-column: 2;
+          grid-row: 1 / span 2;
+          font-size: var(--font-size-small);
+          justify-content: flex-end;
+          padding-right: var(--padding);
+        }
       }
 
-      span:first-child  {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-
-      span:last-child {
-        float: right;
-        margin-right: var(--margin);
-        text-align: right;
-        width: 7rem;
-      }
       /* Track moodbar on hover */
       img {
         position: absolute;
