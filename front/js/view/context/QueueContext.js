@@ -12,6 +12,7 @@ class QueueContext extends ContextMenu {
     this._playObject = {};
 
     this._playObjectClickedId = -1;
+    this._scroll = null;
 
     this._emptyQueueDom = null;
     this._emptyPlayObjectDom = null;
@@ -27,6 +28,23 @@ class QueueContext extends ContextMenu {
   _open(options) {
     this._dom.style.left = `${options.leftOffset}px`;
     this._target.appendChild(this._overlay);
+
+    const queue = this._dom.getElementsByClassName('queue')[0];
+    if (queue.innerHTML === this._emptyQueueDom) {
+      queue.style.height = 'auto';
+    } else {
+      queue.style.height = '20rem';
+      this._scroll = new ScrollBar({
+        target: queue,
+        style: {
+          color: '#56D45B'
+        }
+      });
+  
+      requestAnimationFrame(() => {
+        this._scroll.updateScrollbar();
+      });
+    }
   }
 
 

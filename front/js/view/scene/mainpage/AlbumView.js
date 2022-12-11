@@ -42,11 +42,6 @@ class AlbumView extends TrackView {
       for (let i = 0; i < this._tracks.length; ++i) {
         const duration = this._tracks[i].getElementsByClassName('track-duration')[0];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
-        const performers = this._tracks[i].getElementsByClassName('track-performers')[0];
-        console.log(performers)
-        for (let i = 0; i < performers.children.length; ++i) {
-          this._evtIds.push(Evts.addEvent('click', performers.children[i], this._artistClicked, performers.children[i]));
-        }
       }
 
       this._scroll = new ScrollBar({
@@ -96,6 +91,13 @@ class AlbumView extends TrackView {
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
 
+      for (let i = 0; i < this._tracks.length; ++i) {
+        const performers = this._tracks[i].getElementsByClassName('track-performers')[0];
+        for (let i = 0; i < performers.children.length; ++i) {
+          this._evtIds.push(Evts.addEvent('click', performers.children[i], this._artistClicked, performers.children[i]));
+        }
+      }
+      
       for (let i = 0; i < this._performers.length; ++i) {
         this._evtIds.push(Evts.addEvent('click', this._performers[i], this._artistClicked, this._performers[i]));
       }
@@ -107,6 +109,9 @@ class AlbumView extends TrackView {
 
       const label = this.dom.querySelector('#album-label');
       this._evtIds.push(Evts.addEvent('click', label, this._labelClicked, label));
+
+      const queueAlbum = this.dom.querySelector('#queue-album'); // Artist picture
+      this._evtIds.push(Evts.addEvent('click', queueAlbum, this._queueAlbum, this));
 
       this.dom.querySelector('#album-tracks').addEventListener('contextmenu', event => {
         event.preventDefault();
@@ -174,6 +179,16 @@ class AlbumView extends TrackView {
           name: `${document.getElementById('release-artist').innerHTML} - ${title[0].textContent}`
         });
       }
+    }
+  }
+
+
+  _queueAlbum() {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      mzk.queue({
+        type: 'track',
+        id: this._tracks[i].dataset.id
+      });
     }
   }
 

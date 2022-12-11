@@ -287,6 +287,14 @@
 
       &.playing {
         background-color: var(--color-primary-alpha-50);
+
+        .track-info .track-performers span {
+          &:active,
+          &:focus,
+          &:hover {
+            color: var(--color-anti-primary);
+          }
+        }
       }
 
       /* before is used for track number */
@@ -619,7 +627,29 @@
           &:hover {
             transform: scale(1.1);
           }
-        }  
+        }
+
+        .queue-album {
+          align-items: center;
+          bottom: var(--padding-small);
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          position: absolute;
+          right: 0;
+          width: 2rem;
+
+          &::before {
+            content: '+';
+            color: #56D45B;
+            position: absolute;
+            right: 2rem;
+          }
+
+          img {
+            width: 100%;
+          }
+        }
       }
 
       .album {

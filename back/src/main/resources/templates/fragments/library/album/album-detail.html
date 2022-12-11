@@ -33,6 +33,9 @@
         <div id="release-artist-container" class="release-artist-container">
           <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)}"></div>
         </div>
+        <div id="queue-album" class="queue-album">
+          <img src="/static/img/player/queue.svg">          
+        </div>
       </div>
       <div id="album-tracks" class="album">
         <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">

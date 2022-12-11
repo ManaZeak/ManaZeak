@@ -40,8 +40,6 @@
 
   .queue,
   .play-object {
-    padding: var(--padding);
-
     p {
       margin: 0;
     }
@@ -50,16 +48,18 @@
   /* Queued tracks */
 
   .queue {
-    padding: var(--padding);
-
+    margin: 1rem 0;
+    width: 100%;
+    
     .queue-track-entry {
       cursor: pointer;
       display: flex;
-      margin-bottom: 1rem;
       padding: 1rem;
       background: var(--color-primary-alpha-10);
       border-radius: 0.5rem;
+      margin-bottom: 1rem;
       min-width: 30rem;
+      width: calc(100% - 2rem);
 
       &:last-child {
         margin-bottom: 0;
@@ -100,6 +100,7 @@
         display: flex;
         justify-content: flex-end;
         margin-left: auto;
+        width: 7rem;
       }
     }
   }
@@ -108,6 +109,7 @@
 
   .play-object {
     cursor: pointer;
+    padding: var(--padding);
 
     .queue-play-object-entry {
       align-items: center;
