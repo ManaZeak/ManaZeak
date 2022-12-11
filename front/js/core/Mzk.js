@@ -106,6 +106,16 @@ class Mzk {
   }
 
 
+  previous() {
+    this.ctrl.previous();
+  }
+
+
+  next() {
+    this.ctrl.next();
+  }
+
+
   queue(data) {
     this.ctrl.queue(data);
     this.ui.queue(this.ctrl.queuedTracks)

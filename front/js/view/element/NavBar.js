@@ -66,15 +66,15 @@ class NavBar {
     this._controls.stop.addEventListener('click', () => {
       mzk.stopPlayback();
     });
-/*
+
     this._controls.previous.addEventListener('click', () => {
-      mzk.previousTrackInView();
+      mzk.previous();
     });
 
     this._controls.next.addEventListener('click', () => {
       mzk.next();
     });
-
+/*
     this._controls.repeat.addEventListener('click', () => {
       mzk.toggleRepeatMode();
     });

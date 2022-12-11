@@ -32,18 +32,20 @@ class CommandsFragment {
 
   _scanClicked() {
     mzk.kom.get('/admin/library/scan/').then(response => {
-      Logger.raise(response.notification[0]);
-    }).catch(() => {
-      Logger.raise('F_SCAN_REQUEST_ERROR');
+      response.notifications[0].type = response.notifications[0].severity;
+      Notif.new(response.notifications[0]);
+    }).catch(error => {
+      Notif.new(error.notifications[0]);
     });
   }
 
 
   _thumbsClicked() {
     mzk.kom.get('/admin/library/regenThumbs/').then(response => {
-      Logger.raise(response.notification[0]);
+      response.notifications[0].type = response.notifications[0].severity;
+      Notif.new(response.notifications[0]);
     }).catch(() => {
-      Logger.raise('F_SCAN_REQUEST_ERROR');
+      Notif.new(error.notifications[0]);
     });
   }
 

@@ -12,8 +12,9 @@ import Mzk from './core/Mzk';
 window.Utils = new Utils();
 window.Evts = new CustomEvents();
 window.Shortcut = new Shortcut();
+window.Notif = new Notification();
 window.Logger = new Logger({
-  notification: new Notification(),
+  notification: window.Notif,
   log: (window.location.href.indexOf('?debug') > -1) ? true : false
 });
 

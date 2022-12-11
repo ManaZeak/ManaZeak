@@ -11,6 +11,7 @@ class Controller {
     this._playObject = null;
     this._queue = []; // User manual queue
     this._playingId = -1;
+    this._trackHistory = [];
     this._init();
     this._events();
     this._shortcuts();
@@ -66,6 +67,7 @@ class Controller {
       }
 
       this._player.changeTrack(`/play/${track.id}/`).then(() => {
+        this._addTrackHistory(options, track);
         this._playingId = track.id;
         Evts.publish('ChangeTrack', {
           id: track.id
@@ -99,6 +101,19 @@ class Controller {
     } else {
       mzk.stopPlayback();
     }
+  }
+
+
+  _addTrackHistory(options, track) {
+    // Test if track history already exists
+    if (this._trackHistory.length) {
+      // Don't add track if latest in history is it
+      if (track.id === this._trackHistory[this._trackHistory.length - 1].id) {
+        return;
+      }
+    }
+
+    this._trackHistory.push(JSON.parse(JSON.stringify(options)));    
   }
 
 
@@ -149,8 +164,51 @@ class Controller {
   }
 
 
-  next() {
+  previous() {
+    if (this._trackHistory.length === 0) {
+      mzk.stopPlayback();
+      return;
+    }
 
+    let options = this._trackHistory.pop();
+    let track = options.playObject.track;
+    if (options.playObject.type !== 'queue') {
+      track = options.playObject.tracks[0];
+    }
+    // Pop again if playing track is current one
+    if (track.id === this.playingId) {
+      options = this._trackHistory.pop();
+      if (!options) {
+        mzk.stopPlayback();
+        return;
+      }
+    }
+
+    mzk.changeTrack({
+      id: track.id,
+      playObject: options.playObject
+    });
+  }
+
+
+  next() {
+    if (this._playObject.tracks.length < 1) {
+      mzk.stopPlayback();
+      return;
+    }
+    const playObject = JSON.parse(JSON.stringify(this._playObject));
+    playObject.tracks.shift();
+    const track = playObject.tracks[0];
+
+    if (!track) {
+      mzk.stopPlayback();
+      return;
+    }
+
+    mzk.changeTrack({
+      id: track.id,
+      playObject: playObject
+    });
   }
 
 
