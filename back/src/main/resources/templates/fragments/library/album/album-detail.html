@@ -9,8 +9,7 @@
       <em><p th:text="#{view.album.performers}"></p></em>
       <div id="album-performers" class="artists-small">
         <div th:each="performer : ${performers}" th:attr="data-id=*{performer.id}" class="artist">
-          <div
-              th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)}"></div>
+          <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)}"></div>
           <p class="artist-name" th:text="*{performer.name}"></p>
         </div>
       </div>

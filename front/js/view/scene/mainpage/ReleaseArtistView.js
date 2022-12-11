@@ -11,7 +11,7 @@ class ReleaseArtistView extends SceneView {
       url: `/fragment/library/artist/${options.id}/`
     });
 
-    this._scroll = null;
+    this._scroll = [];
     
     this._fetchWrapper(this._url)
       .then(this._makeInteractive.bind(this))
@@ -30,10 +30,29 @@ class ReleaseArtistView extends SceneView {
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#artist-picture'), this._pictureClicked, this));
       const members = this.dom.querySelector('#artist-members');
-      if (members && members.children) {
+      if (members && members.children.length) {
+        this.dom.querySelector('.artist-header-right').classList.add(`collapsed-${members.children.length}`);
+        this.dom.querySelector('.artist-header-center').classList.add(`expanded-${members.children.length}`);
         for (let i = 0; i < members.children.length; ++i) {
           members.children[i].addEventListener('click', this._artistClicked);
         }
+        // Add scrollbar to members
+        if (members.children.length > 4) {
+          this.dom.querySelector('.artist-header-right').style.height = '190px';
+          // Ensure height is properly applied before creating scroll on performers
+          requestAnimationFrame(() => {
+            this._scroll.push(new ScrollBar({
+              target: this.dom.querySelector('.artist-header-right'),
+              style: {
+                color: '#56D45B'
+              }
+            }));
+          });
+        }
+      } else {
+        // Remove header right, update header center class to take remaining space
+        this.dom.querySelector('.artist-header-right').classList.add('collapsed');
+        this.dom.querySelector('.artist-header-center').classList.add('expanded');
       }
 
       const albums = this.dom.querySelector('#released-albums');
@@ -42,13 +61,13 @@ class ReleaseArtistView extends SceneView {
           albums.children[i].addEventListener('click', this._albumClicked);
         }
 
-        this._scroll = new ScrollBar({
+        this._scroll.push(new ScrollBar({
           target: albums,
           horizontal: true,
           style: {
             color: '#56D45B'
           }
-        });
+        }));
 
         resolve();
       } else {

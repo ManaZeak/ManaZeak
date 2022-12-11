@@ -84,7 +84,12 @@
 /* Utils class */
 
 .artists-small {
+  background-color: var(--color-bg-lighter-alpha-50);
   border-radius: .5rem;
+  height: 100px;
+  max-height: 200px;
+  margin: 0 var(--margin);
+  overflow-y: auto;
   text-align: center;
   width: 100%;
 
@@ -223,11 +228,11 @@
       [class$="-picture"] {
         cursor: pointer;
         height: 20rem;
+        margin-bottom: var(--margin);
         width: 20rem;
   
         img {
           height: 100%;
-          margin-bottom: var(--margin);
           width: 100%;
         }
       }
@@ -362,6 +367,7 @@
 
       /* Track moodbar on hover */
       img {
+        box-shadow: 0px 2px 3px var(--color-txt-alpha-25);
         position: absolute;
         left: 0;
         width: calc(100% - var(--default-scroll-size));
@@ -390,11 +396,51 @@
   .artist-header {
     .artist-header-center {
       margin: var(--margin);
-      width: calc(100% - 30rem - 33rem - var(--margin));
+      width: calc(100% - 30rem - 40rem - 4 * var(--margin));
+
+      &.expanded {
+        width: calc(100% - 30rem - 2 * var(--margin));        
+      }
+
+      &.expanded-1 {
+        width: calc(100% - 30rem - 12rem - 4 * var(--margin));
+      }
+
+      &.expanded-2 {
+        width: calc(100% - 30rem - 20rem - 4 * var(--margin));
+      }
+
+      &.expanded-3 {
+        width: calc(100% - 30rem - 30rem - 4 * var(--margin));
+      }
     }
 
     .artist-header-right {
-      width: 33rem;
+      margin: var(--margin);
+      text-align: center;
+      width: 40rem;
+
+      &.collapsed {
+        display: none;
+        opacity: 0;
+      }
+
+      &.collapsed-1 {
+        width: 12rem;
+      }
+
+      &.collapsed-2 {
+        width: 20rem;
+      }
+
+      &.collapsed-3 {
+        width: 30rem;
+      }
+
+      .artists-small {
+        height: inherit;
+        margin: 0;
+      }
     }
   }
 
@@ -506,14 +552,6 @@
         margin-bottom: var(--margin);
         text-align: center;
       }
-    }
-
-    .artists-small {
-      margin: 0 var(--margin);
-      background-color: var(--color-bg-lighter-alpha-50);
-      height: 100px;
-      max-height: 200px;
-      overflow-y: auto;
     }
 
     .album-content {
