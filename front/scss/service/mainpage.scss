@@ -325,7 +325,7 @@
         .track-title {
           align-items: flex-end;
           display: flex;
-          margin-bottom: .1rem;
+          margin-bottom: .15rem;
         }
 
         .track-performers {
@@ -334,13 +334,25 @@
           display: flex;
           font-size: var(--font-size-small);
           font-style: italic;
-          margin-top: .1rem;
+          margin-top: .15rem;
           padding-left: var(--font-size);
 
           span {
             padding-right: var(--padding-small);
             position: relative;
             width: auto;
+
+            transition: color .2s;
+
+            &:active,
+            &:focus,
+            &:hover {
+              color: var(--color-primary);
+              /* We don't want the ',' char to be highlighted */
+              &::after {
+                color: var(--color-txt-darker);
+              }
+            }
 
             &::after {
               content: ',';

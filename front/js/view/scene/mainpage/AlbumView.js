@@ -42,6 +42,11 @@ class AlbumView extends TrackView {
       for (let i = 0; i < this._tracks.length; ++i) {
         const duration = this._tracks[i].getElementsByClassName('track-duration')[0];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
+        const performers = this._tracks[i].getElementsByClassName('track-performers')[0];
+        console.log(performers)
+        for (let i = 0; i < performers.children.length; ++i) {
+          this._evtIds.push(Evts.addEvent('click', performers.children[i], this._artistClicked, performers.children[i]));
+        }
       }
 
       this._scroll = new ScrollBar({
@@ -130,7 +135,8 @@ class AlbumView extends TrackView {
   }
 
 
-  _artistClicked() {
+  _artistClicked(e) {
+    e.stopPropagation();
     mzk.setView({
       name: 'ReleaseArtist',
       id: this.dataset.id
