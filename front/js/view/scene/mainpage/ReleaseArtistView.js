@@ -11,6 +11,7 @@ class ReleaseArtistView extends SceneView {
       url: `/fragment/library/artist/${options.id}/`
     });
 
+    this._albums = [];
     this._scroll = [];
     
     this._fetchWrapper(this._url)
@@ -55,19 +56,34 @@ class ReleaseArtistView extends SceneView {
         this.dom.querySelector('.artist-header-center').classList.add('expanded');
       }
 
-      const albums = this.dom.querySelector('#released-albums');
-      if (albums && albums.children) {
-        for (let i = 0; i < albums.children.length; ++i) {
-          albums.children[i].addEventListener('click', this._albumClicked);
+      const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
+      sortArtistReleases.addEventListener('click', () => {
+        sortArtistReleases.classList.toggle('active');
+        let elements = [].slice.call(this._albums.children);
+        elements = elements.reverse();
+        for (let i = 0; i < this._albums.children.length; ++i) {
+          this._albums.children[i].remove();
+        }
+        for (let i = 0; i < elements.length; ++i) {
+          this._albums.appendChild(elements[i]);
+        }
+      });
+
+      this._albums = this.dom.querySelector('#released-albums');
+      if (this._albums && this._albums.children) {
+        for (let i = 0; i < this._albums.children.length; ++i) {
+          this._albums.children[i].addEventListener('click', this._albumClicked);
         }
 
         this._scroll.push(new ScrollBar({
-          target: albums,
+          target: this._albums,
           horizontal: true,
           style: {
             color: '#56D45B'
           }
         }));
+
+        this._albums = this._albums.children[0].children[0];
 
         resolve();
       } else {

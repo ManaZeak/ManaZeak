@@ -17,17 +17,17 @@
     <div class="album-content">
       <div class="album-info">
         <h2>
-          <span th:text="*{album.albumArtist}" th:attr="data-id=*{album.albumArtistId}" id="release-artist" class="link"></span>&nbsp;–&nbsp;
+          <span th:text="*{album.albumArtist}" th:attr="data-id=*{album.albumArtistId}" id="release-artist" class="link"></span>&nbsp;–
           <span th:text="*{album.title}"></span>
         </h2>
         <p>
-          <span th:text="*{album.totalTrack}"></span>&nbsp;Track(s),&nbsp;
-          <span th:text="*{album.duration}" id="album-duration"></span>&nbsp;–&nbsp;
-          <span th:text="#{view.album.released_on}"></span>&nbsp;
+          <span th:text="*{album.totalTrack}"></span>&nbsp;Track(s),
+          <span th:text="*{album.duration}" id="album-duration"></span>&nbsp;–
+          <span th:text="#{view.album.released_on}"></span>
           <span th:text="*{album.releaseDate}" id="album-release-date"></span>
         </p>
         <p>
-          <span th:text="*{album.labelName}" th:attr="data-id=*{album.labelId}" id="album-label" class="link"></span>,&nbsp;
+          <span th:text="*{album.labelName}" th:attr="data-id=*{album.labelId}" id="album-label" class="link"></span>
           <span th:text="*{album.catalogNumber}"></span>
         </p>
         <div id="release-artist-container" class="release-artist-container">

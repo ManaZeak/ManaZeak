@@ -472,6 +472,20 @@
       font-size: var(--font-size-big);
       font-style: italic;
       margin-bottom: var(--margin-tiny);
+      position: relative;
+
+      img {
+        cursor: pointer;
+        height: var(--font-size-big);
+        position: absolute;
+        right: 0;
+
+        transition: filter .2s;
+
+        &.active {
+          filter: invert(62%) sepia(100%) saturate(288%) hue-rotate(73deg) brightness(95%) contrast(92%);
+        }
+      }
     }
 
     .released-albums {
