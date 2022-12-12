@@ -146,30 +146,37 @@ class AlbumView extends TrackView {
     for (let i = 0; i < this._tracks.length; ++i) {
       const renderTo = this._tracks[i].getElementsByClassName('track-waveform')[0];
       const player = document.createElement('AUDIO');
-      player.src = `/play/${this._tracks[i].dataset.id}/`;
       player.volume = 0;
       renderTo.appendChild(player);
+
+      let loadingEventId = -1;
+      const loadedListener = () => {
+        Evts.removeEvent(loadingEventId);
+        new AudioVisualizer({
+          type: 'waveform',
+          player: player,
+          renderTo: renderTo,
+          fftSize: 32,
+          animation: 'gradient',
+          wave: {
+            align: 'bottom',
+            barWidth: 3,
+            barMarginScale: 0,
+            merged: false,
+            noSignalLine: false
+          },
+          colors: {
+            background: 'transparent',
+            track: '#E7E9E7',
+            progress: '#56D45B'
+          },
+          hotCues: []
+        });
+      };
+
+      loadingEventId = Evts.addEvent('loadedmetadata', player, loadedListener, this);
+      player.src = `/play/${this._tracks[i].dataset.id}/`;
       this._tracks[i].player = player;
-      new AudioVisualizer({
-        type: 'waveform',
-        player: player,
-        renderTo: renderTo,
-        fftSize: 1024,
-        animation: 'gradient',
-        wave: {
-          align: 'bottom',
-          barWidth: 1,
-          barMarginScale: 0.25,
-          merged: true,
-          noSignalLine: true
-        },
-        colors: {
-          background: 'transparent',
-          track: '#E7E9E7',
-          progress: '#56D45B'
-        },
-        hotCues: []
-      });
     }
   }
 
