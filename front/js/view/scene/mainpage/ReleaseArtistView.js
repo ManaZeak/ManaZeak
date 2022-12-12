@@ -38,7 +38,7 @@ class ReleaseArtistView extends SceneView {
         }
         // Add scrollbar to members
         if (members.children.length > 4) {
-          this.dom.querySelector('.artist-header-right').style.height = '190px';
+          this.dom.querySelector('.artist-header-right').style.height = 'calc(100% - 2 * var(--margin))';
           // Ensure height is properly applied before creating scroll on performers
           requestAnimationFrame(() => {
             this._scroll.push(new ScrollBar({
