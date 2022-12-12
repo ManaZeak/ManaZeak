@@ -41,12 +41,54 @@
         <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">
           <div class="track-info">
             <p th:text="*{track.title}" class="track-title"></p>
+            <p class="toggle-track-expand">
+              <img src="/static/img/navigation/nav-down.svg" class="toggle-track-expand-img" alt="toggle-track-expand">
+            </p>
             <p th:text="*{track.duration}" class="track-duration"></p>
             <p class="track-performers">
               <span th:each="performer : *{track.performers}" th:text="*{performer.name}" th:attr="data-id=*{performer.id}"></span>
             </p>
           </div>
-          <img th:src='*{"/resources/moods/hd/"+track.mood}'>
+          <div class="track-detailed-info">
+            <div class="txt-column">
+              <div>
+                <span>Genre(s) / Style(s) :</span>
+                <span><!-- mettre th:text avec genre -->Hardtek, Rock, Metal</span>
+              </div>
+              <div>
+                <span>Composed by :</span>
+                <span><!-- mettre th:text avec composer -->Jim Morisson, Robbie Krieger, Angus Young, Robert Trujilo, Steve Vai</span>
+              </div>
+              <div>
+                <span>Lyricist :</span>
+                <span><!-- mettre th:text avec lyricist -->Jim Morisson</span>
+              </div>
+              <div>
+                <span>Produced by :</span>
+                <span><!-- mettre th:text avec producer -->Rick Rubin</span>
+              </div>
+            </div>
+            <div class="txt-column">
+              <div>
+                <span>Engineer :</span>
+                <span><!-- mettre th:text avec ingénieur -->Dr. Dre</span>
+              </div>
+              <div>
+                <span>BPM & Key :</span>
+                <span><!-- mettre th:text avec BPM et KEY -->180 BPM, A minor</span>
+              </div>
+              <div>
+                <span>ISRC / EAN :</span>
+                <span><!-- mettre th:text avec ISRC et EAN -->FR-1A9-22-01234 / 0512349256721</span>
+              </div>
+              <div>
+                <span>Recording :</span>
+                <span><!-- mettre th:text location et recording date -->Studio Swag (Los Angeles, CA)</span>
+              </div>
+            </div>
+            <div class="track-waveform"><!-- Filled by AudioVisualizer.waveform --></div>
+          </div>
+          <img th:src='*{"/resources/moods/hd/"+track.mood}' class="track-moodbar" alt="track-moodbar">
         </div>
       </div>
     </div>

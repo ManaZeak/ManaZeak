@@ -1,6 +1,7 @@
 import TrackView from '../utils/TrackView';
 import ScrollBar from '../../navigation/ScrollBar';
 import TrackContext from '../../context/TrackContext';
+import AudioVisualizer from '../../visu/AudioVisualizer';
 
 
 class AlbumView extends TrackView {
@@ -14,17 +15,27 @@ class AlbumView extends TrackView {
 
     this._id = options.id;
     this._performers = [];
+    this._waveforms = [];
+
+    this._scrollPerformers = null;
+    this._scrollTrack = null;
 
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
       .then(this._events.bind(this))
       .then(this._viewReady)
+      .then(this._postRendering.bind(this))
       .catch(this._viewFailed);
   }
 
 
   destroy() {
     super.destroy();
+
+    for (let i = 0; i < this._waveforms.length; ++i) {
+      this._waveforms[i].destroy();
+    }
+
     Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
@@ -44,7 +55,7 @@ class AlbumView extends TrackView {
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
 
-      this._scroll = new ScrollBar({
+      this._scrollTrack = new ScrollBar({
         target: this.dom.querySelector('#album-tracks'),
         style: {
           color: '#56D45B'
@@ -57,7 +68,7 @@ class AlbumView extends TrackView {
         this.dom.querySelector('#album-performers').style.height = '190px';
         // Ensure height is properly applied before creating scroll on performers
         requestAnimationFrame(() => {
-          this._scroll = new ScrollBar({
+          this._scrollPerformers = new ScrollBar({
             target: this.dom.querySelector('#album-performers'),
             style: {
               color: '#56D45B'
@@ -96,6 +107,10 @@ class AlbumView extends TrackView {
         for (let i = 0; i < performers.children.length; ++i) {
           this._evtIds.push(Evts.addEvent('click', performers.children[i], this._artistClicked, performers.children[i]));
         }
+
+        const expander = this._tracks[i].getElementsByClassName('toggle-track-expand')[0];
+        this._tracks[i].scroll = this._scrollTrack;
+        this._evtIds.push(Evts.addEvent('click', expander, this._expandArtistsClicked, this._tracks[i]));
       }
       
       for (let i = 0; i < this._performers.length; ++i) {
@@ -127,6 +142,38 @@ class AlbumView extends TrackView {
   }
 
 
+  _postRendering() {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      const renderTo = this._tracks[i].getElementsByClassName('track-waveform')[0];
+      const player = document.createElement('AUDIO');
+      player.src = `/play/${this._tracks[i].dataset.id}/`;
+      player.volume = 0;
+      renderTo.appendChild(player);
+      this._tracks[i].player = player;
+      new AudioVisualizer({
+        type: 'waveform',
+        player: player,
+        renderTo: renderTo,
+        fftSize: 1024,
+        animation: 'gradient',
+        wave: {
+          align: 'bottom',
+          barWidth: 1,
+          barMarginScale: 0.25,
+          merged: true,
+          noSignalLine: true
+        },
+        colors: {
+          background: 'transparent',
+          track: '#E7E9E7',
+          progress: '#56D45B'
+        },
+        hotCues: []
+      });
+    }
+  }
+
+
   /* UI element callbacks */
 
 
@@ -146,6 +193,21 @@ class AlbumView extends TrackView {
       name: 'ReleaseArtist',
       id: this.dataset.id
     });
+  }
+
+
+  _expandArtistsClicked(e) {
+    e.stopPropagation();
+    this.classList.toggle('expanded');
+    if (this.classList.contains('expanded')) {
+      this.getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-up.svg';
+    } else {
+      this.getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-down.svg';
+    }
+    // Update scrollbar height
+    setTimeout(() => {
+      this.scroll.updateScrollbar();
+    }, 200); /* Match height transition duration in _mainpage.scss*/
   }
 
 

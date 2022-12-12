@@ -44,7 +44,7 @@
     cursor: pointer;
     opacity: var(--scroll-low-opacity);
     position: relative;
-    transition: opacity var(--scroll-transition-duration) ease-in-out;
+    transition: opacity var(--scroll-transition-duration) ease-in-out, height var(--scroll-transition-duration);
   }
   /* Vertical scrollbar, height is computed in Js according to scrollable content */
   .scroll {

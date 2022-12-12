@@ -14,7 +14,9 @@ class TrackView extends SceneView {
 
   destroy() {
     super.destroy();
-    this._trackContext.destroy();
+    if (this._trackContext && this._trackContext.destroy) {
+      this._trackContext.destroy();
+    }
     Evts.unsubscribe(this._changeTrackEvt);
   }
 
