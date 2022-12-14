@@ -5,6 +5,10 @@ class ViewHistory {
     this._previousView = [];
     this._nextView = [];
     this._abortNextAdd = false;
+    this._fromPreviousClicked = false;
+
+    this._previousButton = null;
+    this._nextButton = null;
 
     this._init()
       .then(this._events.bind(this));
@@ -29,6 +33,9 @@ class ViewHistory {
         window.history.pushState({ isBackPage: false }, '', '');
       }
 
+      this._previousButton = document.getElementById('topbar-view-previous');
+      this._nextButton = document.getElementById('topbar-view-next');
+
       resolve();
     });
   }
@@ -36,6 +43,8 @@ class ViewHistory {
 
   _events() {
     window.addEventListener('popstate', this._popState.bind(this));    
+    this._previousButton.addEventListener('click', this._previousClicked.bind(this));
+    this._nextButton.addEventListener('click', this._nextClicked.bind(this));
   }
 
 
@@ -52,13 +61,45 @@ class ViewHistory {
   }
 
 
+  _previousClicked() {
+    // Init a previous clicked state for further addView to properly handle next view reset
+    this._nextButton.classList.remove('disabled');
+    this._fromPreviousClicked = true;
+    mzk.ui.previousHistoryView();
+  }
+
+
+  _nextClicked() {
+    mzk.ui.nextHistoryView();
+  }
+
+
   addView(options) {
+    // We must know when to reset next array (clicking on a view different than next one in nextView)
+    if (!this._fromPreviousClicked && this._nextView.length && this._nextView[this._nextView.length - 1] !== options) {
+      this._nextView = [];
+    }
+    // reset bu default the from previous clicked flag
+    this._fromPreviousClicked = false;
+
     if (this._abortNextAdd === false) {
       window.history.pushState({ isBackPage: true }, '', '');
       this._previousView.push(options);
     } else {
       // Restore abort next add flag to initial state 
       this._abortNextAdd = false;
+    }
+
+    if (this._previousView.length > 1) {
+      this._previousButton.classList.remove('disabled');
+    } else {
+      this._previousButton.classList.add('disabled');
+    }
+
+    if (this._nextView.length === 0) {
+      this._nextButton.classList.add('disabled');
+    } else {
+      this._nextButton.classList.remove('disabled');
     }
   }
 

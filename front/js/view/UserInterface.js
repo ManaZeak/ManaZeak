@@ -1,4 +1,5 @@
 import Aside from './element/Aside';
+import TopBar from './element/TopBar';
 import NavBar from './element/NavBar';
 import Scene from './element/Scene';
 import ViewHistory from './scene/utils/ViewHistory';
@@ -20,6 +21,7 @@ class UserInterface {
      * @member {object} - The scene controller */
     this._scene = new Scene();
 
+    this._topBar = new TopBar();
     this._navBar = new NavBar();
 
     this._history = new ViewHistory();
@@ -58,6 +60,7 @@ class UserInterface {
       this.startLoading()
         .then(this._updateHistory.bind(this, options))
         .then(this._updateHomeIcon.bind(this, options))
+        .then(this._setTopBarView.bind(this, options))
         .then(this._scene.buildView.bind(this._scene, options))
         .then(resolve)
         .catch(reject)
@@ -132,6 +135,14 @@ class UserInterface {
   }
 
 
+  _setTopBarView(options) {
+    return new Promise(resolve => {
+      this._topBar.setView(options);
+      resolve();
+    });
+  }
+
+
   /*  --------------------------------------------------------------------------------------------------------------- */
   /*  ----------------------------------------  LOADING OVERLAY METHODS  -------------------------------------------  */
   /*                                                                                                                  */
@@ -176,6 +187,7 @@ class UserInterface {
 
   changeTrack(track) {
     if (track) {
+      this._topBar.setTrack(track, mzk.ctrl.playObject);
       this._navBar.setQueuedTracks(mzk.ctrl.queuedTracks);
       this._navBar.setQueuedPlayObject(mzk.ctrl.playObject);
       this._navBar.updateMoodbar(track.mood);
@@ -200,6 +212,7 @@ class UserInterface {
 
 
   stopPlayback() {
+    this._topBar.clearTrack();
     this._navBar.progressBar.deactivate();
     this._navBar.updatePlayButton(false);
     this.setPageTitle(`Mzk | Welcome!`);

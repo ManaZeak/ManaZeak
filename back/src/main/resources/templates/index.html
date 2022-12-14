@@ -24,10 +24,6 @@
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.library}"></span>
         </div>
       </div>
-      <div class="item-group mobile-only track-preview">
-        <p>Track title</p>
-        <p>Artists</p>
-      </div>
       <div class="item-group">
         <div class="item tooltip" id="menupage-button">
           <img src="/static/img/navigation/menu.svg" alt="menu-page">
@@ -40,6 +36,17 @@
           </form>
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.logout}"></span>
         </div>
+      </div>
+    </div>
+    <div class="topbar">
+      <div class="topbar-left">
+        <img src="/static/img/navigation/nav-left.svg" id="topbar-view-previous" class="disabled" alt="view-previous">
+        <img src="/static/img/navigation/nav-right.svg" id="topbar-view-next" class="disabled" alt="view-next">
+        <a id="topbar-current-view"></a>
+      </div>
+      <div class="topbar-center"></div>
+      <div class="topbar-right">
+        <a id="topbar-current-track"></a>        
       </div>
     </div>
     <div class="scene" id="scene"></div>
