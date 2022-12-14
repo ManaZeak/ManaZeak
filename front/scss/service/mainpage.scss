@@ -447,7 +447,7 @@
         }
 
         .track-waveform {
-          bottom: calc(-1 * var(--padding));
+          bottom: 0;
           height: var(--padding);
           position: absolute;
           width: 100%;
