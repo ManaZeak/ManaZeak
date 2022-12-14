@@ -39,8 +39,8 @@ class TopBar {
 
 
   setTrack(track, playObject) {
-    this._track.style.opacity = 1;
-    this._track.innerHTML = `𝅘𝅥𝅮&nbsp;&nbsp;${track.artist} – ${track.title}&nbsp;&nbsp;𝅘𝅥𝅮`;
+    this._track.parentNode.style.opacity = 1;
+    this._track.innerHTML = `${track.artist} – ${track.title}`;
     this._track.dataset.view = JSON.stringify({
       id: playObject.id,
       name: playObject.type
@@ -49,7 +49,7 @@ class TopBar {
 
 
   clearTrack() {
-    this._track.style.opacity = 0;
+    this._track.parentNode.style.opacity = 0;
     setTimeout(() => {
       this._track.innerHTML = '';
       this._track.dataset.view = '';

@@ -195,8 +195,8 @@ a {
       display: flex;
       font-style: italic;
 
-      a {
-        font-size: var(--font-size-smaller);
+      a, span {
+        font-size: var(--font-size-small);
       }
     }
 
@@ -226,9 +226,12 @@ a {
     .topbar-right {
       justify-content: flex-end;
       padding-right: var(--padding-small);
+      opacity: 0;
+      transition: opacity var(--animation-duration);
 
-      a {
-        transition: opacity var(--animation-duration);
+      span {
+        color: var(--color-txt-darker);
+        font-size: var(--font-size-smaller);
       }
     }
   }
