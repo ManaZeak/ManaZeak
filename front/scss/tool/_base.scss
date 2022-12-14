@@ -207,12 +207,13 @@ a {
         cursor: pointer;
         height: 1.3rem;
         padding-right: var(--padding-tiny);
-        transition: filter .2s;
+        transition: filter var(--animation-duration), transform var(--animation-duration);
 
         &:not(.disabled):active,
         &:not(.disabled):focus,
         &:not(.disabled):hover {
           filter: invert(62%) sepia(100%) saturate(288%) hue-rotate(73deg) brightness(95%) contrast(92%);
+          transform: scale(1.5);
         }
 
         &.disabled {

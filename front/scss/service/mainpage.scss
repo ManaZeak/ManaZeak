@@ -413,8 +413,7 @@
       .track-detailed-info {
         border-top: solid 1px var(--color-txt-alpha-25);
         display: flex;
-        height: 20rem;
-        margin-bottom: var(--padding);
+        height: auto;
         margin-left: 5rem;
         margin-right: calc(2 * var(--padding));
         margin-top: 1px;
@@ -425,20 +424,24 @@
           padding-left: var(--padding);
 
           &:first-child {
-            width: 66%;            
+            width: 60%;
           }
 
           &:last-child {
-            width: 34%;            
+            width: 40%;
           }
 
           div {
+            font-size: var(--font-size-small);
             margin-bottom: var(--margin);
 
             span:first-child {
               color: var(--color-txt-darker);
-              font-size: var(--font-size-small);
+              display: block;
+              font-size: var(--font-size-smaller);
               font-style: italic;
+              padding-bottom: var(--padding-tiny);
+              padding-left: var(--padding-small);
             }
           }
         }
