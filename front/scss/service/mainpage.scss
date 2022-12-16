@@ -299,7 +299,7 @@
       }
 
       &.expanded {
-        height: auto;
+        height: 28rem;
 
         .track-moodbar {
           height: var(--padding);
@@ -434,6 +434,9 @@
           div {
             font-size: var(--font-size-small);
             margin-bottom: var(--margin);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
 
             span:first-child {
               color: var(--color-txt-darker);

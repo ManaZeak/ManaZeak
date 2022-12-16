@@ -16,7 +16,6 @@ class AlbumView extends TrackView {
     this._artist = '';
     this._title = '';
     this._performers = [];
-    this._waveforms = [];
 
     this._collapseAll = null;
     this._expandAll = null;
@@ -34,11 +33,6 @@ class AlbumView extends TrackView {
 
   destroy() {
     super.destroy();
-
-    for (let i = 0; i < this._waveforms.length; ++i) {
-      this._waveforms[i].destroy();
-    }
-
     Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
@@ -91,6 +85,9 @@ class AlbumView extends TrackView {
         target: this.dom.querySelector('#album-tracks') ,
         name: 'track'
       });
+
+      this._collapseAll = this.dom.querySelector('#album-collapse-all');
+      this._expandAll = this.dom.querySelector('#album-expand-all');
       // Update playing track if necessary
       if (mzk.ctrl.playingId) {
         this._updatePlaying({
@@ -142,7 +139,10 @@ class AlbumView extends TrackView {
           this._contextClicked(event);
         }
       });
-      
+
+      this._evtIds.push(Evts.addEvent('click', this._collapseAll, this._collapseAllTracks, this));
+      this._evtIds.push(Evts.addEvent('click', this._expandAll, this._expandAllTracks, this));
+
       resolve();
     });
   }
@@ -180,8 +180,8 @@ class AlbumView extends TrackView {
     }
     // Update scrollbar height
     setTimeout(() => {
-      this.scroll.updateScrollbar();
-    }, 200); /* Match height transition duration in _mainpage.scss*/
+      this._scrollTrack.updateScrollbar();
+    }, 200); /* Match height transition duration in _mainpage.scss */
   }
 
 
@@ -226,6 +226,30 @@ class AlbumView extends TrackView {
         id: this._tracks[i].dataset.id
       });
     }
+  }
+
+
+  _collapseAllTracks() {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      this._tracks[i].classList.remove('expanded');
+      this._tracks[i].getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-down.svg';
+    }
+    // Update scrollbar height
+    setTimeout(() => {
+      this._scrollTrack.updateScrollbar();
+    }, 200); /* Match height transition duration in _mainpage.scss */
+  }
+
+
+  _expandAllTracks() {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      this._tracks[i].classList.add('expanded');
+      this._tracks[i].getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-up.svg';
+    }
+    // Update scrollbar height
+    setTimeout(() => {
+      this._scrollTrack.updateScrollbar();
+    }, 200); /* Match height transition duration in _mainpage.scss */
   }
 
 
