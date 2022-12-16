@@ -37,10 +37,24 @@ class MainPageView extends SceneView {
       amount = 12;
     } else if (bRect.width < 766) {
       amount = 15;
-    } else if (bRect.width >= 880 && bRect.width < 1000) {
+    } else if (bRect.width < 886) {
+      amount = 18;
+    } else if (bRect.width < 1000) {
       amount = 14;
-    } else if (bRect.width < 1006) {
-      amount = 21;
+    } else if (bRect.width < 1120) {
+      amount = 16;
+    } else if (bRect.width < 1240) {
+      amount = 18;
+    } else if (bRect.width < 1360) {
+      amount = 20;
+    } else if (bRect.width < 1480) {
+      amount = 22;
+    } else if (bRect.width < 1600) {
+      amount = 24;
+    } else if (bRect.width < 1726) {
+      amount = 26;
+    } else if (bRect.width < 1840) {
+      amount = 28;
     } else if (bRect.width > 1920) {
       amount = 30;
     }
