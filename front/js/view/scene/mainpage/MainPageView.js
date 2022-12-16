@@ -12,6 +12,8 @@ class MainPageView extends SceneView {
       css: 'static/dist/css/mainpage.bundle.css'
     });
 
+    this._formatUrl();
+
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
       .then(this._events.bind(this))
@@ -24,6 +26,25 @@ class MainPageView extends SceneView {
     super.destroy();
     Evts.unsubscribe(this._readyEvtId);
     Utils.removeAllObjectKeys(this);
+  }
+
+
+  _formatUrl() {
+    const bRect = document.body.getBoundingClientRect();
+    let amount = 15; /* Std 1920 */
+
+    if (bRect.width < 640) {
+      amount = 12;
+    } else if (bRect.width < 766) {
+      amount = 15;
+    } else if (bRect.width >= 880 && bRect.width < 1000) {
+      amount = 14;
+    } else if (bRect.width < 1006) {
+      amount = 21;
+    } else if (bRect.width > 1920) {
+      amount = 30;
+    }
+    this._url = `${this._url}${amount}/`
   }
 
 
