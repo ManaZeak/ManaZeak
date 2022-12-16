@@ -17,6 +17,8 @@ class ViewHistory {
 
   _init() {
     return new Promise(resolve => {
+      this._previousButton = document.getElementById('topbar-view-previous');
+      this._nextButton = document.getElementById('topbar-view-next');
       // New navigation, create baseline states
       if (window.history.state === null) {
         // Back history entry
@@ -32,10 +34,6 @@ class ViewHistory {
       if (window.history.state.isBackPage) {
         window.history.pushState({ isBackPage: false }, '', '');
       }
-
-      this._previousButton = document.getElementById('topbar-view-previous');
-      this._nextButton = document.getElementById('topbar-view-next');
-
       resolve();
     });
   }

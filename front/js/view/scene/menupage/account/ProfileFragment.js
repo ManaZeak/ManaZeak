@@ -37,7 +37,7 @@ class ProfileFragment {
 
   _copyInviteLink() {
     const inviteCode = this._target.querySelector('#invite-code').innerHTML;
-    const link = `${window.location.origin}/register?invite-code=${inviteCode}`;
+    const link = `${window.location.origin}/register/?invite-code=${inviteCode}`;
     this._saveToClipboard(link)
       .then(() => Logger.raise('F_INVIT_LINK_CLIPBOARD_SUCCESS'))
       .catch(() => Logger.raise('F_INVIT_LINK_CLIPBOARD_ERROR'));
