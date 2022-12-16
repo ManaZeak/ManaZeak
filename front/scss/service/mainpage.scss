@@ -716,25 +716,33 @@
           }
         }
 
-        .queue-album {
+        .view-commands {
           align-items: center;
           bottom: var(--padding-small);
-          cursor: pointer;
           display: flex;
           justify-content: center;
           position: absolute;
           right: 0;
-          width: 2rem;
-
-          &::before {
-            content: '+';
-            color: #56D45B;
-            position: absolute;
-            right: 2rem;
+    
+          img {
+            cursor: pointer;
+            height: 2rem;
+            margin: 0 var(--padding-tiny);
+            width: 2rem;
           }
 
-          img {
-            width: 100%;
+          .queue-album {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            position: relative;
+
+            &::before {
+              content: '+';
+              color: #56D45B;
+              position: absolute;
+              right: calc(2rem + var(--padding-tiny));
+            }
           }
         }
       }

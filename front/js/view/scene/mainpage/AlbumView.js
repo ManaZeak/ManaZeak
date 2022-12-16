@@ -18,6 +18,9 @@ class AlbumView extends TrackView {
     this._performers = [];
     this._waveforms = [];
 
+    this._collapseAll = null;
+    this._expandAll = null;
+
     this._scrollPerformers = null;
     this._scrollTrack = null;
 

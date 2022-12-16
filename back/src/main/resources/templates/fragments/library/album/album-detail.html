@@ -33,8 +33,12 @@
         <div id="release-artist-container" class="release-artist-container">
           <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)}"></div>
         </div>
-        <div id="queue-album" class="queue-album">
-          <img src="/static/img/player/queue.svg">          
+        <div class="view-commands">
+          <div id="queue-album" class="queue-album" >
+            <img src="/static/img/player/queue.svg" alt="queue-album">
+          </div>
+          <img src="/static/img/navigation/nav-down.svg" id="album-expand-all" alt="album-expand-all">
+          <img src="/static/img/navigation/nav-up.svg" id="album-collapse-all" alt="album-collapse-all">
         </div>
       </div>
       <div id="album-tracks" class="album">
