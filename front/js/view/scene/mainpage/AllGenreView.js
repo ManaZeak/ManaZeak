@@ -68,6 +68,12 @@ class AllGenreView extends SceneView {
   }
 
 
+  getDisplayName() {
+    return 'All genres and styles';
+  }
+
+
+
 }
 
 

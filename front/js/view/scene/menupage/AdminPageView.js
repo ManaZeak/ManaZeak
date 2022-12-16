@@ -84,6 +84,11 @@ class AdminPageView extends TabView {
   }
 
 
+  getDisplayName() {
+    return 'Administration';
+  }
+
+
 }
 
 

@@ -60,6 +60,11 @@ class AccountPageView extends TabView {
   }
 
 
+  getDisplayName() {
+    return 'My account';
+  }
+
+
 }
 
 

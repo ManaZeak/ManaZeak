@@ -80,6 +80,11 @@ class AllReleaseArtistView extends SceneView {
   }
 
 
+  getDisplayName() {
+    return 'All release artists';
+  }
+
+
 }
 
 

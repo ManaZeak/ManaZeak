@@ -86,6 +86,11 @@ class MainPageView extends SceneView {
   }
 
 
+  getDisplayName() {
+    return 'Home';
+  }
+
+
 }
 
 

@@ -101,6 +101,11 @@ class GenreGraphView extends SceneView  {
   }
 
 
+  getDisplayName() {
+    return 'Genres and styles family tree';
+  }
+
+
 }
 
 

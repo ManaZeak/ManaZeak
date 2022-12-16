@@ -14,6 +14,8 @@ class AlbumView extends TrackView {
     });
 
     this._id = options.id;
+    this._artist = '';
+    this._title = '';
     this._performers = [];
     this._waveforms = [];
 
@@ -43,6 +45,9 @@ class AlbumView extends TrackView {
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
+      this._artist = this.dom.querySelector('#release-artist').innerHTML;
+      this._title = this.dom.querySelector('#album-title').innerHTML;
+
       this._performers = this.dom.querySelector('#album-performers').children;
       this._tracks = this.dom.querySelector('#album-tracks').children;
 
@@ -306,6 +311,11 @@ class AlbumView extends TrackView {
       duration: track.children[0].children[1].innerHTML,
       mood: track.dataset.mood
     };
+  }
+
+
+  getDisplayName() {
+    return `Album <b>${this._title}</b> – ${this._artist}`;
   }
 
 

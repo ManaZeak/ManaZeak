@@ -38,6 +38,11 @@ class LabelView extends SceneView {
   }
 
 
+  getDisplayName() {
+    return 'Label';
+  }
+
+
 }
 
 

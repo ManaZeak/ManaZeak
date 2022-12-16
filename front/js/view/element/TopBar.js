@@ -33,7 +33,7 @@ class TopBar {
 
 
   setView(options) {
-    this._view.innerHTML = options.name;
+    this._view.innerHTML = options.displayName;
     this._view.dataset.options = JSON.stringify(options);
   }
 

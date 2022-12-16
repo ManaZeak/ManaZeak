@@ -88,7 +88,7 @@
             </div>
             <div class="track-waveform"><!-- Filled by AudioVisualizer.waveform --></div>
           </div>
-          <img th:src='*{"/resources/moods/hd/"+track.mood}' class="track-moodbar" alt="track-moodbar">
+          <img th:src='*{"/resources/moods/hd/"+track.mood}' class="track-moodbar"> <!-- No alt because we want to avoid feedback on 404 -->
         </div>
       </div>
     </div>

@@ -219,6 +219,11 @@ class GenreView extends TrackView {
   }
 
 
+  getDisplayName() {
+    return `Genre <b>${this._genre}</b>`;
+  }
+
+
 }
 
 

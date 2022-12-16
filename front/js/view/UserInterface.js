@@ -60,8 +60,8 @@ class UserInterface {
       this.startLoading()
         .then(this._updateHistory.bind(this, options))
         .then(this._updateHomeIcon.bind(this, options))
-        .then(this._setTopBarView.bind(this, options))
         .then(this._scene.buildView.bind(this._scene, options))
+        .then(this._setTopBarView.bind(this, options))
         .then(resolve)
         .catch(reject)
         .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens
@@ -137,7 +137,9 @@ class UserInterface {
 
   _setTopBarView(options) {
     return new Promise(resolve => {
-      this._topBar.setView(options);
+      this._topBar.setView(Object.assign({
+        displayName: this._scene.view.getDisplayName()
+      }, options));
       resolve();
     });
   }
@@ -256,6 +258,11 @@ class UserInterface {
 
   setPageTitle(string) {
     document.title = string;
+  }
+
+
+  getViewDisplayName() {
+    return this._scene.view.getDisplayName();
   }
 
 

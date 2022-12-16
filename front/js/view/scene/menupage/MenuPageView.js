@@ -49,6 +49,11 @@ class MenuPageView extends SceneView {
   }
 
 
+  getDisplayName() {
+    return 'ManaZeak menu';
+  }
+
+
 }
 
 

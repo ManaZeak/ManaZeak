@@ -11,6 +11,7 @@ class ReleaseArtistView extends SceneView {
       url: `/fragment/library/artist/${options.id}/`
     });
 
+    this._artist = '';
     this._albums = [];
     this._scroll = [];
     
@@ -29,6 +30,7 @@ class ReleaseArtistView extends SceneView {
 
   _makeInteractive() {
     return new Promise((resolve, reject) => {
+      this._artist = this.dom.querySelector('#artist-name').innerHTML;
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#artist-picture'), this._pictureClicked, this));
       const members = this.dom.querySelector('#artist-members');
       if (members && members.children.length) {
@@ -115,6 +117,11 @@ class ReleaseArtistView extends SceneView {
       name: 'Album',
       id: this.dataset.id
     });
+  }
+
+
+  getDisplayName() {
+    return `Artist <b>${this._artist}</b>`;
   }
 
 
