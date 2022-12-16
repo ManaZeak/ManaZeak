@@ -232,6 +232,13 @@ a {
       span {
         color: var(--color-txt-darker);
         font-size: var(--font-size-smaller);
+        width: max-content;
+      }
+
+      a {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
     }
   }

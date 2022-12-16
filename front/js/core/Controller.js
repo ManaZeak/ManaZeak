@@ -228,6 +228,21 @@ class Controller {
     if (data.type === 'track') {
       const track = mzk.ui.getTrackById(data.id);
       this._queue.push(track);
+    } else if (data.type === 'tracklist') {
+      for (let i = 0; i < data.ids.length; ++i) {
+        const track = mzk.ui.getTrackById(data.ids[i]);
+        this._queue.push(track);
+      }
+    }
+  }
+
+
+  removeFromQueue(id) {
+    for (let i = 0; i < this._queue.length; ++i) {
+      if (this._queue[i].id === id) {
+        this._queue.splice(i, 1);
+        return;
+      }
     }
   }
 

@@ -57,6 +57,17 @@ class QueueContext extends ContextMenu {
       for (let i = 0; i < tracks.length; ++i) {
         this._buildQueuedTrackDom(tracks[i]).then(track => {
           queue.appendChild(track);
+          track.querySelector('.queue-track-remove').addEventListener('click', () => {
+            mzk.ctrl.removeFromQueue(track.dataset.id);
+            if (track.parentNode.children.length === 1) {
+              queue.innerHTML = this._emptyQueueDom;
+              queue.style.height = 'auto';
+              mzk.ui.updateQueueNumber(0);
+            } else {
+              mzk.ui.updateQueueNumber(track.parentNode.children.length - 1);
+              track.remove();
+            }
+          });
         });
       }
     }
@@ -73,6 +84,7 @@ class QueueContext extends ContextMenu {
         entry.querySelector('#queue-track-title').innerHTML = track.title;
         entry.querySelector('#queue-track-artist').innerHTML = track.artist;
         entry.querySelector('#queue-track-duration').innerHTML = track.duration;
+        entry.dataset.id = track.id;
         resolve(entry);
       });
     });

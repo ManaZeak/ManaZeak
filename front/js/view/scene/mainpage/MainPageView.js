@@ -35,9 +35,9 @@ class MainPageView extends SceneView {
 
     if (bRect.width < 640) {
       amount = 12;
-    } else if (bRect.width < 766) {
+    } else if (bRect.width < 760) {
       amount = 15;
-    } else if (bRect.width < 886) {
+    } else if (bRect.width < 880) {
       amount = 18;
     } else if (bRect.width < 1000) {
       amount = 14;
@@ -51,7 +51,7 @@ class MainPageView extends SceneView {
       amount = 22;
     } else if (bRect.width < 1600) {
       amount = 24;
-    } else if (bRect.width < 1726) {
+    } else if (bRect.width < 1720) {
       amount = 26;
     } else if (bRect.width < 1840) {
       amount = 28;

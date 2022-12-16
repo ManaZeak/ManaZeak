@@ -220,12 +220,15 @@ class AlbumView extends TrackView {
 
 
   _queueAlbum() {
+    const tracklist = [];
     for (let i = 0; i < this._tracks.length; ++i) {
-      mzk.queue({
-        type: 'track',
-        id: this._tracks[i].dataset.id
-      });
+      tracklist.push(this._tracks[i].dataset.id);
     }
+
+    mzk.queue({
+      type: 'tracklist',
+      ids: tracklist
+    });
   }
 
 
@@ -294,7 +297,7 @@ class AlbumView extends TrackView {
       // TODO track artist instead of release artist
       artist: this.dom.querySelector('#release-artist').innerHTML,
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
-      duration: track.children[0].children[1].innerHTML,
+      duration: track.children[0].children[2].innerHTML,
       mood: track.dataset.mood
     };
   }

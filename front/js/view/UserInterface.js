@@ -266,6 +266,11 @@ class UserInterface {
   }
 
 
+
+  updateQueueNumber(length) {
+    this._navBar.updateQueueNumber(length);
+  }
+
 }
 
 

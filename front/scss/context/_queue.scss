@@ -102,6 +102,18 @@
         margin-left: auto;
         width: 7rem;
       }
+
+      .queue-track-remove {
+        margin-left: var(--margin-small);
+        width: 3rem;
+      }
+    }
+
+    i {
+      display: block;
+      margin: var(--margin-tiny) 0;
+      text-align: center;
+      width: 100%;
     }
   }
 
