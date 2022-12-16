@@ -82,13 +82,13 @@ class Controller {
     // First, we check user manual queue that override everything
     if (this._queue.length > 0) {
       mzk.changeTrack({
-        id: this._queue[this._queue.length - 1].id,
+        id: this._queue[0].id,
         playObject: {
           type: 'queue',
-          track: this._queue[this._queue.length - 1]
+          track: this._queue[0]
         }
       });
-      this._queue.pop();
+      this._queue.shift();
       return;
     }
     // Now check last playObject in memory for tracks to play
@@ -192,6 +192,18 @@ class Controller {
 
 
   next() {
+    if (this._queue.length > 0) {
+      mzk.changeTrack({
+        id: this._queue[0].id,
+        playObject: {
+          type: 'queue',
+          track: this._queue[0]
+        }
+      });
+      this._queue.shift();
+      return;
+    }
+
     if (this._playObject.tracks.length < 1) {
       mzk.stopPlayback();
       return;
