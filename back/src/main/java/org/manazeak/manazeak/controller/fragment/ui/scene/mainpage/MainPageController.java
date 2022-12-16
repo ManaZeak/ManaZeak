@@ -46,7 +46,7 @@ public class MainPageController {
      * @return The address of the page to use.
      */
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/mainpage/{numberOfElement}")
+    @GetMapping("/mainpage/{numberOfElement}/")
     public String getMainPageWithNumberOfElements(@PathVariable @Valid @NotNull @Max(50) Integer numberOfElement, Model model) {
         addMainPageAttributes(numberOfElement, model);
 
