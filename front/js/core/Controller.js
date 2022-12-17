@@ -247,6 +247,11 @@ class Controller {
   }
 
 
+  clearQueueTracks() {
+    this._queue = [];
+  }
+
+
   download(options) {
     const link = document.createElement('A');
     link.download = options.name;

@@ -122,6 +122,12 @@ class Mzk {
   }
 
 
+  clearQueueTracks() {
+    this.ctrl.clearQueueTracks();
+    this.ui.clearQueueTracks();
+  }
+
+
   download(options) {
     this.ctrl.download(options);
   }

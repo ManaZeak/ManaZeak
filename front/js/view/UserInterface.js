@@ -266,6 +266,10 @@ class UserInterface {
   }
 
 
+  clearQueueTracks() {
+    this.updateQueueNumber(0);
+  }
+
 
   updateQueueNumber(length) {
     this._navBar.updateQueueNumber(length);
