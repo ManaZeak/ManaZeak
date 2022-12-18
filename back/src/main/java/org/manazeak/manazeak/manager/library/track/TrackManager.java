@@ -2,6 +2,7 @@ package org.manazeak.manazeak.manager.library.track;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.track.TrackDAO;
+import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackInfoDto;
@@ -26,13 +27,12 @@ public class TrackManager {
     }
 
     /**
-     * Get the list of tracks linked to the album.
+     * Add the track to the album and set the performers from the track.
      *
-     * @param albumId The id of the album.
-     * @return The list of tracks.
+     * @param albumDetails The information on the album.
      */
-    public List<AlbumTrackInfoDto> getAlbumTrackInfoByAlbumId(Long albumId) {
-        List<AlbumTrackDbInfoDto> dbTracks = trackDAO.getMinimalTracksByAlbumId(albumId);
+    public void addTrackToAlbumInfo(AlbumDetailsDto albumDetails) {
+        List<AlbumTrackDbInfoDto> dbTracks = trackDAO.getMinimalTracksByAlbumId(albumDetails.getAlbumId());
         Long lastTrackId = 0L;
         List<AlbumTrackInfoDto> tracks = new ArrayList<>();
         for (AlbumTrackDbInfoDto dbTrack : dbTracks) {
@@ -42,11 +42,13 @@ public class TrackManager {
                 tracks.add(track);
                 lastTrackId = track.getTrackId();
             }
+            ArtistMinimalInfoDto performer = createPerformerFromTrack(dbTrack);
             // Adding the performer to the tracks.
-            tracks.get(tracks.size() - 1).addPerformer(createPerformerFromTrack(dbTrack));
+            tracks.get(tracks.size() - 1).addPerformer(performer);
+            albumDetails.addPerformer(performer);
         }
-
-        return tracks;
+        // Adding the tracks to the album details.
+        albumDetails.addTracks(tracks);
     }
 
     /**

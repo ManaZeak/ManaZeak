@@ -1,14 +1,12 @@
 <div xmlns:th="http://www.thymeleaf.org" class="album-view-wrapper">
   <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
-  <!--/*@thymesVar id="performers" type="java.util.List"*/-->
-  <!--/*@thymesVar id="performer" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
   <div class="album-container">
     <div class="album-aside">
       <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, orig)}"></div>
       <h1 th:text="*{album.title}" id="album-title"></h1>
       <em><p th:text="#{view.album.performers}"></p></em>
       <div id="album-performers" class="artists-small">
-        <div th:each="performer : ${performers}" th:attr="data-id=*{performer.id}" class="artist">
+        <div th:each="performer : ${album.performers}" th:attr="data-id=*{performer.id}" class="artist">
           <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)}"></div>
           <p class="artist-name" th:text="*{performer.name}"></p>
         </div>

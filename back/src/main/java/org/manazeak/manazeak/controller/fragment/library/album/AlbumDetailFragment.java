@@ -33,7 +33,6 @@ public class AlbumDetailFragment {
                                  Model model) {
         // Getting the album in the database.
         model.addAttribute("album", albumService.getAlbumInformation(albumId));
-        model.addAttribute("performers", artistService.getAlbumPerformers(albumId));
 
         return AlbumFragmentEnum.ALBUM_DETAIL.getPage();
     }

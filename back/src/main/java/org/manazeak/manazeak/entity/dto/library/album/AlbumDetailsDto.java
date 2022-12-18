@@ -2,6 +2,7 @@ package org.manazeak.manazeak.entity.dto.library.album;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class AlbumDetailsDto {
 
     private final List<AlbumTrackInfoDto> tracks = new ArrayList<>();
+    private final List<ArtistMinimalInfoDto> performers = new ArrayList<>();
     private Long albumId;
     private String title;
     private String cover;
@@ -35,5 +37,9 @@ public class AlbumDetailsDto {
 
     public void addTracks(List<AlbumTrackInfoDto> newTracks) {
         tracks.addAll(newTracks);
+    }
+
+    public void addPerformer(ArtistMinimalInfoDto performer) {
+        performers.add(performer);
     }
 }

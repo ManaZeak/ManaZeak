@@ -44,8 +44,8 @@ public class AlbumService {
         AlbumDetailsDto album = albumDAO.getAlbumDetailsById(albumId)
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.album.not_found"));
 
-        // Getting the tracks of the albums.
-        album.addTracks(trackManager.getAlbumTrackInfoByAlbumId(albumId));
+        // Adding the tracks to the albums and the performers.
+        trackManager.addTrackToAlbumInfo(album);
 
         return album;
     }
