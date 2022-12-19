@@ -3,12 +3,10 @@ package org.manazeak.manazeak.entity.dto.library.album;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
-import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackInfoDto;
-import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contains the information need to display the album detail page.
@@ -17,8 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AlbumDetailsDto {
 
-    private final List<AlbumTrackInfoDto> tracks = new ArrayList<>();
-    private final List<ArtistMinimalInfoDto> performers = new ArrayList<>();
+    private final List<TrackCompleteInfoDto> tracks = new ArrayList<>();
+    private final Set<ArtistMinimalInfoDto> performers = new HashSet<>();
     private Long albumId;
     private String title;
     private String cover;
@@ -35,11 +33,11 @@ public class AlbumDetailsDto {
     private LocalDate startingRecordingDate;
     private LocalDate endRecordingDate;
 
-    public void addTracks(List<AlbumTrackInfoDto> newTracks) {
+    public void addAllTracks(List<TrackCompleteInfoDto> newTracks) {
         tracks.addAll(newTracks);
     }
 
-    public void addPerformer(ArtistMinimalInfoDto performer) {
-        performers.add(performer);
+    public void addPerformers(Collection<ArtistMinimalInfoDto> performers) {
+        this.performers.addAll(performers);
     }
 }

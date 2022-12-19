@@ -2,7 +2,7 @@ package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
-import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 import org.manazeak.manazeak.entity.track.Track;
 import org.springframework.data.jpa.repository.Query;
@@ -42,6 +42,51 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
             "order by trk.discNumber, trk.trackNumber")
     List<AlbumTrackDbInfoDto> getMinimalTracksByAlbumId(@Param("albumId") Long albumId);
 
+
+    @Query("select new org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto(" +
+            "trk.trackId, " +
+            "trk.title, " +
+            "trk.duration, " +
+            "trk.isrc, " +
+            "trk.bpm," +
+            "trk.mood, " +
+            "keys.label, " +
+            "keys.keyId, " +
+            "perf.artistId, " +
+            "perf.name, " +
+            "perf.pictureFilename, " +
+            "perf.isLabel, " +
+            "genre.genreId, " +
+            "genre.name, " +
+            "genre.pictureFilename, " +
+            "comp.artistId, " +
+            "comp.name, " +
+            "comp.pictureFilename, " +
+            "comp.isLabel, " +
+            "lyr.artistId, " +
+            "lyr.name, " +
+            "lyr.pictureFilename, " +
+            "lyr.isLabel, " +
+            "pro.artistId, " +
+            "pro.name, " +
+            "pro.pictureFilename, " +
+            "pro.isLabel, " +
+            "eng.artistId, " +
+            "eng.name, " +
+            "eng.pictureFilename, " +
+            "eng.isLabel) " +
+            "from Track trk " +
+            "join trk.album alb " +
+            "left join trk.keyList keys " +
+            "left join trk.performerList perf " +
+            "left join trk.genreList genre " +
+            "left join trk.composerList comp " +
+            "left join trk.lyricistList lyr " +
+            "left join trk.producerList pro " +
+            "left join trk.engineerList eng " +
+            "where alb.albumId = :albumId " +
+            "order by trk.discNumber, trk.trackNumber")
+    List<TrackCompleteInfoDbDto> getCompleteTrackInfoByAlbumId(@Param("albumId") Long albumId);
 
     /**
      * Get the track information given a genre.
