@@ -190,7 +190,7 @@ class Logger {
       };
       const browsers = {
         firefox: /firefox/i.test(navigator.userAgent),
-        chrome: /chrome/i.test(navigator.userAgent) && /google inc/i.test(navigator.vendor)
+        chrome: /chrome/i.test(navigator.userAgent) && window.chrome
       };
       // Compute log level from severity, and handle warn and log as warning and success
       let logLevel = errorParameters.severity;

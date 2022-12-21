@@ -226,10 +226,7 @@ class Shortcut {
       shiftKey: /shift/i.test(keyString)
     };
     // Count modifiers that are set to true and update count with it
-    let count = 0;
-    Object.values(modifiers).reduce((a, item) => count = a + item, 0);
-    // Return count value
-    return count;
+    return Object.values(modifiers).reduce((a, b) => a + b, 0);
   }
 
 

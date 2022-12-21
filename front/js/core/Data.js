@@ -2,7 +2,7 @@ class Data {
 
 
   constructor() {
-
+    // Nothing to do here
   }
 
 
