@@ -54,50 +54,51 @@
           <div class="track-detailed-info">
             <div class="txt-column">
               <div>
-                <span>Genre(s) / Style(s) :</span>
-                <div th:each="genre : *{track.genres}">
-                  <p th:text="*{genre.name}"></p>
-                </div>
-              </div>
-              <div>
                 <span>Composed by :</span>
-                <div th:each="composer : *{track.composers}">
-                  <p th:text="*{composer.name}"></p>
-                </div>
+                <p class="track-composers">
+                  <span th:each="composer : *{track.composers}" th:text="*{composer.name}" th:attr="data-id=*{composer.id}"></span>
+                </p>
               </div>
               <div>
-                <span>Lyricist :</span>
-                <div th:each="lyricist : *{track.lyricists}">
-                  <p th:text="*{lyricist.name}"></p>
-                </div>
+                <span>Genre(s) / Style(s) :</span>
+                <p class="track-genres">
+                  <span th:each="genre : *{track.genres}" th:text="*{genre.name}" th:attr="data-id=*{genre.genreId}"></span>
+                </p>
               </div>
               <div>
-                <span>Produced by :</span>
-                <div th:each="producer : *{track.producers}">
-                  <p th:text="*{producer.name}"></p>
-                </div>
+                <span>BPM & Key :</span>
+                <p class="track-bpm-key">
+                  <span th:text="*{track.bpm}"></span>
+                  <span th:each="key : *{track.keys}" th:text="*{key.key}"></span>
+                </p>
               </div>
             </div>
             <div class="txt-column">
               <div>
-                <span>Engineer :</span>
-                <div th:each="engineer : *{track.engineers}">
-                  <p th:text="*{engineer.name}"></p>
-                </div>
+                <span>Lyricist :</span>
+                <p class="track-lyricists">
+                  <span th:each="lyricist : *{track.lyricists}" th:text="*{lyricist.name}" th:attr="data-id=*{lyricist.id}"></span>
+                </p>
               </div>
               <div>
-                <span>BPM & Key :</span>
-                <span th:text="*{track.bpm}"></span>
-                <div th:each="key : *{track.keys}">
-                  <p th:text="*{key.key}"></p>
-                </div>
+                <span>Produced by :</span>
+                <p class="track-producers">
+                  <span th:each="producer : *{track.producers}" th:text="*{producer.name}" th:attr="data-id=*{producer.id}"></span>
+                </p>
+              </div>
+              <div>
+                <span>Engineer :</span>
+                <p class="track-engineers">
+                  <span th:each="engineer : *{track.engineers}" th:text="*{engineer.name}"  th:attr="data-id=*{engineer.id}"></span>
+                </p>
               </div>
               <div>
                 <span>ISRC</span>
-                <span th:text="*{track.isrc}"></span>
+                <p class="track-isrc">
+                  <span th:text="*{track.isrc}"></span>
+                </p>
               </div>
             </div>
-            <div class="track-waveform"><!-- Filled by AudioVisualizer.waveform --></div>
           </div>
           <img th:src='*{"/resources/moods/hd/"+track.mood}' class="track-moodbar"> <!-- No alt because we want to avoid feedback on 404 -->
         </div>

@@ -282,7 +282,7 @@
         background-color: var(--color-primary-alpha-10);
         /* Make moodbar appear on hover */
         img {
-          opacity: 1;
+          opacity: 1 !important;
         }
       }
 
@@ -299,10 +299,9 @@
       }
 
       &.expanded {
-        height: 28rem;
-
         .track-moodbar {
           height: var(--padding);
+          opacity: .3;
         }
       }
 
@@ -433,12 +432,13 @@
 
           div {
             font-size: var(--font-size-small);
-            margin-bottom: var(--margin);
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
+            margin-bottom: var(--margin-small);
 
-            span:first-child {
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            span {
               color: var(--color-txt-darker);
               display: block;
               font-size: var(--font-size-smaller);
@@ -446,17 +446,37 @@
               padding-bottom: var(--padding-tiny);
               padding-left: var(--padding-small);
             }
-          }
-        }
 
-        .track-waveform {
-          bottom: 0;
-          height: var(--padding);
-          position: absolute;
-          width: 100%;
+            p {
+              margin: 0;
+              width: 100%;
 
-          canvas {
-            border: solid 0px black !important;
+              span {
+                color: var(--color-txt);
+                display: inline;
+                font-style: inherit;
+                padding: 0;
+                transition: color .2s;
+                /* Padding left for > 1 child */
+                &:not(:first-child) {
+                  padding-left: var(--padding-tiny);
+                }
+                /* Add coma if > 1 child */
+                &:not(:last-child)::after {
+                  content: ',';
+                }
+
+                &:active,
+                &:focus,
+                &:hover {
+                  color: var(--color-primary);
+                  /* We don't want the ',' char to be highlighted */
+                  &::after {
+                    color: var(--color-txt-darker);
+                  }
+                }
+              }
+            }
           }
         }
       }

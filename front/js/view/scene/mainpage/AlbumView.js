@@ -42,12 +42,12 @@ class AlbumView extends TrackView {
     return new Promise((resolve, reject) => {
       this._artist = this.dom.querySelector('#release-artist').innerHTML;
       this._title = this.dom.querySelector('#album-title').innerHTML;
-
       this._performers = this.dom.querySelector('#album-performers').children;
       this._tracks = this.dom.querySelector('#album-tracks').children;
 
-      const date = this.dom.querySelector('#album-release-date').innerHTML;
       this.dom.querySelector('#album-duration').innerHTML = Utils.secondsToTimecode(parseFloat(this.dom.querySelector('#album-duration').innerHTML)); 
+
+      const date = this.dom.querySelector('#album-release-date').innerHTML;
       this.dom.querySelector('#album-release-date').innerHTML = Utils.formatDate(date);
 
       for (let i = 0; i < this._tracks.length; ++i) {
@@ -104,22 +104,34 @@ class AlbumView extends TrackView {
     super._events();
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
-
+      // On each trakc, listen to click evts, 
       for (let i = 0; i < this._tracks.length; ++i) {
-        const performers = this._tracks[i].getElementsByClassName('track-performers')[0];
-        for (let i = 0; i < performers.children.length; ++i) {
-          this._evtIds.push(Evts.addEvent('click', performers.children[i], this._artistClicked, performers.children[i]));
+        this.__evtArtistsList('performers', this._tracks[i]);
+        this.__evtArtistsList('composers', this._tracks[i]);
+        this.__evtArtistsList('lyricists', this._tracks[i]);
+        this.__evtArtistsList('producers', this._tracks[i]);
+        this.__evtArtistsList('engineers', this._tracks[i]);
+
+        const isrc = this._tracks[i].querySelector('.track-isrc');
+        if (isrc.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
+          isrc.parentNode.remove();
+        }
+
+        const bpmKey = this._tracks[i].querySelector('.track-bpm-key');
+        if (bpmKey.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
+          bpmKey.parentNode.remove();
+        }
+
+        const genres = this._tracks[i].querySelector('.track-genres');
+        for (let i = 0; i < genres.children.length; ++i) {
+          this._evtIds.push(Evts.addEvent('click', genres.children[i], this._genreClicked, genres.children[i]));
         }
 
         const expander = this._tracks[i].getElementsByClassName('toggle-track-expand')[0];
         this._tracks[i].scroll = this._scrollTrack;
-        this._evtIds.push(Evts.addEvent('click', expander, this._expandArtistsClicked, this._tracks[i]));
+        this._evtIds.push(Evts.addEvent('click', expander, this._expandTrackClicked, this._tracks[i]));
       }
       
-      for (let i = 0; i < this._performers.length; ++i) {
-        this._evtIds.push(Evts.addEvent('click', this._performers[i], this._artistClicked, this._performers[i]));
-      }
-
       const rlArtist = this.dom.querySelector('#release-artist'); // Text artist name
       const rlArtistContainer = this.dom.querySelector('#release-artist-container'); // Artist picture
       this._evtIds.push(Evts.addEvent('click', rlArtistContainer, this._artistClicked, rlArtist));
@@ -148,6 +160,18 @@ class AlbumView extends TrackView {
   }
 
 
+  __evtArtistsList(type, track) {
+    const list = track.querySelector(`.track-${type}`);
+    for (let i = 0; i < list.children.length; ++i) {
+      this._evtIds.push(Evts.addEvent('click', list.children[i], this._artistClicked, list.children[i]));
+    }
+
+    if (list.children.length === 0) {
+      list.parentNode.remove();
+    }
+  }
+
+
   /* UI element callbacks */
 
 
@@ -170,26 +194,37 @@ class AlbumView extends TrackView {
   }
 
 
-  _expandArtistsClicked(e) {
-    e.stopPropagation();
-    this.classList.toggle('expanded');
-    if (this.classList.contains('expanded')) {
-      this.getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-up.svg';
-    } else {
-      this.getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-down.svg';
-    }
-    // Update scrollbar height
-    setTimeout(() => {
-      this._scrollTrack.updateScrollbar();
-    }, 200); /* Match height transition duration in _mainpage.scss */
-  }
-
-
   _labelClicked() {
     mzk.setView({
       name: 'Label',
       id: this.dataset.id
     });
+  }
+
+
+  _genreClicked() {
+    mzk.setView({
+      name: 'Genre',
+      id: this.dataset.id
+    });
+  }
+
+
+  _expandTrackClicked(e) {
+    e.stopPropagation();
+    this.classList.toggle('expanded');
+    if (this.classList.contains('expanded')) {
+      const height = this.querySelector('.track-detailed-info').getBoundingClientRect().height;
+      this.style.height = `calc(5rem + ${height}px + var(--padding))`; // Here padding is expanded moodbar height
+      this.getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-up.svg';
+    } else {
+      this.style.height = '5rem'; // Restore to css value
+      this.getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-down.svg';
+    }
+    // Update scrollbar height
+    setTimeout(() => {
+      this.scroll.updateScrollbar();
+    }, 200); /* Match height transition duration in _mainpage.scss */
   }
 
 
@@ -235,6 +270,7 @@ class AlbumView extends TrackView {
   _collapseAllTracks() {
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].classList.remove('expanded');
+      this._tracks[i].style.height = '5rem'; // Restore to css value
       this._tracks[i].getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-down.svg';
     }
     // Update scrollbar height
@@ -247,6 +283,8 @@ class AlbumView extends TrackView {
   _expandAllTracks() {
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].classList.add('expanded');
+      const height = this._tracks[i].querySelector('.track-detailed-info').getBoundingClientRect().height;
+      this._tracks[i].style.height = `calc(5rem + ${height}px + var(--padding))`; // Here padding is expanded moodbar height
       this._tracks[i].getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-up.svg';
     }
     // Update scrollbar height
