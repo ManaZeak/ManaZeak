@@ -315,8 +315,8 @@ class AlbumView extends TrackView {
       id: this._id,
       type: 'Album',
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
-      title: this.dom.querySelector('#album-title').innerHTML,
-      artist: this.dom.querySelector('#release-artist').innerHTML,
+      title: this.dom.querySelector('#album-title').textContent,
+      artist: this.dom.querySelector('#release-artist').textContent,
       tracks: []
     };
 
