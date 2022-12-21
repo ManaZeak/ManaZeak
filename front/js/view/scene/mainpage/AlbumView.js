@@ -132,6 +132,10 @@ class AlbumView extends TrackView {
         this._evtIds.push(Evts.addEvent('click', expander, this._expandTrackClicked, this._tracks[i]));
       }
       
+      for (let i = 0; i < this._performers.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', this._performers[i], this._artistClicked, this._performers[i]));
+      }
+
       const rlArtist = this.dom.querySelector('#release-artist'); // Text artist name
       const rlArtistContainer = this.dom.querySelector('#release-artist-container'); // Artist picture
       this._evtIds.push(Evts.addEvent('click', rlArtistContainer, this._artistClicked, rlArtist));
