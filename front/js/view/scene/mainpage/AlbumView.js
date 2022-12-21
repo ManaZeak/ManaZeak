@@ -126,6 +126,9 @@ class AlbumView extends TrackView {
         for (let i = 0; i < genres.children.length; ++i) {
           this._evtIds.push(Evts.addEvent('click', genres.children[i], this._genreClicked, genres.children[i]));
         }
+        if (genres.children.length === 0) {
+          genres.parentNode.remove();
+        }
 
         const expander = this._tracks[i].getElementsByClassName('toggle-track-expand')[0];
         this._tracks[i].scroll = this._scrollTrack;
