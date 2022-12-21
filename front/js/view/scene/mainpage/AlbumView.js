@@ -338,9 +338,9 @@ class AlbumView extends TrackView {
   _buildTrackObject(track) {
     return {
       id: track.dataset.id,
-      title: track.children[0].children[0].innerHTML,
+      title: track.children[0].children[0].textContent,
       // TODO track artist instead of release artist
-      artist: this.dom.querySelector('#release-artist').innerHTML,
+      artist: this.dom.querySelector('#release-artist').textContent,
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       duration: track.children[0].children[2].innerHTML,
       mood: track.dataset.mood
