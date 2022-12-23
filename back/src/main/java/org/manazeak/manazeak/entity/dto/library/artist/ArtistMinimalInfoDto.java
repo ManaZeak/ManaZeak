@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArtistMinimalInfoDto {
+public class ArtistMinimalInfoDto implements Comparable<ArtistMinimalInfoDto>{
 
     private Long id;
 
@@ -25,5 +25,9 @@ public class ArtistMinimalInfoDto {
         this.isLabel = isLabel;
     }
 
+    @Override
+    public int compareTo(ArtistMinimalInfoDto artistMinimalInfoDto) {
+        return name.compareTo(artistMinimalInfoDto.name);
+    }
 }
 

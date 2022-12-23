@@ -8,11 +8,16 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class GenreMinimalInfoDto {
+public class GenreMinimalInfoDto implements Comparable<GenreMinimalInfoDto> {
 
     private Long genreId;
 
     private String name;
 
     private String picture;
+
+    @Override
+    public int compareTo(GenreMinimalInfoDto genreMinimalInfoDto) {
+        return name.compareTo(genreMinimalInfoDto.name);
+    }
 }

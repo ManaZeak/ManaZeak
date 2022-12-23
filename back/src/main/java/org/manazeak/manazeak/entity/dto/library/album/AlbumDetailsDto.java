@@ -16,7 +16,7 @@ import java.util.*;
 public class AlbumDetailsDto {
 
     private final List<TrackCompleteInfoDto> tracks = new ArrayList<>();
-    private final Set<ArtistMinimalInfoDto> performers = new HashSet<>();
+    private final SortedSet<ArtistMinimalInfoDto> performers = new TreeSet<>();
     private Long albumId;
     private String title;
     private String cover;
@@ -40,4 +40,5 @@ public class AlbumDetailsDto {
     public void addPerformers(Collection<ArtistMinimalInfoDto> performers) {
         this.performers.addAll(performers);
     }
+
 }

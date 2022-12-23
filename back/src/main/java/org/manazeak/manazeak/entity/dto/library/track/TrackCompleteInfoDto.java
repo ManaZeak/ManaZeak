@@ -7,6 +7,8 @@ import org.manazeak.manazeak.entity.dto.library.key.KeyDto;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Contains all the information to display for the track.
@@ -22,27 +24,23 @@ public class TrackCompleteInfoDto {
 
     private final String isrc;
 
-    // private final Long recordingLocationId;
-
-    // private final String recordingLocation;
-
     private final Double bpm;
 
     private final String mood;
 
     private final Set<KeyDto> keys = new HashSet<>();
 
-    private final Set<ArtistMinimalInfoDto> performers = new HashSet<>();
+    private final SortedSet<ArtistMinimalInfoDto> performers = new TreeSet<>();
 
-    private final Set<GenreMinimalInfoDto> genres = new HashSet<>();
+    private final SortedSet<GenreMinimalInfoDto> genres = new TreeSet<>();
 
-    private final Set<ArtistMinimalInfoDto> composers = new HashSet<>();
+    private final SortedSet<ArtistMinimalInfoDto> composers = new TreeSet<>();
 
-    private final Set<ArtistMinimalInfoDto> lyricists = new HashSet<>();
+    private final SortedSet<ArtistMinimalInfoDto> lyricists = new TreeSet<>();
 
-    private final Set<ArtistMinimalInfoDto> producers = new HashSet<>();
+    private final SortedSet<ArtistMinimalInfoDto> producers = new TreeSet<>();
 
-    private final Set<ArtistMinimalInfoDto> engineers = new HashSet<>();
+    private final SortedSet<ArtistMinimalInfoDto> engineers = new TreeSet<>();
 
     public void addPerformer(ArtistMinimalInfoDto performer) {
         if (performer == null) {

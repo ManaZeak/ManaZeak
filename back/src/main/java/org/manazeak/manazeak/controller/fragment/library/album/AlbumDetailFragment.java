@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.controller.fragment.library.album;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
@@ -16,16 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
  * Display the details of an album.
  */
 @FragmentController
+@RequiredArgsConstructor
 public class AlbumDetailFragment {
 
     private final AlbumService albumService;
-
-    private final ArtistService artistService;
-
-    public AlbumDetailFragment(AlbumService albumService, ArtistService artistService) {
-        this.albumService = albumService;
-        this.artistService = artistService;
-    }
 
     @Security(PrivilegeEnum.PLAY)
     @GetMapping("/library/album/{albumId}/")
