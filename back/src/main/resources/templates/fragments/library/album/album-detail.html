@@ -1,5 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org" class="album-view-wrapper">
   <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
+  <!--/*@thymesVar id="compilationType" type="org.manazeak.manazeak.constant.tag.CompilationTypeEnum"*/-->
   <div class="album-container">
     <div class="album-aside">
       <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, orig)}"></div>
@@ -10,6 +11,19 @@
           <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)}"></div>
           <p class="artist-name" th:text="*{performer.name}"></p>
         </div>
+      </div>
+      <!-- Displaying the type of release. -->
+      <div th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).REGULAR}">
+        <p>REG</p>
+      </div>
+      <div th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).COMPILATION}">
+        <p>COMP</p>
+      </div>
+      <div th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).MIX}">
+        <p>MIX</p>
+      </div>
+      <div th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).VARIOUS_ARTIST}">
+        <p>VA</p>
       </div>
     </div>
     <div class="album-content">

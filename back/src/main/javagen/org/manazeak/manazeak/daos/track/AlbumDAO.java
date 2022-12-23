@@ -70,9 +70,11 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             "alb.catalogNumber," +
             "alb.eanUpn," +
             "alb.startRecordingDate," +
-            "alb.endRecordingDate) from Album alb " +
+            "alb.endRecordingDate," +
+            "comp.code) from Album alb " +
             "join alb.artist art " +
-            "join alb.label lab " +
+            "left join alb.label lab " +
+            "left join alb.compilationType comp " +
             "where alb.albumId = :albumId")
     Optional<AlbumDetailsDto> getAlbumDetailsById(@Param("albumId") Long albumId);
 

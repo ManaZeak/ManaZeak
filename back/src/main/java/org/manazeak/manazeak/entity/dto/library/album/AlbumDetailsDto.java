@@ -2,6 +2,7 @@ package org.manazeak.manazeak.entity.dto.library.album;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.manazeak.manazeak.constant.tag.CompilationTypeEnum;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 
@@ -32,6 +33,7 @@ public class AlbumDetailsDto {
     private String eanUpn;
     private LocalDate startingRecordingDate;
     private LocalDate endRecordingDate;
+    private Integer compilationCode;
 
     public void addAllTracks(List<TrackCompleteInfoDto> newTracks) {
         tracks.addAll(newTracks);
