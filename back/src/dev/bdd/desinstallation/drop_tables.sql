@@ -33,6 +33,7 @@ DROP SEQUENCE SEQ_ROLE;
 DROP SEQUENCE SEQ_WISH;
 DROP SEQUENCE SEQ_WISH_STATUS;
 DROP SEQUENCE SEQ_RANDOM_GENRE;
+DROP SEQUENCE SEQ_RANDOM_LABEL;
 DROP SEQUENCE SEQ_RANDOM_RELEASE_ARTIST;
 DROP SEQUENCE SEQ_SCAN_STATUS;
  
@@ -89,6 +90,7 @@ ALTER TABLE privileges_role DROP CONSTRAINT FK_privileges_role_2;
 ALTER TABLE wish DROP CONSTRAINT FK_user_wish;
 ALTER TABLE wish DROP CONSTRAINT FK_wish_status;
 ALTER TABLE random_genre DROP CONSTRAINT FK_rand_genre;
+ALTER TABLE random_label DROP CONSTRAINT FK_rand_label;
 ALTER TABLE random_release_artist DROP CONSTRAINT FK_rand_rl_artist;
 ALTER TABLE scan_status DROP CONSTRAINT FK_scan_status_step;
  
@@ -145,6 +147,7 @@ DROP INDEX IDX_privileges_role_2;
 DROP INDEX IDX_user_wish;
 DROP INDEX IDX_wish_status;
 DROP INDEX IDX_rand_genre;
+DROP INDEX IDX_rand_label;
 DROP INDEX IDX_rand_rl_artist;
 DROP INDEX IDX_scan_status_step;
  
@@ -191,6 +194,7 @@ DROP TABLE privileges_role;
 DROP TABLE wish;
 DROP TABLE wish_status;
 DROP TABLE random_genre;
+DROP TABLE random_label;
 DROP TABLE random_release_artist;
 DROP TABLE scan_status;
 

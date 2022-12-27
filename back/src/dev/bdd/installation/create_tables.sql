@@ -33,6 +33,7 @@ CREATE SEQUENCE SEQ_ROLE START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_WISH START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WISH_STATUS START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RANDOM_GENRE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_RANDOM_LABEL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RANDOM_RELEASE_ARTIST START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_SCAN_STATUS START WITH 1000 CACHE 20; 
  
@@ -434,6 +435,14 @@ CREATE TABLE random_genre (
 );
 COMMENT ON COLUMN random_genre.genre_id IS 'ManyToOne FK genre';
 
+CREATE TABLE random_label (
+	random_label_id BIGINT not null,
+	random_index BIGINT not null,
+	label_id BIGINT,
+	CONSTRAINT PK_RANDOM_LABEL PRIMARY KEY (random_label_id)
+);
+COMMENT ON COLUMN random_label.label_id IS 'ManyToOne FK label';
+
 CREATE TABLE random_release_artist (
 	random_release_artist_id BIGINT not null,
 	random_index BIGINT not null,
@@ -509,6 +518,7 @@ ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (pri
 ALTER TABLE wish ADD CONSTRAINT FK_user_wish FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE wish ADD CONSTRAINT FK_wish_status FOREIGN KEY (wish_status_id) REFERENCES wish_status(wish_status_id);
 ALTER TABLE random_genre ADD CONSTRAINT FK_rand_genre FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
+ALTER TABLE random_label ADD CONSTRAINT FK_rand_label FOREIGN KEY (label_id) REFERENCES label(label_id);
 ALTER TABLE random_release_artist ADD CONSTRAINT FK_rand_rl_artist FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE scan_status ADD CONSTRAINT FK_scan_status_step FOREIGN KEY (scan_step_id) REFERENCES scan_step(scan_step_id);
 
@@ -566,6 +576,7 @@ CREATE INDEX IDX_privileges_role_2 ON privileges_role (privilege_id);
 CREATE INDEX IDX_user_wish ON wish (user_id);
 CREATE INDEX IDX_wish_status ON wish (wish_status_id);
 CREATE INDEX IDX_rand_genre ON random_genre (genre_id);
+CREATE INDEX IDX_rand_label ON random_label (label_id);
 CREATE INDEX IDX_rand_rl_artist ON random_release_artist (artist_id);
 CREATE INDEX IDX_scan_status_step ON scan_status (scan_step_id);
 

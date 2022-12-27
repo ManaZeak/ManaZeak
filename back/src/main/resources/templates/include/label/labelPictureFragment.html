@@ -1,0 +1,15 @@
+<!-- TODO : to restyle for the labels and add the missing tags. -->
+<div th:fragment="labelPictureDisplay (picture, size)" xmlns:th="http://www.thymeleaf.org">
+  <div th:if="*{picture != null}">
+    <!-- If the size is null using the original size -->
+    <div th:if="*{size == null}">
+      <img loading="lazy" th:src="'/resources/label_pictures/orig/' + *{picture} + '.jpg'">
+    </div>
+    <div th:if="*{size != null}">
+      <img loading="lazy" th:src="'/resources/label_pictures/' + *{size} + '/' + *{picture} + '.jpg'">
+    </div>
+  </div>
+  <div th:if="*{picture == null}">
+    <img loading="lazy" th:src="'/static/img/object/label.svg'">
+  </div>
+</div>

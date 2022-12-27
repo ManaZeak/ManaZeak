@@ -213,6 +213,5 @@ public final class TagReaderUtil {
             container.setStartRecordingDate(recordingDates.get(0));
             container.setEndRecordingDate(recordingDates.get(1));
         }
-
     }
 }

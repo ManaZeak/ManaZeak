@@ -20,4 +20,10 @@
       <div th:replace="~{/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)}"></div>
     </div>
   </div>
+  <div>
+    <p>SAUCE</p>
+    <div th:each="label : ${labels}">
+      <div th:replace="~{/include/label/minimalLabelFragment.html :: displayMinimalLabel(*{label}, medium)}"></div>
+    </div>
+  </div>
 </div>

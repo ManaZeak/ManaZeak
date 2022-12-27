@@ -3,12 +3,14 @@ package org.manazeak.manazeak.controller.fragment.ui.scene.mainpage;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.ui.UiFragmentEnum;
 import org.manazeak.manazeak.service.library.artist.ArtistService;
 import org.manazeak.manazeak.service.library.genre.GenreService;
+import org.manazeak.manazeak.service.library.label.LabelService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,16 +20,13 @@ import org.springframework.web.bind.annotation.PathVariable;
  * Allows to display the main page to the users.
  */
 @FragmentController
+@RequiredArgsConstructor
 public class MainPageController {
 
     private static final int NB_ELEMENTS = 10;
     private final ArtistService artistService;
     private final GenreService genreService;
-
-    public MainPageController(ArtistService artistService, GenreService genreService) {
-        this.artistService = artistService;
-        this.genreService = genreService;
-    }
+    private final LabelService labelService;
 
     @Security(PrivilegeEnum.PLAY)
     @GetMapping("/mainpage/")
@@ -56,5 +55,6 @@ public class MainPageController {
     private void addMainPageAttributes(int numberOfElements, Model model) {
         model.addAttribute("rlArtists", artistService.getSomeRandomArtistMinimal(numberOfElements));
         model.addAttribute("genres", genreService.getSomeRandomGenreMinimal(numberOfElements));
+        model.addAttribute("labels", labelService.getSomeRandomLabelsMinimal(numberOfElements));
     }
 }

@@ -16,6 +16,7 @@ public enum LibraryTablesEnum {
     TRACK,
     RANDOM_RELEASE_ARTIST,
     RANDOM_GENRE,
+    RANDOM_LABEL,
     GENRE,
     ALBUM,
     ALBUM_RECORDING_LOCATION,
