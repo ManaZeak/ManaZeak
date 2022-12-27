@@ -54,70 +54,8 @@
           <img src="/static/img/navigation/nav-up.svg" id="album-collapse-all" alt="album-collapse-all">
         </div>
       </div>
-      <div id="album-tracks" class="album">
-        <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">
-          <div class="track-info">
-            <p th:text="*{track.title}" class="track-title"></p>
-            <p class="toggle-track-expand">
-              <img src="/static/img/navigation/nav-down.svg" class="toggle-track-expand-img" alt="toggle-track-expand">
-            </p>
-            <p th:text="*{track.duration}" class="track-duration"></p>
-            <p class="track-performers">
-              <span th:each="performer : *{track.performers}" th:text="*{performer.name}" th:attr="data-id=*{performer.id}"></span>
-            </p>
-          </div>
-          <div class="track-detailed-info">
-            <div class="txt-column">
-              <div>
-                <span>Composed by :</span>
-                <p class="track-composers">
-                  <span th:each="composer : *{track.composers}" th:text="*{composer.name}" th:attr="data-id=*{composer.id}"></span>
-                </p>
-              </div>
-              <div>
-                <span>Genre(s) / Style(s) :</span>
-                <p class="track-genres">
-                  <span th:each="genre : *{track.genres}" th:text="*{genre.name}" th:attr="data-id=*{genre.genreId}"></span>
-                </p>
-              </div>
-              <div>
-                <span>BPM & Key :</span>
-                <p class="track-bpm-key">
-                  <span th:text="*{track.bpm}"></span>
-                  <span th:each="key : *{track.keys}" th:text="*{key.key}"></span>
-                </p>
-              </div>
-            </div>
-            <div class="txt-column">
-              <div>
-                <span>Lyricist :</span>
-                <p class="track-lyricists">
-                  <span th:each="lyricist : *{track.lyricists}" th:text="*{lyricist.name}" th:attr="data-id=*{lyricist.id}"></span>
-                </p>
-              </div>
-              <div>
-                <span>Produced by :</span>
-                <p class="track-producers">
-                  <span th:each="producer : *{track.producers}" th:text="*{producer.name}" th:attr="data-id=*{producer.id}"></span>
-                </p>
-              </div>
-              <div>
-                <span>Engineer :</span>
-                <p class="track-engineers">
-                  <span th:each="engineer : *{track.engineers}" th:text="*{engineer.name}"  th:attr="data-id=*{engineer.id}"></span>
-                </p>
-              </div>
-              <div>
-                <span>ISRC</span>
-                <p class="track-isrc">
-                  <span th:text="*{track.isrc}"></span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <img th:src='*{"/resources/moods/hd/"+track.mood}' class="track-moodbar"> <!-- No alt because we want to avoid feedback on 404 -->
-        </div>
-      </div>
+      <!-- Displaying the tracks of the album. -->
+      <div th:replace="~{/include/track/trackCompleteDetailFragment.html :: displayListCompleteTrack(*{album.tracks})}"></div>
     </div>
   </div>
 </div>

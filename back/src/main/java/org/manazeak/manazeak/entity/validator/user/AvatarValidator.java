@@ -1,11 +1,10 @@
 package org.manazeak.manazeak.entity.validator.user;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.manazeak.manazeak.util.file.FormatFileCheckerUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * This class validate the avatar of a user.

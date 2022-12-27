@@ -11,4 +11,5 @@ public record AlbumTrackDbInfoDto(
         Long performerId,
         String performerName,
         String performerPicture,
-        boolean performerIsLabel) {}
+        boolean performerIsLabel) {
+}

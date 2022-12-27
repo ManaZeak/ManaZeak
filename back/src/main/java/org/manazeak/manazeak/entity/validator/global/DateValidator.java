@@ -1,9 +1,9 @@
 package org.manazeak.manazeak.entity.validator.global;
 
-import org.manazeak.manazeak.util.DateUtil;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.manazeak.manazeak.util.DateUtil;
+
 import java.time.format.DateTimeParseException;
 
 /**

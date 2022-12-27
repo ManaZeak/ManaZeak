@@ -78,7 +78,7 @@ public class TrackCompleteInfoDto {
     }
 
     public void addEngineer(ArtistMinimalInfoDto engineer) {
-        if(engineer == null) {
+        if (engineer == null) {
             return;
         }
         engineers.add(engineer);

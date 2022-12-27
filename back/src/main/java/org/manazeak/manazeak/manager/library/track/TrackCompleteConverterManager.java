@@ -27,25 +27,17 @@ public class TrackCompleteConverterManager {
         // Iterating through the tracks of the database and building objects.
         for (TrackCompleteInfoDbDto dbTrack : dbTracks) {
             // If the track is a new one resetting the last ids.
-            if (!lastTrackId.equals(dbTrack.trackId())) {
+            if (!lastTrackId.equals(dbTrack.getTrackId())) {
                 tracks.add(dbTrack.getTrackBasicInfo());
-                lastTrackId = dbTrack.trackId();
+                lastTrackId = dbTrack.getTrackId();
             }
             TrackCompleteInfoDto currentTrack = getLastTrack(tracks);
             // Adding the performer.
-            currentTrack.addComposer(dbTrack.getComposer());
-            currentTrack.addLyricist(dbTrack.getLyricist());
-            currentTrack.addPerformer(dbTrack.getPerformer());
-            currentTrack.addProducer(dbTrack.getProducer());
-            currentTrack.addEngineer(dbTrack.getEngineer());
-            currentTrack.addGenre(dbTrack.getGenre());
-            currentTrack.addKey(dbTrack.getKey());
+            TrackCompleteInfoHelper.fillTrackInfo(dbTrack, currentTrack);
         }
 
         return tracks;
     }
-
-
 
     /**
      * Get the last track in the track table.

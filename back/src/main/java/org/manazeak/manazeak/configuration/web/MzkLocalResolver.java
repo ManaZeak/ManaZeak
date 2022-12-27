@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.configuration.web;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.security.user.UserService;
@@ -12,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -60,12 +60,10 @@ public class MzkLocalResolver extends SessionLocaleResolver {
             languageCode = "";
         }
         // Checking the language code and choosing the available language.
-        switch (languageCode) {
-            case "fr":
-                return Locale.FRANCE;
-            default:
-                return Locale.US;
+        if (languageCode.equals("fr")) {
+            return Locale.FRANCE;
         }
+        return Locale.US;
     }
 
     /**

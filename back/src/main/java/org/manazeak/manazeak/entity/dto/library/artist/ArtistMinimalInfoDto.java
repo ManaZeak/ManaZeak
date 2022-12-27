@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArtistMinimalInfoDto implements Comparable<ArtistMinimalInfoDto>{
+public class ArtistMinimalInfoDto implements Comparable<ArtistMinimalInfoDto> {
 
     private Long id;
 

@@ -1,15 +1,18 @@
 package org.manazeak.manazeak.entity.dto.library.genre;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * The artist object displayed in the genre detail view.
  */
-@Data
-public class GenreDetailArtistDto {
+@Getter
+@RequiredArgsConstructor
+public class GenreDetailArtistDto implements Comparable<GenreDetailArtistDto> {
 
     private final Long artistId;
 
@@ -19,9 +22,23 @@ public class GenreDetailArtistDto {
 
     private final boolean isLabel;
 
-    private final List<GenreDetailAlbumDto> albums = new ArrayList<>();
+    private final SortedSet<GenreDetailAlbumDto> albums = new TreeSet<>();
 
-    public void addAlbum(GenreDetailAlbumDto album) {
-        albums.add(album);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GenreDetailArtistDto that = (GenreDetailArtistDto) o;
+        return Objects.equals(artistId, that.artistId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(artistId);
+    }
+
+    @Override
+    public int compareTo(GenreDetailArtistDto genreDetailArtistDto) {
+        return artistName.compareTo(genreDetailArtistDto.getArtistName());
     }
 }

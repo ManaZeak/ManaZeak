@@ -1,15 +1,15 @@
 package org.manazeak.manazeak.util.database;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Table;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.commons.AppContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Table;
-import jakarta.persistence.metamodel.EntityType;
-import jakarta.persistence.metamodel.Metamodel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

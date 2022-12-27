@@ -3,7 +3,7 @@ package org.manazeak.manazeak.service.library.genre;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.daos.track.GenreDAO;
-import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.manager.library.genre.GenreManager;
@@ -32,12 +32,12 @@ public class GenreService {
      * @param genreId The id of the genre to find into the database.
      * @return The details of the genre with the associated tracks.
      */
-    public GenreDetailDto getGenreDetailById(Long genreId) {
-        GenreDetailDto genre = genreDAO.getGenreDetail(genreId)
+    public GenreCompleteInfoDto getGenreDetailById(Long genreId) {
+        GenreCompleteInfoDto genre = genreDAO.getGenreDetail(genreId)
                 .orElseThrow(MzkExceptionHelper.generateSupplierObjectNotFoundException("error.genre.not_found"));
 
-        // Getting the tracks by the genre id.
-        genre.addArtists(genreManager.getArtistsInfoByGenreId(genreId));
+        // Setting all the linked objects.
+        genreManager.getGenreCompleteInfo(genre);
 
         return genre;
     }

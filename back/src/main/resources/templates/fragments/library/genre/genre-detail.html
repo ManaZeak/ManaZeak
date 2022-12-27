@@ -1,8 +1,8 @@
 <div xmlns:th="http://www.thymeleaf.org" class="genre-view-wrapper">
-  <!--/*@thymesVar id="genre" type="org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto"*/-->
-  <div class="genre-header">
+  <!--/*@thymesVar id="genre" type="org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDto"*/-->
+  <div class="genre-header" th:attr="data-id=*{genre.genreId}">
     <div class="genre-header-left">
-      <div th:replace="/include/genre/genrePictureFragment.html :: genrePictureDisplay (*{genre.cover}, 'orig')"></div>
+      <div th:replace="~{/include/genre/genrePictureFragment.html :: genrePictureDisplay (*{genre.genreCover}, 'orig')}"></div>
       <h1 th:text="${genre.genreName}" id="genre-name"></h1>
     </div>
     <div class="genre-header-right">
@@ -15,36 +15,28 @@
   <div id="genre-content" class="genre-content">
     <div th:each="artist : ${genre.artists}" class="artist">
       <div class="artist-commands"> <!-- Must remain first children of artist commands -->
-        <img src="/static/img/navigation/nav-up.svg" th:attr="data-id=*{artist.artistId}" class="collapse-artist" alt="collapse-artist">
+        <img src="/static/img/navigation/nav-up.svg" th:attr="data-id=*{artist.artistId}" class="collapse-artist"
+             alt="collapse-artist">
       </div>
       <div th:attr="data-id=*{artist.artistId}" class="artist-info">
         <p th:text="*{artist.artistName}"></p>
-        <div th:replace="/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)"></div>
+        <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)}"></div>
+        <!-- TODO : New field, to style. -->
+        <p th:text="*{artist.isLabel}"></p>
       </div>
       <div class="artist-albums">
         <div th:each="album : *{artist.albums}" class="album">
           <div th:attr="data-id=*{album.albumId}" class="album-info">
-            <div th:replace="/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)"></div>
+            <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)}"></div>
             <h2><span th:text="*{album.albumTitle}"></span></h2>
           </div>
-          <div th:each="track : *{album.tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">
-<!--
-          <div class="track-info">
-            <p th:text="*{track.title}" class="track-title"></p>
-            <p th:text="*{track.title}" class="track-performers">
-              <span th:each="performer : *{track.performers}">
-                <span th:text="*{performer.name}" th:attr="data-id=*{performer.id}"></span>
-              </span>
-            </p>
-            <p th:text="*{track.duration}" class="track-duration"></p>
-          </div>
--->
-            <p><span th:text="*{track.title}"></span><span th:text="*{track.duration}"></span></p>
-          </div>
+          <!-- Displaying the tracks of the album. -->
+          <div th:replace="~{/include/track/trackCompleteDetailFragment.html :: displayListCompleteTrack(*{album.tracks})}"></div>
         </div>
       </div>
       <div class="expand-artist-wrapper">
-        <img src="/static/img/navigation/nav-down.svg" th:attr="data-id=*{artist.artistId}" class="expand-artist" alt="expand-artist">        
+        <img src="/static/img/navigation/nav-down.svg" th:attr="data-id=*{artist.artistId}" class="expand-artist"
+             alt="expand-artist">
       </div>
     </div>
   </div>

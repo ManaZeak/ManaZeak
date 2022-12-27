@@ -6,6 +6,7 @@ import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.ui.UiFragmentEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 /* TODO move this in a ui.entry package but not sure to do it sorry squalala ... */
+
 /**
  * Controller used to display the album cover in full size
  */

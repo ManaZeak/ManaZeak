@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.entity.dto.library.track;
 
+import lombok.Data;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.key.KeyDto;
@@ -7,39 +8,40 @@ import org.manazeak.manazeak.entity.dto.library.key.KeyDto;
 /**
  * Contains all the fields needed to generate the track complete info dto.
  */
-public record TrackCompleteInfoDbDto(Long trackId,
-                                     String title,
-                                     Double duration,
-                                     String isrc,
-                                     // Long recordingLocationId,
-                                     // String recordingLocation,
-                                     Double bpm,
-                                     String mood,
-                                     String key,
-                                     Long keyId,
-                                     Long performerId,
-                                     String performerName,
-                                     String performerPicture,
-                                     Boolean performerIsLabel,
-                                     Long genreId,
-                                     String genreName,
-                                     String genrePicture,
-                                     Long composerId,
-                                     String composerName,
-                                     String composerPicture,
-                                     Boolean composerIsLabel,
-                                     Long lyricistId,
-                                     String lyricistName,
-                                     String lyricistPicture,
-                                     Boolean lyricistIsLabel,
-                                     Long producerId,
-                                     String producerName,
-                                     String producerPicture,
-                                     Boolean producerIsLabel,
-                                     Long engineerId,
-                                     String engineerName,
-                                     String engineerPicture,
-                                     Boolean engineerIsLabel) {
+@Data
+public class TrackCompleteInfoDbDto {
+
+    protected final Long trackId;
+    protected final String title;
+    protected final Double duration;
+    protected final String isrc;
+    protected final Double bpm;
+    protected final String mood;
+    protected final String key;
+    protected final Long keyId;
+    protected final Long performerId;
+    protected final String performerName;
+    protected final String performerPicture;
+    protected final Boolean performerIsLabel;
+    protected final Long genreId;
+    protected final String genreName;
+    protected final String genrePicture;
+    protected final Long composerId;
+    protected final String composerName;
+    protected final String composerPicture;
+    protected final Boolean composerIsLabel;
+    protected final Long lyricistId;
+    protected final String lyricistName;
+    protected final String lyricistPicture;
+    protected final Boolean lyricistIsLabel;
+    protected final Long producerId;
+    protected final String producerName;
+    protected final String producerPicture;
+    protected final Boolean producerIsLabel;
+    protected final Long engineerId;
+    protected final String engineerName;
+    protected final String engineerPicture;
+    protected final Boolean engineerIsLabel;
 
     public ArtistMinimalInfoDto getPerformer() {
         if (performerId == null) {
@@ -106,8 +108,6 @@ public record TrackCompleteInfoDbDto(Long trackId,
                 title,
                 duration,
                 isrc,
-                //recordingLocationId,
-                //recordingLocation,
                 bpm,
                 mood
         );

@@ -2,14 +2,16 @@ package org.manazeak.manazeak.manager.library.genre;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.track.GenreDAO;
-import org.manazeak.manazeak.entity.dto.library.genre.GenreArtistDetailBuilderDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDbDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailArtistDto;
-import org.manazeak.manazeak.entity.dto.library.track.MinimalTrackInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
+import org.manazeak.manazeak.manager.library.track.TrackCompleteInfoHelper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Manager used to handle the genre of the application.
@@ -21,71 +23,62 @@ public class GenreManager {
     private final GenreDAO genreDAO;
 
     /**
-     * Create a new album from the data of the genre of the database.
+     * Get the last track on the album object.
      *
-     * @param artistBuilder The information from the database.
-     * @return The album.
+     * @param album The album containing the tracks.
+     * @return The last track of the album.
      */
-    private static GenreDetailAlbumDto creatNewAlbum(GenreArtistDetailBuilderDto artistBuilder) {
-        return new GenreDetailAlbumDto(artistBuilder.getAlbumId(), artistBuilder.getAlbumTitle(), artistBuilder.getAlbumCover());
+    private static TrackCompleteInfoDto getLastTrack(GenreDetailAlbumDto album) {
+        if (album.getTracks().isEmpty()) {
+            return null;
+        }
+        return album.getTracks().get(album.getTracks().size() - 1);
     }
 
-    private static GenreDetailArtistDto createNewArtist(GenreArtistDetailBuilderDto artistBuilder) {
-        return new GenreDetailArtistDto(artistBuilder.getArtistId(), artistBuilder.getArtistName(), artistBuilder.getArtistPicture(), artistBuilder.getArtistIsLabel());
-    }
-
-    private static MinimalTrackInfoDto createMinimalTrackInfo(GenreArtistDetailBuilderDto artistBuilder) {
-        return new MinimalTrackInfoDto(artistBuilder.getTrackId(), artistBuilder.getTrackTitle(), artistBuilder.getTrackDuration(), artistBuilder.getTrackMood());
+    private static <T> T getLastElement(SortedSet<T> elements) {
+        if (elements.isEmpty()) {
+            return null;
+        }
+        return elements.last();
     }
 
     /**
-     * Get the information of the artist and the subsequent objects from the genre id.
+     * Get the information about the tracks of a genre.
      *
-     * @param genreId The id of the genre in the database.
-     * @return The artists linked to this genre.
+     * @param genreCompleteInfoDto The complete information about the genre.
      */
-    public List<GenreDetailArtistDto> getArtistsInfoByGenreId(Long genreId) {
-        List<GenreArtistDetailBuilderDto> artistBuilders = genreDAO.getGenreDetailById(genreId);
-        List<GenreDetailArtistDto> detailArtists = new ArrayList<>();
+    public void getGenreCompleteInfo(GenreCompleteInfoDto genreCompleteInfoDto) {
+        // Getting the elements in the database.
+        List<GenreCompleteInfoDbDto> genreCompleteInfoList = genreDAO.getGenreCompleteInfoByGenreId(genreCompleteInfoDto.getGenreId());
 
-        int artistPos = 0;
-        int albumPos = 0;
-        int trackPos = 0;
-
-        for (GenreArtistDetailBuilderDto artistBuilder : artistBuilders) {
-            // Handling the artist first.
-            // If the artist position is out of bound, creating a new artist.
-            if (detailArtists.isEmpty()) {
-                detailArtists.add(createNewArtist(artistBuilder));
-            } else if (!detailArtists.get(artistPos).getArtistId().equals(artistBuilder.getArtistId())) { // If the artist is different, creating a new one.
-                artistPos++;
-                albumPos = 0;
-                trackPos = 0;
-                detailArtists.add(createNewArtist(artistBuilder));
+        // Iterating to build the artists, albums and tracks.
+        for (GenreCompleteInfoDbDto completeInfoDbDto : genreCompleteInfoList) {
+            GenreDetailArtistDto artist = getLastElement(genreCompleteInfoDto.getArtists());
+            // Adding the artists if he is not present.
+            if (artist == null ||
+                    !artist.getArtistId().equals(completeInfoDbDto.getArtistId())) {
+                artist = completeInfoDbDto.getGenreArtistDto();
+                genreCompleteInfoDto.getArtists().add(artist);
             }
 
-            // Handling the albums.
-            GenreDetailArtistDto artist = detailArtists.get(artistPos);
-            // Init the first album.
-            if (artist.getAlbums().isEmpty()) {
-                artist.addAlbum(creatNewAlbum(artistBuilder));
-            } else if (!artist.getAlbums().get(albumPos).getAlbumId().equals(artistBuilder.getAlbumId())) {
-                albumPos++;
-                trackPos = 0;
-                artist.addAlbum(creatNewAlbum(artistBuilder));
+            // Adding the album if it's not present.
+            GenreDetailAlbumDto album = getLastElement(artist.getAlbums());
+            if (album == null ||
+                    !completeInfoDbDto.getAlbumId().equals(album.getAlbumId())) {
+                album = completeInfoDbDto.getGenreAlbumDto();
+                artist.getAlbums().add(album);
             }
 
-            // Handling the tracks.
-            GenreDetailAlbumDto album = artist.getAlbums().get(albumPos);
-            if (album.getTracks().isEmpty()) {
-                album.addTrack(createMinimalTrackInfo(artistBuilder));
-            } else if (!album.getTracks().get(trackPos).trackId().equals(artistBuilder.getTrackId())) {
-                trackPos++;
-                album.addTrack(createMinimalTrackInfo(artistBuilder));
+            // Adding the track.
+            TrackCompleteInfoDto track = getLastTrack(album);
+            if (track == null || !track.getTrackId().equals(completeInfoDbDto.getTrackId())) {
+                track = completeInfoDbDto.getTrackBasicInfo();
+                album.addTrack(track);
             }
+
+            // Adding the elements linked to the track.
+            TrackCompleteInfoHelper.fillTrackInfo(completeInfoDbDto, track);
         }
-
-        return detailArtists;
     }
 
 }

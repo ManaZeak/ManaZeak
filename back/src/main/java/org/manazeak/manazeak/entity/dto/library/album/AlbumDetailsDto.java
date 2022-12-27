@@ -2,7 +2,6 @@ package org.manazeak.manazeak.entity.dto.library.album;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.manazeak.manazeak.constant.tag.CompilationTypeEnum;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 

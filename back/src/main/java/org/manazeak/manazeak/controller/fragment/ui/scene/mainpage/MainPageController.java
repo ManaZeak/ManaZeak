@@ -42,7 +42,7 @@ public class MainPageController {
      * No more than 50 element per category can be asked.
      *
      * @param numberOfElement The number of element to return in each section.
-     * @param model         The model to pass to thymeleaf to fill the template.
+     * @param model           The model to pass to thymeleaf to fill the template.
      * @return The address of the page to use.
      */
     @Security(PrivilegeEnum.PLAY)

@@ -1,14 +1,13 @@
 package org.manazeak.manazeak.daos.track;
 
-import org.manazeak.manazeak.entity.dto.library.genre.GenreArtistDetailBuilderDto;
-import org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto;
-import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
+import org.manazeak.manazeak.entity.dto.library.genre.*;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenreLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenrePictureProjection;
 import org.manazeak.manazeak.entity.track.Genre;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,25 +31,60 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
     @Query("select genreId as genreId, name as name from Genre where pictureFilename is null ")
     List<GenrePictureProjection> getGenresPictureProjection();
 
-    @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreArtistDetailBuilderDto(" +
+    @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDbDto(" +
+            "trk.trackId, " +
+            "trk.title, " +
+            "trk.duration, " +
+            "trk.isrc, " +
+            "trk.bpm," +
+            "trk.mood, " +
+            "keys.label, " +
+            "keys.keyId, " +
+            "perf.artistId, " +
+            "perf.name, " +
+            "perf.pictureFilename, " +
+            "perf.isLabel, " +
+            "genre.genreId, " +
+            "genre.name, " +
+            "genre.pictureFilename, " +
+            "comp.artistId, " +
+            "comp.name, " +
+            "comp.pictureFilename, " +
+            "comp.isLabel, " +
+            "lyr.artistId, " +
+            "lyr.name, " +
+            "lyr.pictureFilename, " +
+            "lyr.isLabel, " +
+            "pro.artistId, " +
+            "pro.name, " +
+            "pro.pictureFilename, " +
+            "pro.isLabel, " +
+            "eng.artistId, " +
+            "eng.name, " +
+            "eng.pictureFilename, " +
+            "eng.isLabel, " +
             "art.artistId, " +
-            "art.name," +
-            "art.isLabel,  " +
+            "art.name, " +
+            "art.isLabel," +
             "art.pictureFilename, " +
             "alb.albumId, " +
             "alb.title, " +
             "alb.cover, " +
-            "trk.trackId, " +
-            "trk.title, " +
-            "trk.duration," +
-            "trk.mood) " +
+            "alb.releaseDate) " +
             "from Track trk " +
-            "join trk.genreList gen " +
             "join trk.album alb " +
+            "left join trk.keyList keys " +
+            "left join trk.performerList perf " +
+            "left join trk.genreList genre " +
+            "left join trk.composerList comp " +
+            "left join trk.lyricistList lyr " +
+            "left join trk.producerList pro " +
+            "left join trk.engineerList eng " +
             "join alb.artist art " +
-            "where gen.genreId = :genreId " +
-            "order by art.name, alb.title, trk.discNumber, trk.trackNumber")
-    List<GenreArtistDetailBuilderDto> getGenreDetailById(@Param("genreId") Long genreId);
+            "join trk.genreList genres " +
+            "where genres.genreId = :genreId " +
+            "order by art.name, alb.releaseDate, trk.discNumber, trk.trackNumber")
+    List<GenreCompleteInfoDbDto> getGenreCompleteInfoByGenreId(@Param("genreId") Long genreId);
 
     @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto(" +
             "gen.genreId," +
@@ -65,12 +99,13 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
      * @param genreId The id of the genre.
      * @return The information about the genre in the database.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreDetailDto(" +
+    @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDto(" +
+            "genreId, " +
             "name," +
             "pictureFilename) " +
             "from Genre " +
             "where genreId = :genreId")
-    Optional<GenreDetailDto> getGenreDetail(@Param("genreId") Long genreId);
+    Optional<GenreCompleteInfoDto> getGenreDetail(@Param("genreId") Long genreId);
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

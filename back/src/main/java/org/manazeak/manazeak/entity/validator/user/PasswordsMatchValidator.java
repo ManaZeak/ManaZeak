@@ -1,9 +1,8 @@
 package org.manazeak.manazeak.entity.validator.user;
 
-import org.manazeak.manazeak.entity.dto.user.PasswordContainer;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.manazeak.manazeak.entity.dto.user.PasswordContainer;
 
 /**
  * Check if the passwords provided by the user match.

@@ -1,11 +1,11 @@
 package org.manazeak.manazeak.entity.validator.reference.locale;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.manazeak.manazeak.daos.reference.LocaleDAO;
 import org.manazeak.manazeak.entity.reference.Locale;
 import org.springframework.stereotype.Component;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
 @Component

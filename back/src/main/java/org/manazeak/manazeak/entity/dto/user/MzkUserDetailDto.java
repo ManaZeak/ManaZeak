@@ -19,4 +19,5 @@ public record MzkUserDetailDto(String username,
                                LocalDateTime memberSince,
                                String parentAvatar,
                                String parentName,
-                               String parentSurname) {}
+                               String parentSurname) {
+}

@@ -1,11 +1,10 @@
 package org.manazeak.manazeak.entity.validator.user;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.manazeak.manazeak.entity.validator.ValidatorErrorHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * Allows to check if a password is strong.
@@ -35,9 +34,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
      * @param constraintValidatorContext The validation context.
      */
     private void setErrorMessagePasswordTooShort(ConstraintValidatorContext constraintValidatorContext) {
-        StringBuilder sb = new StringBuilder("{user.register.error.pass_too_short} ");
-        sb.append(passwordLength);
-        sb.append(" {user.register.error.pass_too_short_end}");
-        ValidatorErrorHelper.addErrorMessage(sb.toString(), constraintValidatorContext);
+        String sb = "{user.register.error.pass_too_short} " + passwordLength +
+                " {user.register.error.pass_too_short_end}";
+        ValidatorErrorHelper.addErrorMessage(sb, constraintValidatorContext);
     }
 }

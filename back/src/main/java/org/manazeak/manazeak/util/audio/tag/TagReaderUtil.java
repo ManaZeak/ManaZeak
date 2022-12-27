@@ -194,10 +194,9 @@ public final class TagReaderUtil {
      * @param container contains the information about the track.
      */
     private static void extractSpecificFlacTag(Tag tag, AudioFileContainerDto container) {
-        if (!(tag instanceof FlacTag)) {
+        if (!(tag instanceof FlacTag flacTag)) {
             throw new MzkRuntimeException("The extracted track is not a FLAC type.");
         }
-        FlacTag flacTag = (FlacTag) tag;
         // Getting the performers.
         container.setPerformer(flacTag.getFirst(FieldKey.PERFORMER).trim());
         // Getting the release date of the track.
