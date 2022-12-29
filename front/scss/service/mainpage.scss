@@ -36,7 +36,8 @@
   }
 
   .artists-container,
-  .genres-container {
+  .genres-container,
+  .labels-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     width: calc(100% - var(--default-scroll-size));

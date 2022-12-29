@@ -20,8 +20,11 @@
       <div th:replace="~{/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)}"></div>
     </div>
   </div>
-  <div>
-    <p>SAUCE</p>
+  <div class="section-header">
+    <h2 th:text="#{mp.labels}"></h2>
+    <h3 th:text="#{mp.see_all}" id="see-all-labels"></h3>
+  </div>
+  <div class="labels-container" id="labels-container">
     <div th:each="label : ${labels}">
       <div th:replace="~{/include/label/minimalLabelFragment.html :: displayMinimalLabel(*{label}, medium)}"></div>
     </div>

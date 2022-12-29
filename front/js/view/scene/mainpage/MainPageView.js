@@ -110,6 +110,21 @@ class MainPageView extends SceneView {
         name: 'GenreGraph'
       });      
     });
+    /* Labels */
+    this.dom.querySelector('#see-all-labels').addEventListener('click', () => {
+      mzk.setView({
+        name: 'AllLabel'
+      });
+    });    
+    const labels = this.dom.querySelector('#labels-container');
+    for (let i = 0; i < labels.children.length; ++i) {
+      labels.children[i].children[0].addEventListener('click', () => {
+        mzk.setView({
+          name: 'Label',
+          id: labels.children[i].children[0].dataset.id
+        });
+      });
+    }
 
     this._readyEvtId = Evts.subscribe('SceneViewReady', () => {
       if (this.dom.querySelector('#artists-container').children.length === 0) {

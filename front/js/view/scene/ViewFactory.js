@@ -1,11 +1,16 @@
 import MainPageView from './mainpage/MainPageView.js';
+/* Single views */
 import ReleaseArtistView from './mainpage/ReleaseArtistView.js';
-import AllGenreView from './mainpage/AllGenreView.js';
-import AllReleaseArtistView from './mainpage/AllReleaseArtistView.js';
 import AlbumView from './mainpage/AlbumView.js';
 import GenreView from './mainpage/GenreView.js';
 import LabelView from './mainpage/LabelView.js';
+/* Special views */
 import GenreGraphView from './mainpage/GenreGraphView.js';
+/* All item view */
+import AllReleaseArtistView from './mainpage/AllReleaseArtistView.js';
+import AllGenreView from './mainpage/AllGenreView.js';
+import AllLabelView from './mainpage/AllLabelView.js';
+/* Nav views */
 import MenuPageView from './menupage/MenuPageView.js';
 import AdminPageView from './menupage/AdminPageView.js';
 import AccountPageView from './menupage/AccountPageView.js';
@@ -14,12 +19,13 @@ import AccountPageView from './menupage/AccountPageView.js';
 const Classes = {
   MainPageView,
   ReleaseArtistView,
-  AllGenreView,
-  AllReleaseArtistView,
   AlbumView,
   GenreView,
   LabelView,
   GenreGraphView,
+  AllReleaseArtistView,
+  AllGenreView,
+  AllLabelView,
   MenuPageView,
   AdminPageView,
   AccountPageView
