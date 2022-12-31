@@ -1,7 +1,7 @@
 import SceneView from './SceneView';
 
 
-class TrackView extends SceneView {
+class PlayableView extends SceneView {
 
 
   constructor(options) {
@@ -103,4 +103,4 @@ class TrackView extends SceneView {
 }
 
 
-export default TrackView;
+export default PlayableView;

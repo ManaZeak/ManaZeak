@@ -1,9 +1,9 @@
-import TrackView from '../utils/TrackView';
+import PlayableView from '../utils/PlayableView';
 import ScrollBar from '../../navigation/ScrollBar';
 import TrackContext from '../../context/TrackContext';
 
 
-class GenreView extends TrackView {
+class GenreView extends PlayableView {
 
 
   constructor(options) {

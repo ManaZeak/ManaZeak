@@ -104,6 +104,7 @@
     position: absolute;
     right: var(--font-size-small);
     top: var(--font-size-small);
+    z-index: 801;
 
     transition: color var(--animation-duration) ease-out;
 
@@ -164,5 +165,20 @@
     &:hover [class$="-info"] {
       opacity: .9;
     }
+  }
+}
+
+.track-detail-modal {
+  height: calc(100% - var(--margin));
+  max-width: inherit;
+  width: calc(100% - var(--margin));
+
+  .container {
+    height: calc(100% - 6rem);
+  }
+
+  .footer {
+    justify-content: space-between;
+    padding: 0 var(--padding);
   }
 }

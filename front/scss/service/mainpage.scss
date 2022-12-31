@@ -358,6 +358,14 @@
           display: flex;
           font-weight: bold;
           margin-bottom: .15rem;
+
+          transition: color .2s;
+
+          &:active,
+          &:focus,
+          &:hover {
+            color: var(--color-primary);
+          }
         }
 
         .track-performers {

@@ -7,6 +7,7 @@ public enum UiFragmentEnum {
     MAIN_PAGE("fragments/scene/mainpage.html"),
     MENU_PAGE("fragments/scene/menupage.html"),
     ALBUM_COVER_MODAL("fragments/modal/album-cover.html"),
+    TRACK_DETAIL_MODAL("fragments/modal/track-detail.html"),
     ARTIST_PICTURE_MODAL("fragments/modal/artist-picture.html"),
     ABOUT_MODAL("fragments/modal/about.html"),
     QUEUE_CONTEXT("fragments/context/queue.html"),

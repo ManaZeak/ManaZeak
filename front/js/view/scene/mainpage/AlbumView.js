@@ -1,9 +1,9 @@
-import TrackView from '../utils/TrackView';
+import PlayableView from '../utils/PlayableView';
 import ScrollBar from '../../navigation/ScrollBar';
 import TrackContext from '../../context/TrackContext';
 
 
-class AlbumView extends TrackView {
+class AlbumView extends PlayableView {
 
 
   constructor(options) {
@@ -107,6 +107,11 @@ class AlbumView extends TrackView {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
       // On each trakc, listen to click evts, 
       for (let i = 0; i < this._tracks.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', this._tracks[i].querySelector('.track-title'), this._trackTitleClicked, {
+          tracks: this._tracks,
+          index: i
+        }));
+
         this.__evtArtistsList('performers', this._tracks[i]);
         this.__evtArtistsList('composers', this._tracks[i]);
         this.__evtArtistsList('lyricists', this._tracks[i]);
@@ -181,6 +186,18 @@ class AlbumView extends TrackView {
 
 
   /* UI element callbacks */
+
+
+  _trackTitleClicked(e) {
+    // This as special this scope, see event definition
+    console.log(e, this)
+    mzk.setModal({
+      name: 'TrackDetail',
+      tracks: this.tracks,
+      index: this.index,
+      id: this.tracks[this.index].dataset.id
+    });
+  }
 
 
   _coverClicked() {
