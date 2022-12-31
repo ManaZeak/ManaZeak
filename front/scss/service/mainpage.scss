@@ -60,16 +60,25 @@
     &:hover {
       background-color: var(--color-bg-alpha-50);
       box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
+
+      img {
+        transform: scale(1.066) rotate(0.66deg);
+      }
     }
     
     img {
       width: 9rem;
+      transition: transform var(--animation-duration);
     }
 
     p {
       font-size: var(--font-size-small);
       margin-bottom: 0;
       text-align: center;
+    }
+
+    .artist-picture {
+      overflow: hidden;
     }
 
     .label-artist {

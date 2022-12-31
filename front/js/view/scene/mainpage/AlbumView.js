@@ -232,6 +232,11 @@ class AlbumView extends TrackView {
     // Update scrollbar height
     setTimeout(() => {
       this.scroll.updateScrollbar();
+      this.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'start'
+      });
     }, 200); /* Match height transition duration in _mainpage.scss */
   }
 

@@ -66,7 +66,12 @@ class Controller {
         track = options.playObject.tracks[0];
       }
 
-      this._player.changeTrack(`/play/${track.id}/`).then(() => {
+      let startTimePercentage = -1;
+      if (options.startTimePercentage) {
+        startTimePercentage = options.startTimePercentage;
+      }
+
+      this._player.changeTrack(`/play/${track.id}/`, startTimePercentage).then(() => {
         this._addTrackHistory(options, track);
         this._playingId = track.id;
         Evts.publish('ChangeTrack', {

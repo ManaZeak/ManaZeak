@@ -31,10 +31,16 @@ class TrackView extends SceneView {
   }
 
 
-  _trackClicked() {
+  _trackClicked(e) {
+    const elementHovered = document.elementFromPoint(e.clientX, e.clientY);
+    let startTimePercentage = null;
+    if (elementHovered.classList.contains('track-moodbar')) {
+      startTimePercentage = 50;
+    }
     mzk.changeTrack({
       id: this.dataset.id,
-      playObject: this._buildPlaybackObject(this.dataset.id)
+      playObject: this._buildPlaybackObject(this.dataset.id),
+      startTimePercentage: startTimePercentage
     });
   }
 
@@ -54,6 +60,13 @@ class TrackView extends SceneView {
       this._tracks[i].classList.remove('playing');
       if (this._tracks[i].dataset.id === data.id) {
         this._tracks[i].classList.add('playing');
+        requestAnimationFrame(() => {
+          this._tracks[i].scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'start'
+          });
+        });
         // Not breaking to properly remove playing on next tracks
       }
     }
@@ -71,7 +84,7 @@ class TrackView extends SceneView {
     mzk.changeTrack({
       id: this._tracks[0].dataset.id,
       playObject: this._buildPlaybackObject(this._tracks[0].dataset.id)
-    });    
+    });
   }
 
 

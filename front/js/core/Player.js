@@ -138,10 +138,13 @@ class Player {
    * @since July 2018
    * @description Swap playing state and start playback at currentTime
    **/
-  play() {
+  play(startTimePercentage) {
     if (this._player.src) { // Apply only if src is defined
       this._isPlaying = true; // Set playing state to true
       this._player.play(); // Start player efective playback
+      if (startTimePercentage > 0) {
+        this._setProgress(startTimePercentage);
+      }
     }
   }
 
@@ -210,7 +213,7 @@ class Player {
    * @param {string} url - The path to the track (local or hosted)
    * @returns {Promise} A Promise that resolves when player is operating
    **/
-  changeTrack(url) {
+  changeTrack(url, startTimePercentage) {
     return new Promise((resolve) => {
       // Invalid url type
       if (typeof url !== 'string') {
@@ -222,7 +225,8 @@ class Player {
       }
       // Start playback callback used when player source has been loaded
       const startPlayback = () => {
-        this.play(); // Call player play method (not actually play after that line)
+        if (!startTimePercentage) { startTimePercentage = -1; } // Ensuring false value for time to set
+        this.play(startTimePercentage); // Call player play method (not actually play after that line)
         resolve(); // Resolve promise
       };
       // Stop any previous playback before updating player
@@ -445,10 +449,6 @@ class Player {
         code: 'INVALID_PROGRESS',
         frontend: true
       });
-      return;
-    }
-
-    if (this._player.currentTime === 0) { // When player is stopped, currentTime = 0. We don't do anything
       return;
     }
 
