@@ -2,31 +2,33 @@
   <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
   <!--/*@thymesVar id="compilationType" type="org.manazeak.manazeak.constant.tag.CompilationTypeEnum"*/-->
   <div class="album-container">
+    <!-- Album left side (PP, title, compilation, contributing) -->
     <div class="album-aside">
       <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, orig)}"></div>
       <h1 th:text="*{album.title}" id="album-title"></h1>
-      <!-- Displaying the type of release. -->
+      <!-- Type of release -->
       <h2 th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).REGULAR}">
-        <span th:text="#{view.album.original}"></span>
+        <span th:text="#{view.album.original}"></span>, <span id="album-year"></span>
       </h2>
       <h2 th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).COMPILATION}">
-        <span th:text="#{view.album.compilation}"></span>
+        <span th:text="#{view.album.compilation}"></span>, <span id="album-year"></span>
       </h2>
       <h2 th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).MIX}">
-        <span th:text="#{view.album.live}"></span>
+        <span th:text="#{view.album.live}"></span>, <span id="album-year"></span>
       </h2>
       <h2 th:if="*{compilationType == T(org.manazeak.manazeak.constant.tag.CompilationTypeEnum).VARIOUS_ARTIST}">
-        <span th:text="#{view.album.mix}"></span>
+        <span th:text="#{view.album.mix}"></span>, <span id="album-year"></span>
       </h2>
       <!-- All artists contributing on album -->
       <em><p th:text="#{view.album.contributors}"></p></em>
       <div id="album-performers" class="artists-small">
         <div th:each="performer : ${album.performers}" th:attr="data-id=*{performer.id}" class="artist">
-          <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, tiny)}"></div>
+          <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{performer.cover}, small)}"></div>
           <p class="artist-name" th:text="*{performer.name}"></p>
         </div>
       </div>
     </div>
+    <!-- Album right side (details, release artiste, cmds, tracks) -->
     <div class="album-content">
       <div class="album-info">
         <h2>

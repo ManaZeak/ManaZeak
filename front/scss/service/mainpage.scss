@@ -87,7 +87,7 @@
 .artists-small {
   background-color: var(--color-bg-lighter-alpha-50);
   border-radius: .5rem;
-  height: 100px;
+  height: 105px;
   max-height: 200px;
   margin: 0 var(--margin);
   overflow-y: auto;
@@ -116,7 +116,7 @@
 
     p {
       display: block;
-      font-size: var(--font-size-small);
+      font-size: var(--font-size-smaller);
       left: 50%;
       margin: 0;
       max-width: 105%;
@@ -285,10 +285,14 @@
         img {
           opacity: 1 !important;
         }
+
+        .track-info .toggle-track-expand {
+          opacity: 1;
+        }
       }
 
       &.playing {
-        background-color: var(--color-primary-alpha-50);
+        background-color: var(--color-primary-alpha-25);
 
         .track-info .track-performers span,
         .track-detailed-info .txt-column div p span {
@@ -343,6 +347,7 @@
         .track-title {
           align-items: flex-end;
           display: flex;
+          font-weight: bold;
           margin-bottom: .15rem;
         }
 
@@ -351,7 +356,6 @@
           color: var(--color-txt-darker);
           display: flex;
           font-size: var(--font-size-small);
-          font-style: italic;
           margin-top: .15rem;
           padding-left: var(--font-size);
 
@@ -393,10 +397,12 @@
           grid-row: 1 / span 2;
           height: 100%;
           justify-content: center;
+          opacity: 0;
           width: 100%;
+          transition: opacity var(--animation-duration);
 
           img {
-            width: 2rem;
+            width: var(--font-size);
           }
         }
 
@@ -456,6 +462,7 @@
               span {
                 color: var(--color-txt);
                 display: inline;
+                font-size: var(--font-size-small);
                 font-style: inherit;
                 padding: 0;
                 transition: color .2s;
@@ -649,7 +656,7 @@
     align-items: flex-start;
     border-bottom: solid 1px var(--color-txt);
     display: flex;
-    height: 70rem;
+    height: 74rem;
     margin: var(--margin);
     padding-bottom: var(--padding);
     overflow-y: hidden;

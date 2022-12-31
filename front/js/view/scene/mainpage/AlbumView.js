@@ -49,6 +49,7 @@ class AlbumView extends TrackView {
 
       const date = this.dom.querySelector('#album-release-date').innerHTML;
       this.dom.querySelector('#album-release-date').innerHTML = Utils.formatDate(date);
+      this.dom.querySelector('#album-year').innerHTML = (new Date(date)).getFullYear();
 
       for (let i = 0; i < this._tracks.length; ++i) {
         const duration = this._tracks[i].getElementsByClassName('track-duration')[0];
