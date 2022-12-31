@@ -55,38 +55,47 @@
   <div class="navbar">
     <div class="playback-wrapper">
       <div class="top-line">
-        <div class="image-wrapper queue">
+        <div class="image-wrapper queue tooltip">
           <img src="/static/img/player/queue.svg" id="queue" alt="player-queue">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.queue}"></span>
         </div>
-        <div class="image-wrapper repeat">
+        <div class="image-wrapper repeat tooltip">
           <img src="/static/img/player/repeat-off.svg" id="repeat" alt="player-repeat">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.repeat}"></span>
         </div>
-        <div class="image-wrapper shuffle">
+        <div class="image-wrapper shuffle tooltip">
           <img src="/static/img/player/shuffle-off.svg" id="shuffle" alt="player-shuffle">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.shuffle}"></span>
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper tooltip">
           <img src="/static/img/player/track-previous.svg" id="previous" alt="player-previous">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.previous}"></span>
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper tooltip">
           <img src="/static/img/player/stop.svg" id="stop" alt="player-stop">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.stop}"></span>
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper tooltip">
           <img src="/static/img/player/play.svg" id="play" alt="player-play">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.play}"></span>
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper tooltip">
           <img src="/static/img/player/track-next.svg" id="next" alt="player-next">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.next}"></span>
         </div>
         <div id="volumebar-wrapper" class="volumebar-wrapper">
-          <div class="image-wrapper">
+          <div class="image-wrapper tooltip">
             <img src="/static/img/player/volume-full.svg" id="volumebar-img" alt="player-volume">
+            <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.mute}"></span>
           </div>
           <div id="volumebar-container" class="volumebar-container">
             <div id="volumebar-current" class="volumebar-current full"></div>
             <div id="volumebar-thumb" class="volumebar-thumb"></div>
           </div>
         </div>
-        <div class="image-wrapper speedometer">
+        <div class="image-wrapper speedometer tooltip">
           <img src="/static/img/player/speedometer.svg" id="speedometer" alt="player-speedometer">
+          <span class="tooltip-text bottom" th:text="#{mp.navbar.tooltip.speed}"></span>
         </div>
       </div>
       <div class="bottom-line">

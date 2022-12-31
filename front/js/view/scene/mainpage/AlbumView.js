@@ -66,7 +66,7 @@ class AlbumView extends PlayableView {
       this._tracks = this.dom.querySelector('#album-tracks').children[0].children[0].children;
       // <scrollbar to performers for better UI
       if (this._performers.length > 4) {
-        this.dom.querySelector('#album-performers').style.height = '190px';
+        this.dom.querySelector('#album-performers').style.height = '200px';
         // Ensure height is properly applied before creating scroll on performers
         requestAnimationFrame(() => {
           this._scrollPerformers = new ScrollBar({

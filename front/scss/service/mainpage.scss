@@ -671,9 +671,9 @@
 .album-view-wrapper {
   .album-container {
     align-items: flex-start;
-    border-bottom: solid 1px var(--color-txt);
+    border-bottom: solid 1px var(--color-txt-alpha-25);
     display: flex;
-    height: 74rem;
+    height: auto;
     margin: var(--margin);
     padding-bottom: var(--padding);
     overflow-y: hidden;
@@ -725,7 +725,7 @@
       width: calc(100% - 40rem - (2 * var(--margin)));
 
       .album-info {
-        border-bottom: solid 1px var(--color-txt);
+        border-bottom: solid 1px var(--color-txt-alpha-25);
         height: 10rem;
         margin-bottom: var(--margin);
         padding-bottom: var(--margin);
