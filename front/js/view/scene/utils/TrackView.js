@@ -35,7 +35,8 @@ class TrackView extends SceneView {
     const elementHovered = document.elementFromPoint(e.clientX, e.clientY);
     let startTimePercentage = null;
     if (elementHovered.classList.contains('track-moodbar')) {
-      startTimePercentage = 50;
+      const bRect = this.getBoundingClientRect();
+      startTimePercentage = ((e.clientX - bRect.left) / bRect.width) * 100;
     }
     mzk.changeTrack({
       id: this.dataset.id,
