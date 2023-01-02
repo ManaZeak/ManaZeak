@@ -361,9 +361,9 @@
 
           transition: color .2s;
 
-          &:active,
-          &:focus,
-          &:hover {
+          span:active,
+          span:focus,
+          span:hover {
             color: var(--color-primary);
           }
         }

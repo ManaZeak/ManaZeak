@@ -2,7 +2,9 @@
   <!--/*@thymesVar id="track" type="org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto"*/-->
   <div th:each="track : *{tracks}" th:attr="data-id=*{track.trackId},data-mood=*{track.mood}" class="track">
     <div class="track-info">
-      <p th:text="*{track.title}" class="track-title"></p>
+      <p class="track-title">
+        <span th:text="*{track.title}"></span>
+      </p>
       <p class="toggle-track-expand">
         <img src="/static/img/navigation/nav-down.svg" class="toggle-track-expand-img" alt="toggle-track-expand">
       </p>

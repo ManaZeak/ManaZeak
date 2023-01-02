@@ -107,7 +107,7 @@ class AlbumView extends PlayableView {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
       // On each trakc, listen to click evts, 
       for (let i = 0; i < this._tracks.length; ++i) {
-        this._evtIds.push(Evts.addEvent('click', this._tracks[i].querySelector('.track-title'), this._trackTitleClicked, {
+        this._evtIds.push(Evts.addEvent('click', this._tracks[i].querySelector('.track-title').children[0], this._trackTitleClicked, {
           tracks: this._tracks,
           index: i
         }));
@@ -189,8 +189,8 @@ class AlbumView extends PlayableView {
 
 
   _trackTitleClicked(e) {
+    e.stopPropagation();
     // This as special this scope, see event definition
-    console.log(e, this)
     mzk.setModal({
       name: 'TrackDetail',
       tracks: this.tracks,
