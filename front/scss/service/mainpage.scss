@@ -637,10 +637,16 @@
         }
         
         h3 {
+          align-items: center;
+          display: flex;
           font-style: italic;
+          justify-content: space-between;
           margin-bottom: .5rem;
           margin-top: 0;
-          text-align: right;
+
+          span:first-child {
+            font-size: var(--font-size-small);
+          }
         }
 
         h2 {

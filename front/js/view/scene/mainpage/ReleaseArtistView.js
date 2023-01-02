@@ -16,7 +16,7 @@ class ReleaseArtistView extends SceneView {
     this._scroll = [];
     
     this._fetchWrapper(this._url)
-      .then(this._makeInteractive.bind(this))
+      .then(this._buildNavigation.bind(this))
       .then(this._viewReady)
       .catch(this._viewFailed);
   }
@@ -28,7 +28,7 @@ class ReleaseArtistView extends SceneView {
   }
 
 
-  _makeInteractive() {
+  _buildNavigation() {
     return new Promise((resolve, reject) => {
       this._artist = this.dom.querySelector('#artist-name').innerHTML;
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#artist-picture'), this._pictureClicked, this));
@@ -70,10 +70,22 @@ class ReleaseArtistView extends SceneView {
           this._albums.appendChild(elements[i]);
         }
       });
-
+      /* Build albums */
       this._albums = this.dom.querySelector('#released-albums');
       if (this._albums && this._albums.children) {
         for (let i = 0; i < this._albums.children.length; ++i) {
+          let title = this._albums.children[i].lastElementChild.lastElementChild.innerHTML;
+          if (title.includes(' EP')) {
+            title = title.replace(' EP', '');
+            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
+          }
+
+          if (title.includes(' - Single')) {
+            title = title.replace(' - Single', '');
+            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
+          }
+          // Update album title if needed
+          this._albums.children[i].lastElementChild.lastElementChild.innerHTML = title;
           this._albums.children[i].addEventListener('click', this._albumClicked);
         }
 
