@@ -1,6 +1,5 @@
 .tooltip {
   position: relative;
-  z-index: 999;
 
   &:active .tooltip-text,
   &:focus .tooltip-text,
@@ -12,6 +11,7 @@
 
   .tooltip-text {
     background-color: var(--color-bg);
+    border: solid 1px var(--color-txt-alpha-25);
     border-radius: 3px;
     display: block;
     color: var(--color-txt);
@@ -27,6 +27,7 @@
     transform .2s ease-in-out;
     visibility: hidden;
     width: max-content;
+    z-index: 998;
 
     &.right {
       top: calc(50% - (var(--font-size-small) / 2) - var(--padding-small));
@@ -34,7 +35,7 @@
 
       &::after {
         content: ' ';
-        border-color: transparent var(--color-bg-alpha-75) transparent transparent;
+        border-color: transparent var(--color-txt-alpha-25) transparent transparent;
         border-style: solid;
         border-width: .25rem;
         position: absolute;
@@ -45,12 +46,12 @@
     }
 
     &.left {
-      top: calc(50% - 1rem + 5px);
-      right: 100%;
+      top: calc(50% - (var(--font-size-small) / 2) - var(--padding-small));
+      right: calc(100% + 1rem);
 
       &::after {
         content: ' ';
-        border-color: transparent transparent transparent var(--color-bg-alpha-75);
+        border-color: transparent transparent transparent var(--color-txt-alpha-25);
         border-style: solid;
         border-width: .25rem;
         position: absolute;

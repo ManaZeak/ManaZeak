@@ -7,7 +7,7 @@
     height: 100%;
     max-width: calc(100% - (2 * 8rem));
     width: 2000px;
-    z-index: 733;
+    z-index: 998;
   
     .progress-track {
       background-color: var(--color-bg-dark);
@@ -15,7 +15,7 @@
       opacity: 0;
       position: relative;
       width: 100%;
-      z-index: 734; // To make thumb appear always on top of moodbar
+      z-index: 999; // To make thumb appear always on top of moodbar
   
       @include transition(opacity .2s ease);
   
@@ -44,7 +44,7 @@
   
       .progress-hover {
         background-color: var(--color-bg);
-        border: solid 1px var(--color-txt);
+        border: solid 1px var(--color-txt-alpha-25);
         border-radius: 3px;
         bottom: 8px;
         box-sizing: border-box;
@@ -58,7 +58,7 @@
         position: absolute;
         text-align: center;
         width: 60px;
-        z-index: 734;
+        z-index: 1000; /* So hover is over navbar commands */
   
         @include transition(opacity .2s ease);
       }

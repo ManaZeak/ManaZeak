@@ -26,7 +26,6 @@
       height: 100%;
       overflow-x: hidden;
       overflow-y: auto;
-      width: calc(100% + var(--default-scroll-size));
     }
     /* Overflow hidden on y axis for horizontal scrollbar */
     .horizontal-scrollbar-content {
