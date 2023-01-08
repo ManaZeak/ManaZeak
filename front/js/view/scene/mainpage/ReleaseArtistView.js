@@ -13,7 +13,7 @@ class ReleaseArtistView extends SceneView {
 
     this._artist = '';
     this._albums = [];
-    this._scroll = [];
+    this._scrolls = [];
     
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
@@ -44,7 +44,7 @@ class ReleaseArtistView extends SceneView {
           this.dom.querySelector('.artist-header-right').style.height = 'calc(100% - 2 * var(--margin))';
           // Ensure height is properly applied before creating scroll on performers
           requestAnimationFrame(() => {
-            this._scroll.push(new ScrollBar({
+            this._scrolls.push(new ScrollBar({
               target: this.dom.querySelector('.artist-header-right'),
               style: {
                 color: '#56D45B'
@@ -89,7 +89,7 @@ class ReleaseArtistView extends SceneView {
           this._albums.children[i].addEventListener('click', this._albumClicked);
         }
 
-        this._scroll.push(new ScrollBar({
+        this._scrolls.push(new ScrollBar({
           target: this._albums,
           horizontal: true,
           style: {

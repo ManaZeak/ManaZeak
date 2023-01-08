@@ -20,8 +20,8 @@ class AlbumView extends PlayableView {
     this._collapseAll = null;
     this._expandAll = null;
 
-    this._scrollPerformers = null;
-    this._scrollTrack = null;
+    this._scrolls = [];
+    this._scrollTrack = null; /* Required to be individual, see refs in file */
 
     this._fetchWrapper(this._url)
       .then(this._buildNavigation.bind(this))
@@ -40,6 +40,14 @@ class AlbumView extends PlayableView {
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
+
+      this._scrolls.push(new ScrollBar({
+        target: this.dom,
+        style: {
+          color: '#56D45B'
+        }
+      }));
+
       this._artist = this.dom.querySelector('#release-artist').innerHTML;
       this._title = this.dom.querySelector('#album-title').innerHTML;
       this._performers = this.dom.querySelector('#album-performers').children;
@@ -69,12 +77,12 @@ class AlbumView extends PlayableView {
         this.dom.querySelector('#album-performers').style.height = '200px';
         // Ensure height is properly applied before creating scroll on performers
         requestAnimationFrame(() => {
-          this._scrollPerformers = new ScrollBar({
+          this._scrolls.push(new ScrollBar({
             target: this.dom.querySelector('#album-performers'),
             style: {
               color: '#56D45B'
             }
-          });
+          }));
           // Update performers bc of scroll DOM
           this._performers = this.dom.querySelector('#album-performers').children[0].children[0].children;
         });        
@@ -94,6 +102,49 @@ class AlbumView extends PlayableView {
         this._updatePlaying({
           id: mzk.ctrl.playingId
         });
+      }
+      /* Build albums */
+      const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
+      sortArtistReleases.addEventListener('click', () => {
+        sortArtistReleases.classList.toggle('active');
+        let elements = [].slice.call(this._albums.children);
+        elements = elements.reverse();
+        for (let i = 0; i < this._albums.children.length; ++i) {
+          this._albums.children[i].remove();
+        }
+        for (let i = 0; i < elements.length; ++i) {
+          this._albums.appendChild(elements[i]);
+        }
+      });
+      this._albums = this.dom.querySelector('#released-albums');
+      if (this._albums && this._albums.children) {
+        for (let i = 0; i < this._albums.children.length; ++i) {
+          let title = this._albums.children[i].lastElementChild.lastElementChild.innerHTML;
+          if (title.includes(' EP')) {
+            title = title.replace(' EP', '');
+            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
+          }
+
+          if (title.includes(' - Single')) {
+            title = title.replace(' - Single', '');
+            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
+          }
+          // Update album title if needed
+          this._albums.children[i].lastElementChild.lastElementChild.innerHTML = title;
+          this._albums.children[i].addEventListener('click', this._albumClicked);
+        }
+
+        this._scrolls.push(new ScrollBar({
+          target: this._albums,
+          horizontal: true,
+          style: {
+            color: '#56D45B'
+          }
+        }));
+
+        this._albums = this._albums.children[0].children[0];
+        this.updateScrollbars();
+        resolve();
       }
 
       resolve();
@@ -168,6 +219,16 @@ class AlbumView extends PlayableView {
       this._evtIds.push(Evts.addEvent('click', this._collapseAll, this._collapseAllTracks, this));
       this._evtIds.push(Evts.addEvent('click', this._expandAll, this._expandAllTracks, this));
 
+      for (let i = 0; i < this._albums.children.length; ++i) {
+        if (this._id === this._albums.children[i].dataset.id) {
+          setTimeout(() => {
+            this._albums.scrollLeft = this._albums.children[i].offsetLeft - (this._albums.clientWidth / 2) + (this._albums.children[i].clientWidth / 2);
+            this._albums.children[i].classList.add('selected');
+          });
+          break;
+        }
+      }
+
       resolve();
     });
   }
@@ -217,6 +278,15 @@ class AlbumView extends PlayableView {
       id: this.dataset.id
     });
   }
+
+
+  _albumClicked() {
+    mzk.setView({
+      name: 'Album',
+      id: this.dataset.id
+    });
+  }
+
 
 
   _labelClicked() {

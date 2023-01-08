@@ -1,5 +1,6 @@
 <div xmlns:th="http://www.thymeleaf.org" class="album-view-wrapper">
   <!--/*@thymesVar id="album" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
+  <!--/*@thymesVar id="albums" type="org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto"*/-->
   <!--/*@thymesVar id="compilationType" type="org.manazeak.manazeak.constant.tag.CompilationTypeEnum"*/-->
   <div class="album-container">
     <!-- Album left side (PP, title, compilation, contributing) -->
@@ -59,6 +60,20 @@
       </div>
       <!-- Displaying the tracks of the album. -->
       <div th:replace="~{/include/track/trackCompleteDetailFragment.html :: displayListCompleteTrack(*{album.tracks})}"></div>
+    </div>
+  </div>
+  <h1>
+    <span th:text="#{view.rlartist.album_released}"></span>
+    <span th:text="${album.albumArtist}"></span>
+    <img src="/static/img/navigation/sort-number.svg" id="sort-artist-releases" alt="sort-artist-releases">
+  </h1>
+  <div class="released-album-wrapper">
+    <div id="released-albums" class="released-albums">
+      <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="album">
+        <h3><span class="ep-sp"></span><span th:text="*{album.releaseYear}"></span></h3>
+        <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'medium')}"></div>
+        <h2><span th:text="*{album.title}"></span></h2>
+      </div>
     </div>
   </div>
 </div>

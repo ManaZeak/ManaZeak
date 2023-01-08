@@ -114,10 +114,6 @@
       margin-right: calc(var(--margin-small) + .6rem);
     }
 
-    &:last-child {
-      margin-bottom: calc(var(--margin) + var(--font-size-small));
-    }
-
     img { /* 1/2 width of small artist right over performers */
       height: 60px;
       width: 60px;
@@ -262,6 +258,105 @@
     [class$="-header-right"] {
       margin: var(--margin);
       width: calc(100% - 30rem);
+    }
+  }
+}
+/* Artist album in a row */
+.release-artist-view-wrapper,
+.album-view-wrapper {
+  h1 {
+    font-size: var(--font-size-big);
+    font-style: italic;
+    margin-bottom: var(--margin-tiny);
+    padding: 0 2rem;
+    position: relative;
+    width: calc(100% - 4rem);
+
+    img {
+      cursor: pointer;
+      height: var(--font-size-big);
+      position: absolute;
+      right: 0;
+
+      transition: filter .2s;
+
+      &.active {
+        filter: invert(62%) sepia(100%) saturate(288%) hue-rotate(73deg) brightness(95%) contrast(92%);
+      }
+    }
+  }
+
+  .released-album-wrapper {
+    display: flex;
+    margin: var(--margin);
+    margin-top: 0;
+    width: calc(100% - (2 * var(--margin)));
+
+    .released-albums {
+      border-spacing: 1rem;
+      height: 28rem;
+      margin: var(--margin);
+      overflow: hidden;
+
+      .album {
+        cursor: pointer;
+        display: table-cell;
+        padding: var(--padding);
+        max-width: 20rem;
+        text-align: center;
+  
+        transition: .2s background-color, .2s box-shadow;
+  
+        &:active,
+        &:focus,
+        &:hover,
+        &.selected {
+          background-color: var(--color-bg-alpha-75);
+          box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
+  
+          img {
+            transform: scale(1.05);
+          }
+        }
+        
+        &.selected {
+          background-color: var(--color-primary-alpha-25);
+        }
+
+        h3 {
+          align-items: center;
+          display: flex;
+          font-style: italic;
+          justify-content: space-between;
+          margin-bottom: .5rem;
+          margin-top: 0;
+  
+          span:first-child {
+            font-size: var(--font-size-small);
+          }
+        }
+  
+        h2 {
+          font-size: var(--font-size);  
+          margin: 0;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+  
+        .album-picture {
+          height: calc(15rem + var(--margin));
+          margin: 0 auto;
+          width: 15rem;
+  
+          img {
+            height: 100%;
+            margin-bottom: var(--margin);
+            width: 100%;
+            transition: transform .2s;
+          }
+        }
+      }
     }
   }
 }
@@ -609,72 +704,15 @@
         }
       }
     }
-
-    .released-albums {
-      border-spacing: 1rem;
-      height: 27rem;
-      overflow: hidden;
-      width: 100%;
-
-      .album {
-        cursor: pointer;
-        display: table-cell;
-        padding: var(--padding);
-        max-width: 20rem;
-        text-align: center;
-
-        transition: .2s background-color, .2s box-shadow;
-
-        &:active,
-        &:focus,
-        &:hover {
-          background-color: var(--color-bg-alpha-75);
-          box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
-
-          img {
-            transform: scale(1.05);
-          }
-        }
-        
-        h3 {
-          align-items: center;
-          display: flex;
-          font-style: italic;
-          justify-content: space-between;
-          margin-bottom: .5rem;
-          margin-top: 0;
-
-          span:first-child {
-            font-size: var(--font-size-small);
-          }
-        }
-
-        h2 {
-          font-size: var(--font-size);  
-          margin: 0;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-
-        .album-picture {
-          height: calc(15rem + var(--margin));
-          margin: 0 auto;
-          width: 15rem;
-
-          img {
-            height: 100%;
-            margin-bottom: var(--margin);
-            width: 100%;
-            transition: transform .2s;
-          }
-        }
-      }
-    }
   }
 }
 
 .album-view-wrapper {
+  display: inherit;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+
   .album-container {
     align-items: flex-start;
     border-bottom: solid 1px var(--color-txt-alpha-25);

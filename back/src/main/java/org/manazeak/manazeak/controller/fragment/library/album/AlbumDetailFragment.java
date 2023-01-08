@@ -30,6 +30,7 @@ public class AlbumDetailFragment {
         // Getting the album in the database.
         AlbumDetailsDto album = albumService.getAlbumInformation(albumId);
         model.addAttribute("album", album);
+        model.addAttribute("albums", albumService.getMinimalAlbumByArtistId(album.getAlbumArtistId()));
         model.addAttribute("compilationType", CompilationTypeEnum.getCompilationByCode(album.getCompilationCode()));
 
         return AlbumFragmentEnum.ALBUM_DETAIL.getPage();

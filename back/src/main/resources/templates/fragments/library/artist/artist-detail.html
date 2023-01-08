@@ -3,8 +3,7 @@
 <div xmlns:th="http://www.thymeleaf.org" class="release-artist-view-wrapper">
   <div class="artist-header">
     <div class="artist-header-left">
-      <div
-          th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')}"></div>
+      <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')}"></div>
       <h1 th:text="${artist.name}" id="artist-name"></h1>
     </div>
     <div class="artist-header-center">
@@ -23,19 +22,18 @@
       <p th:text="#{view.rlartist.members}"></p>
       <div id="artist-members" class="artists-small">
         <div th:each="member : ${artist.members}" class="artist" th:attr="data-id=*{member.id}">
-          <div
-              th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')}"></div>
+          <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, 'medium')}"></div>
           <p th:text="*{member.name}"></p>
         </div>
       </div>
     </div>
   </div>
-  <div class="artist-content">
-    <h1>
-      <span th:text="#{view.rlartist.album_released}"></span>
-      <span th:text="${artist.name}"></span>
-      <img src="/static/img/navigation/sort-number.svg" id="sort-artist-releases" alt="sort-artist-releases">
-    </h1>
+  <h1>
+    <span th:text="#{view.rlartist.album_released}"></span>
+    <span th:text="${artist.name}"></span>
+    <img src="/static/img/navigation/sort-number.svg" id="sort-artist-releases" alt="sort-artist-releases">
+  </h1>
+  <div class="released-album-wrapper">
     <div id="released-albums" class="released-albums">
       <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="album">
         <h3><span class="ep-sp"></span><span th:text="*{album.releaseYear}"></span></h3>
