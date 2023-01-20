@@ -1,7 +1,12 @@
-<div class="menu-page" xmlns:th="http://www.thymeleaf.org">
+<div class="menu-page" xmlns:th="http://www.thymeleaf.org" xmlns:pth="http://www.w3.org/1999/html">
   <div class="title-container">
     <h1>ManaZeak war room</h1>
-    <p>Some text to put yeah</p>
+  </div>
+  <!--/*@thymesVar id="scanStatus" type="org.manazeak.manazeak.entity.dto.library.scan.ScanStatusDto"*/-->
+  <div th:if="${scanStatus != null}">
+    <p th:text="${scanStatus.stepNumber()}"></p>/<p th:text="${totalSteps}"></pth:t>
+    <p th:text="#{${scanStatus.statusCode()}}"></p>
+    <p th:text="#{user.menu.scan_start_time}"></p><p th:text="${scanStatus.startedAt()}"></p>
   </div>
   <div class="control-container">
     <!--/*@thymesVar id="isAdmin" type="java.lang.Boolean"*/-->
