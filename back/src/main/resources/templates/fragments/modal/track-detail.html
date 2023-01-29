@@ -3,8 +3,12 @@
   <span class="close" id="modal-close">&#10006;</span>
   <div class="container">
     <header>
-      <h1 th:text="*{track.title}"></h1>
+      <h1 th:text="${track.title}"></h1>
+      <h2 class="track-performers">
+        <!-- <span th:each="performer : ${track.performers}" th:text="*{performer.name}" th:attr="data-id=*{performer.id}"></span> -->
+      </h2>
     </header>
+    <div id="waveform-container" class="waveform-container"></div>
   </div>
   <div class="footer">
     <button id="modal-footer-previous" th:text="#{modal.track.previous}"></button>
