@@ -61,27 +61,25 @@ class TrackDetailModal extends Modal {
 
   _buildWaveform() {
     const audio = document.createElement('AUDIO')
-    audio.addEventListener('canplaythrough', () => {
-      this._waveform = new AudioVisualizer({
-        type: 'waveform',
-        player: audio,
-        renderTo: this._rootElement.querySelector('#waveform-container'),
-        fftSize: 128,
-        noEvents: true,
-        wave: {
-          align: 'center',
-          barWidth: 1,
-          barMarginScale: 0.25,
-          merged: false,
-          noSignalLine: false
-        },
-        colors: {
-          background: 'transparent',
-          track: '#E7E9E7'
-        },      
-      });
-    }, true);
     audio.src = `/play/${this._id}/`;
+    this._waveform = new AudioVisualizer({
+      type: 'waveform',
+      player: audio,
+      renderTo: this._rootElement.querySelector('#waveform-container'),
+      fftSize: 128,
+      noEvents: true,
+      wave: {
+        align: 'center',
+        barWidth: 0.2,
+        barMarginScale: 0,
+        merged: false,
+        noSignalLine: false
+      },
+      colors: {
+        background: 'transparent',
+        track: '#E7E9E7'
+      },      
+    });
   }
 
 

@@ -172,7 +172,8 @@ class ScrollBar {
       // Listen to window events or container/scrollbar events
       window.addEventListener('resize', this._updateScrollBar.bind(this));
       this._container.addEventListener('scroll', this._updateScrollBar.bind(this));
-      this._container.addEventListener('mouseenter', this._updateScrollBar.bind(this));
+      this._container.addEventListener('mouseenter', this._mouseEnter.bind(this));
+      this._container.addEventListener('mouseleave', this._mouseLeave.bind(this));
       this._bar.addEventListener('mousedown', this._barClicked.bind(this));
       // Scrollbar is now ready to be used
       resolve();
@@ -259,6 +260,20 @@ class ScrollBar {
   // ======================================================================== //
   // ----------------- Internal size and position update -------------------- //
   // ======================================================================== //
+
+
+  _mouseEnter(e) {
+    e.preventDefault();
+    this._target.classList.add('hovered');
+    this._updateScrollBar();
+  }
+
+
+  _mouseLeave(e) {
+    e.preventDefault();
+    this._target.classList.remove('hovered');
+    this._updateScrollBar();    
+  }
 
 
   /**

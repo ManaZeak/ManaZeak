@@ -177,10 +177,11 @@
     height: calc(100% - 6rem);
 
     header {
-      text-align: center;
+      text-align: left;
     }
 
     .waveform-container {
+      height: calc(18rem + 1px); /* Avoid centered waveform line */
       width: 100%;
     }
   }

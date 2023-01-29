@@ -54,12 +54,8 @@
     height: var(--scroll-size);
   }
   /* Update scroll opacity on mouse over the DOm target */
-  &:active .scroll,
-  &:active .horizontal-scroll,
-  &:focus .scroll,
-  &:focus .horizontal-scroll,
-  &:hover .scroll,
-  &:hover .horizontal-scroll {
+  &.hovered > .scroll,
+  &.hovered > .horizontal-scroll {
     opacity: var(--scroll-high-opacity);
   }
   /* Forbid user selection when the scroll is grabbed */
