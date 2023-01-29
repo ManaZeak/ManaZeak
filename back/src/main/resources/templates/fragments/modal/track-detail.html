@@ -1,8 +1,10 @@
-  <!--/*@thymesVar id="track" type="org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto"*/-->
 <div class="modal" xmlns:th="http://www.thymeleaf.org">
+  <!--/*@thymesVar id="track" type="org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto"*/-->
   <span class="close" id="modal-close">&#10006;</span>
   <div class="container">
-
+    <header>
+      <h1 th:text="*{track.title}"></h1>
+    </header>
   </div>
   <div class="footer">
     <button id="modal-footer-previous" th:text="#{modal.track.previous}"></button>

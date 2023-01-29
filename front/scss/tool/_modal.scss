@@ -175,6 +175,10 @@
 
   .container {
     height: calc(100% - 6rem);
+
+    header {
+      text-align: center;
+    }
   }
 
   .footer {

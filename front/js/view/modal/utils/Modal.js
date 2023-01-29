@@ -84,7 +84,8 @@ class Modal {
     mzk.kom.getText(this._url).then(response => {
       // Create DOM from fragment and tweak url to only keep modal type as css class
       this._rootElement = Utils.parseHTMLFragment(response);
-      this._rootElement.classList.add(`${this._type}-modal`);
+      const type = this._type.split('/')[0]; // Avoid any ID in url
+      this._rootElement.classList.add(`${type}-modal`);
       // Create overlay modal container
       this._modalOverlay = document.createElement('DIV');
       this._modalOverlay.className = 'loading-overlay';

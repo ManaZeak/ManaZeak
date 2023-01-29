@@ -6,8 +6,7 @@ class TrackDetailModal extends Modal {
 
 
   constructor(options) {
-    super('track-detail');
-//    super(`track-detail/${options.id}`);
+    super(`track-detail/${options.id}`);
 
     console.log(options)
     /** @private
