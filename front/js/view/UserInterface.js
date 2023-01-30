@@ -226,6 +226,7 @@ class UserInterface {
 
   queue(queuedTracks) {
     this._navBar.setQueuedTracks(queuedTracks);
+    
   }
 
 

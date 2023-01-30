@@ -267,7 +267,6 @@
   h1 {
     font-size: var(--font-size-big);
     font-style: italic;
-    margin-bottom: var(--margin-tiny);
     padding: 0 2rem;
     position: relative;
     width: calc(100% - 4rem);
@@ -295,7 +294,7 @@
     .released-albums {
       border-spacing: 1rem;
       height: 28rem;
-      margin: var(--margin);
+      margin: 0;
       overflow: hidden;
 
       .album {
@@ -364,7 +363,7 @@
 .album-view-wrapper,
 .genre-view-wrapper {
   .album {
-    counter-reset: track; /* Create counter instance */
+    counter-reset: track 0; /* Create counter instance */
     padding: var(--padding) 0;
     width: 100%;
 
@@ -514,6 +513,7 @@
           transition: opacity var(--animation-duration);
 
           img {
+            height: var(--font-size);
             width: var(--font-size);
           }
         }
@@ -719,6 +719,7 @@
     display: flex;
     height: auto;
     margin: var(--margin);
+    max-height: 76rem;
     padding-bottom: var(--padding);
     overflow-y: hidden;
     width: calc(100% - 2 * var(--margin));
@@ -750,7 +751,13 @@
         font-size: var(--font-size-big);
         margin: 0;
         margin-bottom: var(--margin-tiny);
+        padding: 0;
         text-align: center;
+        
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
       }
 
       h2 {
@@ -851,8 +858,13 @@
 
       .album {
         height: calc(100% - 10rem - (2 * var(--padding)));
+        max-height: calc(76rem - (2 * var(--margin)));
       }
     }
+  }
+
+  .released-album-wrapper {
+    justify-content: center;
   }
 }
 
@@ -884,7 +896,7 @@
     position: relative;
 
     &.collapsed {
-      height: 18rem;
+      height: 14rem;
       overflow: hidden;
 
       .expand-artist-wrapper {
@@ -910,7 +922,7 @@
       justify-content: flex-start;
       width: 30rem;
 
-      p {
+      h2 {
         margin-top: 0;
       }
 
@@ -935,7 +947,7 @@
         display: flex;
         margin-bottom: var(--margin-small);
 
-        h2 {
+        h3 {
           margin: 0;
           margin-left: var(--margin);
         }

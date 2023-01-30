@@ -17,8 +17,8 @@ class AlbumView extends PlayableView {
     this._title = '';
     this._performers = [];
 
-    this._collapseAll = null;
-    this._expandAll = null;
+    this._allExpander = null;
+    this._isExpanded = false;
 
     this._scrolls = [];
     this._scrollTrack = null; /* Required to be individual, see refs in file */
@@ -40,7 +40,7 @@ class AlbumView extends PlayableView {
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
-
+      // Global view scroll
       this._scrolls.push(new ScrollBar({
         target: this.dom,
         style: {
@@ -63,7 +63,7 @@ class AlbumView extends PlayableView {
         const duration = this._tracks[i].getElementsByClassName('track-duration')[0];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
-
+      // Scroll on track must be separated from other scrolls
       this._scrollTrack = new ScrollBar({
         target: this.dom.querySelector('#album-tracks'),
         style: {
@@ -95,8 +95,7 @@ class AlbumView extends PlayableView {
         name: 'track'
       });
 
-      this._collapseAll = this.dom.querySelector('#album-collapse-all');
-      this._expandAll = this.dom.querySelector('#album-expand-all');
+      this._allExpander = this.dom.querySelector('#album-all-expander');
       // Update playing track if necessary
       if (mzk.ctrl.playingId) {
         this._updatePlaying({
@@ -216,8 +215,7 @@ class AlbumView extends PlayableView {
         }
       });
 
-      this._evtIds.push(Evts.addEvent('click', this._collapseAll, this._collapseAllTracks, this));
-      this._evtIds.push(Evts.addEvent('click', this._expandAll, this._expandAllTracks, this));
+      this._evtIds.push(Evts.addEvent('click', this._allExpander, this._toggleAllTracks, this));
 
       for (let i = 0; i < this._albums.children.length; ++i) {
         if (this._id === this._albums.children[i].dataset.id) {
@@ -367,7 +365,18 @@ class AlbumView extends PlayableView {
   }
 
 
+  _toggleAllTracks() {
+    if (this._isExpanded === false) {
+      this._expandAllTracks();
+    } else {
+      this._collapseAllTracks();
+    }
+  }
+
+
   _collapseAllTracks() {
+    this._isExpanded = false;
+    this._allExpander.src = '/static/img/navigation/nav-down.svg';
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].classList.remove('expanded');
       this._tracks[i].style.height = '5rem'; // Restore to css value
@@ -381,6 +390,8 @@ class AlbumView extends PlayableView {
 
 
   _expandAllTracks() {
+    this._isExpanded = true;
+    this._allExpander.src = '/static/img/navigation/nav-up.svg';
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].classList.add('expanded');
       const height = this._tracks[i].querySelector('.track-detailed-info').getBoundingClientRect().height;

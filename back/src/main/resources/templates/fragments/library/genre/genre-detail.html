@@ -7,36 +7,33 @@
     </div>
     <div class="genre-header-right">
       <div class="view-commands">
-        <img src="/static/img/navigation/nav-down.svg" id="expand-all" alt="expand-all">
-        <img src="/static/img/navigation/nav-up.svg" id="collapse-all" alt="collapse-all">
+        <img src="/static/img/navigation/nav-up.svg" id="all-expander" alt="all-expander">
       </div>
     </div>
   </div>
   <div id="genre-content" class="genre-content">
     <div th:each="artist : ${genre.artists}" class="artist">
       <div class="artist-commands"> <!-- Must remain first children of artist commands -->
-        <img src="/static/img/navigation/nav-up.svg" th:attr="data-id=*{artist.artistId}" class="collapse-artist"
-             alt="collapse-artist">
+        <img src="/static/img/navigation/nav-up.svg" th:attr="data-id=*{artist.artistId}" class="collapse-artist" alt="collapse-artist">
       </div>
       <div th:attr="data-id=*{artist.artistId}" class="artist-info">
-        <p th:text="*{artist.artistName}"></p>
-        <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)}"></div>
+        <h2 th:text="*{artist.artistName}"></h2>
         <!-- TODO : New field, to style. -->
-        <p th:text="*{artist.isLabel}"></p>
+        <!-- <p th:text="*{artist.isLabel}"></p> -->
+        <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)}"></div>
       </div>
       <div class="artist-albums">
-        <div th:each="album : *{artist.albums}" class="album">
+        <div th:each="album : *{artist.albums}" class="album-content">
           <div th:attr="data-id=*{album.albumId}" class="album-info">
             <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.albumCover}, medium)}"></div>
-            <h2><span th:text="*{album.albumTitle}"></span></h2>
+            <h3><span th:text="*{album.albumTitle}"></span></h3>
           </div>
           <!-- Displaying the tracks of the album. -->
           <div th:replace="~{/include/track/trackCompleteDetailFragment.html :: displayListCompleteTrack(*{album.tracks})}"></div>
         </div>
       </div>
       <div class="expand-artist-wrapper">
-        <img src="/static/img/navigation/nav-down.svg" th:attr="data-id=*{artist.artistId}" class="expand-artist"
-             alt="expand-artist">
+        <img src="/static/img/navigation/nav-down.svg" th:attr="data-id=*{artist.artistId}" class="expand-artist" alt="expand-artist">
       </div>
     </div>
   </div>
