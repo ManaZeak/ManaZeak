@@ -12,34 +12,34 @@ import org.manazeak.manazeak.exception.MzkSecurityException;
 public interface KommunicatorService {
 
     /**
-     * Build a response for the front when a exception occurred.
+     * Build a response for the front when an exception occurred.
      *
      * @param e the exception to handle.
-     * @return The object that will be send to the front
+     * @return The object that will be sent to the front
      */
     KommunicatorDto buildKommunicatorFromException(MzkRestException e);
 
     /**
-     * Build a response for the front when a exception occurred.
+     * Build a response for the front when an exception occurred.
      *
      * @param e the exception to handle.
-     * @return The object that will be send to the front
+     * @return The object that will be sent to the front
      */
     KommunicatorDto buildKommunicatorFromException(MzkObjectNotFoundException e);
 
     /**
-     * Build a response for the front when a exception occurred.
+     * Build a response for the front when an exception occurred.
      *
      * @param e the exception to handle.
-     * @return The object that will be send to the front
+     * @return The object that will be sent to the front
      */
     KommunicatorDto buildKommunicatorFromException(MzkSecurityException e);
 
     /**
-     * Build a response for the front when a exception occured.
+     * Build a response for the front when an exception occured.
      *
      * @param e the exception to handle.
-     * @return The object that will be send to the front.
+     * @return The object that will be sent to the front.
      */
     KommunicatorDto buildKommunicatorFromException(MzkFrontNotificationException e);
 

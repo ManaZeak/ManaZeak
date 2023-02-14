@@ -59,6 +59,22 @@ public final class FileUtil {
     }
 
     /**
+     * Delete a file from the file system. Throw an MzkRuntimeException if there is an error durring the process.
+     *
+     * @param filePath The path of the file to delete.
+     */
+    public static void deleteFile(Path filePath) {
+        if (Files.exists(filePath)) {
+            try {
+                Files.delete(filePath);
+            } catch (IOException e) {
+                throw new MzkRuntimeException("Error encountered when deleting the file : " + filePath,
+                        FileNotificationEnum.IO_ERROR, e);
+            }
+        }
+    }
+
+    /**
      * Creates a file containing the given bytes.
      *
      * @param path  The path of the file that will be created.

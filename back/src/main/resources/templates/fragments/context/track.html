@@ -1,16 +1,20 @@
-<div class="context-transparent-overlay">
+<div class="context-transparent-overlay" xmlns:th="http://www.thymeleaf.org">
   <div class="track-context">
     <div class="entry download">
       <img src="/static/img/actions/download.svg" alt="download">
-      <p class="track-download">Download</p>
+      <p class="track-download" th:text="#{view.track.download}"></p>
     </div>
     <div class="entry add-to-queue">
       <img src="/static/img/player/queue.svg" alt="logout">
-      <p class="track-queue">Add to queue</p>
+      <p class="track-queue" th:text="#{view.track.add_queue}"></p>
     </div>
     <div class="entry tap-bpm">
       <img src="/static/img/actions/tempo.svg" alt="logout">
-      <p class="track-tap-bpm">Tap BPM (to nls)</p>
+      <p class="track-tap-bpm" th:text="#{view.track.tap_bpm}"></p>
+    </div>
+    <div>
+      <!-- rest request : /regenerate-mood/{trackId}/ -->
+      <p>Regenerate moodbar</p>
     </div>
   </div>
 </div>

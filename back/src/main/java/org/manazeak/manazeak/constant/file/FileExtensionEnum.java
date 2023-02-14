@@ -15,7 +15,8 @@ public enum FileExtensionEnum {
     PNG(".png", "image/png"),
     MP3(".mp3", "audio/mpeg", "audio/mp3"),
     FLAC(".flac", "audio/flac"),
-    WEBP(".webp", "image/webp");
+    WEBP(".webp", "image/webp"),
+    MOOD(".mood", "text/plain");
 
     private final String extension;
 
