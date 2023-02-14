@@ -5,7 +5,6 @@ import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.library.ScanStepEnum;
 import org.manazeak.manazeak.daos.library.wiper.LibraryWiperDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
-import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
 import org.manazeak.manazeak.manager.library.cover.CoverManager;
@@ -19,7 +18,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * This service allows to scan the music library to get the information contained in the tracks.
@@ -91,23 +89,4 @@ public class LibraryScanService {
         }
 
     }
-
-    /**
-     * Sync the tracks contained in the filesystem with the track contained in the database.
-     */
-    public void rescanLibrary() {
-        LOG.info("Starting the library re-scan.");
-        // Iterating through the files of the library.
-        try {
-            // Scan result
-            LibraryScanResultDto scanResult = libraryScanManager.scanLibraryFolder();
-            // Filtering the artists that must be updated.
-            List<ScannedArtistDto> artists = libraryScanManager.removeArtistNotUpdated(scanResult.getArtists());
-            // Extract the data contained in the tags of the tracks.
-        } catch (IOException e) {
-            // TODO: save the error in a table to show it to a front user.
-            throw new MzkRuntimeException("File handling error during the rescan", e);
-        }
-    }
-
 }

@@ -3,8 +3,6 @@ package org.manazeak.manazeak.manager.library.track;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
-import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
-import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 import org.springframework.stereotype.Component;
@@ -21,11 +19,6 @@ public class TrackManager {
     private final TrackDAO trackDAO;
 
     private final TrackCompleteConverterManager converterManager;
-
-    private static ArtistMinimalInfoDto createPerformerFromTrack(AlbumTrackDbInfoDto dbTrack) {
-        return new ArtistMinimalInfoDto(dbTrack.performerId(), dbTrack.performerName(), dbTrack.performerPicture(),
-                dbTrack.performerIsLabel());
-    }
 
     /**
      * Get the tracks of an album and set the performer of the album.

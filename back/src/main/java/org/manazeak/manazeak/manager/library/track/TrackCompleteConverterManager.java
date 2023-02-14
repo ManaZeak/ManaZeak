@@ -16,6 +16,19 @@ import java.util.List;
 public class TrackCompleteConverterManager {
 
     /**
+     * Get the last track in the track table.
+     *
+     * @param tracks The list of the tracks.
+     * @return The last track if the list is not empty, null otherwise.
+     */
+    private static TrackCompleteInfoDto getLastTrack(List<TrackCompleteInfoDto> tracks) {
+        if (tracks.isEmpty()) {
+            throw new MzkRuntimeException("The list of track cannot be empty.");
+        }
+        return tracks.get(tracks.size() - 1);
+    }
+
+    /**
      * Converts the tracks that have been provided by the database to displayable objects.
      *
      * @param dbTracks The tracks contained in the database.
@@ -37,18 +50,5 @@ public class TrackCompleteConverterManager {
         }
 
         return tracks;
-    }
-
-    /**
-     * Get the last track in the track table.
-     *
-     * @param tracks The list of the tracks.
-     * @return The last track if the list is not empty, null otherwise.
-     */
-    private TrackCompleteInfoDto getLastTrack(List<TrackCompleteInfoDto> tracks) {
-        if (tracks.isEmpty()) {
-            throw new MzkRuntimeException("The list of track cannot be empty.");
-        }
-        return tracks.get(tracks.size() - 1);
     }
 }

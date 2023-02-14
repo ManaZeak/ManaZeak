@@ -27,13 +27,10 @@ public final class FormatFileCheckerUtil {
         try {
             FileExtensionEnum extension = FileMagicNumberEnum.getFileExtension(file);
             // Checking if the extension is considered has an image.
-            switch (extension) {
-                case JGP:
-                case PNG:
-                    return true;
-                default:
-                    return false;
-            }
+            return switch (extension) {
+                case JGP, PNG -> true;
+                default -> false;
+            };
         } catch (MzkFileFormatException e) {
             // The format of the file wasn't recognized.
             return false;

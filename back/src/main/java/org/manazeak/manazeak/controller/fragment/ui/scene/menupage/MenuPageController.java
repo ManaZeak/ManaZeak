@@ -7,7 +7,6 @@ import org.manazeak.manazeak.constant.library.ScanStepEnum;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.ui.UiFragmentEnum;
-import org.manazeak.manazeak.entity.reference.ScanStep;
 import org.manazeak.manazeak.service.library.LibraryScanStatusService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,13 +1,14 @@
 package org.manazeak.manazeak.daos.track;
 
-import org.manazeak.manazeak.entity.dto.library.genre.*;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDbDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenreLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.genre.GenrePictureProjection;
 import org.manazeak.manazeak.entity.track.Genre;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;
