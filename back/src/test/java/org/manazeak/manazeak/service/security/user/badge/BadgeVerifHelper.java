@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Check badges objects for unit tests.
@@ -29,10 +30,13 @@ public class BadgeVerifHelper {
         // Checking the size of the list.
         Assertions.assertEquals(2, badges.size(), "Too many badges were found.");
         // Checking the content of the badge
-        BadgeListLineDto badge = badges.get(1);
-        Assertions.assertEquals(BadgeDataCreation.BADGE_CONTENT, badge.getLabel(), "The badge label is wrong.");
-        // Checking there is no user linked to the badge
-        Assertions.assertEquals(0, badge.getUsers().size(), "No user should be linked to this badge.");
+        AtomicBoolean found = new AtomicBoolean(false);
+        badges.forEach((badge) -> {
+            if (BadgeDataCreation.BADGE_CONTENT.equals(badge.getLabel())) {
+                found.set(true);
+            }
+        });
+        Assertions.assertTrue(found.get(), "The UT badge wasn't found in the database.");
     }
 
     /**

@@ -29,7 +29,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-
     steps:
     - uses: actions/checkout@v3
       with:
@@ -39,11 +38,3 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
-    - name: Send success message to matrix channel
-      uses: fadenb/Matrix-Chat-Message@v0.0.6
-      if: success()
-      with:
-        homeserver: ${{ secrets.MATRIX_SERVER }}
-        token: ${{ secrets.ACCES_TOKEN }}
-        channel: ${{ secrets.INTERNAL_ROOM_ID }}
-        message: Success.
