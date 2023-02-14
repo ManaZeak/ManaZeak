@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master, dev, 168-fix-github-action ]
   pull_request:
     branches: [ master ]
 
@@ -28,7 +28,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
 
     steps:
     - uses: actions/checkout@v3
