@@ -1,0 +1,11 @@
+<div xmlns:th="http://www.thymeleaf.org">
+  <!--/*@thymesVar id="label" type="org.manazeak.manazeak.entity.dto.library.label.LabelCompleteInfoDto"*/-->
+  <div th:data="${label.id}">
+    <p th:text="${label.name}"></p>
+    <div th:replace="~{/include/label/labelPictureFragment :: labelPictureDisplay(${label.picture()}, orig)}"></div>
+  </div>
+  <div th:each="artist : ${label.artists}">
+    <div th:replace="~{/include/artist/minimalArtistFragment :: displayMinimalArtist(*{artist}, medium)}"></div>
+  </div>
+  <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${label.albums()}, medium)}"></div>
+</div>

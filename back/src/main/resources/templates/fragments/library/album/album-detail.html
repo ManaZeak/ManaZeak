@@ -33,7 +33,8 @@
     <div class="album-content">
       <div class="album-info">
         <h2>
-          <span th:text="*{album.albumArtist}" th:attr="data-id=*{album.albumArtistId}" id="release-artist" class="link"></span>&nbsp;–
+          <span th:text="*{album.albumArtist}" th:attr="data-id=*{album.albumArtistId}" id="release-artist"
+                class="link"></span>&nbsp;–
           <span th:text="*{album.title}"></span>
         </h2>
         <p>
@@ -51,7 +52,7 @@
           <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{album.albumArtistPicture}, small)}"></div>
         </div>
         <div class="view-commands">
-          <div id="queue-album" class="queue-album" >
+          <div id="queue-album" class="queue-album">
             <img src="/static/img/player/queue.svg" alt="queue-album">
           </div>
           <img src="/static/img/navigation/nav-down.svg" id="album-all-expander" alt="album-all-expander">
@@ -66,13 +67,6 @@
     <span th:text="${album.albumArtist}"></span>
     <img src="/static/img/navigation/sort-number.svg" id="sort-artist-releases" alt="sort-artist-releases">
   </h1>
-  <div class="released-album-wrapper">
-    <div id="released-albums" class="released-albums">
-      <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="album">
-        <h3><span class="ep-sp"></span><span th:text="*{album.releaseYear}"></span></h3>
-        <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'medium')}"></div>
-        <h2><span th:text="*{album.title}"></span></h2>
-      </div>
-    </div>
-  </div>
+  <!-- Displaying the lines of albums. -->
+  <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${albums}, medium)}"></div>
 </div>

@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
-import org.manazeak.manazeak.entity.dto.library.album.AlbumInfoArtistViewDto;
+import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverUpdateProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
@@ -39,7 +39,7 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
      * @param artistId The id of the artist that created the album.
      * @return The list of corresponding albums for the given artist id.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.album.AlbumInfoArtistViewDto( " +
+    @Query("select new org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto( " +
             "alb.albumId, " +
             "alb.title, " +
             "alb.cover," +
@@ -47,7 +47,7 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             "from Album alb " +
             "where alb.artist.artistId = :artistId " +
             "order by alb.releaseDate desc")
-    List<AlbumInfoArtistViewDto> getMinimalAlbumByArtistId(@Param("artistId") Long artistId);
+    List<AlbumMinimalInfoDto> getMinimalAlbumByArtistId(@Param("artistId") Long artistId);
 
     /**
      * Get the detail of an album from the database.
@@ -85,5 +85,14 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             "where albumId > :lastAlbumId " +
             "order by albumId")
     List<AlbumCoverUpdateProjection> getAlbumsLocationAndCoverName(@Param("lastAlbumId") Long lastAlbumId, Pageable pageable);
+
+    @Query("select new org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto(" +
+            "alb.albumId," +
+            "alb.title," +
+            "alb.cover," +
+            "alb.releaseYear) " +
+            "from Album alb " +
+            "where alb.label.labelId = :labelId")
+    List<AlbumMinimalInfoDto> getMinimalAlbumsByLabelId(@Param("labelId") Long labelId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT
