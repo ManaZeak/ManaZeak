@@ -13,7 +13,7 @@ RUN mvn clean verify --fail-never
 
 # Adding source files.
 ADD ./ /ManaZeak
-RUN mvn clean package -DskipTests -Dskip.npm -Dskip.karma -Dskip.webpack
+RUN mvn clean package -DskipTests -Dskip.npm -Dskip.karma -Dskip.webpack -Dskip.installnodenpm
 
 
 # Creating the production image
