@@ -35,10 +35,10 @@ public class CacheAccessManager {
         if (cacheObject == null) {
             return null;
         }
-        if (cacheObject instanceof String) {
-            return Long.parseLong((String) cacheObject);
-        } else if (cacheObject instanceof Long) {
-            return (Long) cacheObject;
+        if (cacheObject instanceof String stringValue) {
+            return Long.parseLong(stringValue);
+        } else if (cacheObject instanceof Long longValue) {
+            return longValue;
         }
         throw new MzkRuntimeException("Invalid cache type " + cache.name() + ".");
     }
