@@ -2,14 +2,14 @@ package org.manazeak.manazeak.manager.security.user.wish;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
+import org.manazeak.manazeak.daos.reference.WishStatusDAO;
 import org.manazeak.manazeak.daos.security.WishDAO;
-import org.manazeak.manazeak.daos.security.WishStatusDAO;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishDto;
 import org.manazeak.manazeak.entity.dto.user.wish.UserWishListLineDto;
 import org.manazeak.manazeak.entity.dto.user.wish.WishesDisplayDto;
+import org.manazeak.manazeak.entity.reference.WishStatus;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Wish;
-import org.manazeak.manazeak.entity.security.WishStatus;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.manager.MessageManager;
 import org.springframework.stereotype.Component;
