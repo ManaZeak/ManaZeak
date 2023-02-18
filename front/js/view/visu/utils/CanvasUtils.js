@@ -392,7 +392,7 @@ class CanvasUtils {
    * @param {number} options.label - The hotcue label **/
   static drawHotCue(canvas, options) {
     // Test that caller sent mandatory arguments
-    if ((canvas === undefined || canvas === null) || (options === undefined || options === null)) {
+    if (!canvas || !options) {
       return new Error('CanvasUtils.drawHotCue : Missing arguments canvas or options');
     }
     // Test those arguments proper types
@@ -400,7 +400,7 @@ class CanvasUtils {
       return new Error('CanvasUtils.drawHotCue : Invalid type for canvas or options');
     }
     // Test if options contains other mandatory args
-    if ((options.x === undefined || options.x === null) || (options.y === undefined || options.y === null) || (options.size === undefined || options.size === null) || (options.label === undefined || options.label === null)) {
+    if (!options.x || !options.y || !options.size || !options.label) {
       return new Error('CanvasUtils.drawHotCue : Missing arguments options.x or options.y or options.size or options.label');
     }
     // Test mandatory arguments proper types

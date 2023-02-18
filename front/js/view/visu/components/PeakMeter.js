@@ -287,6 +287,26 @@ class PeakMeter extends VisuComponentStereo {
       this._amplitudeR = Math.floor((avgPowerDecibelsR * this._canvasR.height) / dbScaleBound);
     }
     // Left channel
+    this.__stereoLeft(avgPowerDecibelsL);
+    // Right channel
+    this.__stereoRight();
+    // Draw left and right peak meters
+    CanvasUtils.drawPeakMeter(this._canvasL, {
+      amplitude: this._amplitudeL,
+      peak: this._peakL,
+      orientation: this._orientation,
+      colors: this._peakGradient
+    });
+    CanvasUtils.drawPeakMeter(this._canvasR, {
+      amplitude: this._amplitudeR,
+      peak: this._peakR,
+      orientation: this._orientation,
+      colors: this._peakGradient
+    });
+  }
+
+
+  __stereoLeft(avgPowerDecibelsL) {
     // Found a new max value (peak) [-this._dbScaleMin, 0] interval
     if (this._peakL > this._amplitudeL) {
       this._peakL = this._amplitudeL;
@@ -303,7 +323,10 @@ class PeakMeter extends VisuComponentStereo {
         this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibelsL, 1);
       }
     }
-    // Right channel
+  }
+
+
+  __stereoRight(avgPowerDecibelsR) {
     // Found a new max value (peak) [-this._dbScaleMin, 0] interval
     if (this._peakR > this._amplitudeR) {
       this._peakR = this._amplitudeR;
@@ -320,19 +343,6 @@ class PeakMeter extends VisuComponentStereo {
         this._dom.labels[1].textContent = CanvasUtils.precisionRound(avgPowerDecibelsR, 1);
       }
     }
-    // Draw left and right peak meters
-    CanvasUtils.drawPeakMeter(this._canvasL, {
-      amplitude: this._amplitudeL,
-      peak: this._peakL,
-      orientation: this._orientation,
-      colors: this._peakGradient
-    });
-    CanvasUtils.drawPeakMeter(this._canvasR, {
-      amplitude: this._amplitudeR,
-      peak: this._peakR,
-      orientation: this._orientation,
-      colors: this._peakGradient
-    });
   }
 
 
@@ -423,48 +433,58 @@ class PeakMeter extends VisuComponentStereo {
     let heightOffset = 0;
 
     if (this._orientation === 'horizontal') {
-      if (this._legend) {
-        widthOffset = 30;
-        heightOffset = 14;
-      }
-
-      this._canvasL.width = this._renderTo.offsetWidth - widthOffset; // 2px borders + 28 px with for label
-
-      if (this._merged === true) {
-        this._canvasL.height = (this._renderTo.offsetHeight - heightOffset) - 2; // 2px border + scale height 14px
-        this._canvasR.height = (this._renderTo.offsetHeight - heightOffset) - 2; // 2px border + scale height 14px
-      } else {
-        this._canvasR.width = this._renderTo.offsetWidth - widthOffset; // 2px borders + 28 px with for label
-        this._canvasL.height = (this._renderTo.offsetHeight - heightOffset) / 2 - 2; // 2px border + scale height 14px
-        this._canvasR.height = (this._renderTo.offsetHeight - heightOffset) / 2 - 2; // 2px border + scale height 14px
-      }
-
-      if (this._legend) {
-        this._dom.scaleContainer.style.width = `${this._canvasL.width}px`;
-      }
+      this.__updateHorizontal(heightOffset, widthOffset);
     } else if (this._orientation === 'vertical') {
-      if (this._legend) {
-        widthOffset = 18;
-        heightOffset = 16;
-      } else {
-        this._canvasL.style.left = '0'; // Remove left offset for legend
-      }
+      this.__updateVertical(heightOffset, widthOffset);
+    }
+  }
 
-      this._canvasL.height = this._renderTo.offsetHeight - heightOffset - 2; // 2px borders + 16px height for label
 
-      if (this._merged === true) {
-        this._canvasL.width = (this._renderTo.offsetWidth - widthOffset) - 2; // 2px border + scale width 18px
-        this._canvasR.width = (this._renderTo.offsetWidth - widthOffset) - 2; // 2px border + scale width 18px
-      } else {
-        this._canvasR.height = this._renderTo.offsetHeight - heightOffset - 2; // 2px borders + 16px height for label
-        this._canvasL.width = (this._renderTo.offsetWidth - widthOffset) / 2 - 2; // 2px border + scale width 18px
-        this._canvasR.width = (this._renderTo.offsetWidth - widthOffset) / 2 - 2; // 2px border + scale width 18px
-      }
+  __updateHorizontal(heightOffset, widthOffset) {
+    if (this._legend) {
+      widthOffset = 30;
+      heightOffset = 14;
+    }
 
-      if (this._legend) {
-        this._dom.scaleContainer.style.height = `${this._canvasL.height}px`;
-        this._dom.scaleContainer.style.width = '18px';
-      }
+    this._canvasL.width = this._renderTo.offsetWidth - widthOffset; // 2px borders + 28 px with for label
+
+    if (this._merged === true) {
+      this._canvasL.height = (this._renderTo.offsetHeight - heightOffset) - 2; // 2px border + scale height 14px
+      this._canvasR.height = (this._renderTo.offsetHeight - heightOffset) - 2; // 2px border + scale height 14px
+    } else {
+      this._canvasR.width = this._renderTo.offsetWidth - widthOffset; // 2px borders + 28 px with for label
+      this._canvasL.height = (this._renderTo.offsetHeight - heightOffset) / 2 - 2; // 2px border + scale height 14px
+      this._canvasR.height = (this._renderTo.offsetHeight - heightOffset) / 2 - 2; // 2px border + scale height 14px
+    }
+
+    if (this._legend) {
+      this._dom.scaleContainer.style.width = `${this._canvasL.width}px`;
+    }
+  }
+
+
+  __updateVertical(heightOffset, widthOffset) {
+    if (this._legend) {
+      widthOffset = 18;
+      heightOffset = 16;
+    } else {
+      this._canvasL.style.left = '0'; // Remove left offset for legend
+    }
+
+    this._canvasL.height = this._renderTo.offsetHeight - heightOffset - 2; // 2px borders + 16px height for label
+
+    if (this._merged === true) {
+      this._canvasL.width = (this._renderTo.offsetWidth - widthOffset) - 2; // 2px border + scale width 18px
+      this._canvasR.width = (this._renderTo.offsetWidth - widthOffset) - 2; // 2px border + scale width 18px
+    } else {
+      this._canvasR.height = this._renderTo.offsetHeight - heightOffset - 2; // 2px borders + 16px height for label
+      this._canvasL.width = (this._renderTo.offsetWidth - widthOffset) / 2 - 2; // 2px border + scale width 18px
+      this._canvasR.width = (this._renderTo.offsetWidth - widthOffset) / 2 - 2; // 2px border + scale width 18px
+    }
+
+    if (this._legend) {
+      this._dom.scaleContainer.style.height = `${this._canvasL.height}px`;
+      this._dom.scaleContainer.style.width = '18px';
     }
   }
 

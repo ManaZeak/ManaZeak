@@ -39,17 +39,10 @@ class Timeline extends VisuComponentMono {
   constructor(options) {
     super(options);
 
-    this._colors = {
-      background: options.colors ? options.colors.background || ColorUtils.defaultBackgroundColor : ColorUtils.defaultBackgroundColor,
-      track: options.colors ? options.colors.track || ColorUtils.defaultDarkPrimaryColor : ColorUtils.defaultDarkPrimaryColor,
-      mainBeat: options.colors ? options.colors.mainBeat || ColorUtils.defaultPrimaryColor : ColorUtils.defaultPrimaryColor,
-      subBeat: options.colors ? options.colors.subBeat || ColorUtils.defaultAntiPrimaryColor : ColorUtils.defaultAntiPrimaryColor,
-      loop: options.colors ? options.colors.loop || ColorUtils.defaultLoopColor : ColorUtils.defaultLoopColor,
-      loopAlpha: options.colors ? options.colors.loopAlpha || ColorUtils.defaultLoopAlphaColor : ColorUtils.defaultLoopAlphaColor
-    };
+    this._colors = {};
+    this.__defaultColors();
 
     this._canvas.style.backgroundColor = this._colors.background;
-
     this._canvasSpeed = options.speed ? options.speed : 5.0; // Time in seconds
 
     this._beat = {
@@ -91,6 +84,18 @@ class Timeline extends VisuComponentMono {
     if (this._player.src !== '') {
       this._getPlayerSourceFile();
     }
+  }
+
+
+  __defaultColors() {
+    this._colors = {
+      background: options.colors ? options.colors.background || ColorUtils.defaultBackgroundColor : ColorUtils.defaultBackgroundColor,
+      track: options.colors ? options.colors.track || ColorUtils.defaultDarkPrimaryColor : ColorUtils.defaultDarkPrimaryColor,
+      mainBeat: options.colors ? options.colors.mainBeat || ColorUtils.defaultPrimaryColor : ColorUtils.defaultPrimaryColor,
+      subBeat: options.colors ? options.colors.subBeat || ColorUtils.defaultAntiPrimaryColor : ColorUtils.defaultAntiPrimaryColor,
+      loop: options.colors ? options.colors.loop || ColorUtils.defaultLoopColor : ColorUtils.defaultLoopColor,
+      loopAlpha: options.colors ? options.colors.loopAlpha || ColorUtils.defaultLoopAlphaColor : ColorUtils.defaultLoopAlphaColor
+    };    
   }
 
 
@@ -444,31 +449,7 @@ class Timeline extends VisuComponentMono {
         // Clear offline context
         ctx.clearRect(0, 0, totalLength, this._canvas.height);
         // Draw the canvas
-        for (let j = 0; j < width; ++j) {
-          const offset = Math.floor((i + j) * step);
-          let max = 0.0; // The max value to draw
-          // Update maximum value in step range
-          for (let k = 0; k < step; ++k) {
-            if (data[offset + k] > max) {
-              max = data[offset + k];
-            }
-          }
-          // Set waveform color according to sample intensity
-          ctx.fillStyle = ColorUtils.lightenDarkenColor(this._colors.track, (max * 190)); // 190, not 255 to avoid full white on sample at max value
-          // Update max to scale in half canvas height
-          max = Math.floor(max * (this._canvas.height * this._wave.scale));
-          if (this._wave.align === 'center') {
-            // Fill up and down side of timeline
-            ctx.fillRect(j, this._canvas.height / 2, 1, -(max / 2));
-            ctx.fillRect(j, this._canvas.height / 2, 1, (max / 2));
-            // Add tiny centered line
-            ctx.fillRect(j, (this._canvas.height / 2) - 0.5, 1, 1);
-          } else if (this._wave.align === 'top') {
-            ctx.fillRect(j, 1, 1, max);
-          } else if (this._wave.align === 'bottom') {
-            ctx.fillRect(j, this._canvas.height - 1, 1, -max);
-          }
-        }
+        this._fillCanvas(i, width, step, ctx);
         // Store canvas to properly animate Timeline on progress
         this._canvases.push(canvas);
         this._cueCanvases.push(cueCanvas);
@@ -485,6 +466,35 @@ class Timeline extends VisuComponentMono {
       }
 
       this._drawHotCues(); // Load hot cues if any
+    }
+  }
+
+
+  _fillCanvas(i, width, step, ctx) {
+    for (let j = 0; j < width; ++j) {
+      const offset = Math.floor((i + j) * step);
+      let max = 0.0; // The max value to draw
+      // Update maximum value in step range
+      for (let k = 0; k < step; ++k) {
+        if (data[offset + k] > max) {
+          max = data[offset + k];
+        }
+      }
+      // Set waveform color according to sample intensity
+      ctx.fillStyle = ColorUtils.lightenDarkenColor(this._colors.track, (max * 190)); // 190, not 255 to avoid full white on sample at max value
+      // Update max to scale in half canvas height
+      max = Math.floor(max * (this._canvas.height * this._wave.scale));
+      if (this._wave.align === 'center') {
+        // Fill up and down side of timeline
+        ctx.fillRect(j, this._canvas.height / 2, 1, -(max / 2));
+        ctx.fillRect(j, this._canvas.height / 2, 1, (max / 2));
+        // Add tiny centered line
+        ctx.fillRect(j, (this._canvas.height / 2) - 0.5, 1, 1);
+      } else if (this._wave.align === 'top') {
+        ctx.fillRect(j, 1, 1, max);
+      } else if (this._wave.align === 'bottom') {
+        ctx.fillRect(j, this._canvas.height - 1, 1, -max);
+      }
     }
   }
 
