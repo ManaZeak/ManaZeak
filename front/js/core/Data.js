@@ -8,11 +8,7 @@ class Data {
 
   getGenreInfo(name) {
     return new Promise((resolve, reject) => {
-/*
-      mzk.kom.get(`${name.json}`).then(data => {
-        console.log(data);
-      }).catch(reject);
-*/
+      console.log(name);
       resolve();
     });
   }

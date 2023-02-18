@@ -145,7 +145,7 @@ class Oscilloscope extends VisuComponentStereo {
    * @description <blockquote>Perform a merged Left and Right analysis with 8 bit time domain data.</blockquote> **/
   _mergedStereoAnalysis() {
     // Create TimeDomain array with frequency bin length
-    let timeDomain = new Uint8Array(this._nodes.analyser.frequencyBinCount);
+    const timeDomain = new Uint8Array(this._nodes.analyser.frequencyBinCount);
     // Left/Right channel
     this._nodes.analyser.getByteTimeDomainData(timeDomain);
     CanvasUtils.drawOscilloscope(this._canvasL, {
@@ -165,7 +165,7 @@ class Oscilloscope extends VisuComponentStereo {
    * @description <blockquote>Perform a separated Left and Right analysis with 8 bit time domain data.</blockquote> **/
   _stereoAnalysis() {
     // Create TimeDomain array with freqency bin length
-    let timeDomain = new Uint8Array(this._nodes.analyserL.frequencyBinCount);
+    const timeDomain = new Uint8Array(this._nodes.analyserL.frequencyBinCount);
     // Left channel
     this._nodes.analyserL.getByteTimeDomainData(timeDomain);
     CanvasUtils.drawOscilloscope(this._canvasL, {

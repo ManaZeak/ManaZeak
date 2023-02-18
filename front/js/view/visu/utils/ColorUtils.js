@@ -6,7 +6,9 @@ class ColorUtils {
    * @since 2020
    * @description <blockquote>This class doesn't need to be instantiated, as all its methods are static in order to
    * make those utils methods available without constraints. Refer to each method for their associated documentation.</blockquote> */
-  constructor() {}
+  constructor() {
+    // This static class shouldn't be instantiated as it as not interest at all to do so
+  }
 
 
   /*  --------------------------------------------------------------------------------------------------------------- */

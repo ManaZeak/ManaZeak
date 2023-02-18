@@ -111,11 +111,9 @@ class Controller {
 
   _addTrackHistory(options, track) {
     // Test if track history already exists
-    if (this._trackHistory.length) {
+    if (this._trackHistory.length && track.id === this._trackHistory[this._trackHistory.length - 1].id) {
       // Don't add track if latest in history is it
-      if (track.id === this._trackHistory[this._trackHistory.length - 1].id) {
-        return;
-      }
+      return;
     }
 
     this._trackHistory.push(JSON.parse(JSON.stringify(options)));    

@@ -374,7 +374,7 @@ class Waveform extends VisuComponentMono {
     const oldRange = oldMax - oldMin;
     const newRange = this._canvas.height * .9;
 
-    let scaledData = [];
+    const scaledData = [];
     for (let i = 0; i < sampledData.length; ++i) {
       scaledData.push(((sampledData[i] - oldMin) * newRange) / oldRange);
     }
@@ -410,11 +410,11 @@ class Waveform extends VisuComponentMono {
           x * (i + 1) - margin, 0 // Bar X end
         );
         // Get bar range in px
-        let barRange = ((x * (i + 1))) - ((x * i));
+        const barRange = ((x * (i + 1))) - ((x * i));
         // We get progress X position according to canvas width
-        let progressX = progressPercentage * this._canvas.width;
+        const progressX = progressPercentage * this._canvas.width;
         // Convert this width into a percentage of barWidth progression
-        let barProgressPercentage = (Math.abs(progressX - (x * i))) / (barRange);
+        const barProgressPercentage = (Math.abs(progressX - (x * i))) / (barRange);
         if (this._animation === 'gradient') {
           if (barProgressPercentage + 0.01 < 1) {
             gradient.addColorStop(0, this._colors.progress); // Green
@@ -476,7 +476,7 @@ class Waveform extends VisuComponentMono {
   _hotCueClicked(x, y) {
     if (y > 2 && y < 20) {
       for (let i = 0; i < this._hotCues.length; ++i) {
-        let xPos = (this._hotCues[i].time * this._canvas.width) / this._player.duration;
+        const xPos = (this._hotCues[i].time * this._canvas.width) / this._player.duration;
         if (x > xPos && x < (xPos + 18)) {
           return this._hotCues[i];
         }

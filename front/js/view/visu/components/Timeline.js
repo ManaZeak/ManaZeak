@@ -499,7 +499,7 @@ class Timeline extends VisuComponentMono {
         // Increment offline canvas to use
         ++canvasIndex;
         // When changing canvas, the beatOffset is dependant to last beat saved position.
-        for (let j = 1; j < canvasIndex; ++i) {
+        for (let j = 1; j < canvasIndex; ++j) {
           // We iterate for each canvas, and sums the offset per canvas so they cumulates
           beatOffset += options.beatWidth - ((MAX_CANVAS_WIDTH * j) - (this._beatsArray[this._beatsArray.length - 1].xPos % (MAX_CANVAS_WIDTH * j)));
         }
@@ -623,8 +623,8 @@ class Timeline extends VisuComponentMono {
       let label = '0.0';
       for (let i = 0; i < this._beatsArray.length; ++i) {
         if (time <= this._beatsArray[i].time) {
-          let measureCount = Math.floor((this._beatsArray[i].beatCount - 1) / this._beat.timeSignature) + 1;
-          let timeCount = (this._beatsArray[i].beatCount - 1) % this._beat.timeSignature;
+          const measureCount = Math.floor((this._beatsArray[i].beatCount - 1) / this._beat.timeSignature) + 1;
+          const timeCount = (this._beatsArray[i].beatCount - 1) % this._beat.timeSignature;
           label = `${measureCount}.${timeCount === -1 ? 1 : timeCount + 1}`;
           break;
         }
@@ -667,7 +667,7 @@ class Timeline extends VisuComponentMono {
   _hotCueClicked(x, y) {
     if (y > 2 && y < 20) {
       for (let i = 0; i < this._hotCues.length; ++i) {
-        let xPos = this._hotCues[i].xPos - (this._hotCues[i].canvasIndex * MAX_CANVAS_WIDTH);
+        const xPos = this._hotCues[i].xPos - (this._hotCues[i].canvasIndex * MAX_CANVAS_WIDTH);
         if (x > xPos && x < (xPos + 18)) {
           return this._hotCues[i];
         }
@@ -777,7 +777,7 @@ class Timeline extends VisuComponentMono {
    * attached if no hotcue is registered on the targeted bar.</blockquote>
    * @return {object} The hotcue object with its information **/
   setHotCuePoint(options) {
-    let matchingBeat = this.getClosestBeat();
+    const matchingBeat = this.getClosestBeat();
     // Search for existing hotcue at the target bar
     let existingHotCue = null;
     for (let i = 0; i < this._hotCues.length; ++i) {
@@ -854,7 +854,7 @@ class Timeline extends VisuComponentMono {
     if (this._loopEntry) {
       // Determine end by closest beat
       if (!beatDuration) {
-        let matchingBeat = this.getClosestBeat();
+        const matchingBeat = this.getClosestBeat();
         // Only save end if not equal to entry and is located after in time
         if (matchingBeat !== this._loopEntry && this._loopEntry.time < matchingBeat.time) {
           this._loopEnd = matchingBeat;

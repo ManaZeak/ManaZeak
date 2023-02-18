@@ -176,7 +176,7 @@ class FrequencyCircle extends VisuComponentMono {
       this._nodes.analyser.getByteFrequencyData(frequencies);
       this._nodes.analyser.getByteTimeDomainData(times);
       // Get average frequency for proccessed bin
-      let average = this._getAverageFrequency(frequencies);
+      const average = this._getAverageFrequency(frequencies);
       this._averageHit = (average > this._averageBreakpoint);
       // Draw circle bars while retrieving aaverage amplitude
       this._animateCircleBars(frequencies);
@@ -267,7 +267,7 @@ class FrequencyCircle extends VisuComponentMono {
    * @description <blockquote>Animate background points to match intensity with color and radius.</blockquote>
    * @param {number} average - The average value that acts like a breakpoint for intensity **/
   _animateStars(average) {
-    let tick = this._averageHit ? average / 20 : average / 60;
+    const tick = this._averageHit ? average / 20 : average / 60;
     for (let i = 0; i < this._stars.length; ++i) {
       let star = this._stars[i];
       // Update star position and variation
@@ -324,7 +324,7 @@ class FrequencyCircle extends VisuComponentMono {
    * @description <blockquote>Draw both radial and linear point oscilloscopes.</blockquote>
    * @param {number[]} times - The time domain for a given audio bin **/
   _animateOscilloscopes(times) {
-    let tick = 0.05;
+    const tick = 0.05;
     let color = '#FFF';
     if (this._averageHit) {
       this._oscilloscopeRotation += tick;

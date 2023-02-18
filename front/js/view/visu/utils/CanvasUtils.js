@@ -9,7 +9,9 @@ class CanvasUtils {
    * @since 2020
    * @description <blockquote>This class doesn't need to be instantiated, as all its methods are static in order to
    * make those utils methods available with constraints. Refer to each method for their associated documentation.</blockquote> */
-  constructor() {}
+  constructor() {
+    // This static class shouldn't be instantiated as it as not interest at all to do so
+  }
 
 
   /** @method
@@ -31,7 +33,7 @@ class CanvasUtils {
    * @param {string} options.color - The bar base color (will be lighten/darken according to frequency value) in Hex/RGB/HSL **/
   static drawRadialBar(canvas, options) {
     const ctx = canvas.getContext('2d');
-    let amount = options.frequencyValue / 255;
+    const amount = options.frequencyValue / 255;
     // Draw on canvas context
     ctx.beginPath();
     ctx.moveTo(options.x0, options.y0);
@@ -213,9 +215,9 @@ class CanvasUtils {
     ctx.beginPath();
 
     for (let i = 0; i < options.length; ++i) {
-      let height = canvas.height * (options.times[i] / 255);
-      let offset = canvas.height - height - 1;
-      let barWidth = canvas.width / options.length;
+      const height = canvas.height * (options.times[i] / 255);
+      const offset = canvas.height - height - 1;
+      const barWidth = canvas.width / options.length;
       ctx.fillStyle = options.color;
       ctx.fillRect(i * barWidth, offset, 2, 2);
     }
@@ -254,20 +256,20 @@ class CanvasUtils {
     ctx.strokeStyle = options.color;
 
     for (let i = 0; i < options.length - 1; ++i) {
-      let point = options.points[i];
+      const point = options.points[i];
       point.dx = point.x + options.times[i] * Math.sin((Math.PI / 180) * point.angle);
       point.dy = point.y + options.times[i] * Math.cos((Math.PI / 180) * point.angle);
-      let xc = (point.dx + options.points[i + 1].dx) / 2;
-      let yc = (point.dy + options.points[i + 1].dy) / 2;
+      const xc = (point.dx + options.points[i + 1].dx) / 2;
+      const yc = (point.dy + options.points[i + 1].dy) / 2;
       ctx.quadraticCurveTo(point.dx, point.dy, xc, yc);
     }
     // Handle last point manually
-    let value = options.times[options.length - 1];
-    let point = options.points[options.length - 1];
+    const value = options.times[options.length - 1];
+    const point = options.points[options.length - 1];
     point.dx = point.x + value * Math.sin((Math.PI / 180) * point.angle);
     point.dy = point.y + value * Math.cos((Math.PI / 180) * point.angle);
-    let xc = (point.dx + options.points[0].dx) / 2;
-    let yc = (point.dy + options.points[0].dy) / 2;
+    const xc = (point.dx + options.points[0].dx) / 2;
+    const yc = (point.dy + options.points[0].dy) / 2;
     ctx.quadraticCurveTo(point.dx, point.dy, xc, yc);
     ctx.quadraticCurveTo(xc, yc, options.points[0].dx, options.points[0].dy);
     // Fill context for current path
