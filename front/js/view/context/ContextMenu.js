@@ -12,7 +12,11 @@ class ContextMenu {
 
 
   destroy() {
-
+    if (document.body.contains(this._overlay)) {
+      document.body.removeChild(this._overlay);
+      this._overlay.removeEventListener('click', this._viewportClicked, false);
+      window.removeEventListener('resize', this.close.bind(this), false);
+    }
   }
 
 

@@ -27,17 +27,6 @@ class AllLabelView extends SceneView {
   _events() {
     return new Promise((resolve, reject) => {
       resolve();
-/*
-      const labels = this.dom.querySelector('#labels-container').children;
-      if (labels && labels.length) {
-        for (let i = 0; i < labels.length; ++i) {
-          this._evtIds.push(Evts.addEvent('click', labels[i], this._labelClicked, labels[i]));
-        }
-        resolve();
-      } else {
-        reject();
-      }
-*/
     });
   }
 

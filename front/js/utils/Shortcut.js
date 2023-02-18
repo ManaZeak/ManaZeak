@@ -171,42 +171,48 @@ class Shortcut {
       if (!sh.pause && event.key.toLowerCase() === sh.key) {
         switch (sh.modifierCount) {
           case 1: // 2 key strokes
-            if ((sh.modifiers.ctrlKey && event.ctrlKey)
-            || (sh.modifiers.altKey && event.altKey)
-            || (sh.modifiers.shiftKey && event.shiftKey)) {
-              if (this._noPrevention === false) {
-                event.preventDefault();
-              }
-
-              sh.fire();
-            }
+            this.__multiKey2Keys(sh, event);
             break;
           case 2: // 3 key strokes
-            if ((sh.modifiers.ctrlKey && event.ctrlKey && sh.modifiers.altKey && event.altKey)
-            || (sh.modifiers.ctrlKey && event.ctrlKey && sh.modifiers.shiftKey && event.shiftKey)
-            || (sh.modifiers.altKey && event.altKey && sh.modifiers.shiftKey && event.shiftKey)) {
-              if (this._noPrevention === false) {
-                event.preventDefault();
-              }
-
-              sh.fire();
-            }
+            this.__multiKey3Keys(sh, event);
             break;
           case 3: // 4 key strokes
-            if ((sh.modifiers.ctrlKey && event.ctrlKey
-            && sh.modifiers.altKey && event.altKey
-            && sh.modifiers.shiftKey && event.shiftKey)) {
-              if (this._noPrevention === false) {
-                event.preventDefault();
-              }
-
-              sh.fire();
-            }
+            this.__multiKey4Keys(sh, event);
             break;
           default:
             break;
         }
       }
+    }
+  }
+
+
+  __multiKey2Keys(sh, event) {
+    if ((sh.modifiers.ctrlKey && event.ctrlKey) || (sh.modifiers.altKey && event.altKey) || (sh.modifiers.shiftKey && event.shiftKey)) {
+      if (this._noPrevention === false) {
+        event.preventDefault();
+      }
+      sh.fire();
+    }
+  }
+
+
+  __multiKey3Keys(sh, event) {
+    if ((sh.modifiers.ctrlKey && event.ctrlKey && sh.modifiers.altKey && event.altKey) || (sh.modifiers.ctrlKey && event.ctrlKey && sh.modifiers.shiftKey && event.shiftKey) || (sh.modifiers.altKey && event.altKey && sh.modifiers.shiftKey && event.shiftKey)) {
+      if (this._noPrevention === false) {
+        event.preventDefault();
+      }
+      sh.fire();
+    }
+  }
+
+
+  __multiKey4Keys(sh, event) {
+    if ((sh.modifiers.ctrlKey && event.ctrlKey && sh.modifiers.altKey && event.altKey && sh.modifiers.shiftKey && event.shiftKey)) {
+      if (this._noPrevention === false) {
+        event.preventDefault();
+      }
+      sh.fire();
     }
   }
 

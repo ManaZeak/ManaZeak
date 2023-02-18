@@ -74,15 +74,7 @@ class NavBar {
     this._controls.next.addEventListener('click', () => {
       mzk.next();
     });
-/*
-    this._controls.repeat.addEventListener('click', () => {
-      mzk.toggleRepeatMode();
-    });
 
-    this._controls.shuffle.addEventListener('click', () => {
-      mzk.toggleShuffleMode();
-    });
-*/
     this._controls.speedometer.addEventListener('click', () => {
       if (document.body.contains(this._playbackRateContext.dom)) {
         this._playbackRateContext.close();

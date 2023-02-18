@@ -90,10 +90,7 @@ constructor(options) {
     if (event.clientY + (Object.keys(this._commands).length * 30) + 80 > document.body.clientHeight) {
       pos.y -= (Object.keys(this._commands).length * 30);
     }
-/*
-    this._text.download.innerHTML = mzk.lang.context.track.download;
-    this._text.queue.innerHTML = mzk.lang.context.track.queue;
-*/
+
     this._dom.style.left = `${pos.x}px`;
     this._dom.style.top = `${pos.y}px`;
     this._target.appendChild(this._overlay);

@@ -18,8 +18,6 @@
       </div>
       <div th:attr="data-id=*{artist.artistId}" class="artist-info">
         <h2 th:text="*{artist.artistName}"></h2>
-        <!-- TODO : New field, to style. -->
-        <!-- <p th:text="*{artist.isLabel}"></p> -->
         <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.artistPicture}, medium)}"></div>
       </div>
       <div class="artist-albums">

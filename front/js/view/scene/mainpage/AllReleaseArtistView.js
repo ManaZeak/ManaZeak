@@ -45,19 +45,6 @@ class AllReleaseArtistView extends SceneView {
       const artists = this.dom.querySelector('#artists-container').children;
       if (artists && artists.length) {
         this.dom.querySelector('#artist-count').innerHTML = this.dom.querySelector('#artist-count').innerHTML.replace('{x}', artists.length);
-/*
-        let currentLetter = '';
-        for (let i = 0; i < artists.length; ++i) {
-          const artistFirstLetter = artists[i].children[0].children[1].innerHTML[0];
-          if (currentLetter !== artistFirstLetter) {
-            currentLetter = artistFirstLetter.toUpperCase();
-            const separator = document.createElement('H1');
-            separator.classList.add('section-separator');
-            separator.innerHTML = currentLetter;
-            this.dom.querySelector('#artists-container').insertBefore(separator, artists[i]);
-          }
-        }
-*/
         this._scroll = new ScrollBar({
           target: this.dom,
           style: {
