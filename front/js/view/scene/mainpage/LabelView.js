@@ -7,7 +7,7 @@ class LabelView extends SceneView {
   constructor(options) {
     super({
       type: 'item',
-      url: `/fragment/library/label/${options.id}`
+      url: `/fragment/library/label/${options.id}/`
     });
 
     this._fetchWrapper(this._url)

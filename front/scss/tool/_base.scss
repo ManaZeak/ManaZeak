@@ -183,12 +183,9 @@ a {
   }
 
   .topbar {
+    display: grid;
     grid-column: 2;
     grid-row: 1;
-  }
-
-  .topbar {
-    display: grid;
     grid-template-columns: 1fr 0 1fr;
 
     .topbar-left,
