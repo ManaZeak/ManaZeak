@@ -42,15 +42,9 @@ class TrackDetailModal extends Modal {
 
 
   _fillAttributes() {
-    this._buildWaveform();
-    /*
-    this._rootElement.querySelector('#album-title').innerHTML = this._title;
-    this._rootElement.querySelector('#album-artist').innerHTML = this._artist;
-    this._rootElement.querySelector('#album-cover').src = this._path;
-    // The modal doesn't contain any interaction with user inputs
     this._footerCloseButton = this._rootElement.querySelector('#modal-footer-close');
+    this._buildWaveform();
     this._events();
-    */
   }
 
 
@@ -60,7 +54,7 @@ class TrackDetailModal extends Modal {
 
 
   _buildWaveform() {
-    const audio = document.createElement('AUDIO')
+    const audio = document.createElement('AUDIO');
     audio.src = `/play/${this._id}/`;
     this._waveform = new AudioVisualizer({
       type: 'waveform',

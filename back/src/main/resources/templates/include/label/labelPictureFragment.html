@@ -3,13 +3,13 @@
   <div th:if="*{picture != null}">
     <!-- If the size is null using the original size -->
     <div th:if="*{size == null}">
-      <img loading="lazy" th:src="'/resources/label_pictures/orig/' + *{picture} + '.jpg'">
+      <img loading="lazy" th:src="'/resources/label_pictures/orig/' + *{picture} + '.jpg'" alt="label-picture">
     </div>
     <div th:if="*{size != null}">
-      <img loading="lazy" th:src="'/resources/label_pictures/' + *{size} + '/' + *{picture} + '.jpg'">
+      <img loading="lazy" th:src="'/resources/label_pictures/' + *{size} + '/' + *{picture} + '.jpg'" alt="label-picture">
     </div>
   </div>
   <div th:if="*{picture == null}">
-    <img loading="lazy" th:src="'/static/img/object/label.svg'">
+    <img loading="lazy" th:src="'/static/img/object/label.svg'" alt="label-picture">
   </div>
 </div>

@@ -90,7 +90,6 @@ class NavBar {
       } else {
         const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         const clientRectangle = this._controls.speedometer.getBoundingClientRect();
-
         this._playbackRateContext.open({
           rightOffset: windowWidth - (clientRectangle.x + clientRectangle.width + 5)
         });
@@ -101,7 +100,6 @@ class NavBar {
       if (document.body.contains(this._queueContext.dom)) {
         this._queueContext.close();
       } else {
-        const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         const clientRectangle = this._controls.queue.getBoundingClientRect();
         this._queueContext.open({
           leftOffset: clientRectangle.x

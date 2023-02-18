@@ -235,15 +235,15 @@ class PeakMeter extends VisuComponentStereo {
       this._peakL = this._amplitudeL;
       this._peakSetTimeL = this._audioCtx.currentTime;
       // Update peak label
-      if (this._legend) {
-        avgPowerDecibels !== -Infinity ? this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibels, 1) : null;
+      if (this._legend && avgPowerDecibels !== -Infinity) {
+        this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibels, 1);
       }
     } else if (this._audioCtx.currentTime - this._peakSetTimeL > 1) {
       this._peakL = this._amplitudeL;
       this._peakSetTimeL = this._audioCtx.currentTime;
       // Update peak label
-      if (this._legend) {
-        avgPowerDecibels !== -Infinity ? this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibels, 1) : null;
+      if (this._legend && avgPowerDecibels !== -Infinity) {
+        this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibels, 1);
       }
     }
     // Draw left and right peak meters
@@ -292,15 +292,15 @@ class PeakMeter extends VisuComponentStereo {
       this._peakL = this._amplitudeL;
       this._peakSetTimeL = this._audioCtx.currentTime;
       // Update peak label
-      if (this._legend) {
-        avgPowerDecibelsL !== -Infinity ? this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibelsL, 1) : null;
+      if (this._legend && avgPowerDecibelsL !== -Infinity) {
+        this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibelsL, 1);
       }
     } else if (this._audioCtx.currentTime - this._peakSetTimeL > 1) {
       this._peakL = this._amplitudeL;
       this._peakSetTimeL = this._audioCtx.currentTime;
       // Update peak label
-      if (this._legend) {
-        avgPowerDecibelsL !== -Infinity ? this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibelsL, 1) : null;
+      if (this._legend && avgPowerDecibelsL !== -Infinity) {
+        this._dom.labels[0].textContent = CanvasUtils.precisionRound(avgPowerDecibelsL, 1);
       }
     }
     // Right channel
@@ -309,15 +309,15 @@ class PeakMeter extends VisuComponentStereo {
       this._peakR = this._amplitudeR;
       this._peakSetTimeR = this._audioCtx.currentTime;
       // Update peak label
-      if (this._legend) {
-        avgPowerDecibelsR !== -Infinity ? this._dom.labels[1].textContent = CanvasUtils.precisionRound(avgPowerDecibelsR, 1) : null;
+      if (this._legend && avgPowerDecibelsR !== -Infinity) {
+        this._dom.labels[1].textContent = CanvasUtils.precisionRound(avgPowerDecibelsR, 1);
       }
     } else if (this._audioCtx.currentTime - this._peakSetTimeR > 1) {
       this._peakR = this._amplitudeL;
       this._peakSetTimeR = this._audioCtx.currentTime;
       // Update peak label
-      if (this._legend) {
-        avgPowerDecibelsR !== -Infinity ? this._dom.labels[1].textContent = CanvasUtils.precisionRound(avgPowerDecibelsR, 1) : null;
+      if (this._legend && avgPowerDecibelsR !== -Infinity) {
+        this._dom.labels[1].textContent = CanvasUtils.precisionRound(avgPowerDecibelsR, 1);
       }
     }
     // Draw left and right peak meters

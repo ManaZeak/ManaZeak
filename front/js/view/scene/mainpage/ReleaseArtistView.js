@@ -77,7 +77,7 @@ class ReleaseArtistView extends SceneView {
           let title = this._albums.children[i].lastElementChild.lastElementChild.innerHTML;
           if (title.includes(' EP')) {
             title = title.replace(' EP', '');
-            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
+            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'EP';
           }
 
           if (title.includes(' - Single')) {
