@@ -449,7 +449,7 @@ class Timeline extends VisuComponentMono {
         // Clear offline context
         ctx.clearRect(0, 0, totalLength, this._canvas.height);
         // Draw the canvas
-        this._fillCanvas(i, width, step, ctx);
+        this._fillCanvas(i, width, step, data, ctx);
         // Store canvas to properly animate Timeline on progress
         this._canvases.push(canvas);
         this._cueCanvases.push(cueCanvas);
@@ -470,7 +470,7 @@ class Timeline extends VisuComponentMono {
   }
 
 
-  _fillCanvas(i, width, step, ctx) {
+  _fillCanvas(i, width, step, data, ctx) {
     for (let j = 0; j < width; ++j) {
       const offset = Math.floor((i + j) * step);
       let max = 0.0; // The max value to draw

@@ -429,9 +429,8 @@ class PeakMeter extends VisuComponentStereo {
    * @since 2020
    * @description <blockquote>Usually called on resize event, update canvas dimension to fit render to DOM object.</blockquote> **/
   _updateDimensions() {
-    let widthOffset = 0;
-    let heightOffset = 0;
-
+    const widthOffset = 0;
+    const heightOffset = 0;
     if (this._orientation === 'horizontal') {
       this.__updateHorizontal(heightOffset, widthOffset);
     } else if (this._orientation === 'vertical') {

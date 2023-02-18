@@ -429,7 +429,7 @@ class Waveform extends VisuComponentMono {
           const amount = Math.round(barProgressPercentage * 255);
           this._ctx.fillStyle = ColorUtils.lightenDarkenColor(this._colors.progress, 255 - amount); // Green full for last position in bars
         }
-     } else if (i / this._dataL.length < progressPercentage) {
+      } else if (i / this._dataL.length < progressPercentage) {
         this._ctx.fillStyle = this._colors.progress; // Green for already played bars
       }
       // Draw up and down rectangles for current bar
