@@ -8,9 +8,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.SequenceGenerator;
 import org.manazeak.manazeak.entity.track.Label;
 import org.manazeak.manazeak.entity.track.Album;
+import org.manazeak.manazeak.entity.reference.ThumbErrorType;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
@@ -34,6 +35,7 @@ public class ThumbnailError implements Serializable{
 	private Album album;
 	private Genre genre;
 	private Artist artist;
+	private ThumbErrorType thumbErrorType;
 
     /**
      * No comment found in model diagram
@@ -87,7 +89,7 @@ public class ThumbnailError implements Serializable{
      * Association label_thumb_error to Label
      * @return value of label
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="label_id", referencedColumnName="label_id")
 	public Label getLabel(){
 		return label;
@@ -103,7 +105,7 @@ public class ThumbnailError implements Serializable{
      * Association thumb_error_album to Album
      * @return value of album
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="album_id", referencedColumnName="album_id")
 	public Album getAlbum(){
 		return album;
@@ -119,7 +121,7 @@ public class ThumbnailError implements Serializable{
      * Association thumb_error_genre to Genre
      * @return value of genre
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="genre_id", referencedColumnName="genre_id")
 	public Genre getGenre(){
 		return genre;
@@ -135,7 +137,7 @@ public class ThumbnailError implements Serializable{
      * Association thumb_error_artist to Artist
      * @return value of artist
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="artist_id", referencedColumnName="artist_id")
 	public Artist getArtist(){
 		return artist;
@@ -146,6 +148,22 @@ public class ThumbnailError implements Serializable{
      */
 	public void setArtist(final Artist artist){
 		this.artist = artist;
+    }  
+    /**
+     * Association thumb_err_type to ThumbErrorType
+     * @return value of thumbErrorType
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="thumb_error_type_id", referencedColumnName="thumb_error_type_id")
+	public ThumbErrorType getThumbErrorType(){
+		return thumbErrorType;
+    }  
+    /**
+     * Association thumb_err_type to ThumbErrorType
+     * @param thumbErrorType new value to give to thumbErrorType
+     */
+	public void setThumbErrorType(final ThumbErrorType thumbErrorType){
+		this.thumbErrorType = thumbErrorType;
     }  
 
 	@Override

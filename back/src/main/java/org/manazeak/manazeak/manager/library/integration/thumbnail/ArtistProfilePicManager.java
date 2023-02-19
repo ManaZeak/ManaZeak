@@ -1,14 +1,18 @@
-package org.manazeak.manazeak.manager.library.integration.artist;
+package org.manazeak.manazeak.manager.library.integration.thumbnail;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
+import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailErrorTypeEnum;
+import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
 import org.manazeak.manazeak.daos.library.integration.artist.ArtistIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.artist.ArtistProfilePicDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistPictureProjection;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.manager.library.integration.error.ThumbnailErrorManager;
 import org.manazeak.manazeak.util.FieldUtil;
 import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
@@ -19,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +36,9 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ArtistProfilePicManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ArtistProfilePicManager.class);
     private static final int BUFFER_SIZE = 500;
     private static final ThumbSizeEnum[] THUMB_SIZE_TO_GENERATE = {
             ThumbSizeEnum.ORIGINAL,
@@ -41,9 +46,12 @@ public class ArtistProfilePicManager {
             ThumbSizeEnum.SMALL,
             ThumbSizeEnum.MEDIUM
     };
-    private final ArtistProfilePicDAO artistProfilePicDAO;
+    private static final ThumbnailTypeEnum THUMB_TYPE = ThumbnailTypeEnum.ARTIST;
 
+    private final ArtistProfilePicDAO artistProfilePicDAO;
     private final ArtistIntegrationDAO artistIntegrationDAO;
+    private final ThumbnailErrorManager thumbnailErrorManager;
+
 
     /**
      * Generate the thumbnails of an artist if the artist exists in the database.
@@ -51,22 +59,17 @@ public class ArtistProfilePicManager {
      * @param artist The information needed to find the artist picture.
      * @return A pair containing the id of the artist and the name of the thumbnail. If not thumb has been generated, returns null.
      */
-    private static Pair<Long, String> generateThumbsArtist(ArtistPictureProjection artist) {
-        // Generating the name of the artist on the FS.
-        String fsArtistName = FieldUtil.removeForbiddenFsChar(artist.getName());
-        // Checking if the file is on the FS.
-        Path artistPicturePath = LibraryConstant.ARTIST_PROFILE_PICTURE_PATH
-                .resolve(fsArtistName + FileExtensionEnum.JGP.getExtension());
-        if (!artistPicturePath.toFile().exists()) {
+    private Pair<Long, String> generateThumbsArtist(ArtistPictureProjection artist) throws IOException {
+        String thumbName = ThumbnailUtil.generateThumbnail(THUMB_SIZE_TO_GENERATE, artist.getName(), THUMB_TYPE);
+        if (thumbName == null) {
+            thumbnailErrorManager.addErrorForEntity(THUMB_TYPE, "The artist thumbnail wasn't found on the FS for the file : " + artist.getName(), artist.getId(), ThumbnailErrorTypeEnum.FILE_NOT_FOUND);
             return null;
         }
 
-        String thumbName = HashUtil.getMd5Hash(artist.getName());
-        // Generating the thumbnails for the artist.
-        ThumbnailUtil.generateThumbs(THUMB_SIZE_TO_GENERATE, ResourcePathEnum.ARTIST_PROFILE_PIC_FOLDER.getPath(),
-                artistPicturePath, thumbName);
-
-        return Pair.of(artist.getId(), thumbName);
+        return Pair.of(
+                artist.getId(),
+                thumbName
+        );
     }
 
     /**
@@ -83,16 +86,20 @@ public class ArtistProfilePicManager {
                 List<Pair<Long, String>> results = new ArrayList<>();
                 // Generating the thumbnails.
                 for (ArtistPictureProjection artist : artists) {
-                    Pair<Long, String> artistThumb = generateThumbsArtist(artist);
-                    if (artistThumb != null) {
-                        results.add(artistThumb);
+                    try {
+                        Pair<Long, String> artistThumb = generateThumbsArtist(artist);
+                        if (artistThumb != null) {
+                            results.add(artistThumb);
+                        }
+                    } catch (Exception e) {
+                        thumbnailErrorManager.addErrorForEntity(THUMB_TYPE, e.getMessage(), artist.getId(), ThumbnailErrorTypeEnum.IMAGE_ERROR);
                     }
                 }
 
                 // Saving the results in the database.
                 artistIntegrationDAO.updateThumbArtistPicture(results);
             } catch (Exception e) {
-                LOG.error("Error during the generation of the artists thumbnails.", e);
+                log.error("Error during the generation of the artists thumbnails.", e);
             }
         };
     }
@@ -125,7 +132,7 @@ public class ArtistProfilePicManager {
                 throw new MzkRuntimeException("The time out for the artist profile picture generation was reached, stopping.");
             }
         } catch (InterruptedException e) {
-            LOG.error("Thread interrupted during the artist profile integration.", e);
+            log.error("Thread interrupted during the artist profile integration.", e);
             Thread.currentThread().interrupt();
         }
     }

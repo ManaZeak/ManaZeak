@@ -5,10 +5,10 @@ import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.constant.library.ScanStepEnum;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverUpdateProjection;
-import org.manazeak.manazeak.manager.library.cover.CoverManager;
-import org.manazeak.manazeak.manager.library.integration.artist.ArtistProfilePicManager;
-import org.manazeak.manazeak.manager.library.integration.genre.GenreThumbManager;
-import org.manazeak.manazeak.manager.library.integration.label.LabelPictureThumbManager;
+import org.manazeak.manazeak.manager.library.integration.thumbnail.AlbumCoverIntegrationManager;
+import org.manazeak.manazeak.manager.library.integration.thumbnail.ArtistProfilePicManager;
+import org.manazeak.manazeak.manager.library.integration.thumbnail.GenreThumbManager;
+import org.manazeak.manazeak.manager.library.integration.thumbnail.LabelPictureThumbManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +34,7 @@ public class LibraryPictureIntegrationManager {
     private final ArtistProfilePicManager artistProfilePicManager;
     private final LabelPictureThumbManager labelThumbManager;
     private final GenreThumbManager genreThumbManager;
-
-    private final CoverManager coverManager;
-
+    private final AlbumCoverIntegrationManager albumCoverIntegrationManager;
     private final AlbumDAO albumDAO;
 
     /**
@@ -77,7 +75,7 @@ public class LibraryPictureIntegrationManager {
                 break;
             }
             // Adding the tasks in the executor.
-            albums.forEach(album -> executor.submit(() -> CoverManager.generateCoverThumbs(album.getAlbumLocation())));
+            albums.forEach(album -> executor.submit(() -> albumCoverIntegrationManager.generateCoverThumbs(album.getAlbumLocation(), album.getId())));
         }
 
         executor.shutdown();

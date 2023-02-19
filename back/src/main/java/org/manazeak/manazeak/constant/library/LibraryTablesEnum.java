@@ -26,5 +26,6 @@ public enum LibraryTablesEnum {
     MEMBER_TIME_INTERVAL,
     BIO,
     ARTIST,
-    LABEL
+    LABEL,
+    THUMBNAIL_ERROR
 }

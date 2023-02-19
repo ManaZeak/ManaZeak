@@ -25,6 +25,7 @@ CREATE SEQUENCE SEQ_COUNTRY START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_KEY START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_SCAN_STEP START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_THUMB_ERROR_TYPE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WEBSITE_TYPE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WISH_STATUS START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BADGE START WITH 1000 CACHE 20; 
@@ -291,12 +292,14 @@ CREATE TABLE thumbnail_error (
 	album_id BIGINT,
 	genre_id BIGINT,
 	artist_id BIGINT,
+	thumb_error_type_id BIGINT,
 	CONSTRAINT PK_THUMBNAIL_ERROR PRIMARY KEY (thumb_err_id)
 );
-COMMENT ON COLUMN thumbnail_error.label_id IS 'OneToOne FK label';
-COMMENT ON COLUMN thumbnail_error.album_id IS 'OneToOne FK album';
-COMMENT ON COLUMN thumbnail_error.genre_id IS 'OneToOne FK genre';
-COMMENT ON COLUMN thumbnail_error.artist_id IS 'OneToOne FK artist';
+COMMENT ON COLUMN thumbnail_error.label_id IS 'ManyToOne FK label';
+COMMENT ON COLUMN thumbnail_error.album_id IS 'ManyToOne FK album';
+COMMENT ON COLUMN thumbnail_error.genre_id IS 'ManyToOne FK genre';
+COMMENT ON COLUMN thumbnail_error.artist_id IS 'ManyToOne FK artist';
+COMMENT ON COLUMN thumbnail_error.thumb_error_type_id IS 'ManyToOne FK thumb_error_type';
 
 CREATE TABLE band_role (
 	band_role_id BIGINT not null,
@@ -345,6 +348,13 @@ CREATE TABLE scan_step (
 	label VARCHAR(50) not null,
 	code VARCHAR(50) not null,
 	CONSTRAINT PK_SCAN_STEP PRIMARY KEY (scan_step_id)
+);
+
+CREATE TABLE thumb_error_type (
+	thumb_error_type_id BIGINT not null,
+	label VARCHAR(50) not null,
+	code VARCHAR(50) not null,
+	CONSTRAINT PK_THUMB_ERROR_TYPE PRIMARY KEY (thumb_error_type_id)
 );
 
 CREATE TABLE website_type (
@@ -526,6 +536,7 @@ ALTER TABLE thumbnail_error ADD CONSTRAINT FK_label_thumb_error FOREIGN KEY (lab
 ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_album FOREIGN KEY (album_id) REFERENCES album(album_id);
 ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_genre FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
 ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_artist FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
+ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_err_type FOREIGN KEY (thumb_error_type_id) REFERENCES thumb_error_type(thumb_error_type_id);
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_1 FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_2 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE invite_code ADD CONSTRAINT FK_user_invite_parent FOREIGN KEY (parent) REFERENCES mzk_user(user_id);
@@ -588,6 +599,7 @@ CREATE INDEX IDX_label_thumb_error ON thumbnail_error (label_id);
 CREATE INDEX IDX_thumb_error_album ON thumbnail_error (album_id);
 CREATE INDEX IDX_thumb_error_genre ON thumbnail_error (genre_id);
 CREATE INDEX IDX_thumb_error_artist ON thumbnail_error (artist_id);
+CREATE INDEX IDX_thumb_err_type ON thumbnail_error (thumb_error_type_id);
 CREATE INDEX IDX_badge_user_1 ON badge_user (badge_id);
 CREATE INDEX IDX_badge_user_2 ON badge_user (user_id);
 CREATE INDEX IDX_user_invite_parent ON invite_code (parent);

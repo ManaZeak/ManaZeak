@@ -7,7 +7,7 @@ import org.manazeak.manazeak.daos.library.wiper.LibraryWiperDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
-import org.manazeak.manazeak.manager.library.cover.CoverManager;
+import org.manazeak.manazeak.manager.library.integration.thumbnail.AlbumCoverIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.LibraryIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.picture.LibraryPictureIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.random.RandomInitializationManager;
@@ -30,7 +30,7 @@ public class LibraryScanService {
     private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
     private final LibraryScanManager libraryScanManager;
     private final LibraryIntegrationManager libraryIntegrationManager;
-    private final CoverManager coverManager;
+    private final AlbumCoverIntegrationManager albumCoverIntegrationManager;
     private final LibraryWiperDAO libraryWiperDAO;
     private final RandomInitializationManager randomInitializationManager;
 
@@ -69,7 +69,7 @@ public class LibraryScanService {
             LOG.info("Starting the cover extraction.");
             // Extracting the covers
             libraryScanStatusManager.setCurrentStep(ScanStepEnum.TRACK_COVER_EXTRACTION);
-            coverManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
+            albumCoverIntegrationManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
             LOG.info("Ending the cover extraction.");
 
             // Generating the thumbnails of the external mzk assets.

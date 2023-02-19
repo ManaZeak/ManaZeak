@@ -1,12 +1,15 @@
-package org.manazeak.manazeak.manager.library.cover;
+package org.manazeak.manazeak.manager.library.integration.thumbnail;
 
 import lombok.RequiredArgsConstructor;
-import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
+import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailErrorTypeEnum;
+import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
 import org.manazeak.manazeak.daos.library.integration.cover.CoverIntegrationDAO;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.manager.library.integration.error.ThumbnailErrorManager;
 import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -26,9 +30,9 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @RequiredArgsConstructor
-public class CoverManager {
+public class AlbumCoverIntegrationManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CoverManager.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AlbumCoverIntegrationManager.class);
     private static final int BUFFER_SIZE = 100;
     /**
      * The sizes of the thumbs that will be generated.
@@ -38,6 +42,7 @@ public class CoverManager {
     };
     private final AlbumDAO albumDAO;
     private final CoverIntegrationDAO coverIntegrationDAO;
+    private final ThumbnailErrorManager thumbnailErrorManager;
 
     /**
      * Generate the thumbnails from the album cover.
@@ -45,19 +50,22 @@ public class CoverManager {
      * @param cover The cover location in the FS.
      * @return The hashed name of the cover.
      */
-    public static String generateCoverThumbs(Path cover) {
+    public static String generateCoverThumbs(Path cover) throws IOException {
         String coverName = HashUtil.getMd5Hash(cover.toString()).toUpperCase();
 
         // Generating the thumbnails.
-        ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ResourcePathEnum.COVER_FOLDER.getPath(), cover,
-                coverName);
+        ThumbnailUtil.generateThumbs(LIST_THUMB_SIZE_TO_GENERATE, ThumbnailTypeEnum.ALBUM.getBaseDestFolder(), cover, coverName);
 
         // Returning the cover name to save it into the database.
         return coverName;
     }
 
-    public static void generateCoverThumbs(String path) {
-        generateCoverThumbs(Paths.get(path));
+    public void generateCoverThumbs(String path, Long albumId) {
+        try {
+            generateCoverThumbs(Paths.get(path));
+        } catch (Exception e) {
+            thumbnailErrorManager.addErrorForEntity(ThumbnailTypeEnum.ALBUM, e.getMessage(), albumId, ThumbnailErrorTypeEnum.IMAGE_ERROR);
+        }
     }
 
     /**
@@ -120,14 +128,12 @@ public class CoverManager {
                 // Associating the covers with the albums in the database.
                 List<Pair<Long, String>> albumCovers = new ArrayList<>();
                 for (Path cover : coverPaths) {
-                    // Generating the thumbnails of the cover.
-                    String coverName = generateCoverThumbs(cover);
                     Long albumId = albumIdByLocation.get(cover.getParent().toString());
                     if (albumId == null) {
                         LOG.error("The album of path '{}' doesn't have any id in the database.", cover.getParent());
+                        throw new MzkRuntimeException("The album id is null, an error has been encountered during the scan.");
                     }
-                    // Adding to the element to update.
-                    albumCovers.add(Pair.of(albumId, coverName));
+                    generateThumbs(cover, albumId, albumCovers);
                 }
 
                 // Saving the covers into the database.
@@ -136,5 +142,16 @@ public class CoverManager {
                 LOG.error("Error during the cover insertion in the database.", e);
             }
         };
+    }
+
+    private void generateThumbs(Path cover, Long albumId, List<Pair<Long, String>> albumCovers) {
+        try {
+            // Generating the thumbnails of the cover.
+            String coverName = generateCoverThumbs(cover);
+            // Adding to the element to update.
+            albumCovers.add(Pair.of(albumId, coverName));
+        } catch (Exception e) {
+            thumbnailErrorManager.addErrorForEntity(ThumbnailTypeEnum.ALBUM, e.getMessage(), albumId, ThumbnailErrorTypeEnum.IMAGE_ERROR);
+        }
     }
 }

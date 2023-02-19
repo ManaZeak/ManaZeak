@@ -4,6 +4,10 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
+import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.util.FieldUtil;
+import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.file.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,24 +35,48 @@ public final class ThumbnailUtil {
      * @param thumbName        The name of the generated thumbnail.
      */
     public static void generateThumbs(ThumbSizeEnum[] thumbsToGenerate, Path thumbFolder, Path image,
-                                      String thumbName) {
-        try {
-            // Testing if the image exists.
-            if (!image.toFile().exists()) {
-                LOG.warn("The image : {} cannot be found, the thumbnails haven't been created.", image);
-            }
-            // Generating the thumbnails for the given list of sizes.
-            for (ThumbSizeEnum thumbSize : thumbsToGenerate) {
-                // When the original mode is set, only copy the file into the orig folder.
-                if (thumbSize == ThumbSizeEnum.ORIGINAL) {
-                    FileUtils.copyFile(image.toFile(), getDestinationPath(thumbSize, thumbFolder, thumbName).toFile());
-                } else {
-                    generateThumb(thumbSize, image, thumbFolder, thumbName);
-                }
-            }
-        } catch (Exception e) {
-            LOG.warn("Error when generating the thumbnail of the image {}", image, e);
+                                      String thumbName) throws IOException {
+        // Testing if the image exists.
+        if (!image.toFile().exists()) {
+            LOG.warn("The image : {} cannot be found, the thumbnails haven't been created.", image);
         }
+        // Generating the thumbnails for the given list of sizes.
+        for (ThumbSizeEnum thumbSize : thumbsToGenerate) {
+            // When the original mode is set, only copy the file into the orig folder.
+            if (thumbSize == ThumbSizeEnum.ORIGINAL) {
+                FileUtils.copyFile(image.toFile(), getDestinationPath(thumbSize, thumbFolder, thumbName).toFile());
+            } else {
+                generateThumb(thumbSize, image, thumbFolder, thumbName);
+            }
+        }
+
+    }
+
+    /**
+     * Generate the thumbnails for the given size, type and filename.
+     *
+     * @param sizes     The sizes expected for the thumbnails.
+     * @param fileName  The name of the file to process.
+     * @param thumbType The type of the thumbnail processing.
+     * @return The name of the file generated. Return null if the file is not found.
+     */
+    public static String generateThumbnail(ThumbSizeEnum[] sizes, String fileName, ThumbnailTypeEnum thumbType) throws IOException {
+        if (thumbType == ThumbnailTypeEnum.ALBUM) {
+            throw new MzkRuntimeException("This method doesn't support the album type");
+        }
+        Path sourcePicturePath = thumbType.getBaseSourceFolder()
+                .resolve(FieldUtil.removeForbiddenFsChar(fileName) + FileExtensionEnum.JGP.getExtension());
+        if (!sourcePicturePath.toFile().exists()) {
+            return null;
+        }
+
+        // Getting the hashed name of the genre.
+        String hashGenreName = HashUtil.getMd5Hash(fileName);
+
+        // Generating the thumbnails.
+        ThumbnailUtil.generateThumbs(sizes, thumbType.getBaseDestFolder(), sourcePicturePath, hashGenreName);
+
+        return hashGenreName;
     }
 
     /**
