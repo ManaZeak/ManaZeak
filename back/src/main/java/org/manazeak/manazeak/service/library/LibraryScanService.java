@@ -7,11 +7,10 @@ import org.manazeak.manazeak.daos.library.wiper.LibraryWiperDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.LibraryScanManager;
-import org.manazeak.manazeak.manager.library.integration.thumbnail.AlbumCoverIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.LibraryIntegrationManager;
-import org.manazeak.manazeak.manager.library.integration.picture.LibraryPictureIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.random.RandomInitializationManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
+import org.manazeak.manazeak.manager.library.thumbnail.ThumbnailManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -30,13 +29,10 @@ public class LibraryScanService {
     private static final Logger LOG = LoggerFactory.getLogger(LibraryScanService.class);
     private final LibraryScanManager libraryScanManager;
     private final LibraryIntegrationManager libraryIntegrationManager;
-    private final AlbumCoverIntegrationManager albumCoverIntegrationManager;
-    private final LibraryWiperDAO libraryWiperDAO;
     private final RandomInitializationManager randomInitializationManager;
-
-    private final LibraryPictureIntegrationManager libraryPictureIntegrationManager;
-
+    private final ThumbnailManager thumbnailManager;
     private final LibraryScanStatusManager libraryScanStatusManager;
+    private final LibraryWiperDAO libraryWiperDAO;
 
     /**
      * Cleaning all the data contained in the library and importing all the tracks.
@@ -66,14 +62,10 @@ public class LibraryScanService {
             libraryIntegrationManager.integrateScannedLibrary(scanResult.getArtists());
             LOG.info("Ending the track integration.");
 
-            LOG.info("Starting the cover extraction.");
-            // Extracting the covers
-            libraryScanStatusManager.setCurrentStep(ScanStepEnum.TRACK_COVER_EXTRACTION);
-            albumCoverIntegrationManager.launchCoverThumbnailGeneration(scanResult.getCoverPaths());
-            LOG.info("Ending the cover extraction.");
-
-            // Generating the thumbnails of the external mzk assets.
-            libraryPictureIntegrationManager.integrateLibraryPictures();
+            LOG.info("Starting the thumbnails extraction.");
+            // Generating the thumbnail.
+            thumbnailManager.launchThumbnailGenerationDuringScan();
+            LOG.info("Ending the thumbnails extraction.");
 
             // Init the random tables.
             randomInitializationManager.initRandomTables();

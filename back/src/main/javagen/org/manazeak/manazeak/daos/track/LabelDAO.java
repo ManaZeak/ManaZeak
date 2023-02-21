@@ -1,8 +1,9 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.label.LabelLinkerProjection;
-import org.manazeak.manazeak.entity.dto.library.integration.label.LabelPictureProjection;
+import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
 import org.manazeak.manazeak.entity.track.Label;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -26,8 +27,11 @@ public interface LabelDAO extends CrudRepository<Label, Long> {
     @Query("select name as labelName, labelId as labelId from Label where name in (:labelNames)")
     List<LabelLinkerProjection> getLabelsByNames(@Param("labelNames") Collection<String> labelNames);
 
-    @Query("select labelId as labelId, name as name from Label where pictureFilename is null")
-    List<LabelPictureProjection> getLabelsWithoutPicture();
+    @Query("select labelId as elementId, name as name " +
+            "from Label " +
+            "where labelId > :lastLabelId " +
+            "order by labelId")
+    List<ThumbnailGenerationProjection> getLabelThumbsGeneration(@Param("lastLabelId") Long lastLabelId, Pageable pageable);
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

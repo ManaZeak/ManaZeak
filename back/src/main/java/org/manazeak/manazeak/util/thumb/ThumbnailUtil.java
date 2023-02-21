@@ -1,26 +1,27 @@
 package org.manazeak.manazeak.util.thumb;
 
+import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.util.FieldUtil;
 import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.file.FileUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Generate thumbnails for images.
  */
+@Slf4j
 public final class ThumbnailUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ThumbnailUtil.class);
 
     private ThumbnailUtil() {
 
@@ -38,7 +39,7 @@ public final class ThumbnailUtil {
                                       String thumbName) throws IOException {
         // Testing if the image exists.
         if (!image.toFile().exists()) {
-            LOG.warn("The image : {} cannot be found, the thumbnails haven't been created.", image);
+            log.warn("The image : {} cannot be found, the thumbnails haven't been created.", image);
         }
         // Generating the thumbnails for the given list of sizes.
         for (ThumbSizeEnum thumbSize : thumbsToGenerate) {
@@ -61,12 +62,19 @@ public final class ThumbnailUtil {
      * @return The name of the file generated. Return null if the file is not found.
      */
     public static String generateThumbnail(ThumbSizeEnum[] sizes, String fileName, ThumbnailTypeEnum thumbType) throws IOException {
+        Path sourcePicturePath;
         if (thumbType == ThumbnailTypeEnum.ALBUM) {
-            throw new MzkRuntimeException("This method doesn't support the album type");
+            File[] files = Paths.get(fileName).toFile().listFiles((dir1, name) -> name.endsWith(FileExtensionEnum.JGP.getExtension()));
+            if (files == null || files.length != 1) {
+                log.error("Multiple or no jpg file in the album : {}", fileName);
+                return null;
+            }
+            sourcePicturePath = files[0].toPath();
+        } else {
+            sourcePicturePath = thumbType.getBaseSourceFolder()
+                    .resolve(FieldUtil.removeForbiddenFsChar(fileName) + FileExtensionEnum.JGP.getExtension());
         }
-        Path sourcePicturePath = thumbType.getBaseSourceFolder()
-                .resolve(FieldUtil.removeForbiddenFsChar(fileName) + FileExtensionEnum.JGP.getExtension());
-        if (!sourcePicturePath.toFile().exists()) {
+        if (!Files.exists(sourcePicturePath)) {
             return null;
         }
 
