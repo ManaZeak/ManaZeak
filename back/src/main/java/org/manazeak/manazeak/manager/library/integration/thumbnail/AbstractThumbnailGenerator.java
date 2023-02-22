@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailErrorTypeEnum;
 import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
+import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailErrorDto;
 import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.integration.error.ThumbnailErrorManager;
@@ -105,15 +106,18 @@ public abstract class AbstractThumbnailGenerator {
             try {
                 List<Pair<Long, String>> results = new ArrayList<>();
 
+                List<ThumbnailErrorDto> thumbnailErrors = new ArrayList<>();
                 // Iterating through the thumbs to generate.
                 for (ThumbnailGenerationProjection thumb : thumbProjections) {
-                    Pair<Long, String> thumbGenerated = generateThumb(thumb);
+                    Pair<Long, String> thumbGenerated = generateThumb(thumb, thumbnailErrors);
                     // Adding the thumbnail only if it has been generated.
                     if (thumbGenerated != null) {
                         results.add(thumbGenerated);
                     }
                 }
 
+                // Saving the errors in the database.
+                thumbnailErrorManager.saveErrors(thumbnailErrors);
                 // Saving the data into the database.
                 saveEntities(results);
             } catch (Exception e) {
@@ -128,7 +132,7 @@ public abstract class AbstractThumbnailGenerator {
      * @param thumbProjection The information about the thumbnail.
      * @return The pair of : element id and thumbnail name.
      */
-    private Pair<Long, String> generateThumb(ThumbnailGenerationProjection thumbProjection) {
+    private Pair<Long, String> generateThumb(ThumbnailGenerationProjection thumbProjection, List<ThumbnailErrorDto> thumbnailErrors) {
         try {
             // Generating the thumbnail and getting the hashed name.
             String thumbName = ThumbnailUtil.generateThumbnail(getThumbSizeToGenerate(), thumbProjection.getName(), getThumbType());
@@ -141,13 +145,13 @@ public abstract class AbstractThumbnailGenerator {
             // FIXME: put this object in a list and save the list 1 time.
             log.error("Error generating the thumbnail for the element : '" + thumbProjection.getName()
                     + "' for the type : " + getThumbType());
-            thumbnailErrorManager.addErrorForEntity(getThumbType(), e.getMessage(), thumbProjection.getElementId(),
-                    ThumbnailErrorTypeEnum.IMAGE_ERROR);
+            thumbnailErrors.add(new ThumbnailErrorDto(getThumbType(), e.getMessage(), thumbProjection.getElementId(),
+                    ThumbnailErrorTypeEnum.IMAGE_ERROR));
         }
 
         // Nothing as been generated, this is an error.
-        thumbnailErrorManager.addErrorForEntity(getThumbType(), "["+ getThumbType() +"] The thumbnail wasn't found on the FS for the file : "
-                + thumbProjection.getName(), thumbProjection.getElementId(), ThumbnailErrorTypeEnum.FILE_NOT_FOUND);
+        thumbnailErrors.add(new ThumbnailErrorDto(getThumbType(), "["+ getThumbType() +"] The thumbnail wasn't found on the FS for the file : "
+                + thumbProjection.getName(), thumbProjection.getElementId(), ThumbnailErrorTypeEnum.FILE_NOT_FOUND));
         return null;
     }
 }

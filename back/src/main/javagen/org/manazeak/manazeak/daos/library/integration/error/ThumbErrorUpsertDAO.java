@@ -1,15 +1,16 @@
 package org.manazeak.manazeak.daos.library.integration.error;
 
 import lombok.RequiredArgsConstructor;
-import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailErrorTypeEnum;
 import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
+import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailErrorDto;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 
 /**
  * Allows to insert or update a thumbnail error in the database.
@@ -32,26 +33,30 @@ public class ThumbErrorUpsertDAO {
                                       thumb_error_type_id = thumbnail_error.thumb_error_type_id""";
     private final JdbcTemplate jdbcTemplate;
 
-    public void mergeThumbError(String error, Long entityId, ThumbnailTypeEnum thumbnailType, ThumbnailErrorTypeEnum errorType) {
-        jdbcTemplate.update(MERGE_THUMBNAIL_ERROR, new ThumbErrorUpsertSetter(error, entityId, thumbnailType, errorType));
+    public void mergeThumbError(List<ThumbnailErrorDto> thumbErrors) {
+        if (thumbErrors.isEmpty()) {
+            return;
+        }
+        jdbcTemplate.batchUpdate(MERGE_THUMBNAIL_ERROR, new ThumbErrorUpsertSetter(thumbErrors));
     }
 
-    @RequiredArgsConstructor
-    private class ThumbErrorUpsertSetter implements PreparedStatementSetter {
 
-        private final String error;
-        private final Long entityId;
-        private final ThumbnailTypeEnum thumbType;
-        private final ThumbnailErrorTypeEnum errorType;
+    private record ThumbErrorUpsertSetter(List<ThumbnailErrorDto> thumbErrors) implements BatchPreparedStatementSetter {
 
         @Override
-        public void setValues(PreparedStatement ps) throws SQLException {
-            ps.setString(1, error);
-            setEntityId(ThumbnailTypeEnum.LABEL, 2, ps);
-            setEntityId(ThumbnailTypeEnum.ALBUM, 3, ps);
-            setEntityId(ThumbnailTypeEnum.GENRE, 4, ps);
-            setEntityId(ThumbnailTypeEnum.ARTIST, 5, ps);
-            ps.setLong(6, errorType.getId());
+        public void setValues(PreparedStatement ps, int i) throws SQLException {
+            ThumbnailErrorDto error = thumbErrors.get(i);
+            ps.setString(1, error.error());
+            setEntityId(ThumbnailTypeEnum.LABEL, 2, ps, error);
+            setEntityId(ThumbnailTypeEnum.ALBUM, 3, ps, error);
+            setEntityId(ThumbnailTypeEnum.GENRE, 4, ps, error);
+            setEntityId(ThumbnailTypeEnum.ARTIST, 5, ps, error);
+            ps.setLong(6, error.errorType().getId());
+        }
+
+        @Override
+        public int getBatchSize() {
+            return thumbErrors.size();
         }
 
         /**
@@ -62,9 +67,9 @@ public class ThumbErrorUpsertDAO {
          * @param ps            The prepared statement.
          * @throws SQLException Error while setting the values.
          */
-        private void setEntityId(ThumbnailTypeEnum evaluatedType, int index, PreparedStatement ps) throws SQLException {
-            if (evaluatedType == thumbType) {
-                ps.setLong(index, entityId);
+        private void setEntityId(ThumbnailTypeEnum evaluatedType, int index, PreparedStatement ps, ThumbnailErrorDto error) throws SQLException {
+            if (evaluatedType == error.type()) {
+                ps.setLong(index, error.entityId());
             } else {
                 ps.setNull(index, Types.BIGINT);
             }
