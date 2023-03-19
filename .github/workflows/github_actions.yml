@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: 
-      image: squadella/manazeak-testenv
+      image: manazeak/manazeak-test-env
       options: --user 1001
     # Allows to launch a postgresql service for the unit test of the java app
     services:
