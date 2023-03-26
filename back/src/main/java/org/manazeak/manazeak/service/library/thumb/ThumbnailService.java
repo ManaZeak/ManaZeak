@@ -4,12 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
+import org.manazeak.manazeak.daos.library.management.thumbnail.ThumbnailErrorSearchDAO;
+import org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorCriteriaDto;
+import org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorLineDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.thumbnail.ThumbnailManager;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Service used to generate the thumbnails.
@@ -17,9 +21,10 @@ import java.io.IOException;
 @Service
 @TransactionalWithRollback
 @RequiredArgsConstructor
-public class ThumbGenerationService {
+public class ThumbnailService {
 
     private final ThumbnailManager thumbnailManager;
+    private final ThumbnailErrorSearchDAO thumbnailErrorSearchDAO;
 
     /**
      * Delete all the thumbnails of the application and generate new ones.
@@ -39,4 +44,24 @@ public class ThumbGenerationService {
         thumbnailManager.launchThumbnailGeneration();
     }
 
+    /**
+     * Get a list of thumbnails from a list of criterias.
+     *
+     * @param pageNumber The number of the page to get.
+     * @param criteria   The filter information.
+     * @return The list of elements matching the criteria.
+     */
+    public List<ThumbnailErrorLineDto> getThumbnailErrorByCriteria(int pageNumber, ThumbnailErrorCriteriaDto criteria) {
+        return thumbnailErrorSearchDAO.getThumbnailsFromCriteria(pageNumber, criteria);
+    }
+
+    /**
+     * Get the number of elements matching the criteria in the thumbnail error table.
+     *
+     * @param criteriaDto The information about the criteria of the user.
+     * @return The number of thumbnail matching the user criteria.
+     */
+    public Long getThumbnailErrorNumbersByCriteria(ThumbnailErrorCriteriaDto criteriaDto) {
+        return thumbnailErrorSearchDAO.getNumberThumbError(criteriaDto);
+    }
 }

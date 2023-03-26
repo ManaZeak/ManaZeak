@@ -9,7 +9,9 @@ public enum AdminFragmentEnum {
     USER_LIST("fragments/admin/user-list.html"),
     WISH_LIST("fragments/admin/wish-list.html"),
     SYNCTHING("fragments/admin/syncthing.html"),
-    COMMANDS("fragments/admin/commands.html");
+    COMMANDS("fragments/admin/commands.html"),
+    THUMBNAIL_ERROR_BASE("fragments/admin/thumbnail/thumbnail-error-base.html"),
+    THUMBNAIL_ERROR_LIST("fragments/admin/thumbnail/thumbnail-error-results.html");
 
     private final String page;
 
