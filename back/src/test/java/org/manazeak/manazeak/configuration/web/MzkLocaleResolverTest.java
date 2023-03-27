@@ -4,12 +4,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
-import org.manazeak.manazeak.datacreation.security.user.UserTestConstants;
+import org.manazeak.manazeak.mock.WithMockMzkUser;
 import org.manazeak.manazeak.service.security.user.UserTestManipulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Locale;
 
@@ -52,20 +51,16 @@ class MzkLocaleResolverTest extends AbstractManaZeakTest {
      * Testing that a user without a locale in the database is English.
      */
     @Test
-    @WithMockUser(username = UserTestConstants.USERNAME)
+    @WithMockMzkUser
     void testLocaleResolveWithUserWithoutLocale() {
-        // Creating the default user that will be sued during the test.
-        userDataCreation.createDefaultMzkUser();
         MockHttpServletRequest request = new MockHttpServletRequest();
         Locale userLocale = localResolver.resolveLocale(request);
         Assertions.assertEquals(Locale.US, userLocale, "The default locale isn't English.");
     }
 
     @Test
-    @WithMockUser(username = UserTestConstants.USERNAME)
+    @WithMockMzkUser
     void testLocaleResolveWithUserWithLocale() {
-        // Creating the user in the database.
-        userDataCreation.createDefaultMzkUser();
         // Setting the locale of the user to French.
         userManipulator.addLocaleToUser(1L);
         // Checking if the selected locale is correct.

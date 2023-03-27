@@ -11,6 +11,7 @@ import org.manazeak.manazeak.datacreation.security.invite.InviteCodeDataCreation
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.mock.WithMockMzkUser;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.manazeak.manazeak.util.DateUtil;
 import org.springframework.stereotype.Component;
@@ -134,6 +135,18 @@ public class MzkUserDataCreation {
             throw new MzkRuntimeException("The user " + UserTestConstants.USERNAME + suffix + " doesn't exist.");
         }
         return user.get();
+    }
+
+    public MzkUser createUserForUnitTest(WithMockMzkUser annotation) {
+        MzkUser user = generateDefaultUser();
+        user.setUsername(annotation.username());
+        user.setMail(annotation.mail());
+        user.setRole(roleDAO.getRoleByRoleId(annotation.role().getId()));
+
+        // Saving the user in the database.
+        mzkUserDAO.save(user);
+
+        return user;
     }
 
     /**

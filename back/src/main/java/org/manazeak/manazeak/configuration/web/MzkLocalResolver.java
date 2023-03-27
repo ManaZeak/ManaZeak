@@ -1,12 +1,12 @@
 package org.manazeak.manazeak.configuration.web;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.configuration.security.MzkUserDetail;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.service.security.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,20 +14,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * This class allows to select the local for a given user.
  * If there is no user, we select the user agent language.
  */
 @Configuration
+@RequiredArgsConstructor
 @TransactionalWithRollback
 public class MzkLocalResolver extends SessionLocaleResolver {
 
     private static final Logger LOG = LoggerFactory.getLogger(MzkLocalResolver.class);
-    // Using Autowired, because we need to instantiate this class in a config file.
-    @Autowired
-    private UserService userService;
 
     /**
      * Get the local from the user agent.
@@ -82,15 +79,14 @@ public class MzkLocalResolver extends SessionLocaleResolver {
         if (auth instanceof AnonymousAuthenticationToken) {
             return getLocalFromRequestHeader(request);
         }
-        String userName = auth.getName();
-        // Getting the user from the database.
-        Optional<MzkUser> user = userService.findByUsername(userName);
-        if (user.isEmpty()) {
+        // Getting the username from the security context.
+        MzkUser user = ((MzkUserDetail) auth.getPrincipal()).getUser();
+        if (user == null) {
             LOG.warn("A user has no user name and is connected.");
             return Locale.US;
         }
-        if (user.get().getLocale() != null) {
-            return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale().getCode()));
+        if (user.getLocale() != null) {
+            return getAvailableLocale(Locale.forLanguageTag(user.getLocale().getCode()));
         } else {
             return getLocalFromRequestHeader(request);
         }
