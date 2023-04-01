@@ -9,6 +9,7 @@ import org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorCriteriaDt
 import org.manazeak.manazeak.service.library.thumb.ThumbnailService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -39,7 +40,7 @@ public class ThumbnailErrorController {
      * @param criteria The criteria to apply to the request.
      * @return The page containing the list of thumbnails error.
      */
-    @GetMapping("/admin/thumb/list/")
+    @PostMapping("/admin/thumb/list/")
     public String getThumbnailList(@RequestParam Integer page, @RequestBody @NotNull ThumbnailErrorCriteriaDto criteria,
                                    Model model) {
         model.addAttribute("size", thumbnailService.getThumbnailErrorNumbersByCriteria(criteria));
