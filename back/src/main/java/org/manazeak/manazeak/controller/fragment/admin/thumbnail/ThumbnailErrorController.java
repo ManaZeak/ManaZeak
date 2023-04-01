@@ -27,7 +27,7 @@ public class ThumbnailErrorController {
      *
      * @return The page containing the static elements for the thumbnail errors.
      */
-    @GetMapping("/admin/thumb/layout")
+    @GetMapping("/admin/thumb/layout/")
     public String getThumbnailErrorCommonPage() {
         return AdminFragmentEnum.THUMBNAIL_ERROR_BASE.getPage();
     }
@@ -39,7 +39,7 @@ public class ThumbnailErrorController {
      * @param criteria The criteria to apply to the request.
      * @return The page containing the list of thumbnails error.
      */
-    @GetMapping("/admin/thumb/list")
+    @GetMapping("/admin/thumb/list/")
     public String getThumbnailList(@RequestParam Integer page, @RequestBody @NotNull ThumbnailErrorCriteriaDto criteria,
                                    Model model) {
         model.addAttribute("size", thumbnailService.getThumbnailErrorNumbersByCriteria(criteria));
