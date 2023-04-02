@@ -1,10 +1,12 @@
 package org.manazeak.manazeak.service.library.thumb;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.daos.library.management.thumbnail.ThumbnailErrorSearchDAO;
+import org.manazeak.manazeak.daos.management.ThumbnailErrorDAO;
 import org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorCriteriaDto;
 import org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorLineDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
@@ -25,6 +27,7 @@ public class ThumbnailService {
 
     private final ThumbnailManager thumbnailManager;
     private final ThumbnailErrorSearchDAO thumbnailErrorSearchDAO;
+    private final ThumbnailErrorDAO thumbnailErrorDAO;
 
     /**
      * Delete all the thumbnails of the application and generate new ones.
@@ -47,12 +50,11 @@ public class ThumbnailService {
     /**
      * Get a list of thumbnails from a list of criterias.
      *
-     * @param pageNumber The number of the page to get.
      * @param criteria   The filter information.
      * @return The list of elements matching the criteria.
      */
-    public List<ThumbnailErrorLineDto> getThumbnailErrorByCriteria(int pageNumber, ThumbnailErrorCriteriaDto criteria) {
-        return thumbnailErrorSearchDAO.getThumbnailsFromCriteria(pageNumber, criteria);
+    public List<ThumbnailErrorLineDto> getThumbnailErrorByCriteria(ThumbnailErrorCriteriaDto criteria) {
+        return thumbnailErrorSearchDAO.getThumbnailsFromCriteria(criteria);
     }
 
     /**
@@ -63,5 +65,14 @@ public class ThumbnailService {
      */
     public Long getThumbnailErrorNumbersByCriteria(ThumbnailErrorCriteriaDto criteriaDto) {
         return thumbnailErrorSearchDAO.getNumberThumbError(criteriaDto);
+    }
+
+    /**
+     * Change a thumbnail error status to the processed state.
+     *
+     * @param thumbErrorId The id of the thumbnail to set.
+     */
+    public void setThumbErrorToProcessed(@NonNull Long thumbErrorId) {
+        thumbnailErrorDAO.updateThumbnailErrorStatusById(thumbErrorId);
     }
 }

@@ -53,4 +53,17 @@ public final class FieldUtil {
 
         return FORBIDDEN_CHAR_PATTERN.matcher(value).replaceAll(PLACEHOLDER_CHAR);
     }
+
+    /**
+     * Get the value contained in the Integer. If the value is null return 0.
+     *
+     * @param value The value to transform.
+     * @return The value if not null otherwise 0.
+     */
+    public static int getIntFromInteger(Integer value) {
+        if (value == null) {
+            return 0;
+        }
+        return value;
+    }
 }

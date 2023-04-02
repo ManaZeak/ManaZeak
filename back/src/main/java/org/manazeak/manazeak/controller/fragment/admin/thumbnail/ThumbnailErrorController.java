@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Allows to interact with the thumbnail error for the UI.
@@ -36,15 +35,14 @@ public class ThumbnailErrorController {
     /**
      * Get the page containing the list of the errors of thumbnails.
      *
-     * @param page     The page number, default to 0 if null.
      * @param criteria The criteria to apply to the request.
      * @return The page containing the list of thumbnails error.
      */
     @PostMapping("/admin/thumb/list/")
-    public String getThumbnailList(@RequestParam Integer page, @RequestBody @NotNull ThumbnailErrorCriteriaDto criteria,
+    public String getThumbnailList(@RequestBody @NotNull ThumbnailErrorCriteriaDto criteria,
                                    Model model) {
         model.addAttribute("size", thumbnailService.getThumbnailErrorNumbersByCriteria(criteria));
-        model.addAttribute("errors", thumbnailService.getThumbnailErrorByCriteria(page, criteria));
+        model.addAttribute("errors", thumbnailService.getThumbnailErrorByCriteria(criteria));
         return AdminFragmentEnum.THUMBNAIL_ERROR_LIST.getPage();
     }
 }

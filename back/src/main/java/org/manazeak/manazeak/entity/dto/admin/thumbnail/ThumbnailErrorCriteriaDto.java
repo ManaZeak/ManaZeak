@@ -10,6 +10,7 @@ package org.manazeak.manazeak.entity.dto.admin.thumbnail;
 public record ThumbnailErrorCriteriaDto(
         Long entityTypeId,
         Long errorType,
-        Boolean processed
+        Boolean processed,
+        Integer page
 ) {
 }
