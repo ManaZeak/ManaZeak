@@ -9,7 +9,7 @@ ADD back/pom.xml /ManaZeak/back/pom.xml
 ADD front/pom.xml /ManaZeak/front/pom.xml
 # Downloading the dependancies.
 # This is used to use the docker cache and avoiding to download the package every time.
-RUN mvn clean verify --fail-never -Dskip.npm -Dskip.karma -Dskip.webpack -Dskip.installnodenpm
+RUN mvn clean verify --fail-never -DskipTests -Dskip.npm -Dskip.karma -Dskip.webpack -Dskip.installnodenpm
 
 # Adding source files.
 ADD ./ /ManaZeak

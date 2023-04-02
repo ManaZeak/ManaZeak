@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.daos.library.wiper;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.constant.library.LibraryTablesEnum;
 import org.manazeak.manazeak.util.database.transaction.AutonomousTransactionManager;
 import org.slf4j.Logger;
@@ -11,20 +13,14 @@ import org.springframework.stereotype.Repository;
  * Wipe all the tables of the application.
  */
 @Repository
+@RequiredArgsConstructor
+@Slf4j
 public class LibraryWiperDAO {
 
     private static final String TRUNCATE_REQUEST = "TRUNCATE TABLE ";
 
-    private static final Logger LOG = LoggerFactory.getLogger(LibraryWiperDAO.class);
-
     private final JdbcTemplate jdbcTemplate;
-
     private final AutonomousTransactionManager autonomousTransactionManager;
-
-    public LibraryWiperDAO(JdbcTemplate jdbcTemplate, AutonomousTransactionManager autonomousTransactionManager) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.autonomousTransactionManager = autonomousTransactionManager;
-    }
 
     public void wipeLibraryData() {
         StringBuilder sb = new StringBuilder();
@@ -35,7 +31,7 @@ public class LibraryWiperDAO {
                 sb.append(",");
             }
         }
-        LOG.info("Wiping the all the tables of the application.");
+        log.info("Wiping the all the tables of the application.");
         autonomousTransactionManager.runInTransaction(() -> jdbcTemplate.update(TRUNCATE_REQUEST + sb));
     }
 

@@ -1,11 +1,14 @@
 package org.manazeak.manazeak.constant.file;
 
+import lombok.Getter;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Contains the location of the different file manipulated by the application.
  */
+@Getter
 public enum ResourcePathEnum {
 
     COVER_FOLDER(Paths.get("/resources/covers/")),
@@ -25,8 +28,5 @@ public enum ResourcePathEnum {
         this.path = path;
     }
 
-    public Path getPath() {
-        return path;
-    }
 }
 

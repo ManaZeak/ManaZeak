@@ -1,13 +1,19 @@
 package org.manazeak.manazeak.util;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
 import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
+import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
 import org.manazeak.manazeak.service.file.TestImageGetter;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -23,7 +29,7 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
      * Nominal test, valid image.
      */
     @Test
-    void testCreationThumb() {
+    void testCreationThumb() throws IOException {
         // Getting the image for the FS.
         Path image = testImageGetter.getImagePath(TestImageGetter.THUMB_JPG_FULL_SIZE);
         // Getting the size that must be generated.
@@ -47,7 +53,7 @@ class ThumbnailUtilTest extends AbstractManaZeakTest {
         // Getting a non image file.
         Path image = applicationPath.resolve("thumb.jpg");
         // Applying the modification to the file.
-        ThumbnailUtil.generateThumbs(getGeneratedThumbSize(), applicationPath, image, "thumb.jpg");
+        Assertions.assertThrowsExactly(FileNotFoundException.class, () -> ThumbnailUtil.generateThumbs(getGeneratedThumbSize(), applicationPath, image, "thumb.jpg"));
         // Checking the image.
         Assertions.assertFalse(image.toFile().exists());
     }

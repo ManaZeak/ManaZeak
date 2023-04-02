@@ -3,6 +3,7 @@ package org.manazeak.manazeak.entity.security;
 import java.io.Serializable;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Entity;
+import org.manazeak.manazeak.entity.reference.WishStatus;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;

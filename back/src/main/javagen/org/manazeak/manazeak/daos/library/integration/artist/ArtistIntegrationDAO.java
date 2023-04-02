@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.library.integration.artist;
 
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.cover.ThumbNameUpdaterSetter;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class ArtistIntegrationDAO {
 
     private static final String INSERT_BAND_MEMBERS = "INSERT INTO band_member (band_member_id, band_id, member_id) " +
@@ -23,12 +25,6 @@ public class ArtistIntegrationDAO {
     private final JdbcTemplate jdbcTemplate;
 
     private final CacheAccessManager cacheAccessManager;
-
-
-    public ArtistIntegrationDAO(JdbcTemplate jdbcTemplate, CacheAccessManager cacheAccessManager) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.cacheAccessManager = cacheAccessManager;
-    }
 
     /**
      * Merge into the database the new artists.

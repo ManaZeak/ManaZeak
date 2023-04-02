@@ -3,7 +3,6 @@ package org.manazeak.manazeak.configuration.web;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.manazeak.manazeak.AbstractManaZeakTest;
-import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
 import org.manazeak.manazeak.mock.WithMockMzkUser;
 import org.manazeak.manazeak.service.security.user.UserTestManipulator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ class MzkLocaleResolverTest extends AbstractManaZeakTest {
     UserTestManipulator userManipulator;
     @Autowired
     private MzkLocalResolver localResolver;
-    @Autowired
-    private MzkUserDataCreation userDataCreation;
 
     /**
      * Test that a user without any option in his browser display the default language.

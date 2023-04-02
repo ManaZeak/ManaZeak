@@ -18,20 +18,22 @@ CREATE SEQUENCE SEQ_LINK START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_RECORDING_LOCATION START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TIME_INTERVAL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TRACK START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_THUMBNAIL_ERROR START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BAND_ROLE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COMPILATION_TYPE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COUNTRY START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_KEY START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_LOCALE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_SCAN_STEP START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_THUMB_ERROR_TYPE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WEBSITE_TYPE START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_WISH_STATUS START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BADGE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_INVITE_CODE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_MZK_USER START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_PRIVILEGE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_ROLE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WISH START WITH 1000 CACHE 20; 
-CREATE SEQUENCE SEQ_WISH_STATUS START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RANDOM_GENRE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RANDOM_LABEL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RANDOM_RELEASE_ARTIST START WITH 1000 CACHE 20; 
@@ -282,6 +284,23 @@ COMMENT ON TABLE track_key IS 'ManyToMany track / key';
 COMMENT ON COLUMN track_key.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_key.key_id IS 'ManyToMany FK key';
 
+CREATE TABLE thumbnail_error (
+	thumb_err_id BIGINT not null,
+	error TEXT not null,
+	processed BOOLEAN not null,
+	label_id BIGINT,
+	album_id BIGINT,
+	genre_id BIGINT,
+	artist_id BIGINT,
+	thumb_error_type_id BIGINT,
+	CONSTRAINT PK_THUMBNAIL_ERROR PRIMARY KEY (thumb_err_id)
+);
+COMMENT ON COLUMN thumbnail_error.label_id IS 'ManyToOne FK label';
+COMMENT ON COLUMN thumbnail_error.album_id IS 'ManyToOne FK album';
+COMMENT ON COLUMN thumbnail_error.genre_id IS 'ManyToOne FK genre';
+COMMENT ON COLUMN thumbnail_error.artist_id IS 'ManyToOne FK artist';
+COMMENT ON COLUMN thumbnail_error.thumb_error_type_id IS 'ManyToOne FK thumb_error_type';
+
 CREATE TABLE band_role (
 	band_role_id BIGINT not null,
 	label VARCHAR(200) not null,
@@ -331,11 +350,24 @@ CREATE TABLE scan_step (
 	CONSTRAINT PK_SCAN_STEP PRIMARY KEY (scan_step_id)
 );
 
+CREATE TABLE thumb_error_type (
+	thumb_error_type_id BIGINT not null,
+	label VARCHAR(50) not null,
+	code VARCHAR(50) not null,
+	CONSTRAINT PK_THUMB_ERROR_TYPE PRIMARY KEY (thumb_error_type_id)
+);
+
 CREATE TABLE website_type (
 	website_id BIGINT not null,
 	label VARCHAR(100) not null,
 	asset_path VARCHAR(500) not null,
 	CONSTRAINT PK_WEBSITE_TYPE PRIMARY KEY (website_id)
+);
+
+CREATE TABLE wish_status (
+	wish_status_id BIGINT not null,
+	code VARCHAR(32) not null,
+	CONSTRAINT PK_WISH_STATUS PRIMARY KEY (wish_status_id)
 );
 
 CREATE TABLE badge (
@@ -421,12 +453,6 @@ CREATE TABLE wish (
 COMMENT ON COLUMN wish.user_id IS 'ManyToOne FK mzk_user';
 COMMENT ON COLUMN wish.wish_status_id IS 'ManyToOne FK wish_status';
 
-CREATE TABLE wish_status (
-	wish_status_id BIGINT not null,
-	code VARCHAR(32) not null,
-	CONSTRAINT PK_WISH_STATUS PRIMARY KEY (wish_status_id)
-);
-
 CREATE TABLE random_genre (
 	random_genre_id BIGINT not null,
 	random_index BIGINT not null,
@@ -506,6 +532,11 @@ ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_1 FOREIGN KEY (track_id) R
 ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_2 FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
 ALTER TABLE track_key ADD CONSTRAINT FK_track_key_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_key ADD CONSTRAINT FK_track_key_2 FOREIGN KEY (key_id) REFERENCES key(key_id);
+ALTER TABLE thumbnail_error ADD CONSTRAINT FK_label_thumb_error FOREIGN KEY (label_id) REFERENCES label(label_id);
+ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_album FOREIGN KEY (album_id) REFERENCES album(album_id);
+ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_genre FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
+ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_artist FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
+ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_err_type FOREIGN KEY (thumb_error_type_id) REFERENCES thumb_error_type(thumb_error_type_id);
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_1 FOREIGN KEY (badge_id) REFERENCES badge(badge_id);
 ALTER TABLE badge_user ADD CONSTRAINT FK_badge_user_2 FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE invite_code ADD CONSTRAINT FK_user_invite_parent FOREIGN KEY (parent) REFERENCES mzk_user(user_id);
@@ -564,6 +595,11 @@ CREATE INDEX IDX_track_genre_1 ON track_genre (track_id);
 CREATE INDEX IDX_track_genre_2 ON track_genre (genre_id);
 CREATE INDEX IDX_track_key_1 ON track_key (track_id);
 CREATE INDEX IDX_track_key_2 ON track_key (key_id);
+CREATE INDEX IDX_label_thumb_error ON thumbnail_error (label_id);
+CREATE INDEX IDX_thumb_error_album ON thumbnail_error (album_id);
+CREATE INDEX IDX_thumb_error_genre ON thumbnail_error (genre_id);
+CREATE INDEX IDX_thumb_error_artist ON thumbnail_error (artist_id);
+CREATE INDEX IDX_thumb_err_type ON thumbnail_error (thumb_error_type_id);
 CREATE INDEX IDX_badge_user_1 ON badge_user (badge_id);
 CREATE INDEX IDX_badge_user_2 ON badge_user (user_id);
 CREATE INDEX IDX_user_invite_parent ON invite_code (parent);

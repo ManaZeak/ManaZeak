@@ -5,7 +5,7 @@ package org.manazeak.manazeak.entity.dto.library.integration.album;
  */
 public interface AlbumCoverUpdateProjection {
 
-    String getId();
+    Long getId();
 
     String getAlbumLocation();
 

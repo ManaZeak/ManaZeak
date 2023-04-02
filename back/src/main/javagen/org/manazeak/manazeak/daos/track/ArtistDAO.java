@@ -3,7 +3,9 @@ package org.manazeak.manazeak.daos.track;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistLinkerProjection;
+import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
 import org.manazeak.manazeak.entity.track.Artist;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -109,5 +111,17 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             "join alb.artist art " +
             "where alb.label.labelId = :labelId")
     List<ArtistMinimalInfoDto> getArtistFromLabelId(@Param("labelId") Long labelId);
+
+    /**
+     * Get a packet of artists without any thumb generated in the database.
+     *
+     * @param lastArtistId The last id of artist found in the previous packet.
+     * @param pageable     The pageable object to handle the pagination for the request.
+     * @return The artists with no image generated.
+     */
+    @Query("select artistId as elementId, name as name from Artist where " +
+            "artistId > :lastArtistId " +
+            "ORDER BY artistId")
+    List<ThumbnailGenerationProjection> getArtistsToGenerateThumbPacket(@Param("lastArtistId") Long lastArtistId, Pageable pageable);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

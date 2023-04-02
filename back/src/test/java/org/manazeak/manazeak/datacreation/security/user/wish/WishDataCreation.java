@@ -1,8 +1,8 @@
 package org.manazeak.manazeak.datacreation.security.user.wish;
 
 import org.manazeak.manazeak.constant.security.WishStatusEnum;
+import org.manazeak.manazeak.daos.reference.WishStatusDAO;
 import org.manazeak.manazeak.daos.security.WishDAO;
-import org.manazeak.manazeak.daos.security.WishStatusDAO;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Wish;
 import org.springframework.stereotype.Component;

@@ -2,9 +2,8 @@ package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
-import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverLinkerProjection;
-import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumCoverUpdateProjection;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
+import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
 import org.manazeak.manazeak.entity.track.Album;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -29,9 +28,6 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
      */
     @Query("select location as albumLocation, albumId from Album where location in (:albumLocations)")
     List<AlbumLinkerProjection> getAlbumsByLocations(@Param("albumLocations") Collection<String> albumLocations);
-
-    @Query("select albumId as albumId, location as albumLocation from Album where location in (:locations)")
-    List<AlbumCoverLinkerProjection> getAlbumByLocations(@Param("locations") Collection<String> location);
 
     /**
      * Get the basic information needed to display albums in the front.
@@ -79,12 +75,12 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
     Optional<AlbumDetailsDto> getAlbumDetailsById(@Param("albumId") Long albumId);
 
     @Query("select " +
-            "   albumId as id, " +
-            "   location as albumLocation " +
+            "   albumId as elementId, " +
+            "   location as name " +
             "from Album " +
             "where albumId > :lastAlbumId " +
             "order by albumId")
-    List<AlbumCoverUpdateProjection> getAlbumsLocationAndCoverName(@Param("lastAlbumId") Long lastAlbumId, Pageable pageable);
+    List<ThumbnailGenerationProjection> getAlbumThumbsGenerations(@Param("lastAlbumId") Long lastAlbumId, Pageable pageable);
 
     @Query("select new org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto(" +
             "alb.albumId," +
