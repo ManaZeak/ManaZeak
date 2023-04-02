@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: 
-      image: squadella/manazeak-testenv
+      image: manazeak/manazeak-test-env
       options: --user 1001
     # Allows to launch a postgresql service for the unit test of the java app
     services:
@@ -34,7 +34,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Build with Maven
-      run: mvn clean verify sonar:sonar -Ptravis -Dsonar.projectKey=ManaZeak -Dsonar.organization=manazeak -Dsonar.scm.provider=git -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.javascript.lcov.reportPaths=/__w/ManaZeak/ManaZeak/coverage/lcov.info
+      run: mvn clean verify sonar:sonar -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Ptravis -Dsonar.projectKey=ManaZeak -Dsonar.organization=manazeak -Dsonar.scm.provider=git -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.javascript.lcov.reportPaths=/__w/ManaZeak/ManaZeak/coverage/lcov.info
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
