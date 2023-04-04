@@ -3,6 +3,8 @@ package org.manazeak.manazeak.controller.fragment.admin.thumbnail;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.manazeak.manazeak.configuration.security.Security;
+import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.admin.AdminFragmentEnum;
 import org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorCriteriaDto;
@@ -27,6 +29,7 @@ public class ThumbnailErrorController {
      *
      * @return The page containing the static elements for the thumbnail errors.
      */
+    @Security(PrivilegeEnum.ADMV)
     @GetMapping("/admin/thumb/layout/")
     public String getThumbnailErrorCommonPage() {
         return AdminFragmentEnum.THUMBNAIL_ERROR_BASE.getPage();
@@ -38,6 +41,7 @@ public class ThumbnailErrorController {
      * @param criteria The criteria to apply to the request.
      * @return The page containing the list of thumbnails error.
      */
+    @Security(PrivilegeEnum.ADMV)
     @PostMapping("/admin/thumb/list/")
     public String getThumbnailList(@RequestBody @NotNull ThumbnailErrorCriteriaDto criteria,
                                    Model model) {
