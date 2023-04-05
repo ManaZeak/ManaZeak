@@ -4,6 +4,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.manazeak.manazeak.entity.dto.user.PasswordContainer;
 
+import java.util.Objects;
+
 /**
  * Check if the passwords provided by the user match.
  */
@@ -11,6 +13,6 @@ public class PasswordsMatchValidator implements ConstraintValidator<PasswordMatc
 
     @Override
     public boolean isValid(PasswordContainer user, ConstraintValidatorContext context) {
-        return user.getPassword1().equals(user.getPassword2());
+        return Objects.equals(user.getPassword1(), user.getPassword2());
     }
 }
