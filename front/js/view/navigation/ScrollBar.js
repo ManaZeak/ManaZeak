@@ -85,8 +85,6 @@ class ScrollBar {
      * @private
      **/
     this._lastPageY = 0;
-
-    this._evtIds = [];
     // Component initialization sequence
     this._init()
       .then(this._events.bind(this))
@@ -274,8 +272,8 @@ class ScrollBar {
     this._target.classList.remove('hovered');
     this._updateScrollBar();    
   }
-
-
+  
+  
   /**
    * @method
    * @name _updateScrollBar
@@ -332,6 +330,7 @@ class ScrollBar {
       // Hide scrollbar if no scrolling is possible
       if (this._scrollRatio >= 1) {
         this._bar.classList.add('hidden');
+        //this._container.firstElementChild.style.paddingRight = '';
       } else {
         let height = (Math.max(this._scrollRatio * 100, this._minSize) * ownHeight) / 100;
         let top = ((this._container.scrollTop / totalHeight) * 100) * ownHeight / 100;
@@ -368,6 +367,11 @@ class ScrollBar {
    **/
   updateScrollbar() {
     this._updateScrollBar();
+  }
+
+
+  isHidden() {
+    return this._bar.classList.contains('hidden');
   }
 
 

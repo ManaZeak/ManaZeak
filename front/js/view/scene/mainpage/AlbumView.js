@@ -40,14 +40,6 @@ class AlbumView extends PlayableView {
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
-      // Global view scroll
-      this._scrolls.push(new ScrollBar({
-        target: this.dom,
-        style: {
-          color: '#56D45B'
-        }
-      }));
-
       this._artist = this.dom.querySelector('#release-artist').innerHTML;
       this._title = this.dom.querySelector('#album-title').innerHTML;
       this._performers = this.dom.querySelector('#album-performers').children;
@@ -63,6 +55,15 @@ class AlbumView extends PlayableView {
         const duration = this._tracks[i].getElementsByClassName('track-duration')[0];
         duration.innerHTML = Utils.secondsToTimecode(parseFloat(duration.innerHTML));
       }
+    
+      // Global view scroll
+      this._scrolls.push(new ScrollBar({
+        target: this.dom,
+        style: {
+          color: '#56D45B'
+        }
+      }));
+
       // Scroll on track must be separated from other scrolls
       this._scrollTrack = new ScrollBar({
         target: this.dom.querySelector('#album-tracks'),
@@ -70,10 +71,15 @@ class AlbumView extends PlayableView {
           color: '#56D45B'
         }
       });
+
+      setTimeout(() => {
+        this._scrollTrack.updateScrollbar();
+      });
       // Update tracks bc of scroll DOM
       this._tracks = this.dom.querySelector('#album-tracks').children[0].children[0].children;
       // <scrollbar to performers for better UI
       if (this._performers.length > 4) {
+        this.dom.getElementsByClassName('album-container')[0].style.height = '78rem';
         this.dom.querySelector('#album-performers').style.height = '200px';
         // Ensure height is properly applied before creating scroll on performers
         requestAnimationFrame(() => {
@@ -87,6 +93,8 @@ class AlbumView extends PlayableView {
           this._performers = this.dom.querySelector('#album-performers').children[0].children[0].children;
         });        
       } else {
+        console.log(this.dom.getElementsByClassName('album-container')[0])
+        this.dom.getElementsByClassName('album-container')[0].style.height = '68.1em';
         this.dom.querySelector('#album-performers').style.overflow = 'hidden';        
       }
       // Track context on container
@@ -96,12 +104,6 @@ class AlbumView extends PlayableView {
       });
 
       this._allExpander = this.dom.querySelector('#album-all-expander');
-      // Update playing track if necessary
-      if (mzk.ctrl.playingId) {
-        this._updatePlaying({
-          id: mzk.ctrl.playingId
-        });
-      }
       /* Build albums */
       const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
       sortArtistReleases.addEventListener('click', () => {
@@ -143,8 +145,16 @@ class AlbumView extends PlayableView {
 
         this._albums = this._albums.children[0].children[0];
         this.updateScrollbars();
-        resolve();
       }
+
+      requestAnimationFrame(() => {
+        // Update playing track if necessary
+        if (mzk.ctrl.playingId) {
+          this._updatePlaying({
+            id: mzk.ctrl.playingId
+          });
+        }        
+      });
 
       resolve();
     });
@@ -284,7 +294,6 @@ class AlbumView extends PlayableView {
       id: this.dataset.id
     });
   }
-
 
 
   _labelClicked() {
