@@ -45,28 +45,21 @@ public class SecurityConfiguration {
         if (devMode) {
             LOG.warn("CAUTION: you are in debug mode, DON'T USE THIS IN PRODUCTION !");
             httpSecurity
-                    .authorizeHttpRequests()
-                    .requestMatchers("/.~~spring-boot!~/restart")
-                    .anonymous()
-                    .and()
-                    .csrf().ignoringRequestMatchers("/.~~spring-boot!~/restart");
+                    .authorizeHttpRequests((config) -> config.requestMatchers("/.~~spring-boot!~/restart").anonymous())
+                    .csrf((config) -> config.ignoringRequestMatchers("/.~~spring-boot!~/restart"));
         }
         httpSecurity
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Creates a session if required.
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/register/", "/login/", "/logoutSuccess/").permitAll()
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/**").authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login/")
-                .defaultSuccessUrl("/", true)
-                .and()
-                .logout().logoutSuccessUrl("/logoutSuccess/")
-                .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .authorizeHttpRequests((authorizeRequest) -> {
+                    authorizeRequest.requestMatchers("/register/", "/login/", "/logoutSuccess/").permitAll();
+                    authorizeRequest.requestMatchers("/**").authenticated();
+                })
+                .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .formLogin((config) -> config
+                        .loginPage("/login/")
+                        .defaultSuccessUrl("/", true)
+                )
+                .logout((config) -> config.logoutSuccessUrl("/logoutSuccess/"))
+                .csrf((config) -> config.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
         ;
 
         return httpSecurity.build();
