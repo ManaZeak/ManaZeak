@@ -1,5 +1,6 @@
 import TabView from '../utils/TabView';
 import UsersFragment from './admin/UsersFragment';
+import ThumbsFragment from './admin/ThumbsFragment';
 import WishesFragment from './admin/WishesFragment';
 import SyncThingFragment from './admin/SyncThingFragment';
 import CommandsFragment from './admin/CommandsFragment';
@@ -46,6 +47,17 @@ class AdminPageView extends TabView {
       this._activeFragment = new UsersFragment({
         target: this._viewContainer,
         refresh: this._usersClicked.bind(this)
+      });
+    }).catch(error => Logger.raise(error));
+  }
+
+
+  _thumbsClicked() {
+    this._clearFragment();
+    this._fetchViewFragment('/fragment/admin/thumb/layout/').then(() => {
+      this._activeFragment = new ThumbsFragment({
+        target: this._viewContainer,
+        refresh: this._wishesClicked.bind(this)
       });
     }).catch(error => Logger.raise(error));
   }
