@@ -22,14 +22,14 @@ class ThumbsFragment {
         const searchButton = this._target.querySelector('#thumbs-search');
         this._evtIds.push(Evts.addEvent('click', searchButton, this._searchClicked));
 
-        mzk.kom.post('/admin/thumb/list/', {
-          "entityTypeId": 1,
-          "errorType": 1,
-          "processed": true,
-          "page": 1
-        }).then(r => {
-          console.log(r)
-        })
+        // mzk.kom.post('/admin/thumb/list/', {
+        //   "entityTypeId": 1,
+        //   "errorType": 1,
+        //   "processed": true,
+        //   "page": 1
+        // }).then(r => {
+        //   console.log(r)
+        // })
     }
 
 
