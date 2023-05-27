@@ -20,7 +20,7 @@ class ThumbsFragment {
     _fillAttributes() {
         // Saving users and badge from template
         const searchButton = this._target.querySelector('#thumbs-search');
-        this._evtIds.push(Evts.addEvent('click', searchButton, this._searchClicked));
+        this._evtIds.push(Evts.addEvent('click', searchButton, this._searchClicked, this));
 
         // mzk.kom.post('/admin/thumb/list/', {
         //   "entityTypeId": 1,
