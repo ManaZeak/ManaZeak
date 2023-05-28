@@ -1,5 +1,7 @@
 package org.manazeak.manazeak.configuration.security;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
+
+import java.util.function.Supplier;
 
 /**
  * This class contains the configuration of spring security.
@@ -48,6 +55,28 @@ public class SecurityConfiguration {
                     .authorizeHttpRequests((config) -> config.requestMatchers("/.~~spring-boot!~/restart").anonymous())
                     .csrf((config) -> config.ignoringRequestMatchers("/.~~spring-boot!~/restart"));
         }
+
+        XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
+        // set the name of the attribute the CsrfToken will be populated on
+        delegate.setCsrfRequestAttributeName("_csrf");
+        // Creating a custom handler for the CSRF tokens. One for the BREACH and one classic for the JS responses.
+        CsrfTokenRequestHandler requestHandler = new CsrfTokenRequestHandler() {
+            @Override
+            public void handle(HttpServletRequest request, HttpServletResponse response, Supplier<CsrfToken> csrfToken) {
+                delegate.handle(request, response, csrfToken);
+            }
+
+            @Override
+            public String resolveCsrfTokenValue(HttpServletRequest request, CsrfToken csrfToken) {
+                String tokenValue = CsrfTokenRequestHandler.super.resolveCsrfTokenValue(request, csrfToken);
+                if (tokenValue.length() == 36) {
+                    return tokenValue;
+                }
+                return delegate.resolveCsrfTokenValue(request, csrfToken);
+            }
+        };
+
+
         httpSecurity
                 .authorizeHttpRequests((authorizeRequest) -> {
                     authorizeRequest.requestMatchers("/register/", "/login/", "/logoutSuccess/").permitAll();
@@ -59,7 +88,10 @@ public class SecurityConfiguration {
                         .defaultSuccessUrl("/", true)
                 )
                 .logout((config) -> config.logoutSuccessUrl("/logoutSuccess/"))
-                .csrf((config) -> config.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .csrf((config) -> config
+                        .csrfTokenRequestHandler(requestHandler)
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                )
         ;
 
         return httpSecurity.build();
