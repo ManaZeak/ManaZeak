@@ -19,7 +19,9 @@ class Pager {
 
 
   destroy() {
-    this._target.removeChild(this._container);
+    if (this._container) {
+      this._target.removeChild(this._container);
+    }
     Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
@@ -68,16 +70,18 @@ class Pager {
       }
 
       const more = document.createElement('SPAN');
-      more.innerHTML = '...';
+      more.innerHTML = '···';
       const last = document.createElement('SPAN');
-      last.innerHTML = '>>';
+      last.innerHTML = this._totalPages;
       this._container.appendChild(more);
+      this._evtIds.push(Evts.addEvent('click', last, () => this._clickedCB(this._totalPages)));
       this._container.appendChild(last);
     } else if (this._totalPages - this._active < 4) { // Right side extremum
       const first = document.createElement('SPAN');
-      first.innerHTML = '<<';
+      first.innerHTML = '1';
       const more = document.createElement('SPAN');
-      more.innerHTML = '...';
+      more.innerHTML = '···';
+      this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
       this._container.appendChild(first);
       this._container.appendChild(more);
 
@@ -93,9 +97,10 @@ class Pager {
       }
     } else {
       const first = document.createElement('SPAN');
-      first.innerHTML = '<<';
+      first.innerHTML = '1';
       const more1 = document.createElement('SPAN');
-      more1.innerHTML = '...';
+      more1.innerHTML = '···';
+      this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
       this._container.appendChild(first);
       this._container.appendChild(more1);
 
@@ -111,10 +116,11 @@ class Pager {
       }
 
       const more2 = document.createElement('SPAN');
-      more2.innerHTML = '...';
+      more2.innerHTML = '···';
       const last = document.createElement('SPAN');
-      last.innerHTML = '>>';
+      last.innerHTML = this._totalPages;
       this._container.appendChild(more2);
+      this._evtIds.push(Evts.addEvent('click', last, () => this._clickedCB(this._totalPages)));
       this._container.appendChild(last);      
     }
 
