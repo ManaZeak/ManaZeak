@@ -2,21 +2,30 @@
   <div class="errors-header">
     <h1 th:text="#{general.search}"></h1>
     <!-- Include here the fragment containing the thumbnail errors. -->
-    <label for="entity-type">Entity type</label>
-    <div id="entity-type" class="radio-elements">
-      <span data-id="3" class="selected radio">Artist</span>
-      <span data-id="2" class="radio">Album</span>
-      <span data-id="4" class="radio">Label</span>
-      <span data-id="1" class="radio">Genre</span>
+    <!-- Later, nls user to indicate that those errors are re-computed each rescan  -->
+    <div class="header-content">
+      <div class="header-left">
+        <label for="entity-type">Filter type</label>
+        <div id="entity-type" class="radio-elements">
+          <span data-id="3" class="check-element">Artist</span>
+          <span data-id="2" class="check-element">Album</span>
+          <span data-id="4" class="check-element">Label</span>
+          <span data-id="1" class="check-element">Genre</span>
+        </div>
+        <label for="error-type">Error type</label>
+        <div id="error-type" class="radio-elements">
+          <span data-id="1" class="check-element">File not found</span>
+          <span data-id="2" class="check-element">Error on image</span>
+        </div>
+        <label for="processed">Processed</label>
+        <input type="checkbox" id="processed">
+        <button id="thumbs-search">Zé parti</button>
+      </div>
+      <div class="header-right">
+        <p><span>There is </span><span id="errors-amount"></span> errors</p>
+        <div id="pager-wrapper" class="pager-wrapper"></div>
+      </div>
     </div>
-    <label for="error-type">Error type</label>
-    <div id="error-type" class="radio-elements">
-      <span data-id="1" class="selected radio">File not found</span>
-      <span data-id="2" class="radio">Error on image</span>
-    </div>
-    <label for="processed">Processed</label>
-    <input type="checkbox" id="processed">
-    <button id="thumbs-search">Zé parti</button>
   </div>
   <div id="errors-wrapper" class="errors-wrapper"></div>
 </div>

@@ -172,19 +172,26 @@
       .errors-header {
         height: 20rem;
 
+        .header-content {
+          display: flex;
+          width: 100%;
+
+          .header-left {
+            width: 50%;
+          }
+
+          .header-right {
+            width: 50%;            
+          }
+        }
+
         .radio-elements {
           display: flex;
   
-          span {
-            // border: solid 1px var(--border-color);
-            // border-radius: var(--border-radius);
-            // cursor: pointer;
-            // padding: var(--padding-tiny) var(--padding-small);
-            // margin: 0 var(--margin-tiny);
-  
+          span { 
             &.selected {
               border: solid 1px var(--color-primary);
-              color: var(--color-primary)
+              color: var(--color-primary);
             }
           }
         }
