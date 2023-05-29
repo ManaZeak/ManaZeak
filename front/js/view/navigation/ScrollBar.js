@@ -93,7 +93,6 @@ class ScrollBar {
 
 
   destroy() {
-    Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 

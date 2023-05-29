@@ -32,11 +32,6 @@
 
   .admin-page {
     .admin-view {
-      .user-list-wrapper,
-      .wish-grid-wrapper {
-        padding: 2rem;
-      }
-
       .wish-grid-wrapper {
         grid-template-columns: repeat(2, 1fr) !important;
         grid-template-rows: repeat(2, 1fr) !important;

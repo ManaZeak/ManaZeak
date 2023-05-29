@@ -1,18 +1,22 @@
-<div xmlns:th="http://www.thymeleaf.org">
-  <div>
-    <!-- Contains the criteria fields. -->
-    <p th:text="#{general.search}"></p>
+<div class="thumbnail-error-wrapper" xmlns:th="http://www.thymeleaf.org">
+  <div class="errors-header">
+    <h1 th:text="#{general.search}"></h1>
+    <!-- Include here the fragment containing the thumbnail errors. -->
+    <label for="entity-type">Entity type</label>
+    <div id="entity-type" class="radio-elements">
+      <span data-id="3" class="selected radio">Artist</span>
+      <span data-id="2" class="radio">Album</span>
+      <span data-id="4" class="radio">Label</span>
+      <span data-id="1" class="radio">Genre</span>
+    </div>
+    <label for="error-type">Error type</label>
+    <div id="error-type" class="radio-elements">
+      <span data-id="1" class="selected radio">File not found</span>
+      <span data-id="2" class="radio">Error on image</span>
+    </div>
+    <label for="processed">Processed</label>
+    <input type="checkbox" id="processed">
+    <button id="thumbs-search">Zé parti</button>
   </div>
-  <!-- Include here the fragment containing the thumbnail errors. -->
-  <label for="page-number">Page n°</label>
-  <input type="number" id="page-number">
-  <label for="entity-type">Entity type</label>
-  <input type="number" id="entity-type">
-  <label for="error-type">Error type</label>
-  <input type="number" id="error-type">
-  <label for="processed">Processed</label>
-  <input type="checkbox" id="processed">
-  <label for="page-req">Page requested</label>
-  <input type="number" id="page-req">
-  <button id="thumbs-search">Zé parti</button>
+  <div id="errors-wrapper" class="errors-wrapper"></div>
 </div>

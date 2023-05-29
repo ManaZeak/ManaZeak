@@ -1014,3 +1014,20 @@
     width: 100%;
   }
 }
+
+.label-view-wrapper {
+  .label-header-right {
+    position: relative;
+
+    .view-commands {
+      bottom: 0;
+      position: absolute;
+      right: 0;
+
+      img {
+        cursor: pointer;
+        height: 2rem;
+      }
+    }
+  } 
+}
