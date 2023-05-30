@@ -92,7 +92,7 @@ class SceneView {
 
 
   updateScrollbars() {
-    if (this._scrolls && this._scrolls.length) {
+    if (this._scrolls?.length) {
       for (let i = 0; i < this._scrolls.length; ++i) {
         if (this._scrolls[i].updateScrollbar) {
           setTimeout(() => {

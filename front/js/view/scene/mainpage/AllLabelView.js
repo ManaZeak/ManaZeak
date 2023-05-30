@@ -24,15 +24,16 @@ class AllLabelView extends SceneView {
   }
 
 
-  _events() {
+  _buildNavigation() {
     return new Promise((resolve, reject) => {
       resolve();
     });
   }
 
 
-  _buildNavigation() {
+  _events() {
     return new Promise((resolve, reject) => {
+      console.log('events');
       resolve();
     });
   }

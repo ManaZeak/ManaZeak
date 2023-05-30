@@ -28,7 +28,7 @@ class AllReleaseArtistView extends SceneView {
   _events() {
     return new Promise((resolve, reject) => {
       const artists = this.dom.querySelector('#artists-container').children;
-      if (artists && artists.length) {
+      if (artists?.length) {
         for (let i = 0; i < artists.length; ++i) {
           this._evtIds.push(Evts.addEvent('click', artists[i], this._artistClicked, artists[i]));
         }
@@ -43,7 +43,7 @@ class AllReleaseArtistView extends SceneView {
   _buildNavigation() {
     return new Promise((resolve, reject) => {
       const artists = this.dom.querySelector('#artists-container').children;
-      if (artists && artists.length) {
+      if (artists?.length) {
         this.dom.querySelector('#artist-count').innerHTML = this.dom.querySelector('#artist-count').innerHTML.replace('{x}', artists.length);
         this._scroll = new ScrollBar({
           target: this.dom,

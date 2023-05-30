@@ -462,6 +462,18 @@ class OscilloscopeRadialPoint {
     this._width = options.width;
     this._total = options.total;
     this._index = options.index;
+    this._value = 0;
+    this._radius = 0;
+    this.angle = 0;
+    this.x = 0;
+    this.y = 0;
+    this.dx = 0;
+    this.dy = 0;
+    this._init();
+  }
+
+
+  _init() {
     this._value = Math.random() * 256;
     this._radius = Math.abs(this._width) / 8;
     // Public attributes
@@ -469,7 +481,7 @@ class OscilloscopeRadialPoint {
     this.x = (this._width / 2) + this._radius * Math.sin((Math.PI / 180) * this.angle);
     this.y = (this._height / 2) + this._radius * Math.cos((Math.PI / 180) * this.angle);
     this.dx = this.x + this._value * Math.sin((Math.PI / 180) * this.angle);
-    this.dy = this.y + this._value * Math.cos((Math.PI / 180) * this.angle);
+    this.dy = this.y + this._value * Math.cos((Math.PI / 180) * this.angle);    
   }
 
 

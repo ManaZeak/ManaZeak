@@ -31,7 +31,7 @@ class MainPageView extends SceneView {
 
   _formatUrl() {
     const bRect = document.body.getBoundingClientRect();
-    let amount = 15; /* Std 1920 */
+    let amount = 0;
 
     if (bRect.width < 640) {
       amount = 12;

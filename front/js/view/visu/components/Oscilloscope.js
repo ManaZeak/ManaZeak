@@ -29,7 +29,7 @@ class Oscilloscope extends VisuComponentStereo {
       signal: ColorUtils.defaultPrimaryColor
     }
     // Save color sent by caller if any
-    if (options.colors && options.colors.signal) {
+    if (options.colors?.signal) {
       this._colors.signal = options.colors.signal;
     }
     // Update canvas CSS background color

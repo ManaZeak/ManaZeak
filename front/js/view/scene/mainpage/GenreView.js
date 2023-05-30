@@ -86,7 +86,7 @@ class GenreView extends PlayableView {
 
   _events() {
     super._events();
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this._evtIds.push(Evts.addEvent('click', this._allExpander, this._toggleAll, this));
 
       for (let i = 0; i < this._artists.length; ++i) {
@@ -97,40 +97,8 @@ class GenreView extends PlayableView {
         this._evtIds.push(Evts.addEvent('click', this._albums[i], this._albumClicked, this._albums[i]));
       }
 
-      // On each trakc, listen to click evts, 
-      for (let i = 0; i < this._tracks.length; ++i) {
-        this._evtIds.push(Evts.addEvent('click', this._tracks[i].querySelector('.track-title').children[0], this._trackTitleClicked, {
-          tracks: this._tracks,
-          index: i
-        }));
-
-        this.__evtArtistsList('performers', this._tracks[i]);
-        this.__evtArtistsList('composers', this._tracks[i]);
-        this.__evtArtistsList('lyricists', this._tracks[i]);
-        this.__evtArtistsList('producers', this._tracks[i]);
-        this.__evtArtistsList('engineers', this._tracks[i]);
-
-        const isrc = this._tracks[i].querySelector('.track-isrc');
-        if (isrc.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
-          isrc.parentNode.remove();
-        }
-
-        const bpmKey = this._tracks[i].querySelector('.track-bpm-key');
-        if (bpmKey.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
-          bpmKey.parentNode.remove();
-        }
-
-        const genres = this._tracks[i].querySelector('.track-genres');
-        for (let i = 0; i < genres.children.length; ++i) {
-          this._evtIds.push(Evts.addEvent('click', genres.children[i], this._genreClicked, genres.children[i]));
-        }
-        if (genres.children.length === 0) {
-          genres.parentNode.remove();
-        }
-
-        const expander = this._tracks[i].getElementsByClassName('toggle-track-expand')[0];
-        this._evtIds.push(Evts.addEvent('click', expander, this._expandTrackClicked, this._tracks[i]));
-      }
+      // On each track, listen to click evts, 
+      this._trackEvts();
 
       this.dom.querySelector('#genre-content').addEventListener('contextmenu', event => {
         event.preventDefault();
@@ -154,6 +122,43 @@ class GenreView extends PlayableView {
 
       resolve();
     });    
+  }
+
+
+  _trackEvts() {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      this._evtIds.push(Evts.addEvent('click', this._tracks[i].querySelector('.track-title').children[0], this._trackTitleClicked, {
+        tracks: this._tracks,
+        index: i
+      }));
+
+      this.__evtArtistsList('performers', this._tracks[i]);
+      this.__evtArtistsList('composers', this._tracks[i]);
+      this.__evtArtistsList('lyricists', this._tracks[i]);
+      this.__evtArtistsList('producers', this._tracks[i]);
+      this.__evtArtistsList('engineers', this._tracks[i]);
+
+      const isrc = this._tracks[i].querySelector('.track-isrc');
+      if (isrc.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
+        isrc.parentNode.remove();
+      }
+
+      const bpmKey = this._tracks[i].querySelector('.track-bpm-key');
+      if (bpmKey.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
+        bpmKey.parentNode.remove();
+      }
+
+      const genres = this._tracks[i].querySelector('.track-genres');
+      for (let i = 0; i < genres.children.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', genres.children[i], this._genreClicked, genres.children[i]));
+      }
+      if (genres.children.length === 0) {
+        genres.parentNode.remove();
+      }
+
+      const expander = this._tracks[i].getElementsByClassName('toggle-track-expand')[0];
+      this._evtIds.push(Evts.addEvent('click', expander, this._expandTrackClicked, this._tracks[i]));
+    }
   }
 
 

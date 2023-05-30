@@ -282,7 +282,7 @@ class ColorUtils {
     }
     // Pound color value to remove # char and memorize it had one
     let usePound = false;
-    if (color[0] === '#') {
+    if (color.startsWith('#')) {
       color = color.slice(1);
       usePound = true;
     }
@@ -353,7 +353,7 @@ class ColorUtils {
       return new Error('ColorUtils.alphaColor : Invalid type for color or alpha');
     }
     // Remove # symbol if any on color value
-    if (color[0] === '#') {
+    if (color.startsWith('#')) {
       color = color.slice(1);
     }
     // Test that color is an hex code

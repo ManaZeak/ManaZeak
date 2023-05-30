@@ -244,7 +244,7 @@ class Logger {
     }
     // Prepare function name, and replace with anonymous in proper case
     let functionName = caller;
-    if (caller.charAt(0) === ' ') { // First char is normally the function name first char. Space means anonymous cross browsers (so far...)
+    if (caller.startsWith(' ')) { // First char is normally the function name first char. Space means anonymous cross browsers (so far...)
       functionName = `<anonymous>${caller}`;
     }
     // Unified returned value for anonymous/non anonymous methods

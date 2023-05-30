@@ -24,7 +24,7 @@ class FrequencyBars extends VisuComponentMono {
   constructor(options) {
     super(options);
     // Peak gradient
-    if (!options.colors || !options.colors.gradient) {
+    if (!options.colors?.gradient) {
       this._barGradient = ColorUtils.defaultAudioGradient;
     } else {
       this._barGradient = options.colors.gradient;

@@ -78,25 +78,7 @@ class AlbumView extends PlayableView {
       // Update tracks bc of scroll DOM
       this._tracks = this.dom.querySelector('#album-tracks').children[0].children[0].children;
       // <scrollbar to performers for better UI
-      if (this._performers.length > 4) {
-        this.dom.getElementsByClassName('album-container')[0].style.height = '78rem';
-        this.dom.querySelector('#album-performers').style.height = '200px';
-        // Ensure height is properly applied before creating scroll on performers
-        requestAnimationFrame(() => {
-          this._scrolls.push(new ScrollBar({
-            target: this.dom.querySelector('#album-performers'),
-            style: {
-              color: '#56D45B'
-            }
-          }));
-          // Update performers bc of scroll DOM
-          this._performers = this.dom.querySelector('#album-performers').children[0].children[0].children;
-        });        
-      } else {
-        console.log(this.dom.getElementsByClassName('album-container')[0])
-        this.dom.getElementsByClassName('album-container')[0].style.height = '68.1em';
-        this.dom.querySelector('#album-performers').style.overflow = 'hidden';        
-      }
+      this._buildAlbumPerformers();
       // Track context on container
       this._trackContext = new TrackContext({
         target: this.dom.querySelector('#album-tracks') ,
@@ -105,47 +87,9 @@ class AlbumView extends PlayableView {
 
       this._allExpander = this.dom.querySelector('#album-all-expander');
       /* Build albums */
-      const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
-      sortArtistReleases.addEventListener('click', () => {
-        sortArtistReleases.classList.toggle('active');
-        let elements = [].slice.call(this._albums.children);
-        elements = elements.reverse();
-        for (let i = 0; i < this._albums.children.length; ++i) {
-          this._albums.children[i].remove();
-        }
-        for (let i = 0; i < elements.length; ++i) {
-          this._albums.appendChild(elements[i]);
-        }
-      });
       this._albums = this.dom.querySelector('#released-albums');
-      if (this._albums && this._albums.children) {
-        for (let i = 0; i < this._albums.children.length; ++i) {
-          let title = this._albums.children[i].lastElementChild.lastElementChild.innerHTML;
-          if (title.includes(' EP')) {
-            title = title.replace(' EP', '');
-            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'EP';
-          }
-
-          if (title.includes(' - Single')) {
-            title = title.replace(' - Single', '');
-            this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
-          }
-          // Update album title if needed
-          this._albums.children[i].lastElementChild.lastElementChild.innerHTML = title;
-          this._albums.children[i].addEventListener('click', this._albumClicked);
-        }
-
-        this._scrolls.push(new ScrollBar({
-          target: this._albums,
-          horizontal: true,
-          style: {
-            color: '#56D45B'
-          }
-        }));
-
-        this._albums = this._albums.children[0].children[0];
-        this.updateScrollbars();
-      }
+      this._buildArtistAlbums();
+      this._handleAlbumSorting();
 
       requestAnimationFrame(() => {
         // Update playing track if necessary
@@ -161,45 +105,82 @@ class AlbumView extends PlayableView {
   }
 
 
+  _buildAlbumPerformers() {
+    if (this._performers.length > 4) {
+      this.dom.getElementsByClassName('album-container')[0].style.height = '78rem';
+      this.dom.querySelector('#album-performers').style.height = '200px';
+      // Ensure height is properly applied before creating scroll on performers
+      requestAnimationFrame(() => {
+        this._scrolls.push(new ScrollBar({
+          target: this.dom.querySelector('#album-performers'),
+          style: {
+            color: '#56D45B'
+          }
+        }));
+        // Update performers bc of scroll DOM
+        this._performers = this.dom.querySelector('#album-performers').children[0].children[0].children;
+      });        
+    } else {
+      this.dom.getElementsByClassName('album-container')[0].style.height = '68.1em';
+      this.dom.querySelector('#album-performers').style.overflow = 'hidden';        
+    }
+  }
+
+
+  _buildArtistAlbums() {
+    if (this._albums?.children) {
+      for (let i = 0; i < this._albums.children.length; ++i) {
+        let title = this._albums.children[i].lastElementChild.lastElementChild.innerHTML;
+        if (title.includes(' EP')) {
+          title = title.replace(' EP', '');
+          this._albums.children[i].querySelector('.ep-sp').innerHTML = 'EP';
+        }
+
+        if (title.includes(' - Single')) {
+          title = title.replace(' - Single', '');
+          this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
+        }
+        // Update album title if needed
+        this._albums.children[i].lastElementChild.lastElementChild.innerHTML = title;
+        this._albums.children[i].addEventListener('click', this._albumClicked);
+      }
+
+      this._scrolls.push(new ScrollBar({
+        target: this._albums,
+        horizontal: true,
+        style: {
+          color: '#56D45B'
+        }
+      }));
+
+      this._albums = this._albums.children[0].children[0];
+      this.updateScrollbars();
+    }    
+  }
+
+
+  _handleAlbumSorting() {
+    const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
+    sortArtistReleases.addEventListener('click', () => {
+      sortArtistReleases.classList.toggle('active');
+      let elements = [].slice.call(this._albums.children);
+      elements = elements.reverse();
+      for (let i = 0; i < this._albums.children.length; ++i) {
+        this._albums.children[i].remove();
+      }
+      for (let i = 0; i < elements.length; ++i) {
+        this._albums.appendChild(elements[i]);
+      }
+    });
+  }
+
+
   _events() {
     super._events();
     return new Promise((resolve, reject) => {
       this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#album-picture'), this._coverClicked, this));
-      // On each trakc, listen to click evts, 
-      for (let i = 0; i < this._tracks.length; ++i) {
-        this._evtIds.push(Evts.addEvent('click', this._tracks[i].querySelector('.track-title').children[0], this._trackTitleClicked, {
-          tracks: this._tracks,
-          index: i
-        }));
-
-        this.__evtArtistsList('performers', this._tracks[i]);
-        this.__evtArtistsList('composers', this._tracks[i]);
-        this.__evtArtistsList('lyricists', this._tracks[i]);
-        this.__evtArtistsList('producers', this._tracks[i]);
-        this.__evtArtistsList('engineers', this._tracks[i]);
-
-        const isrc = this._tracks[i].querySelector('.track-isrc');
-        if (isrc.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
-          isrc.parentNode.remove();
-        }
-
-        const bpmKey = this._tracks[i].querySelector('.track-bpm-key');
-        if (bpmKey.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
-          bpmKey.parentNode.remove();
-        }
-
-        const genres = this._tracks[i].querySelector('.track-genres');
-        for (let i = 0; i < genres.children.length; ++i) {
-          this._evtIds.push(Evts.addEvent('click', genres.children[i], this._genreClicked, genres.children[i]));
-        }
-        if (genres.children.length === 0) {
-          genres.parentNode.remove();
-        }
-
-        const expander = this._tracks[i].getElementsByClassName('toggle-track-expand')[0];
-        this._tracks[i].scroll = this._scrollTrack;
-        this._evtIds.push(Evts.addEvent('click', expander, this._expandTrackClicked, this._tracks[i]));
-      }
+      // On each track, listen to click evts, 
+      this._trackEvts();
       
       for (let i = 0; i < this._performers.length; ++i) {
         this._evtIds.push(Evts.addEvent('click', this._performers[i], this._artistClicked, this._performers[i]));
@@ -239,6 +220,44 @@ class AlbumView extends PlayableView {
 
       resolve();
     });
+  }
+
+
+  _trackEvts() {
+    for (let i = 0; i < this._tracks.length; ++i) {
+      this._evtIds.push(Evts.addEvent('click', this._tracks[i].querySelector('.track-title').children[0], this._trackTitleClicked, {
+        tracks: this._tracks,
+        index: i
+      }));
+
+      this.__evtArtistsList('performers', this._tracks[i]);
+      this.__evtArtistsList('composers', this._tracks[i]);
+      this.__evtArtistsList('lyricists', this._tracks[i]);
+      this.__evtArtistsList('producers', this._tracks[i]);
+      this.__evtArtistsList('engineers', this._tracks[i]);
+
+      const isrc = this._tracks[i].querySelector('.track-isrc');
+      if (isrc.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
+        isrc.parentNode.remove();
+      }
+
+      const bpmKey = this._tracks[i].querySelector('.track-bpm-key');
+      if (bpmKey.textContent.replaceAll('\n', '').replaceAll(' ', '') === '') {
+        bpmKey.parentNode.remove();
+      }
+
+      const genres = this._tracks[i].querySelector('.track-genres');
+      for (let i = 0; i < genres.children.length; ++i) {
+        this._evtIds.push(Evts.addEvent('click', genres.children[i], this._genreClicked, genres.children[i]));
+      }
+      if (genres.children.length === 0) {
+        genres.parentNode.remove();
+      }
+
+      const expander = this._tracks[i].getElementsByClassName('toggle-track-expand')[0];
+      this._tracks[i].scroll = this._scrollTrack;
+      this._evtIds.push(Evts.addEvent('click', expander, this._expandTrackClicked, this._tracks[i]));
+    }    
   }
 
 

@@ -8,7 +8,7 @@ const id = setInterval(() => {
     location.replace('login');
   }
   // Update text with remaining time, 5 must be displayed by default in HTML when loaded
-  if (redirectString && redirectString.innerHTML) {
+  if (redirectString?.innerHTML) {
     redirectString.innerHTML = redirectString.innerHTML.replace(/\d/g, `${4 - counter}`);
   }
   // Increment counter

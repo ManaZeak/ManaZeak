@@ -33,7 +33,7 @@ class PeakMeter extends VisuComponentStereo {
   constructor(options) {
     super(options);
     // Peak gradient
-    if (!options.colors || !options.colors.gradient) {
+    if (!options.colors?.gradient) {
       this._peakGradient = ColorUtils.defaultAudioGradient;
     } else {
       this._peakGradient = options.colors.gradient;

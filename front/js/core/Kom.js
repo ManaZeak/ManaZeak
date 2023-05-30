@@ -60,7 +60,7 @@ class Kom {
       for (let i = 0; i < cookies.length; ++i) {
         // Parse current cookie to extract its properties
         const cookie = cookies[i].split('=');
-        if (cookie !== undefined && cookie[0].toLowerCase().includes('srf')) {
+        if (cookie?.[0]?.toLowerCase().includes('srf')) {
           // Found a matching cookie for csrftoken value, return as decoded string
           return decodeURIComponent(cookie[1]);
         }
