@@ -1,22 +1,24 @@
-<!-- Contains the elements for the result -->
-<div xmlns:th="http://www.thymeleaf.org">
-  <div>Number of elements :<p th:text="${size}"></p></div>
-  <!--/*@thymesVar id="errors" type="java.util.List<org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorLineDto>"*/-->
-  <div th:each="error : ${errors}" th:attr="data-id=*{error.thumbnailErrId}">
-    <p th:text="#{*{error.typeCode}}"></p>
-    <p th:text="*{error.error}"></p>
-    <div th:if="*{error.labelId != null}" th:attr="data-id=*{error.labelId}">
-      <p th:text="*{error.elementName}"></p>
+<!--/*@thymesVar id="errors" type="java.util.List<org.manazeak.manazeak.entity.dto.admin.thumbnail.ThumbnailErrorLineDto>"*/-->
+<div id="errors-container" class="errors-container" th:data-total="${size}" xmlns:th="http://www.thymeleaf.org">
+  <div class="thumbnail-error" th:each="error : ${errors}" th:attr="data-id=*{error.thumbnailErrId}">
+    <div class="text-container">
+      <!-- <img th:src="'/static/img/object/' + *{error.error} + '.svg'"> -->
+      <div th:if="*{error.labelId != null}" th:attr="data-id=*{error.labelId}">
+        <p th:text="*{error.elementName}" class="error-element-name"></p>
+      </div>
+      <div th:if="*{error.albumId != null}" th:attr="data-id=*{error.albumId}">
+        <p th:text="*{error.elementName}" class="error-element-name"></p>
+      </div>
+      <div th:if="*{error.genreId != null}" th:attr="data-id=*{error.genreId}">
+        <p th:text="*{error.elementName}" class="error-element-name"></p>
+      </div>
+      <div th:if="*{error.artistId != null}" th:attr="data-id=*{error.artistId}">
+        <p th:text="*{error.elementName}" class="error-element-name"></p>
+      </div>
+      <p th:text="#{*{error.typeCode}}" class="error-type-label"></p>      
     </div>
-    <div th:if="*{error.albumId != null}" th:attr="data-id=*{error.albumId}">
-      <p th:text="*{error.elementName}"></p>
-    </div>
-    <div th:if="*{error.genreId != null}" th:attr="data-id=*{error.genreId}">
-      <p th:text="*{error.elementName}"></p>
-    </div>
-    <div th:if="*{error.artistId != null}" th:attr="data-id=*{error.artistId}">
-      <p th:text="*{error.elementName}"></p>
-    </div>
-    <p th:text="*{error.processed}"></p>
+    <span th:unless="*{error.processed == true}">
+      <button>Mark done</button>
+    </span>
   </div>
 </div>

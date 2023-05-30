@@ -115,7 +115,9 @@ textarea {
 /* Global button configuration */
 button,
 input[type="submit"],
-label.submit {
+label.submit,
+span.check-element,
+span.radio {
   background: 0;
   border: 1px solid var(--border-color);
   border-radius: 6px;
@@ -139,6 +141,15 @@ label.submit {
     color: #ebebff;
   }
 }
+
+span.check-element,
+span.radio {
+  border-radius: 4px;
+  font-size: var(--font-size-smaller);
+  padding: .333rem 1rem;
+  user-select: none; /* Make span act like button */
+}
+
 .light-theme img { /* Because of icon, we must add a drop shadow on image */
   filter: drop-shadow(1px 1px 1px #222); // TODO, only for img.icon
 }

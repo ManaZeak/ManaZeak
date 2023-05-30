@@ -57,18 +57,21 @@ class PlayableView extends SceneView {
 
 
   _updatePlaying(data) {
+    let scrolled = false;
     for (let i = 0; i < this._tracks.length; ++i) {
       this._tracks[i].classList.remove('playing');
       if (this._tracks[i].dataset.id === data.id) {
         this._tracks[i].classList.add('playing');
-        requestAnimationFrame(() => {
-          this._tracks[i].scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'start'
+        // Only update scroll if visible and not already has been focus
+        if (this._tracks[i].scroll.isHidden && !this._tracks[i].scroll.isHidden() && scrolled === false) {
+          scrolled = true;
+          this._tracks[i].parentNode.scrollTo({
+            top: this._tracks[i].offsetTop - this._tracks[i].parentNode.offsetTop,
+            left: 0,
+            behavior: 'smooth'
           });
-        });
-        // Not breaking to properly remove playing on next tracks
+          // Not breaking to properly remove playing on next tracks
+        }
       }
     }
   }

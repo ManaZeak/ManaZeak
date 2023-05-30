@@ -373,7 +373,7 @@
       height: 5rem;
       overflow: hidden;
       position: relative;
-      width: calc(100% - var(--scroll-size) - 1px);
+      width: calc(100% - var(--default-scroll-size) - 1px);
       transition: background-color .1s, height .2s;
 
       &:nth-child(odd) {
@@ -473,6 +473,7 @@
           span {
             height: 100%;
             padding-right: var(--padding-small);
+            padding-top: 1px;
             position: relative;
             width: auto;
 
@@ -718,11 +719,12 @@
     border-bottom: solid 1px var(--color-txt-alpha-25);
     display: flex;
     height: auto;
-    margin: var(--margin);
+    margin: var(--margin) 0;
     max-height: 76rem;
+    padding: 0 var(--margin);
     padding-bottom: var(--padding);
     overflow-y: hidden;
-    width: calc(100% - 2 * var(--margin));
+    width: 100%;
 
     .album-aside, .abum-content {
       align-items: center;
@@ -753,11 +755,9 @@
         margin-bottom: var(--margin-tiny);
         padding: 0;
         text-align: center;
-        
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        white-space: nowrap;
         overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       h2 {
@@ -1013,4 +1013,21 @@
     height: 100%;
     width: 100%;
   }
+}
+
+.label-view-wrapper {
+  .label-header-right {
+    position: relative;
+
+    .view-commands {
+      bottom: 0;
+      position: absolute;
+      right: 0;
+
+      img {
+        cursor: pointer;
+        height: 2rem;
+      }
+    }
+  } 
 }

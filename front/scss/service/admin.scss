@@ -35,6 +35,7 @@
 
     .user-list-wrapper,
     .wish-grid-wrapper,
+    .thumbnail-error-wrapper,
     .syncthing-wrapper {
       height: 100%;
       padding-top: 2rem;
@@ -42,6 +43,12 @@
       h1 {
         text-indent: 4rem;
       }
+    }
+
+    .user-list-wrapper,
+    .thumbnail-error-wrapper,
+    .wish-grid-wrapper {
+      padding: 2rem;
     }
 
     .user-list-wrapper {
@@ -154,6 +161,88 @@
 
         p {
           margin: 0;
+        }
+      }
+    }
+
+    .thumbnail-error-wrapper {
+      display: flex;
+      flex-direction: column;
+
+      .errors-header {
+        height: 20rem;
+
+        .header-content {
+          display: flex;
+          width: 100%;
+
+          .header-left {
+            width: calc(100% - 26rem);
+          }
+
+          .header-right {
+            align-items: flex-end;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            width: 26rem;            
+          }
+        }
+
+        .radio-elements {
+          display: flex;
+  
+          span { 
+            &.selected {
+              border: solid 1px var(--color-primary);
+              color: var(--color-primary);
+            }
+          }
+        }
+      }
+
+      .errors-wrapper {
+        border: solid var(--border-width) var(--color-txt-alpha-10);
+        height: calc(100% - 20rem);
+        overflow-y: auto;
+
+        .errors-container {
+          margin-right: var(--margin);          
+        }
+
+        .thumbnail-error {
+          align-items: center;
+          background-color: var(--color-bg-light-alpha-25);
+          display: flex;
+          height: 4rem;
+          justify-content: space-between;
+          width: calc(100% - var(--margin-small));
+
+          &:nth-child(odd) {
+            background-color: var(--color-bg-dark-alpha-25);
+          }
+
+          .text-container {
+            margin-left: var(--margin);
+          }
+
+          p {
+            margin: 0;
+
+            &.error-element-name {
+              font-weight: bold;
+            }
+
+            &.error-type-label {
+              font-size: var(--font-size-small);
+              font-style: italic;
+              text-indent: var(--font-size);
+            }
+          }
+
+          button {
+            height: 3rem;
+          }
         }
       }
     }
