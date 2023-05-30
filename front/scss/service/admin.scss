@@ -177,11 +177,15 @@
           width: 100%;
 
           .header-left {
-            width: 50%;
+            width: calc(100% - 26rem);
           }
 
           .header-right {
-            width: 50%;            
+            align-items: flex-end;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            width: 26rem;            
           }
         }
 

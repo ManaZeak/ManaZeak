@@ -71,6 +71,7 @@ class Pager {
 
       const more = document.createElement('SPAN');
       more.innerHTML = '···';
+      more.classList.add('inactive');
       const last = document.createElement('SPAN');
       last.innerHTML = this._totalPages;
       this._container.appendChild(more);
@@ -81,6 +82,7 @@ class Pager {
       first.innerHTML = '1';
       const more = document.createElement('SPAN');
       more.innerHTML = '···';
+      more.classList.add('inactive');
       this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
       this._container.appendChild(first);
       this._container.appendChild(more);
@@ -100,6 +102,7 @@ class Pager {
       first.innerHTML = '1';
       const more1 = document.createElement('SPAN');
       more1.innerHTML = '···';
+      more1.classList.add('inactive');
       this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
       this._container.appendChild(first);
       this._container.appendChild(more1);
@@ -117,6 +120,7 @@ class Pager {
 
       const more2 = document.createElement('SPAN');
       more2.innerHTML = '···';
+      more2.classList.add('inactive');
       const last = document.createElement('SPAN');
       last.innerHTML = this._totalPages;
       this._container.appendChild(more2);

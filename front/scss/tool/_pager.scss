@@ -29,6 +29,10 @@
         border: solid 1px var(--color-primary);
         color: var(--color-primary);
       }
+
+      &.inactive {
+        cursor: not-allowed;
+      }
     }
   }
 }
