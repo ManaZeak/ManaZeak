@@ -3,7 +3,7 @@ class Utils {
 
   constructor() {
     // If an instance of Utils already exists, we just return it
-    if (!Utils.instance) {
+    if (Utils.instance) {
       return Utils.instance;
     }
     // Set object instance
