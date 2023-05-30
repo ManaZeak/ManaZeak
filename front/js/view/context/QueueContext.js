@@ -75,7 +75,7 @@ class QueueContext extends ContextMenu {
               track.remove();
             }
           });
-        });
+        }).catch(err => console.error(err));
       }
     }
   }
@@ -131,7 +131,7 @@ class QueueContext extends ContextMenu {
       this._buildQueuedPlayObjectDom(playObject).then(dom => {
         po.appendChild(dom);
         this._playObjectClickedId = Evts.addEvent('click', po, this._playObjectClicked.bind(this, playObject), this);
-      });
+      }).catch(err => console.error(err));
     }
   }
 

@@ -12,7 +12,7 @@ class Notification {
    * @param {number} [options.transition=100] - Notification fade animation transition timing (in ms) in range N*
    * @param {number} [options.maxActive=5] - Maximum of simultaneously opened notification in range N* */
   constructor(options) {
-    if (!!Notification.instance) { // GoF Singleton
+    if (!Notification.instance) { // GoF Singleton
       return Notification.instance;
     }
     Notification.instance = this;

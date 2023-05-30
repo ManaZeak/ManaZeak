@@ -46,7 +46,8 @@ class Mzk {
 
   changeTrack(options) {
     this.ctrl.changeTrack(options)
-      .then(track => { this.ui.changeTrack(track); });
+      .then(track => this.ui.changeTrack(track))
+      .catch(err => console.error(err));
   }
 
 
@@ -101,8 +102,9 @@ class Mzk {
 
 
   setPlaybackRate(percentage) {
-    this.ctrl.player.setPlaybackRate(percentage);
-    this.ui.setPlaybackRate(percentage);
+    this.ctrl.player.setPlaybackRate(percentage)
+      .then(() => this.ui.setPlaybackRate(percentage))
+      .catch(err => console.error(err));
   }
 
 

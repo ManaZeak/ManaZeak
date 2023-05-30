@@ -22,15 +22,17 @@ class Spectrum extends VisuComponentStereo {
   constructor(options) {
     super(options);
     this._updateDimensions();
-    this._createLogarithmicScaleHeights();
-    // Update canvas CSS background color
-    const bgColor = 'black';
-    if (this._merged === true) {
-      this._canvasL.style.backgroundColor = bgColor;
-    } else {
-      this._canvasL.style.backgroundColor = bgColor;
-      this._canvasR.style.backgroundColor = bgColor;
-    }
+    this._createLogarithmicScaleHeights()
+      .then(() => {
+        // Update canvas CSS background color
+        const bgColor = 'black';
+        if (this._merged === true) {
+          this._canvasL.style.backgroundColor = bgColor;
+        } else {
+          this._canvasL.style.backgroundColor = bgColor;
+          this._canvasR.style.backgroundColor = bgColor;
+        }
+      }).catch(err => console.error(err));
   }
 
 
@@ -169,18 +171,20 @@ class Spectrum extends VisuComponentStereo {
   _onResize() {
     super._onResize();
     this._updateDimensions();
-    this._createLogarithmicScaleHeights();
-    // Update canvas dimensions
-    this._canvasL.width = this._dimension.width;
-    this._canvasL.height = this._dimension.canvasHeight;
+    this._createLogarithmicScaleHeights()
+      .then(() => {
+        // Update canvas dimensions
+        this._canvasL.width = this._dimension.width;
+        this._canvasL.height = this._dimension.canvasHeight;
 
-    if (this._merged === false) {
-      this._canvasR.width = this._dimension.width;
-      this._canvasR.height = this._dimension.canvasHeight;
-    }
+        if (this._merged === false) {
+          this._canvasR.width = this._dimension.width;
+          this._canvasR.height = this._dimension.canvasHeight;
+        }
 
-    this._bufferCanvas.width = this._dimension.width;
-    this._bufferCanvas.height = this._dimension.canvasHeight;
+        this._bufferCanvas.width = this._dimension.width;
+        this._bufferCanvas.height = this._dimension.canvasHeight;
+      }).catch(err => console.error(err));
   }
 
 

@@ -211,7 +211,7 @@ class BaseComponent {
           width: null,
           zIndex: null
         };
-      });
+      }).catch(err => console.error(err));
     } else {
       document.documentElement.requestFullscreen().then(() => {
         // Update renderTo dimension (canvas will be automatically rescaled)
@@ -226,7 +226,7 @@ class BaseComponent {
         this._renderTo.style.height = '100vh';
         this._renderTo.style.width = '100vw';
         this._renderTo.style.zIndex = '999';
-      });
+      }).catch(err => console.error(err));
     }
   }
 

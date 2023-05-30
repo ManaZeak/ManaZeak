@@ -73,7 +73,7 @@ class CustomEvents {
    * @returns {number|boolean} - The event ID to use to manually remove an event, false if arguments are invalid */
   addEvent(eventName, element, callback, scope = element, options = false) {
     // Debug logging
-    this._raise('log', `CustomEvents.addEvent: ${eventName} ${element} ${callback} ${scope} ${options}`);
+    this._raise('log', `CustomEvents.addEvent: ${eventName}`, element, scope, options, callback);
     // Missing mandatory arguments
     if (eventName === null || eventName === undefined ||
       element === null || element === undefined ||
@@ -378,7 +378,7 @@ class CustomEvents {
    * @returns {boolean} - The method status ; true for success, false for non-existing event **/
   publish(eventName, data = null) {
     // Debug logging
-    this._raise('log', `CustomEvents.publish: ${eventName} ${data}`);
+    this._raise('log', `CustomEvents.publish: ${eventName}`, data);
     // Missing mandatory arguments
     if (eventName === null || eventName === undefined) {
       this._raise('error', 'CustomEvents.publish: Missing mandatory arguments');

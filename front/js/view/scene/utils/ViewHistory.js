@@ -11,7 +11,8 @@ class ViewHistory {
     this._nextButton = null;
 
     this._init()
-      .then(this._events.bind(this));
+      .then(this._events.bind(this))
+      .catch(err => console.error(err));
   }
 
 

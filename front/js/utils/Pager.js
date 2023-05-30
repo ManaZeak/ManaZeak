@@ -57,78 +57,93 @@ class Pager {
 
 
   _createLarge() {
-    if (this._active < 3) {
-      for (let i = 0; i < 7; ++i) { // Left side extremum
-        const element = document.createElement('SPAN');
-        element.dataset.page = i + 1;
-        element.innerHTML = i + 1;
-        if (i + 1 === this._active) {
-          element.classList.add('selected');
-        }
-        this._evtIds.push(Evts.addEvent('click', element, () => this._clickedCB(element.dataset.page)));
-        this._container.appendChild(element);
-      }
-
-      const more = document.createElement('SPAN');
-      more.innerHTML = '···';
-      more.classList.add('inactive');
-      const last = document.createElement('SPAN');
-      last.innerHTML = this._totalPages;
-      this._container.appendChild(more);
-      this._evtIds.push(Evts.addEvent('click', last, () => this._clickedCB(this._totalPages)));
-      this._container.appendChild(last);
-    } else if (this._totalPages - this._active < 4) { // Right side extremum
-      const first = document.createElement('SPAN');
-      first.innerHTML = '1';
-      const more = document.createElement('SPAN');
-      more.innerHTML = '···';
-      more.classList.add('inactive');
-      this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
-      this._container.appendChild(first);
-      this._container.appendChild(more);
-
-      for (let i = this._totalPages - 7; i < this._totalPages; ++i) {
-        const element = document.createElement('SPAN');
-        element.dataset.page = i + 1;
-        element.innerHTML = i + 1;
-        if (i + 1 === this._active) {
-          element.classList.add('selected');
-        }
-        this._evtIds.push(Evts.addEvent('click', element, () => this._clickedCB(element.dataset.page)));
-        this._container.appendChild(element);
-      }
+    if (this._active < 7) { // Left side extremum
+      this._createOnLeft();
+    } else if (this._totalPages - this._active < 6) { // Right side extremum
+      this._createOnRight();
     } else {
-      const first = document.createElement('SPAN');
-      first.innerHTML = '1';
-      const more1 = document.createElement('SPAN');
-      more1.innerHTML = '···';
-      more1.classList.add('inactive');
-      this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
-      this._container.appendChild(first);
-      this._container.appendChild(more1);
-
-      for (let i = this._active - 3; i < this._active + 2; ++i) {
-        const element = document.createElement('SPAN');
-        element.dataset.page = i;
-        element.innerHTML = i;
-        if (i + 1 === this._active) {
-          element.classList.add('selected');
-        }
-        this._evtIds.push(Evts.addEvent('click', element, () => this._clickedCB(element.dataset.page)));
-        this._container.appendChild(element);
-      }
-
-      const more2 = document.createElement('SPAN');
-      more2.innerHTML = '···';
-      more2.classList.add('inactive');
-      const last = document.createElement('SPAN');
-      last.innerHTML = this._totalPages;
-      this._container.appendChild(more2);
-      this._evtIds.push(Evts.addEvent('click', last, () => this._clickedCB(this._totalPages)));
-      this._container.appendChild(last);      
+      this._createCentered();
     }
 
     this._target.appendChild(this._container);
+  }
+
+
+  _createOnLeft() {
+    for (let i = 0; i < 7; ++i) {
+      const element = document.createElement('SPAN');
+      element.dataset.page = i + 1;
+      element.innerHTML = i + 1;
+      if (i + 1 === this._active) {
+        element.classList.add('selected');
+      }
+      this._evtIds.push(Evts.addEvent('click', element, () => this._clickedCB(element.dataset.page)));
+      this._container.appendChild(element);
+    }
+
+    const more = document.createElement('SPAN');
+    more.innerHTML = '···';
+    more.classList.add('inactive');
+    const last = document.createElement('SPAN');
+    last.innerHTML = this._totalPages;
+    this._container.appendChild(more);
+    this._evtIds.push(Evts.addEvent('click', last, () => this._clickedCB(this._totalPages)));
+    this._container.appendChild(last);
+  }
+
+
+  _createOnRight() {
+    const first = document.createElement('SPAN');
+    first.innerHTML = '1';
+    const more = document.createElement('SPAN');
+    more.innerHTML = '···';
+    more.classList.add('inactive');
+    this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
+    this._container.appendChild(first);
+    this._container.appendChild(more);
+
+    for (let i = this._totalPages - 7; i < this._totalPages; ++i) {
+      const element = document.createElement('SPAN');
+      element.dataset.page = i + 1;
+      element.innerHTML = i + 1;
+      if (i + 1 === this._active) {
+        element.classList.add('selected');
+      }
+      this._evtIds.push(Evts.addEvent('click', element, () => this._clickedCB(element.dataset.page)));
+      this._container.appendChild(element);
+    }
+  }
+
+
+  _createCentered() {
+    const first = document.createElement('SPAN');
+    first.innerHTML = '1';
+    const more1 = document.createElement('SPAN');
+    more1.innerHTML = '···';
+    more1.classList.add('inactive');
+    this._evtIds.push(Evts.addEvent('click', first, () => this._clickedCB(1)));
+    this._container.appendChild(first);
+    this._container.appendChild(more1);
+
+    for (let i = this._active - 3; i < this._active + 2; ++i) {
+      const element = document.createElement('SPAN');
+      element.dataset.page = i + 1;
+      element.innerHTML = i + 1;
+      if (i + 1 === this._active) {
+        element.classList.add('selected');
+      }
+      this._evtIds.push(Evts.addEvent('click', element, () => this._clickedCB(element.dataset.page)));
+      this._container.appendChild(element);
+    }
+
+    const more2 = document.createElement('SPAN');
+    more2.innerHTML = '···';
+    more2.classList.add('inactive');
+    const last = document.createElement('SPAN');
+    last.innerHTML = this._totalPages;
+    this._container.appendChild(more2);
+    this._evtIds.push(Evts.addEvent('click', last, () => this._clickedCB(this._totalPages)));
+    this._container.appendChild(last);
   }
 
 

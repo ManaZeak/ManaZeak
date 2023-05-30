@@ -20,7 +20,7 @@ class Logger {
    * @return {object} - The Logger singleton instance */
   constructor(options = {}) {
     // If an instance of Logger already exists, we just return it
-    if (!!Logger.instance) {
+    if (!Logger.instance) {
       return Logger.instance;
     }
     // Set object instance

@@ -88,7 +88,8 @@ class ScrollBar {
     // Component initialization sequence
     this._init()
       .then(this._events.bind(this))
-      .then(this._updateScrollBar.bind(this));
+      .then(this._updateScrollBar.bind(this))
+      .catch(err => console.error(err));
   }
 
 
@@ -329,7 +330,6 @@ class ScrollBar {
       // Hide scrollbar if no scrolling is possible
       if (this._scrollRatio >= 1) {
         this._bar.classList.add('hidden');
-        //this._container.firstElementChild.style.paddingRight = '';
       } else {
         let height = (Math.max(this._scrollRatio * 100, this._minSize) * ownHeight) / 100;
         let top = ((this._container.scrollTop / totalHeight) * 100) * ownHeight / 100;
