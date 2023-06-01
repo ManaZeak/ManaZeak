@@ -1,10 +1,9 @@
-<div th:fragment="displayMinimalAlbums(albums, size)" class="released-album-wrapper"
-     xmlns:th="http://www.thymeleaf.org">
-  <div id="released-albums" class="released-albums">
-    <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="album">
+<div th:fragment="displayMinimalAlbums(albums, size)" class="albums-in-row" xmlns:th="http://www.thymeleaf.org">
+  <div id="released-albums" class="items-container">
+    <div th:each="album : ${albums}" th:attr="data-id=*{album.albumId}" class="item">
       <h3><span class="ep-sp"></span><span th:text="*{album.releaseYear}"></span></h3>
       <div th:replace="~{/include/album/albumPictureFragment.html :: albumPictureDisplay (*{album.cover}, 'medium')}"></div>
-      <h2><span th:text="*{album.title}"></span></h2>
+      <h2 th:text="*{album.title}"></h2>
     </div>
   </div>
 </div>

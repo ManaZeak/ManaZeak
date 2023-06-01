@@ -35,63 +35,139 @@
     }
   }
 
-  .artists-container,
-  .genres-container,
-  .labels-container {
+  .items-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     width: calc(100% - var(--default-scroll-size));
-  }
 
-  .artist-item {
-    align-items: center;
-    border-radius: .5rem;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    margin: var(--margin-small);
-    padding: var(--padding-small);
-    position: relative;
-
-    transition: .2s background-color, .2s box-shadow;
-
-    &:active,
-    &:focus,
-    &:hover {
-      background-color: var(--color-bg-alpha-50);
-      box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
-
-      img {
-        transform: scale(1.066) rotate(0.66deg);
+    .item {
+      align-items: center;
+      border-radius: .5rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      margin: var(--margin-small);
+      padding: var(--padding-small);
+      position: relative;
+  
+      transition: .2s background-color, .2s box-shadow;
+  
+      &:active,
+      &:focus,
+      &:hover {
+        background-color: var(--color-bg-alpha-50);
+        box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
+  
+        img {
+          transform: scale(1.066) rotate(0.66deg);
+        }
       }
-    }
-    
-    img {
-      width: 9rem;
-      transition: transform var(--animation-duration);
-    }
-
-    p {
-      font-size: var(--font-size-small);
-      margin-bottom: 0;
-      text-align: center;
-    }
-
-    .artist-picture {
-      overflow: hidden;
-    }
-
-    .label-artist {
-      position: absolute;
-
+      
       img {
-        height: 2rem;
+        width: 9rem;
+        transition: transform var(--animation-duration);
+      }
+  
+      h2 {
+        font-size: var(--font-size-small);
+        margin-bottom: 0;
+        text-align: center;
+      }
+  
+      .item-picture {
+        overflow: hidden;
+      }
+  
+      .label-artist {
+        /* Specific to artist items */
+        position: absolute;
+  
+        img {
+          height: 2rem;
+        }
       }
     }
   }
 }
 
 /* Utils class */
+
+.artists-in-row,
+.albums-in-row {
+  /* This style classes configures the way one or
+   * several items are displayed, side by side
+   * in a row for a unified presentation in views */
+  display: flex;
+  justify-content: center;
+  margin: 0 var(--margin) var(--margin);
+  width: calc(100% - (2 * var(--margin)));
+
+  .items-container {
+    border-spacing: 1rem;
+    margin: 0;
+    overflow: hidden; /* So ScrollBar is properly handling this */
+
+    .item {
+      cursor: pointer;
+      display: table-cell;
+      padding: var(--padding);
+      max-width: 20rem;
+      text-align: center;
+  
+      transition: .2s background-color, .2s box-shadow;
+  
+      &:active,
+      &:focus,
+      &:hover,
+      &.selected {
+        background-color: var(--color-bg-alpha-75);
+        box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
+  
+        img {
+          transform: scale(1.05);
+        }
+      }
+      
+      &.selected {
+        background-color: var(--color-primary-alpha-25);
+      }
+  
+      h3 {
+        align-items: center;
+        display: flex;
+        font-style: italic;
+        justify-content: space-between;
+        margin-bottom: .5rem;
+        margin-top: 0;
+  
+        span:first-child {
+          font-size: var(--font-size-small);
+        }
+      }
+
+      h2 {
+        font-size: var(--font-size);  
+        margin: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+  
+      .item-picture {
+        height: calc(15rem + var(--margin));
+        margin: 0 auto;
+        width: 15rem;
+  
+        img {
+          height: 100%;
+          margin-bottom: var(--margin);
+          width: 100%;
+          transition: transform .2s;
+        }
+      }
+    }
+  }
+}
 
 .artists-small {
   background-color: var(--color-bg-lighter-alpha-50);
@@ -213,7 +289,8 @@
 }
 
 .release-artist-view-wrapper,
-.genre-view-wrapper {
+.genre-view-wrapper,
+.label-view-wrapper {
   [class$="-header"] {
     border-bottom: solid 1px var(--color-txt);
     display: flex;
@@ -263,7 +340,8 @@
 }
 /* Artist album in a row */
 .release-artist-view-wrapper,
-.album-view-wrapper {
+.album-view-wrapper,
+.label-view-wrapper {
   h1 {
     font-size: var(--font-size-big);
     font-style: italic;
@@ -284,82 +362,8 @@
       }
     }
   }
-
-  .released-album-wrapper {
-    display: flex;
-    margin: var(--margin);
-    margin-top: 0;
-    width: calc(100% - (2 * var(--margin)));
-
-    .released-albums {
-      border-spacing: 1rem;
-      height: 28rem;
-      margin: 0;
-      overflow: hidden;
-
-      .album {
-        cursor: pointer;
-        display: table-cell;
-        padding: var(--padding);
-        max-width: 20rem;
-        text-align: center;
-  
-        transition: .2s background-color, .2s box-shadow;
-  
-        &:active,
-        &:focus,
-        &:hover,
-        &.selected {
-          background-color: var(--color-bg-alpha-75);
-          box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
-  
-          img {
-            transform: scale(1.05);
-          }
-        }
-        
-        &.selected {
-          background-color: var(--color-primary-alpha-25);
-        }
-
-        h3 {
-          align-items: center;
-          display: flex;
-          font-style: italic;
-          justify-content: space-between;
-          margin-bottom: .5rem;
-          margin-top: 0;
-  
-          span:first-child {
-            font-size: var(--font-size-small);
-          }
-        }
-  
-        h2 {
-          font-size: var(--font-size);  
-          margin: 0;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-  
-        .album-picture {
-          height: calc(15rem + var(--margin));
-          margin: 0 auto;
-          width: 15rem;
-  
-          img {
-            height: 100%;
-            margin-bottom: var(--margin);
-            width: 100%;
-            transition: transform .2s;
-          }
-        }
-      }
-    }
-  }
 }
-
+/* Playable view specific */
 .album-view-wrapper,
 .genre-view-wrapper {
   .album {
@@ -862,10 +866,6 @@
       }
     }
   }
-
-  .released-album-wrapper {
-    justify-content: center;
-  }
 }
 
 .genre-view-wrapper {
@@ -1016,6 +1016,11 @@
 }
 
 .label-view-wrapper {
+  display: inherit;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+
   .label-header-right {
     position: relative;
 

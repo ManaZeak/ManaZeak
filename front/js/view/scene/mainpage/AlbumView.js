@@ -1,9 +1,10 @@
 import PlayableView from '../utils/PlayableView';
 import ScrollBar from '../../navigation/ScrollBar';
 import TrackContext from '../../context/TrackContext';
+import ItemViewHelperMixin from '../utils/ItemViewHelperMixin';
 
 
-class AlbumView extends PlayableView {
+class AlbumView extends ItemViewHelperMixin(PlayableView) {
 
 
   constructor(options) {
@@ -130,7 +131,7 @@ class AlbumView extends PlayableView {
   _buildArtistAlbums() {
     if (this._albums?.children) {
       for (let i = 0; i < this._albums.children.length; ++i) {
-        let title = this._albums.children[i].lastElementChild.lastElementChild.innerHTML;
+        let title = this._albums.children[i].lastElementChild.innerHTML;
         if (title.includes(' EP')) {
           title = title.replace(' EP', '');
           this._albums.children[i].querySelector('.ep-sp').innerHTML = 'EP';
@@ -141,7 +142,7 @@ class AlbumView extends PlayableView {
           this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
         }
         // Update album title if needed
-        this._albums.children[i].lastElementChild.lastElementChild.innerHTML = title;
+        this._albums.children[i].lastElementChild.innerHTML = title;
         this._albums.children[i].addEventListener('click', this._albumClicked);
       }
 
@@ -294,39 +295,6 @@ class AlbumView extends PlayableView {
       path: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       title: this.dom.querySelector('#release-artist').nextElementSibling.innerHTML,
       artist: this.dom.querySelector('#release-artist').innerHTML
-    });
-  }
-
-
-  _artistClicked(e) {
-    e.stopPropagation();
-    mzk.setView({
-      name: 'ReleaseArtist',
-      id: this.dataset.id
-    });
-  }
-
-
-  _albumClicked() {
-    mzk.setView({
-      name: 'Album',
-      id: this.dataset.id
-    });
-  }
-
-
-  _labelClicked() {
-    mzk.setView({
-      name: 'Label',
-      id: this.dataset.id
-    });
-  }
-
-
-  _genreClicked() {
-    mzk.setView({
-      name: 'Genre',
-      id: this.dataset.id
     });
   }
 

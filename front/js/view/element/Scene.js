@@ -39,8 +39,8 @@ class Scene {
       // Scene clearing and view instantiation
       this.clearScene();
       this.view = new ViewFactory(options.name, options);
-      // Reject view build if it exceed 5 seconds
-      setTimeout(reject, 5000);
+      // Reject view build if it exceeds 20 seconds
+      setTimeout(reject, 20000);
     });
   }
 

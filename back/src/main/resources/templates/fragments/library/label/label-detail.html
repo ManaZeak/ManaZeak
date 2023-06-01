@@ -1,18 +1,27 @@
-<div xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org" class="label-view-wrapper">
   <!--/*@thymesVar id="label" type="org.manazeak.manazeak.entity.dto.library.label.LabelCompleteInfoDto"*/-->
   <div class="label-header" th:attr="data-id=*{label.id}">
     <div class="label-header-left">
       <div th:replace="~{/include/label/labelPictureFragment :: labelPictureDisplay(${label.picture()}, orig)}"></div>
       <h1 th:text="${label.name}" id="label-name"></h1>
     </div>
-    <div class="label-header-right">
-      <div class="view-commands">
-        <img src="/static/img/navigation/nav-up.svg" id="all-expander" alt="all-expander">
+  </div>
+  <h1>
+    <span>Artists who were signed on the label</span>
+    <span th:text="${label.name}"></span>
+    <img src="/static/img/navigation/sort-number.svg" id="sort-artists" alt="sort-artists">
+  </h1>
+  <div class="artists-in-row">
+    <div id="label-artists" class="items-container">
+      <div th:each="artist : ${label.artists}" style="display: table-cell"> <!-- table-cell required bc of artist minimal include -->
+        <div th:replace="~{/include/artist/minimalArtistFragment :: displayMinimalArtist(*{artist}, medium)}"></div>
       </div>
     </div>
   </div>
-  <div th:each="artist : ${label.artists}">
-    <div th:replace="~{/include/artist/minimalArtistFragment :: displayMinimalArtist(*{artist}, medium)}"></div>
-  </div>
+  <h1>
+    <span>Album published by</span>
+    <span th:text="${label.name}"></span>
+    <img src="/static/img/navigation/sort-number.svg" id="sort-albums" alt="sort-albums">
+  </h1>
   <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${label.albums()}, medium)}"></div>
 </div>

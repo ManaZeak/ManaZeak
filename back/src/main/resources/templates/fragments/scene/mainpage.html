@@ -4,10 +4,9 @@
     <h2 th:text="#{mp.release_artists}"></h2>
     <h3 th:text="#{mp.see_all}" id="see-all-release-artists"></h3>
   </div>
-  <div class="artists-container" id="artists-container">
+  <div id="artists-container" class="items-container">
     <div th:each="rlArtist : ${rlArtists}">
-      <div
-          th:replace="~{/include/artist/minimalArtistFragment.html :: displayMinimalArtist(*{rlArtist}, medium)}"></div>
+      <div th:replace="~{/include/artist/minimalArtistFragment.html :: displayMinimalArtist(*{rlArtist}, medium)}"></div>
     </div>
   </div>
   <div class="section-header">
@@ -15,7 +14,7 @@
     <h3 th:text="#{mp.see_all}" id="see-all-genres"></h3>
     <h3 th:text="#{mp.genres_graph}" id="see-genres-graph"></h3>
   </div>
-  <div class="genres-container" id="genres-container">
+  <div id="genres-container" class="items-container">
     <div th:each="genre : ${genres}">
       <div th:replace="~{/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)}"></div>
     </div>
@@ -24,7 +23,7 @@
     <h2 th:text="#{mp.labels}"></h2>
     <h3 th:text="#{mp.see_all}" id="see-all-labels"></h3>
   </div>
-  <div class="labels-container" id="labels-container">
+  <div id="labels-container" class="items-container">
     <div th:each="label : ${labels}">
       <div th:replace="~{/include/label/minimalLabelFragment.html :: displayMinimalLabel(*{label}, medium)}"></div>
     </div>

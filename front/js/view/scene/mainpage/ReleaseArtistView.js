@@ -1,8 +1,9 @@
 import ScrollBar from '../../navigation/ScrollBar';
 import SceneView from '../utils/SceneView';
+import ItemViewHelperMixin from '../utils/ItemViewHelperMixin';
 
 
-class ReleaseArtistView extends SceneView {
+class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
 
 
   constructor(options) {
@@ -77,7 +78,7 @@ class ReleaseArtistView extends SceneView {
 
   _buildArtistAlbums() {
     for (let i = 0; i < this._albums.children.length; ++i) {
-      let title = this._albums.children[i].lastElementChild.lastElementChild.innerHTML;
+      let title = this._albums.children[i].lastElementChild.innerHTML;
       if (title.includes(' EP')) {
         title = title.replace(' EP', '');
         this._albums.children[i].querySelector('.ep-sp').innerHTML = 'EP';
@@ -88,7 +89,7 @@ class ReleaseArtistView extends SceneView {
         this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
       }
       // Update album title if needed
-      this._albums.children[i].lastElementChild.lastElementChild.innerHTML = title;
+      this._albums.children[i].lastElementChild.innerHTML = title;
       this._albums.children[i].addEventListener('click', this._albumClicked);
     }
 
@@ -125,22 +126,6 @@ class ReleaseArtistView extends SceneView {
       name: 'ArtistPicture',
       path: this.dom.querySelector('#artist-picture').children[0].children[0].children[0].src,
       artist: this.dom.querySelector('#artist-name').innerHTML
-    });
-  }
-  
-
-  _artistClicked() {
-    mzk.setView({
-      name: 'ReleaseArtist',
-      id: this.dataset.id
-    });    
-  }
-
-
-  _albumClicked() {
-    mzk.setView({
-      name: 'Album',
-      id: this.dataset.id
     });
   }
 

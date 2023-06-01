@@ -1,9 +1,10 @@
 import PlayableView from '../utils/PlayableView';
 import ScrollBar from '../../navigation/ScrollBar';
 import TrackContext from '../../context/TrackContext';
+import ItemViewHelperMixin from '../utils/ItemViewHelperMixin';
 
 
-class GenreView extends PlayableView {
+class GenreView extends ItemViewHelperMixin(PlayableView) {
 
 
   constructor(options) {
@@ -171,22 +172,6 @@ class GenreView extends PlayableView {
     if (list.children.length === 0) {
       list.parentNode.remove();
     }
-  }
-
-
-  _artistClicked() {
-    mzk.setView({
-      name: 'ReleaseArtist',
-      id: this.dataset.id
-    });
-  }
-
-
-  _albumClicked() {
-    mzk.setView({
-      name: 'Album',
-      id: this.dataset.id
-    });
   }
 
 

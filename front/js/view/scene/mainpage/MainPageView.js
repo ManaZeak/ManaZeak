@@ -55,7 +55,7 @@ class MainPageView extends SceneView {
       amount = 26;
     } else if (bRect.width < 1840) {
       amount = 28;
-    } else if (bRect.width > 1920) {
+    } else if (bRect.width >= 1920) {
       amount = 30;
     }
     this._url = `${this._url}${amount}/`
@@ -132,7 +132,7 @@ class MainPageView extends SceneView {
           name: 'MenuPage'
         });
       }
-    })
+    });
   }
 
 
