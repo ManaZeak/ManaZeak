@@ -40,17 +40,8 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
       this._albums = this.dom.querySelector('#released-albums');
       this._artists = this.dom.querySelector('#label-artists');
       if (this._albums?.children || this._artists?.children) {
-        this._buildArtistAlbums();
+        this._buildArtists();
 
-        this._scrolls.push(new ScrollBar({
-          target: this._albums,
-          horizontal: true,
-          style: {
-            color: '#56D45B'
-          }
-        }));
-        this._albums = this._albums.children[0].children[0];
-  
         this._scrolls.push(new ScrollBar({
           target: this._artists,
           horizontal: true,
@@ -60,6 +51,17 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
         }));
     
         this._artists = this._artists.children[0].children[0];
+
+        this._buildAlbums();
+
+        this._scrolls.push(new ScrollBar({
+          target: this._albums,
+          horizontal: true,
+          style: {
+            color: '#56D45B'
+          }
+        }));
+        this._albums = this._albums.children[0].children[0];
 
         this._handleItemSorting('albums', this._albums);
         this._handleItemSorting('artists', this._artists);
@@ -89,7 +91,7 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
   }
 
 
-  _buildArtistAlbums() {
+  _buildAlbums() {
     for (let i = 0; i < this._albums.children.length; ++i) {
       let title = this._albums.children[i].lastElementChild.innerHTML;
       if (title.includes(' EP')) {
@@ -104,6 +106,13 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
       // Update album title if needed
       this._albums.children[i].lastElementChild.innerHTML = title;
       this._albums.children[i].addEventListener('click', this._albumClicked);
+    }
+  }
+
+
+  _buildArtists() {
+    for (let i = 0; i < this._artists.children.length; ++i) {
+      this._albums.children[i].addEventListener('click', this._artistClicked);
     }
   }
 
