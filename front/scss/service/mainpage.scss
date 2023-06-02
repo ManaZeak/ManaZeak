@@ -190,9 +190,16 @@
       margin-right: calc(var(--margin-small) + .6rem);
     }
 
-    img { /* 1/2 width of small artist right over performers */
-      height: 60px;
-      width: 60px;
+    .item-picture {
+      /* !important required to override any page img style */
+      height: inherit !important;
+      width: inherit !important;
+
+      img { /* 1/2 width of small artist right over performers */
+        margin: 0 !important;
+        height: 60px !important;
+        width: 60px !important;
+      }  
     }
 
     p {
@@ -741,7 +748,7 @@
       margin: var(--margin);
       width: calc(40rem - (2 * var(--margin)));
 
-      .album-picture {
+      .item-picture {
         cursor: pointer;
         height: calc(40rem - var(--margin));
         width: calc(40rem - (2 * var(--margin)));

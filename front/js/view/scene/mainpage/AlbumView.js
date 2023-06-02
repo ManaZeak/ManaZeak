@@ -323,27 +323,15 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
 
 
   _contextClicked(event) {
-    if (event.target.closest('.track')) {
-      let title = event.target.parentNode.children[0].children;
-      let id = event.target.dataset.id;
-      if (event.target.className !== 'track') {
-        if (title.length === 0) {
-          title = event.target.parentNode.parentNode.children[0].children[0]
-          id = event.target.parentNode.parentNode.dataset.id;
-        } else {
-          title = title[0];
-          id = event.target.parentNode.dataset.id;
-        }
-        this._trackContext.open(event, {
-          id: id,
-          name: `${document.getElementById('release-artist').innerHTML} - ${title.textContent}`
-        });
-      } else {
-        this._trackContext.open(event, {
-          id: id,
-          name: `${document.getElementById('release-artist').innerHTML} - ${title[0].textContent}`
-        });
-      }
+    const track = event.target.closest('.track');
+    if (track.dataset.id !== '') {
+      // From track root div, 3 lvl down, must match HTML struct
+      const title = track.children[0].children[0].children[0];
+      const id = track.dataset.id;
+      this._trackContext.open(event, {
+        id: id,
+        name: `${document.getElementById('release-artist').innerHTML} - ${title.textContent}`
+      });
     }
   }
 

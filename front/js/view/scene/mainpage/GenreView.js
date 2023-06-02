@@ -103,7 +103,6 @@ class GenreView extends ItemViewHelperMixin(PlayableView) {
 
       this.dom.querySelector('#genre-content').addEventListener('contextmenu', event => {
         event.preventDefault();
-        console.log(event)
         if (this.dom.querySelector('#genre-content').contains(this._trackContext.dom)) {
           this._trackContext.close();
         } else {
@@ -198,36 +197,16 @@ class GenreView extends ItemViewHelperMixin(PlayableView) {
 
 
   _contextClicked(event) {
-    if (event.target.closest('.track')) {
-      let title = '';
-      let artist = '';
-      let id = event.target.dataset.id;
-      if (event.target.className !== 'track') {
-        if (event.target.parentNode.className === 'track') { // First lvl children
-          title = event.target.parentNode.children[0].children[0];
-          artist = event.target.parentNode.children[0].children[3];
-          id = event.target.parentNode.dataset.id;
-        } else if (event.target.parentNode.className === 'track-info' || event.target.parentNode.className === 'track-detailed-info') { // Second level children
-          title = event.target.parentNode.parentNode.children[0].children[0];
-          artist = event.target.parentNode.parentNode.children[0].children[3];
-          id = event.target.parentNode.parentNode.dataset.id;
-        } else { // Third level children
-          title = event.target.parentNode.parentNode.parentNode.children[0].children[0];
-          artist = event.target.parentNode.parentNode.parentNode.children[0].children[3];
-          id = event.target.parentNode.parentNode.parentNode.dataset.id;
-        }
-        this._trackContext.open(event, {
-          id: id,
-          name: `${artist.textContent} - ${title.textContent}`
-        });
-      } else {
-        title = event.target.children[0].children[0];
-        artist = event.target.children[0].children[3];
-        this._trackContext.open(event, {
-          id: id,
-          name: `${artist.textContent} - ${title.textContent}`
-        });
-      }
+    const track = event.target.closest('.track');
+    if (track.dataset.id !== '') {
+      // From track root div, 3 lvl down, must match HTML struct
+      const title = track.children[0].children[0].children[0];
+      const artist = track.children[0].children[3].children[0];
+      const id = track.dataset.id;
+      this._trackContext.open(event, {
+        id: id,
+        name: `${artist.textContent} - ${title.textContent}`
+      });
     }
   }
 
@@ -263,7 +242,7 @@ class GenreView extends ItemViewHelperMixin(PlayableView) {
       title: track.children[0].children[0].textContent,
       // TODO track artist instead of release artist
       artist: track.parentNode.parentNode.parentNode.parentNode.querySelector('.artist-info').firstElementChild.textContent,
-      cover: track.parentNode.parentNode.parentNode.parentNode.querySelector('.artist-info').lastElementChild.src,
+      cover: track.parentNode.parentNode.parentNode.parentNode.querySelector('.album-cover').src,
       duration: track.children[0].children[2].innerHTML,
       mood: track.dataset.mood
     };

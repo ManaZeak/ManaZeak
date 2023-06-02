@@ -47,8 +47,13 @@
 
     .user-list-wrapper,
     .thumbnail-error-wrapper,
-    .wish-grid-wrapper {
+    .wish-grid-wrapper,
+    .commands-wrapper {
       padding: 2rem;
+
+      h1 {
+        margin-top: 0;
+      }
     }
 
     .user-list-wrapper {
@@ -178,6 +183,10 @@
 
           .header-left {
             width: calc(100% - 26rem);
+
+            .check-element {
+              margin: var(--margin-tiny);
+            }
           }
 
           .header-right {
@@ -257,6 +266,12 @@
         border: none;
         height: 100%;
         width: 100%;
+      }
+    }
+
+    .commands-wrapper {
+      .command {
+        margin: var(--margin-small) 0;
       }
     }
   }

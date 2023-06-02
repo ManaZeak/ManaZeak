@@ -50,10 +50,6 @@ class ThumbsFragment {
         errors.children[i].cb = this._updateView.bind(this, true);
         this._evtIds.push(Evts.addEvent('click', errors.children[i], this._errorClicked, errors.children[i]))
       }
-
-      // Saving users and badge from template
-      const searchButton = this._target.querySelector('#thumbs-search');
-      this._evtIds.push(Evts.addEvent('click', searchButton, this._updateView, this));
     }
 
 

@@ -59,14 +59,94 @@
   }
 }
 
-/* Mobile rules (specific ones as style should be mobile first) */
+/* Mobile rules */
 @media only screen and (max-width: 800px) {
+  :root {
+    --navbar-height: 16rem;
+  }
   /* Global class that disable element on a mobile environment */
   .desktop-only {
     display: none !important;
   }
   /* Make tooltip invisible on mobile environment */
   .tooltip-text {
-    display: none;
+    display: none !important;
+  }
+  /* Scene desktop rules */
+  .scene-wrapper {
+    grid-template-columns: 100% !important;
+    grid-template-rows: var(--aside-size) var(--topbar-size) calc(100% - var(--aside-size) - var(--topbar-size));
+
+    .aside {
+      border-bottom: none;
+      border-right: solid 1px var(--color-txt-alpha-10);
+      height: var(--aside-size);
+      grid-column: 1;
+      grid-row: 1;
+      width: 100%;
+  
+      .item-group {
+        flex-direction: row;
+      }
+    }
+
+    .topbar {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .scene {
+      height: 100%;
+  
+      .menu-page {
+        .control-container {
+          .item {
+            justify-content: center;
+            width: 90%;
+          }        
+        }
+      }
+      /* Admin pages/fragments */
+      .admin-page .admin-tabs,
+      .account-page .account-tabs {
+        width: 85%;
+  
+        p {
+          padding: 0 var(--padding-bigger);
+        }
+      }
+    }
+  }
+
+  .navbar {
+    .playback-wrapper {
+      .top-line {
+        height: calc(100% - (var(--navbar-height) / 4));
+      }
+
+      .bottom-line {
+        height: calc(var(--navbar-height) / 4);
+      }      
+    }
+  }
+  /* Tooltip are desktop only */
+  @import "../tool/tooltip";
+  /* Global class that disable element on desktop environment */
+  .mobile-only {
+    display: none !important;
+  }
+
+  .admin-page {
+    .admin-view {
+      .wish-grid-wrapper {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+
+        .pending-wishes {
+          border-right: solid 1px var(--color-txt-alpha-10) !important;
+          grid-row: span 2;
+        }
+      }
+    }
   }
 }

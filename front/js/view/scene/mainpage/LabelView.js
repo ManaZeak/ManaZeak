@@ -50,7 +50,7 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
           }
         }));
     
-        this._artists = this._artists.children[0].children[0];
+        this._artists = this._artists.children[0].children[0].children;
 
         this._buildAlbums();
 
@@ -91,6 +91,14 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
   }
 
 
+  _buildArtists() {
+    for (let i = 0; i < this._artists.children.length; ++i) {
+      // Due to HTML minimalArtistFragment struct, we must children[0] on track to get item id in dataset.
+      this._evtIds.push(Evts.addEvent('click', this._artists.children[i].children[0], this._artistClicked, this._artists.children[i].children[0]));
+    }
+  }
+
+
   _buildAlbums() {
     for (let i = 0; i < this._albums.children.length; ++i) {
       let title = this._albums.children[i].lastElementChild.innerHTML;
@@ -105,14 +113,7 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
       }
       // Update album title if needed
       this._albums.children[i].lastElementChild.innerHTML = title;
-      this._albums.children[i].addEventListener('click', this._albumClicked);
-    }
-  }
-
-
-  _buildArtists() {
-    for (let i = 0; i < this._artists.children.length; ++i) {
-      this._albums.children[i].addEventListener('click', this._artistClicked);
+      this._evtIds.push(Evts.addEvent('click', this._albums.children[i], this._albumClicked, this._albums.children[i]));
     }
   }
 
