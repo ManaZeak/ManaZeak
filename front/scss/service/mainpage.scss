@@ -92,8 +92,7 @@
 
 /* Utils class */
 
-.artists-in-row,
-.albums-in-row {
+.items-in-row {
   /* This style classes configures the way one or
    * several items are displayed, side by side
    * in a row for a unified presentation in views */
@@ -169,6 +168,7 @@
   }
 }
 
+/* Tiny artists form (performers on album view for exemple) */
 .artists-small {
   background-color: var(--color-bg-lighter-alpha-50);
   border-radius: .5rem;
@@ -225,27 +225,18 @@
   }
 }
 
-.grid-items-container {
+.items-in-grid {
   display: grid;
   grid-gap: var(--padding) var(--padding-tiny);
-  grid-template-columns: repeat(auto-fill, 10rem);
+  grid-template-columns: repeat(auto-fill, 12rem);
   padding: var(--padding);
-
-  .section-separator {
-    grid-column: 1 / -1;
-    border-bottom: solid 3px var(--color-txt-alpha-50);
-    margin-bottom: var(--margin);
-    padding-bottom: var(--margin);
-    text-indent: var(--font-size-big);
-    max-width: 33rem;
-  }
 
   .item {
     cursor: pointer;
     margin: var(--margin-small);
     position: relative;
-    width: 9rem;
-    transition: transform .2s;
+    width: 100%;
+    transition: .2s background-color, .2s box-shadow;
 
     [class$="-picture"],
     img {
@@ -253,10 +244,11 @@
       width: 9rem;      
     }
 
-    p {
+    h2 {
       font-size: var(--font-size-small);
       left: 50%;
       margin: 0;
+      padding-top: var(--font-size-small);
       position: absolute;
       text-align: center;
       width: 100%;
@@ -265,8 +257,14 @@
 
     &:active,
     &:focus,
-    &:hover {
-      transform: scale(1.2);
+    &:hover,
+    &.selected {
+      background-color: var(--color-bg-alpha-75);
+      box-shadow: 0 0 .3rem var(--color-primary-alpha-25);
+
+      img {
+        transform: scale(1.05);
+      }
     }
 
     span {

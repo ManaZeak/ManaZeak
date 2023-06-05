@@ -13,3 +13,10 @@ if (mm < 10) {
 }
 // Create output string and update max attribute on birthday date input
 document.getElementById('birthday-input').setAttribute('max', `${yyyy}-${mm}-${dd}`);
+// Script so user can only enter to submit credentials 
+document.addEventListener('keypress', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('tellusmore-form').submit();
+  }
+});

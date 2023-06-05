@@ -11,7 +11,7 @@
     <span th:text="${label.name}"></span>
     <img src="/static/img/navigation/sort-number.svg" id="sort-artists" alt="sort-artists">
   </h1>
-  <div class="artists-in-row">
+  <div class="items-in-row">
     <div id="label-artists" class="items-container">
       <div th:each="artist : ${label.artists}" style="display: table-cell"> <!-- table-cell required bc of artist minimal include -->
         <div th:replace="~{/include/artist/minimalArtistFragment :: displayMinimalArtist(*{artist}, medium)}"></div>

@@ -22,16 +22,7 @@ class ProfileFragment {
 
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#edit-account'), mzk.setModal.bind(mzk, { name: 'EditAccount' }), this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#password'), mzk.setModal.bind(mzk, { name: 'ResetPassword' }), this));
-    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite'), this._copyInviteCode, this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite-link'), this._copyInviteLink, this));
-  }
-
-
-  _copyInviteCode() {
-    const inviteCode = this._target.querySelector('#invite-code').innerHTML;
-    this._saveToClipboard(inviteCode)
-      .then(() => Logger.raise('F_INVIT_CODE_CLIPBOARD_SUCCESS'))
-      .catch(() => Logger.raise('F_INVIT_CODE_CLIPBOARD_ERROR'));
   }
 
 

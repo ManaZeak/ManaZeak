@@ -6,3 +6,10 @@ const inviteCodeElement = document.getElementById('inviteCode-input');
 if (inviteCodeElement && inviteCode) {
   inviteCodeElement.value = inviteCode;
 }
+// Script so user can only enter to submit credentials 
+document.addEventListener('keypress', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('register-form').submit();
+  }
+});

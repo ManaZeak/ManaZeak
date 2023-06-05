@@ -19,7 +19,7 @@
   </p>
   <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
   <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
-  <form method="POST" th:object="${user}">
+  <form method="POST" th:object="${user}" id="register-form">
     <!-- Account username field (128 char) and specific errors -->
     <div class="tooltip">
       <label for="username-input" th:text="#{user.register.username}"></label>

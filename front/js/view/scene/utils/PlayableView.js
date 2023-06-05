@@ -63,7 +63,7 @@ class PlayableView extends SceneView {
       if (this._tracks[i].dataset.id === data.id) {
         this._tracks[i].classList.add('playing');
         // Only update scroll if visible and not already has been focus
-        if (this._tracks[i].scroll.isHidden && !this._tracks[i].scroll.isHidden() && scrolled === false) {
+        if (this._tracks[i]?.scroll?.isHidden && !this._tracks[i]?.scroll?.isHidden() && scrolled === false) {
           scrolled = true;
           this._tracks[i].parentNode.scrollTo({
             top: this._tracks[i].offsetTop - this._tracks[i].parentNode.offsetTop,

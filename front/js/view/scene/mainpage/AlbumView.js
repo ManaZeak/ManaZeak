@@ -66,16 +66,19 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
       }));
 
       // Scroll on track must be separated from other scrolls
-      this._scrollTrack = new ScrollBar({
-        target: this.dom.querySelector('#album-tracks'),
-        style: {
-          color: '#56D45B'
-        }
-      });
+      if (this.dom.querySelector('#album-tracks').children.length > 6) {
+        this._scrollTrack = new ScrollBar({
+          target: this.dom.querySelector('#album-tracks'),
+          style: {
+            color: '#56D45B'
+          }
+        });
 
-      setTimeout(() => {
-        this._scrollTrack.updateScrollbar();
-      });
+        setTimeout(() => {
+          this._scrollTrack.updateScrollbar();
+        });
+      }
+
       // Update tracks bc of scroll DOM
       this._tracks = this.dom.querySelector('#album-tracks').children[0].children[0].children;
       // <scrollbar to performers for better UI
@@ -312,7 +315,10 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
     }
     // Update scrollbar height
     setTimeout(() => {
-      this.scroll.updateScrollbar();
+      if (this.scroll) {
+        this.scroll.updateScrollbar();
+      }
+
       this.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
@@ -368,7 +374,9 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
     }
     // Update scrollbar height
     setTimeout(() => {
-      this._scrollTrack.updateScrollbar();
+      if (this._scrollTrack?.updateScrollbar) {
+        this._scrollTrack.updateScrollbar(); 
+      }
     }, 200); /* Match height transition duration in _mainpage.scss */
   }
 
@@ -384,7 +392,9 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
     }
     // Update scrollbar height
     setTimeout(() => {
-      this._scrollTrack.updateScrollbar();
+      if (this._scrollTrack?.updateScrollbar) {
+        this._scrollTrack.updateScrollbar(); 
+      }
     }, 200); /* Match height transition duration in _mainpage.scss */
   }
 

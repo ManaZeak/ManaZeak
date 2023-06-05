@@ -6,11 +6,13 @@ class ResetPasswordModal extends Modal {
 
   constructor() {
     super('reset-password');
+    this._evtIds = [];
   }
 
 
   destroy() {
     super.destroy();
+    Evts.removeEvent(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
 
@@ -26,7 +28,23 @@ class ResetPasswordModal extends Modal {
 
 
   _events() {
-    // TBD with form, may not be necessary w/ thymleaf
+    this._evtIds.push(Evts.addEvent('click', document.getElementById('reset-password-submit'), this._submit, this));
+  }
+
+
+  _submit() {
+    mzk.kom.post('/resetPassword/', {
+      newPassword1: document.getElementById('reset-password-one-input').textContent,
+      newPassword2: document.getElementById('reset-password-two-input').textContent
+    }).then((res) => {
+      if (res.status !== 200) {
+        console.error(res);
+      } else {
+        this.close();        
+      }
+    }).catch(err => {
+      console.error(err);
+    });
   }
 
 

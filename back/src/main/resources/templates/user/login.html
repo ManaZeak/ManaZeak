@@ -19,7 +19,7 @@
   </p>
   <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
   <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
-  <form method="POST" th:object="${user}">
+  <form method="POST" th:object="${user}" id="login-form">
     <!-- Username field (128 char) and specific errors -->
     <div class="tooltip">
       <label for="username-input" th:text="#{user.login.username}"></label>
@@ -42,5 +42,14 @@
   </form>
   <p th:utext="#{user.login.footer}"></p>
 </div>
+<script type="text/javascript">
+// Script so user can only enter to submit credentials 
+document.addEventListener('keypress', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('login-form').submit();
+  }
+});
+</script>
 </body>
 </html>
