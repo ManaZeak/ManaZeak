@@ -43,7 +43,7 @@ public class ResetPasswordController {
      * @param result           the result of the validation.
      * @return the status of the request.
      */
-    @PostMapping("/resetPassword")
+    @PostMapping("/resetPassword/")
     @RestSecurity(PrivilegeEnum.PLAY)
     public KommunicatorDto changeCurrentUserPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,
                                                      @AuthenticationPrincipal MzkUser user,
@@ -64,7 +64,7 @@ public class ResetPasswordController {
      * @param resetPasswordDto The information containing the password.
      * @return the status of the request.
      */
-    @PostMapping("/resetUserPassword")
+    @PostMapping("/resetUserPassword/")
     @RestSecurity(PrivilegeEnum.ADMV)
     public KommunicatorDto changeUserPassword(@RequestBody ResetUserPasswordDto resetPasswordDto) throws MzkRestException {
         userService.changeUserPassword(resetPasswordDto);
