@@ -21,12 +21,20 @@ class QueueContext extends ContextMenu {
   }
 
 
+  destroy() {
+    super.destroy();
+    this._scroll?.destroy();
+    Utils.clearAllEvents(this._evtIds);
+    Utils.removeAllObjectKeys(this);
+  }
+
+
   setActions(doc) {
     // Save emtpy DOMs from first template load
     this._emptyQueueDom = doc.getElementsByClassName('queue')[0].innerHTML;
     this._emptyPlayObjectDom = doc.getElementsByClassName('play-object')[0].innerHTML;
     this._clearQueueButton = doc.getElementsByClassName('queue-remove-all-tracks')[0];
-    this._clearQueueButton.addEventListener('click', this._clearQueueTracksClicked.bind(this));
+    this._evtIds.push(Evts.addEvent('click', this._clearQueueButton, this._clearQueueTracksClicked, this));
   }
 
 
@@ -34,12 +42,24 @@ class QueueContext extends ContextMenu {
     // Position queue to the left and add to view
     this._dom.style.left = `${options.leftOffset}px`;
     this._target.appendChild(this._overlay);
+    this._updateQueueHeight();
+  }
+
+
+  _updateQueueHeight() {
     // Update queue height depending on its content (track are build off screen, not handled in _open)
     const queue = this._dom.getElementsByClassName('queue')[0];
     // First case, empty queue or less than 6 tracks
-    if (queue.innerHTML === this._emptyQueueDom || queue.children.length < 6) {
+    if (queue.innerHTML === this._emptyQueueDom) {
       queue.style.height = 'auto';
-    } else {
+      return
+    }
+
+    if (this._scroll === null) {
+      if (queue.children.length < 6) {
+        queue.style.height = 'auto';
+        return;
+      }
       // Otherwise, we fset a fixed height to queue then create a scrollbar
       queue.style.height = '40rem';
       this._scroll = new ScrollBar({
@@ -48,6 +68,8 @@ class QueueContext extends ContextMenu {
           color: '#56D45B'
         }
       });
+    } else if (queue.children[0].children[0].children.length < 6) {
+      queue.style.height = 'auto';
     }
   }
 
@@ -65,7 +87,7 @@ class QueueContext extends ContextMenu {
       for (let i = 0; i < tracks.length; ++i) {
         this._buildQueuedTrackDom(tracks[i]).then(track => {
           queue.appendChild(track);
-          track.querySelector('.queue-track-remove').addEventListener('click', () => {
+          this._evtIds.push(Evts.addEvent('click', track.querySelector('.queue-track-remove'), () => {
             mzk.ctrl.removeFromQueue(track.dataset.id);
             if (track.parentNode.children.length === 1) {
               this._restoreQueueEmptyDom();
@@ -74,10 +96,14 @@ class QueueContext extends ContextMenu {
               mzk.ui.updateQueueNumber(track.parentNode.children.length - 1);
               track.remove();
             }
-          });
+            this._updateQueueHeight();
+          }, this));
         }).catch(err => console.error(err));
       }
     }
+    setTimeout(() => {
+      this._updateQueueHeight();
+    }, 200);
   }
 
 
@@ -99,10 +125,9 @@ class QueueContext extends ContextMenu {
 
 
   _restoreQueueEmptyDom() {
-    if (this._scroll) {
-      this._scroll.destroy();
-      this._scroll = null;
-    }
+    this._scroll?.destroy();
+    this._scroll = null;
+
     const queue = this._dom.getElementsByClassName('queue')[0];
     this._dom.className = 'queue-context'; // Remove any scroll class
     queue.innerHTML = this._emptyQueueDom;

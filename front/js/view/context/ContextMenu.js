@@ -6,13 +6,14 @@ class ContextMenu {
     this._url = `/fragment/context/${options.name}/`;
     this._overlay = {};
     this._dom = {};
+    this._evtIds = [];
 
     this._fetchTemplate();
   }
 
 
   destroy() {
-    if (document.body.contains(this._overlay)) {
+    if (this._overlay?.innerHTML && document.body.contains(this._overlay)) {
       document.body.removeChild(this._overlay);
       this._overlay.removeEventListener('click', this._viewportClicked, false);
       window.removeEventListener('resize', this.close.bind(this), false);

@@ -14,7 +14,7 @@ class PlayableView extends SceneView {
 
   destroy() {
     super.destroy();
-    if (this._trackContext?.destroy) {
+    if (this._trackContext.destroy) {
       this._trackContext.destroy();
     }
     Evts.unsubscribe(this._changeTrackEvt);

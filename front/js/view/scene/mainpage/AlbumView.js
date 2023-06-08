@@ -66,21 +66,20 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
       }));
 
       // Scroll on track must be separated from other scrolls
-      if (this.dom.querySelector('#album-tracks').children.length > 6) {
-        this._scrollTrack = new ScrollBar({
-          target: this.dom.querySelector('#album-tracks'),
-          style: {
-            color: '#56D45B'
-          }
-        });
-
-        setTimeout(() => {
-          this._scrollTrack.updateScrollbar();
-        });
-      }
+      this._scrollTrack = new ScrollBar({
+        target: this.dom.querySelector('#album-tracks'),
+        style: {
+          color: '#56D45B'
+        }
+      });
 
       // Update tracks bc of scroll DOM
       this._tracks = this.dom.querySelector('#album-tracks').children[0].children[0].children;
+
+      setTimeout(() => {
+        this._scrollTrack.updateScrollbar();
+      });
+
       // <scrollbar to performers for better UI
       this._buildAlbumPerformers();
       // Track context on container
@@ -314,15 +313,14 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
       this.getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-down.svg';
     }
     // Update scrollbar height
+    // setTimeout to ensure height is properly computed.
+    // Additionnal RaF is in case the scrollbar just appeared
+    // after this user action, therefor it needs to be updated again
+    // to properly be positioned on the scroll gutter.
     setTimeout(() => {
-      if (this.scroll) {
-        this.scroll.updateScrollbar();
-      }
-
-      this.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'start'
+      if (this.scroll) { this.scroll.updateScrollbar(); }
+      requestAnimationFrame(() => {
+        if (this.scroll) { this.scroll.updateScrollbar(); }
       });
     }, 200); /* Match height transition duration in _mainpage.scss */
   }
@@ -391,10 +389,15 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
       this._tracks[i].getElementsByClassName('toggle-track-expand-img')[0].src = '/static/img/navigation/nav-up.svg';
     }
     // Update scrollbar height
+    // setTimeout to ensure height is properly computed.
+    // Additionnal RaF is in case the scrollbar just appeared
+    // after this user action, therefor it needs to be updated again
+    // to properly be positioned on the scroll gutter.
     setTimeout(() => {
-      if (this._scrollTrack?.updateScrollbar) {
-        this._scrollTrack.updateScrollbar(); 
-      }
+      if (this._scrollTrack) { this._scrollTrack.updateScrollbar(); }
+      requestAnimationFrame(() => {
+        if (this._scrollTrack) { this._scrollTrack.updateScrollbar(); }
+      });
     }, 200); /* Match height transition duration in _mainpage.scss */
   }
 
