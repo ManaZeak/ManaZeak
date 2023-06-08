@@ -34,8 +34,8 @@ class ResetPasswordModal extends Modal {
 
   _submit() {
     mzk.kom.post('/resetPassword/', {
-      newPassword1: document.getElementById('reset-password-one-input').textContent,
-      newPassword2: document.getElementById('reset-password-two-input').textContent
+      newPassword1: document.getElementById('reset-password-one-input').value,
+      newPassword2: document.getElementById('reset-password-two-input').value
     }).then((res) => {
       if (res.status !== 200) {
         console.error(res);
