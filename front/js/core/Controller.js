@@ -9,6 +9,7 @@ class Controller {
   constructor() {
     this._player = null;
     this._playObject = null;
+    this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
     this._queue = []; // User manual queue
     this._playingId = -1;
     this._trackHistory = [];
@@ -29,7 +30,7 @@ class Controller {
 
 
   _events() {
-    Evts.subscribe('TrackEnded', this._trackEnded.bind(this));
+    Evts.subscribe('TrackEnded', this._playNext.bind(this));
   }
 
 
@@ -63,7 +64,7 @@ class Controller {
       let track = options.playObject.track;
       if (options.playObject.type !== 'queue') { // Don't erase playObject if track to change came from queue
         this._playObject = options.playObject;
-        track = options.playObject.tracks[0];
+        track = this._playObject.tracks[this._playObject.playingIdx];
       }
 
       let startTimePercentage = -1;
@@ -83,7 +84,7 @@ class Controller {
   }
 
 
-  _trackEnded() {
+  _playNext() {
     // First, we check user manual queue that override everything
     if (this._queue.length > 0) {
       mzk.changeTrack({
@@ -96,16 +97,37 @@ class Controller {
       this._queue.shift();
       return;
     }
+
     // Now check last playObject in memory for tracks to play
-    if (this._playObject.tracks.length > 1) {
-      const track = this._playObject.tracks.shift();
+    if (this._playObject.tracks.length > 0) {
+      if (this._repeatMode === 1) { // Repet one
+        mzk.changeTrack({
+          id: this._playObject.tracks[this._playObject.playingIdx].id,
+          playObject: this._playObject
+        });
+        return;
+      } else if (this._playObject.playingIdx === (this._playObject.tracks.length - 1)) { // Last track in playObj ended playback
+        if (this._repeatMode === 2) {
+          this._playObject.playingIdx = 0;
+          mzk.changeTrack({
+            id: this._playObject.tracks[this._playObject.playingIdx].id,
+            playObject: this._playObject
+          });
+          return;
+        }
+        mzk.stopPlayback();
+        return;
+      }
+      // Getting next track in playObj
+      this._playObject.playingIdx = (this._playObject.playingIdx + 1) % this._playObject.tracks.length;
       mzk.changeTrack({
-        id: track.id,
+        id: this._playObject.tracks[this._playObject.playingIdx].id,
         playObject: this._playObject
       });
-    } else {
-      mzk.stopPlayback();
+      return;
     }
+
+    mzk.stopPlayback();
   }
 
 
@@ -129,6 +151,11 @@ class Controller {
     this._player.stop();
     this._playingTrack = null;
     this._playingId = -1;
+  }
+
+
+  toggleRepeatMode() {
+    this._repeatMode = (++this._repeatMode) % 3;
   }
 
 
@@ -195,35 +222,7 @@ class Controller {
 
 
   next() {
-    if (this._queue.length > 0) {
-      mzk.changeTrack({
-        id: this._queue[0].id,
-        playObject: {
-          type: 'queue',
-          track: this._queue[0]
-        }
-      });
-      this._queue.shift();
-      return;
-    }
-
-    if (this._playObject.tracks.length < 1) {
-      mzk.stopPlayback();
-      return;
-    }
-    const playObject = JSON.parse(JSON.stringify(this._playObject));
-    playObject.tracks.shift();
-    const track = playObject.tracks[0];
-
-    if (!track) {
-      mzk.stopPlayback();
-      return;
-    }
-
-    mzk.changeTrack({
-      id: track.id,
-      playObject: playObject
-    });
+    this._playNext();
   }
 
 
@@ -282,6 +281,11 @@ class Controller {
 
   get playingId() {
     return this._playingId;
+  }
+
+
+  get repeatMode() {
+    return this._repeatMode;
   }
 
 

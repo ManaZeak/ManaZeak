@@ -418,17 +418,14 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       title: this.dom.querySelector('#album-title').textContent,
       artist: this.dom.querySelector('#release-artist').textContent,
-      tracks: []
+      tracks: [],
+      playingIdx: 0
     };
 
-    let currentReached = false;
     for (let i = 0; i < this._tracks.length; ++i) {
+      album.tracks.push(this._buildTrackObject(this._tracks[i]));
       if (this._tracks[i].dataset.id === currentId) {
-        currentReached = true;
-      }
-      
-      if (currentReached === true) {
-        album.tracks.push(this._buildTrackObject(this._tracks[i]));
+        album.playingIdx = i;
       }
     }
 

@@ -218,17 +218,14 @@ class GenreView extends ItemViewHelperMixin(PlayableView) {
       cover: this.dom.querySelector('#genre-picture').children[0].children[0].children[0].src,
       title: this.dom.querySelector('#genre-name').innerHTML,
       artist: '',
-      tracks: []
+      tracks: [],
+      playingIdx: 0
     };
 
-    let currentReached = false;
     for (let i = 0; i < this._tracks.length; ++i) {
+      genre.tracks.push(this._buildTrackObject(this._tracks[i]));
       if (this._tracks[i].dataset.id === currentId) {
-        currentReached = true;
-      }
-
-      if (currentReached === true) {
-        genre.tracks.push(this._buildTrackObject(this._tracks[i]));
+        genre.playingIdx = i;
       }
     }
 

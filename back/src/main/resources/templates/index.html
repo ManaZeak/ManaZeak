@@ -60,8 +60,8 @@
           <span class="tooltip-text right" th:text="#{mp.navbar.tooltip.queue}"></span>
         </div>
         <div class="image-wrapper repeat tooltip">
-          <img src="/static/img/player/repeat-off.svg" id="repeat" alt="player-repeat">
-          <span class="tooltip-text right" th:text="#{mp.navbar.tooltip.repeat}"></span>
+          <img src="/static/img/player/repeat-off.svg" id="repeat" th:data-repeatoff="#{mp.navbar.tooltip.repeatoff}" th:data-repeatone="#{mp.navbar.tooltip.repeatone}" th:data-repeatall="#{mp.navbar.tooltip.repeatall}" alt="player-repeat">
+          <span class="tooltip-text right" th:text="#{mp.navbar.tooltip.repeatoff}"></span>
         </div>
         <div class="image-wrapper shuffle tooltip">
           <img src="/static/img/player/shuffle-off.svg" id="shuffle" alt="player-shuffle">

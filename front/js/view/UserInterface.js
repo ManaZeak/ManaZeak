@@ -237,6 +237,11 @@ class UserInterface {
   }
 
 
+  setRepeatMode(repeatMode) {
+    this._navBar.updateRepeatMode(repeatMode);
+  }
+
+
   setMute(player) {
     this._navBar.volumeBar.updateVolume(player.muted, player.volume);
   }

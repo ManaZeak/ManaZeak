@@ -63,13 +63,21 @@ class Mzk {
   }
 
 
+  toggleRepeatMode() {
+    this.ctrl.toggleRepeatMode();
+    this.ui.setRepeatMode(this.ctrl.repeatMode);
+  }
+
+
   mute() {
     this.ctrl.mute();
   }
 
+
   unmute() {
     this.ctrl.unmute();
   }
+
 
   toggleMute() {
     this.ctrl.toggleMute();

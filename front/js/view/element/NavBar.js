@@ -75,6 +75,10 @@ class NavBar {
       mzk.next();
     });
 
+    this._controls.repeat.addEventListener('click', () => {
+      mzk.toggleRepeatMode();
+    });
+
     this._controls.speedometer.addEventListener('click', () => {
       if (document.body.contains(this._playbackRateContext.dom)) {
         this._playbackRateContext.close();
@@ -124,6 +128,22 @@ class NavBar {
     if (this._playbackRateContext !== null) {
       this._playbackRateContext.updatePlaybackRate(playbackRate);
     }
+  }
+
+
+  updateRepeatMode(value) {
+    if (value === 0) {
+      this._controls.repeat.src = '/static/img/player/repeat-off.svg';
+      this._controls.repeat.parentNode.dataset.tooltip = this._controls.repeat.dataset.repeatoff;
+    } else if (value === 1) {
+      this._controls.repeat.src = '/static/img/player/repeat-one.svg';
+      this._controls.repeat.parentNode.dataset.tooltip = this._controls.repeat.dataset.repeatone;
+    } else if (value === 2) {
+      this._controls.repeat.src = '/static/img/player/repeat-all.svg';
+      this._controls.repeat.parentNode.dataset.tooltip = this._controls.repeat.dataset.repeatall;
+    }
+    // Update tooltip displayed text
+    this._controls.repeat.parentNode.lastElementChild.textContent = this._controls.repeat.parentNode.dataset.tooltip;
   }
 
 
@@ -190,22 +210,6 @@ class NavBar {
    * @member {object} - The FootBar's volume bar public accessor */
   get volumeBar() {
     return this._volumeBar;
-  }
-
-
-  /** @public
-   * @member {number} - The FootBar control repeat mode value in range int[0, 2] */
-  set repeatMode(value) {
-    if (value === 0) {
-      this._controls.repeat.src = '/static/img/player/repeat-off.svg';
-      this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.off;
-    } else if (value === 1) {
-      this._controls.repeat.src = '/static/img/player/repeat-one.svg';
-      this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.one;
-    } else if (value === 2) {
-      this._controls.repeat.src = '/static/img/player/repeat-all.svg';
-      this._controls.repeat.parentNode.dataset.tooltip = mzk.lang.player.repeat.all;
-    }
   }
 
 
