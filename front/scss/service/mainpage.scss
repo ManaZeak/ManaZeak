@@ -3,7 +3,7 @@
   width: 100%;
 
   .section-header {
-    align-items: flex-end;
+    align-items: center;
     display: flex;
     margin: var(--margin);
     padding: 0 var(--padding);
@@ -36,8 +36,10 @@
   }
 
   .items-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding-left: var(--padding);
     width: calc(100% - var(--default-scroll-size));
 
     .item {
@@ -46,10 +48,11 @@
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      margin: var(--margin-small);
+      height: fit-content;
       padding: var(--padding-small);
       position: relative;
-  
+      width: 12.2rem;
+
       transition: .2s background-color, .2s box-shadow;
   
       &:active,
@@ -226,34 +229,20 @@
 }
 
 .items-in-grid {
-  display: grid;
-  grid-gap: var(--padding) var(--padding-tiny);
-  grid-template-columns: repeat(auto-fill, 12rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: var(--padding);
+  padding-left: 0;
+  width: 100%;
 
-  .item {
+  .item-wrapper {
+    border-radius: .5rem;
     cursor: pointer;
-    margin: var(--margin-small);
-    position: relative;
-    width: 100%;
+    height: fit-content;
+    width: 12.2rem;
+
     transition: .2s background-color, .2s box-shadow;
-
-    [class$="-picture"],
-    img {
-      height: 9rem;
-      width: 9rem;      
-    }
-
-    h2 {
-      font-size: var(--font-size-small);
-      left: 50%;
-      margin: 0;
-      padding-top: var(--font-size-small);
-      position: absolute;
-      text-align: center;
-      width: 100%;
-      transform: translateX(-50%);
-    }
 
     &:active,
     &:focus,
@@ -265,6 +254,31 @@
       img {
         transform: scale(1.05);
       }
+    }
+
+    .item {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: var(--margin-small);
+      margin-top: var(--margin);
+      text-align: center;
+
+      [class$="-picture"],
+      img {
+        height: 9rem;
+        width: 9rem;     
+        
+        transition: .2s transform;
+      }
+  
+      h2 {
+        font-size: var(--font-size-small);
+        margin: 0;
+        padding-top: var(--font-size-small);
+        width: 100%;
+      }  
     }
 
     span {

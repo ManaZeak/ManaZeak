@@ -194,6 +194,8 @@ a {
   }
 
   .topbar {
+    background-color: var(--color-bg-darker-alpha-10);
+    border-bottom: solid 1px var(--color-txt-alpha-10);
     display: grid;
     grid-column: 2;
     grid-row: 1;

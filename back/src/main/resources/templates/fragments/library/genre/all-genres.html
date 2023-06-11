@@ -5,7 +5,7 @@
     <p th:text="#{view.agenre.genre_count}" id="genre-count"></p>
   </div>
   <div id="genres-container" class="items-in-grid">
-    <div th:each="genre : ${genres}" th:attr="data-id=*{genre.genreId}" class="item">
+    <div th:each="genre : ${genres}" th:attr="data-id=*{genre.genreId}" class="item-wrapper">
       <div th:replace="~{/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)}"></div>
     </div>
   </div>
