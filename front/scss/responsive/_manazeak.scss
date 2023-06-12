@@ -106,6 +106,12 @@
           }        
         }
       }
+
+      .main-page {
+        .items-container {
+          justify-content: center;
+        }
+      }
       /* Admin pages/fragments */
       .admin-page .admin-tabs,
       .account-page .account-tabs {
@@ -121,7 +127,37 @@
   .navbar {
     .playback-wrapper {
       .top-line {
+        align-items: center;
+        flex-wrap: wrap;
         height: calc(100% - (var(--navbar-height) / 4));
+        justify-content: space-around;
+        width: calc(100% - var(--margin));
+
+        .image-wrapper {
+          height: 30%;
+          margin: 0 var(--margin-small);
+        }
+
+        .queue,
+        .repeat,
+        .shuffle,
+        .volumebar-wrapper,
+        .speedometer {
+          left: inherit !important;
+          position: inherit !important;
+          right: inherit !important;
+        }
+
+        .volumebar-wrapper,
+        .speedometer {
+          height: 30%;
+        }
+
+        .volumebar-wrapper {
+          .image-wrapper {
+            height: 75%;
+          }          
+        }
       }
 
       .bottom-line {
