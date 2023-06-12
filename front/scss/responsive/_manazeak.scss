@@ -177,6 +177,51 @@
           }
         }
       }
+
+      .genre-view-wrapper {
+        .genre-header {
+          flex-direction: column;
+          margin: 0;
+          width: 100%;
+
+          .genre-header-left {
+            border-right: inherit;
+            margin-bottom: 0;
+            width: 100%;
+          }
+
+          .genre-header-right {
+            margin: 0;
+            text-align: center;
+            width: 100%;
+
+            .view-commands {
+              position: inherit;
+            }
+          }
+        }
+
+        .genre-content {
+          .artist {
+            align-items: center;
+            flex-direction: column;
+            margin: var(--margin-small);
+            width: calc(100% - 2 * var(--margin));
+
+            .artist-albums {
+              width: 100%;
+
+              .album-content {
+                padding-top: var(--padding);
+
+                .track {
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+      }
       /* Admin pages/fragments */
       .admin-page .admin-tabs,
       .account-page .account-tabs {
