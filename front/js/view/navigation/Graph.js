@@ -58,7 +58,9 @@ class Graph {
    **/
   _eventListeners() {
     this._evtIds.push(Evts.addEvent('mousemove', this.canvas.canvas, this._canvasHovered, this)); // Cursor on hover
+    this._evtIds.push(Evts.addEvent('touchmove', this.canvas.canvas, this._canvasHovered, this));
     this._evtIds.push(Evts.addEvent('click', this.canvas.canvas, this._click, this)); // Select node
+    this._evtIds.push(Evts.addEvent('touchstart', this.canvas.canvas, this._click, this));
   }
 
 
@@ -72,6 +74,11 @@ class Graph {
       event.offsetX || (event.pageX - this.canvas.offsetLeft), // X coordinate
       event.offsetY || (event.pageY - this.canvas.offsetTop) // Y coordinate
     );
+    // Coming from touch event
+    if (hoverPosition.x === 0 && hoverPosition.y === 0) {
+      hoverPosition.x = event.targetTouches[0].pageX;
+      hoverPosition.y = event.targetTouches[0].pageY;
+    }
 
     for (let i = 0; i < this.tree.nodes.length; ++i) { // Iterate over nodes
       if (this.tree.nodes[i].isInNode(hoverPosition) && this.canvas.getCanvas().style.cursor === 'inherit') {
@@ -96,6 +103,11 @@ class Graph {
       event.offsetX || (event.pageX - this.canvas.offsetLeft), // X coordinate
       event.offsetY || (event.pageY - this.canvas.offsetTop) // Y coordinate
     );
+    // Coming from touch event
+    if (clickPosition.x === 0 && clickPosition.y === 0) {
+      clickPosition.x = event.targetTouches[0].pageX;
+      clickPosition.y = event.targetTouches[0].pageY;
+    }
 
     for (let i = 0; i < this.tree.nodes.length; ++i) { // Iterate over nodes
       if (this.tree.nodes[i].isInNode(clickPosition)) { // Collision detection

@@ -65,6 +65,11 @@ class Canvas {
   _mouseDown(event) {
     this.pointer.x = event.offsetX || (event.pageX - this.canvas.offsetLeft); // Update pointer X position
     this.pointer.y = event.offsetY || (event.pageY - this.canvas.offsetTop);  // Update pointer Y position
+    // Mobile handling
+    if (isNaN(this.pointer.x) && isNaN(this.pointer.y)) {
+      this.pointer.x = event.targetTouches[0].offsetX || (event.targetTouches[0].pageX - this.canvas.offsetLeft);
+      this.pointer.y = event.targetTouches[0].offsetY || (event.targetTouches[0].pageY - this.canvas.offsetTop);
+    }
     this.dragStart = this.ctx.transformedPoint(this.pointer.x, this.pointer.y); // Lock drag starting relative coordinates
     this.isDragged = false; // Update lock
   }
@@ -80,7 +85,11 @@ class Canvas {
     this.pointer.x = event.offsetX || (event.pageX - this.canvas.offsetLeft); // Update pointer X position
     this.pointer.y = event.offsetY || (event.pageY - this.canvas.offsetTop);  // Update pointer Y position
     this.isDragged = true; // Update lock
-
+    // Mobile handling
+    if (isNaN(this.pointer.x) && isNaN(this.pointer.y)) {
+      this.pointer.x = event.targetTouches[0].offsetX || (event.targetTouches[0].pageX - this.canvas.offsetLeft);
+      this.pointer.y = event.targetTouches[0].offsetY || (event.targetTouches[0].pageY - this.canvas.offsetTop);
+    }
     if (this.dragStart) { // Move context
       const pt = this.ctx.transformedPoint(this.pointer.x, this.pointer.y);   // Convert pointer in canvas' coordinates
       this.ctx.translate(pt.x - this.dragStart.x, pt.y - this.dragStart.y); // Translate accordingly
@@ -95,8 +104,13 @@ class Canvas {
    * @param {event} event : Mouse event
    **/
   _mouseUp(event) {
-    this._pointerX = event.offsetX || (event.pageX - this.elements.canvas.offsetLeft); // Update pointer X position
-    this._pointerY = event.offsetY || (event.pageY - this.elements.canvas.offsetTop);  // Update pointer Y position
+    this._pointerX = event.offsetX || (event.pageX - this.canvas.offsetLeft); // Update pointer X position
+    this._pointerY = event.offsetY || (event.pageY - this.canvas.offsetTop);  // Update pointer Y position
+    // Mobile handling
+    if (isNaN(this.pointer.x) && isNaN(this.pointer.y)) {
+      this.pointer.x = event.targetTouches[0].offsetX || (event.targetTouches[0].pageX - this.canvas.offsetLeft);
+      this.pointer.y = event.targetTouches[0].offsetY || (event.targetTouches[0].pageY - this.canvas.offsetTop);
+    }    
     this.dragStart = null; // Release drag starting relative coordinates
   }
 
@@ -602,8 +616,11 @@ class Canvas {
    **/
   _eventListeners() {
     this._evtIds.push(Evts.addEvent('mousedown', this.canvas, this._mouseDown, this));
+    this._evtIds.push(Evts.addEvent('touchstart', this.canvas, this._mouseDown, this));
     this._evtIds.push(Evts.addEvent('mousemove', this.canvas, this._mouseMove, this));
+    this._evtIds.push(Evts.addEvent('touchmove', this.canvas, this._mouseMove, this));
     this._evtIds.push(Evts.addEvent('mouseup', this.canvas, this._mouseUp, this));
+    this._evtIds.push(Evts.addEvent('touchend', this.canvas, this._mouseUp, this));
     this._evtIds.push(Evts.addEvent('mouseout', this.canvas, this._mouseOut, this));
     this._evtIds.push(Evts.addEvent('DOMMouseScroll', this.canvas, this._mouseWheel, this));
     this._evtIds.push(Evts.addEvent('mousewheel', this.canvas, this._mouseWheel, this));
