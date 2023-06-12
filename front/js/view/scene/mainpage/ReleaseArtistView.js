@@ -46,6 +46,15 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
       if (this._albums?.children) {
         this._buildArtistAlbums();
         this._handleAlbumSorting(); // Release sorting
+
+        // Global view scroll
+        this._scrolls.push(new ScrollBar({
+          target: this.dom,
+          style: {
+            color: '#56D45B'
+          }
+        }));
+
         resolve();
       } else {
         reject('F_RELEASEARTIST_INVALID_HTML');

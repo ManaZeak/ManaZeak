@@ -112,6 +112,37 @@
           justify-content: center;
         }
       }
+
+      .release-artist-view-wrapper {
+        height: 100%;
+
+        .artist-header {
+          flex-direction: column;
+          height: auto;
+          margin-left: calc(var(--margin) / 2);
+
+          .artist-header-left,
+          .artist-header-center,
+          .artist-header-right {
+            border-right: inherit;
+            margin-bottom: 0;
+            width: 100%;
+          }
+
+          .artist-header-center,
+          .artist-header-right {
+            margin: 0;
+          }
+
+          .artist-header-center {
+            text-align: center;
+          }
+
+          .artist-header-right {
+            margin-bottom: var(--margin);
+          }
+        }
+      }
       /* Admin pages/fragments */
       .admin-page .admin-tabs,
       .account-page .account-tabs {
