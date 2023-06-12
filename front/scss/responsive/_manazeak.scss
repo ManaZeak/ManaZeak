@@ -143,6 +143,40 @@
           }
         }
       }
+
+      .album-view-wrapper {
+        padding: 0;
+        margin: 0;
+
+        .album-container {
+          align-items: center;
+          flex-direction: column;
+          height: auto !important;
+          max-height: inherit;
+          overflow-x: hidden;
+          padding: 0;
+          margin: 0;
+
+          .album-content {
+            width: 100%;
+
+            .album-info {
+              font-size: var(--font-size-small);
+              margin: 0;
+              width: 100%;
+
+              .link {
+                padding-left: var(--padding);
+              }
+
+              .release-artist-container,
+              .view-commands {
+                right: 3rem;
+              }
+            }
+          }
+        }
+      }
       /* Admin pages/fragments */
       .admin-page .admin-tabs,
       .account-page .account-tabs {
