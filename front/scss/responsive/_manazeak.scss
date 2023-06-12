@@ -93,6 +93,7 @@
     .topbar {
       grid-column: 1;
       grid-row: 2;
+      grid-template-columns: 1fr 0 0;
     }
 
     .scene {
@@ -218,6 +219,30 @@
                   width: 100%;
                 }
               }
+            }
+          }
+        }
+      }
+
+      .label-view-wrapper {
+        .label-header {
+          flex-direction: column;
+          margin: 0;
+          width: 100%;
+
+          .label-header-left {
+            border-right: inherit;
+            margin-bottom: 0;
+            width: 100%;
+          }
+
+          .label-header-right {
+            margin: 0;
+            text-align: center;
+            width: 100%;
+
+            .view-commands {
+              position: inherit;
             }
           }
         }
