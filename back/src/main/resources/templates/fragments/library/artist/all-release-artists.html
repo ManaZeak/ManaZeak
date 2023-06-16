@@ -5,7 +5,7 @@
     <p th:text="#{view.arlartist.artist_count}" id="artist-count"></p>
   </div>
   <div id="artists-container" class="items-in-grid">
-    <div th:each="rlArtist : ${rlArtists}" class="item-wrapper">
+    <div th:each="rlArtist : ${rlArtists}" class="item-wrapper" th:data-id="${rlArtist.id}"> <!-- Replicating ID for click evt -->
       <div th:replace="~{/include/artist/minimalArtistFragment.html :: displayMinimalArtist(*{rlArtist}, small)}"></div>
     </div>
   </div>
