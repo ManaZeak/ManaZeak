@@ -135,7 +135,7 @@ public class UserManager {
      * @param currentUser  The user to be modified.
      */
     public void changeCurrentUserPassword(ResetPasswordDto newPasswords, MzkUser currentUser) {
-        encryptAndSaveUserPassword(currentUser, newPasswords.getNewPassword1());
+        encryptAndSaveUserPassword(currentUser, newPasswords.getPassword1());
         LOG.info("The user {} changed his password.", currentUser.getUsername());
     }
 

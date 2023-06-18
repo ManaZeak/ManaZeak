@@ -1,12 +1,12 @@
 package org.manazeak.manazeak.controller.rest.user;
 
 import jakarta.validation.Valid;
+import org.manazeak.manazeak.configuration.security.MzkUserDetail;
 import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
-import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
 import org.manazeak.manazeak.service.security.user.UserService;
@@ -46,14 +46,14 @@ public class ResetPasswordController {
     @PostMapping("/resetPassword/")
     @RestSecurity(PrivilegeEnum.PLAY)
     public KommunicatorDto changeCurrentUserPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto,
-                                                     @AuthenticationPrincipal MzkUser user,
+                                                     @AuthenticationPrincipal MzkUserDetail user,
                                                      BindingResult result) throws MzkRestException {
         // If there is validation error.
         if (result.hasErrors()) {
             errorHandler.generateRestErrorFromValidationError(result.getFieldErrors());
         }
         // No validation errors, we proceed to change the user password.
-        userService.changeUserPassword(resetPasswordDto, user);
+        userService.changeUserPassword(resetPasswordDto, user.getUser());
         // Success.
         return new KommunicatorDto(true);
     }
