@@ -38,6 +38,11 @@ public class ThumbnailService {
         try {
             // Deleting all the thumbnails.
             for (ResourcePathEnum resourcePath : ResourcePathEnum.values()) {
+                // Ignoring the moodbar folder, they are too long to regenerate.
+                if (ResourcePathEnum.MOOD_FOLDER == resourcePath ||
+                        ResourcePathEnum.MOOD_METADATA_FOLDER == resourcePath) {
+                    continue;
+                }
                 FileUtils.deleteDirectory(resourcePath.getPath().toFile());
             }
         } catch (IOException e) {
@@ -50,7 +55,7 @@ public class ThumbnailService {
     /**
      * Get a list of thumbnails from a list of criterias.
      *
-     * @param criteria   The filter information.
+     * @param criteria The filter information.
      * @return The list of elements matching the criteria.
      */
     public List<ThumbnailErrorLineDto> getThumbnailErrorByCriteria(ThumbnailErrorCriteriaDto criteria) {
