@@ -65,8 +65,6 @@ services:
             - ${RESOURCES_PATH}:/resources
         links:
             - back
-        ports:
-            - "4545:4545"
 
     syncthing:
         image: syncthing/syncthing:latest
