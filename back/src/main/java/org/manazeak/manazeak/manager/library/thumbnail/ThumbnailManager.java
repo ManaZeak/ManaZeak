@@ -11,7 +11,7 @@ import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.springframework.stereotype.Component;
 
 /**
- * Allow to interact with the thumbnails of the application.
+ * Allow interactions with the thumbnails of the application.
  */
 @Component
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class ThumbnailManager {
         albumCoverIntegrationManager.generateThumbnails();
         log.info("Ending album cover thumbnail generation.");
 
-        // Launching the thumbnail generation for the artists pictures
+        // Launching the thumbnail generation for the artist's pictures
         log.info("Starting artist profile pictures thumbnail generation.");
         artistThumbnailManager.generateThumbnails();
         log.info("Ending artist profile pictures thumbnail generation.");

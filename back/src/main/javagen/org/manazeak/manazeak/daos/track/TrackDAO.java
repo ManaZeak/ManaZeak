@@ -1,10 +1,12 @@
 package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
+import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
 import org.manazeak.manazeak.entity.track.Track;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -22,7 +24,26 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
     List<TrackLinkerProjection> getTrackIdByLocation(@Param("locations") List<String> locations);
 
     /**
+     * Fetch the tracks without moodbar.
+     *
+     * @param lastTrackId The id of the track to fetch.
+     * @param pageable    The size of the page to fetch from the database.
+     * @return The tracks without moodbar to be generated.
+     */
+    @Query("""
+            select distinct trk.trackId as id, trk.location as trackPath
+            from Track trk
+            left join trk.moodbarErrorList moodErr
+            where trk.mood is null
+            and trk.trackId > :lastTrackId
+            and moodErr is null
+            order by trk.trackId
+            """)
+    List<MoodbarGenerationProjection> getTracksWithoutMoodbar(@Param("lastTrackId") Long lastTrackId, Pageable pageable);
+
+    /**
      * Getting the tracks of an album.
+     * S
      *
      * @param albumId The id of the album.
      * @return The list of the tracks contained on the album.
