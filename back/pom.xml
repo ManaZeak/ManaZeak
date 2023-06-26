@@ -22,6 +22,7 @@
         </sonar.exclusions>
         <thumbnailator.version>0.4.18</thumbnailator.version>
         <guava.version>32.0.0-jre</guava.version>
+        <srcimage.version>4.0.37</srcimage.version>
     </properties>
 
     <dependencies>
@@ -150,6 +151,13 @@
             <artifactId>thumbnailator</artifactId>
             <version>${thumbnailator.version}</version>
         </dependency>
+        <!-- Image manipulation library to create webp image. -->
+        <dependency>
+            <groupId>com.sksamuel.scrimage</groupId>
+            <artifactId>scrimage-webp</artifactId>
+            <version>${srcimage.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.cache2k</groupId>
             <artifactId>cache2k-api</artifactId>

@@ -40,7 +40,8 @@ public class ThumbnailService {
             for (ResourcePathEnum resourcePath : ResourcePathEnum.values()) {
                 // Ignoring the moodbar folder, they are too long to regenerate.
                 if (ResourcePathEnum.MOOD_FOLDER == resourcePath ||
-                        ResourcePathEnum.MOOD_METADATA_FOLDER == resourcePath) {
+                        ResourcePathEnum.MOOD_METADATA_FOLDER == resourcePath ||
+                        ResourcePathEnum.MOOD_ENCODED_FOLDER == resourcePath) {
                     continue;
                 }
                 FileUtils.deleteDirectory(resourcePath.getPath().toFile());

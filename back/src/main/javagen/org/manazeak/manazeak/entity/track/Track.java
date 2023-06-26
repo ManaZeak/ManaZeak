@@ -6,7 +6,9 @@ import jakarta.persistence.Table;
 import java.util.Set;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.SequenceGenerator;
+import org.manazeak.manazeak.entity.management.MoodbarError;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,7 @@ public class Track implements Serializable{
 	private Boolean isMp3;
 	private String subtitle;
 	private String mood;
+	private Set<MoodbarError> moodbarErrorList;
 	private Album album;
 	private Set<Artist> producerList;
 	private Set<Artist> artistsList;
@@ -271,7 +274,7 @@ public class Track implements Serializable{
      * No comment found in model diagram
      * @return value of mood
      */
-    @Column(name="mood", nullable=false)
+    @Column(name="mood", nullable=true)
 	public String getMood(){
 		return mood;
     }  
@@ -281,6 +284,21 @@ public class Track implements Serializable{
      */
 	public void setMood(final String mood){
 		this.mood = mood;
+    }  
+    /**
+     * Association moobar_error_track to MoodbarError
+     * @return value of moodbarErrorList
+     */
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="track", orphanRemoval=true)
+	public Set<MoodbarError> getMoodbarErrorList(){
+		return moodbarErrorList;
+    }  
+    /**
+     * Association moobar_error_track to MoodbarError
+     * @param moodbarErrorList new value to give to moodbarErrorList
+     */
+	public void setMoodbarErrorList(final Set<MoodbarError> moodbarErrorList){
+		this.moodbarErrorList = moodbarErrorList;
     }  
     /**
      * Association track_album to Album

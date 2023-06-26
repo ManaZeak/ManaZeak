@@ -18,6 +18,7 @@ CREATE SEQUENCE SEQ_LINK START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_RECORDING_LOCATION START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TIME_INTERVAL START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_TRACK START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_MOODBAR_ERROR START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_THUMBNAIL_ERROR START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_BAND_ROLE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_COMPILATION_TYPE START WITH 1000 CACHE 20; 
@@ -196,7 +197,7 @@ CREATE TABLE track (
 	opus VARCHAR(50),
 	is_mp3 BOOLEAN not null,
 	subtitle VARCHAR(200),
-	mood VARCHAR(50) not null,
+	mood VARCHAR(50),
 	album_id BIGINT,
 	CONSTRAINT PK_TRACK PRIMARY KEY (track_id)
 );
@@ -283,6 +284,14 @@ CREATE TABLE track_key (
 COMMENT ON TABLE track_key IS 'ManyToMany track / key';
 COMMENT ON COLUMN track_key.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_key.key_id IS 'ManyToMany FK key';
+
+CREATE TABLE moodbar_error (
+	mood_error_id BIGINT not null,
+	error TEXT not null,
+	track_id BIGINT,
+	CONSTRAINT PK_MOODBAR_ERROR PRIMARY KEY (mood_error_id)
+);
+COMMENT ON COLUMN moodbar_error.track_id IS 'ManyToOne FK track';
 
 CREATE TABLE thumbnail_error (
 	thumb_err_id BIGINT not null,
@@ -532,6 +541,7 @@ ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_1 FOREIGN KEY (track_id) R
 ALTER TABLE track_genre ADD CONSTRAINT FK_track_genre_2 FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
 ALTER TABLE track_key ADD CONSTRAINT FK_track_key_1 FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE track_key ADD CONSTRAINT FK_track_key_2 FOREIGN KEY (key_id) REFERENCES key(key_id);
+ALTER TABLE moodbar_error ADD CONSTRAINT FK_moobar_error_track FOREIGN KEY (track_id) REFERENCES track(track_id);
 ALTER TABLE thumbnail_error ADD CONSTRAINT FK_label_thumb_error FOREIGN KEY (label_id) REFERENCES label(label_id);
 ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_album FOREIGN KEY (album_id) REFERENCES album(album_id);
 ALTER TABLE thumbnail_error ADD CONSTRAINT FK_thumb_error_genre FOREIGN KEY (genre_id) REFERENCES genre(genre_id);
@@ -595,6 +605,7 @@ CREATE INDEX IDX_track_genre_1 ON track_genre (track_id);
 CREATE INDEX IDX_track_genre_2 ON track_genre (genre_id);
 CREATE INDEX IDX_track_key_1 ON track_key (track_id);
 CREATE INDEX IDX_track_key_2 ON track_key (key_id);
+CREATE INDEX IDX_moobar_error_track ON moodbar_error (track_id);
 CREATE INDEX IDX_label_thumb_error ON thumbnail_error (label_id);
 CREATE INDEX IDX_thumb_error_album ON thumbnail_error (album_id);
 CREATE INDEX IDX_thumb_error_genre ON thumbnail_error (genre_id);

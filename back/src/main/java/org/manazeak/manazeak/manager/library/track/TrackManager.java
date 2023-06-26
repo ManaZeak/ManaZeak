@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Allows to manipulate the tracks in the application.
+ * Allows manipulating the tracks in the application.
  */
 @Component
 @RequiredArgsConstructor
