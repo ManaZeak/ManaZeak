@@ -50,7 +50,7 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
           }
         }));
     
-        this._artists = this._artists.children[0].children[0].children;
+        this._artists = this._artists.children[0].children[0];
 
         this._buildAlbums();
 
@@ -62,7 +62,7 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
           }
         }));
         this._albums = this._albums.children[0].children[0];
-
+        console.log(this._artists, this._albums)
         this._handleItemSorting('albums', this._albums);
         this._handleItemSorting('artists', this._artists);
       } else {
@@ -121,10 +121,10 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
   _handleItemSorting(type, items) {
     const sortItems = this.dom.querySelector(`#sort-${type}`);
     sortItems.addEventListener('click', () => {
-      sortItems.classList.toggle('active');
+      sortItems.classList.toggle('active');    
       let elements = [].slice.call(items.children);
       elements = elements.reverse();
-      for (let i = 0; i < items.children.length; ++i) {
+      for (let i = elements.length - 1; i >= 0; --i) {
         items.children[i].remove();
       }
       for (let i = 0; i < elements.length; ++i) {
