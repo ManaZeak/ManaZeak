@@ -27,5 +27,6 @@ public enum LibraryTablesEnum {
     BIO,
     ARTIST,
     LABEL,
-    THUMBNAIL_ERROR
+    THUMBNAIL_ERROR,
+    MOODBAR_ERROR
 }
