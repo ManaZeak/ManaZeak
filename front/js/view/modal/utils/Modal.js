@@ -128,6 +128,8 @@ class Modal {
    * @description <blockquote>This method will open the modal, by adding the modal overlay to the document body. It will
    * also register a subscription for a user click event on the modal overlay or on the close icon.</blockquote> **/
   open() {
+    // Ensure all shortcut are ineffective during modal lispan
+    Shortcut.pauseAll();
     document.body.appendChild(this._modalOverlay);
     this._overlayClickedEvtId = Evts.addEvent('click', this._modalOverlay, this.close, this);
     this._closeClickedEvtId = Evts.addEvent('click', this._closeButton, this.close, this);
@@ -147,6 +149,8 @@ class Modal {
   close(event) {
     // Must be overridden in child class to properly clean extension properties and events
     if (!event || (event && (event.target === this._modalOverlay || event.target === this._closeButton)) || event.target.id.indexOf('close') !== -1) {
+      // Ensure all shortcut are ineffective during modal lispan
+      Shortcut.resumeAll();
       // Clear close events int eh Events component
       Evts.removeEvent(this._overlayClickedEvtId);
       Evts.removeEvent(this._closeClickedEvtId);

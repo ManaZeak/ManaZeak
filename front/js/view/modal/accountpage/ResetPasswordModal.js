@@ -36,11 +36,12 @@ class ResetPasswordModal extends Modal {
     mzk.kom.post('/resetPassword/', {
       newPassword1: document.getElementById('reset-password-one-input').value,
       newPassword2: document.getElementById('reset-password-two-input').value
-    }).then((res) => {
-      if (res.status !== 200) {
-        console.error(res);
+    }).then(res => {
+      if (res.status === 400) {
+        document.getElementById('reset-password-one-input').classList.add('error');
+        document.getElementById('reset-password-two-input').classList.add('error');
       } else {
-        this.close();        
+        this.close();
       }
     }).catch(err => {
       console.error(err);

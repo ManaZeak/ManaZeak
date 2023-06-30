@@ -191,3 +191,18 @@
     padding: 0 var(--padding);
   }
 }
+
+.reset-password-modal {
+  label {
+    padding-top: var(--padding);
+    text-align: center;
+
+    &.error {
+      color: var(--color-red);
+    }
+  }
+
+  input.error {
+    border-bottom-color: var(--color-red);
+  }
+}
