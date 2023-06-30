@@ -51,7 +51,12 @@ class CommandsFragment {
 
 
   _moodsClicked() {
-    console.log('Regen moods clicked');
+    mzk.kom.get('/admin/library/genMoods/').then(response => {
+      response.notifications[0].type = response.notifications[0].severity;
+      Notif.new(response.notifications[0]);
+    }).catch(() => {
+      Notif.new(error.notifications[0]);
+    });
   }
 
 
