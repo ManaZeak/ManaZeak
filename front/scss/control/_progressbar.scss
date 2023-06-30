@@ -11,7 +11,8 @@
   
     .progress-track {
       background-color: var(--color-bg-dark);
-      height: .5rem;
+      border-bottom: solid 1px var(--color-txt-alpha-10);
+      height: .75rem;
       opacity: 0;
       position: relative;
       width: 100%;

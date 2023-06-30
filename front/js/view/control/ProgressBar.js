@@ -359,7 +359,7 @@ class ProgressBar {
    **/
   setVisibility(isVisible) {
     if (isVisible) {
-      this._progress.moodbar.style.height = '25px'; // Match value w/ the one in ui/components/_progressbar.scss ($progress-moodbar-height)
+      this._progress.moodbar.style.height = '3.5rem'; // Match value w/ --navbar-height / 2
       this._progress.moodbar.style.opacity = '1';
       this._progress.moodbar.style.cursor = 'pointer';
       this._progress.track.style.opacity = '1';
