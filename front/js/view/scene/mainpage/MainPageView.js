@@ -33,23 +33,23 @@ class MainPageView extends SceneView {
     const bRect = document.body.getBoundingClientRect();
     let amount = 0;
 
-    if (bRect.width < 640) {
+    if (bRect.width < 632) {
       amount = 12;
-    } else if (bRect.width < 760) {
-      amount = 15;
-    } else if (bRect.width < 880) {
-      amount = 18;
-    } else if (bRect.width < 1000) {
-      amount = 14;
-    } else if (bRect.width < 1120) {
-      amount = 16;
-    } else if (bRect.width < 1240) {
-      amount = 18;
-    } else if (bRect.width < 1360) {
+    } else if (bRect.width < 754) {
       amount = 20;
-    } else if (bRect.width < 1480) {
+    } else if (bRect.width < 916) {
+      amount = 18;
+    } else if (bRect.width < 1038) {
+      amount = 14;
+    } else if (bRect.width < 1160) {
+      amount = 16;
+    } else if (bRect.width < 1282) {
+      amount = 18;
+    } else if (bRect.width < 1404) {
+      amount = 20;
+    } else if (bRect.width < 1526) {
       amount = 22;
-    } else if (bRect.width < 1600) {
+    } else if (bRect.width < 1649) {
       amount = 24;
     } else if (bRect.width < 1720) {
       amount = 26;
