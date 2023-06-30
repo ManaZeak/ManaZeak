@@ -20,7 +20,7 @@
         <sonar.exclusions>
             src/main/javagen/org/manazeak/manazeak/entity/**/*,src/main/java/org/manazeak/manazeak/entity/dto/**/*
         </sonar.exclusions>
-        <thumbnailator.version>0.4.18</thumbnailator.version>
+        <thumbnailator.version>0.4.20</thumbnailator.version>
         <guava.version>32.0.0-jre</guava.version>
         <srcimage.version>4.0.37</srcimage.version>
     </properties>
