@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = LettersOnlyValidator.class)
-public @interface LettersOnly {
+@Constraint(validatedBy = NameValidator.class)
+public @interface Name {
 
     String message() default "{error.general.letters_only}";
 

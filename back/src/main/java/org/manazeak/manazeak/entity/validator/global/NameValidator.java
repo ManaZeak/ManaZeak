@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;
 
 @Component
-public class LettersOnlyValidator implements ConstraintValidator<LettersOnly, String> {
+public class NameValidator implements ConstraintValidator<Name, String> {
 
-    private static final Pattern PATTERN = Pattern.compile("^[a-zA-Z]+$");
+    private static final Pattern PATTERN = Pattern.compile("^[\\w'\\-,.][^0-9_!¡?÷?¿\\/\\\\+=@#$%ˆ&*(){}|~<>;:[\\\\]]{2,}$");
 
     @Override
     public boolean isValid(String string, ConstraintValidatorContext constraintValidatorContext) {
