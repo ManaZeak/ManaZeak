@@ -1,13 +1,18 @@
 package org.manazeak.manazeak.manager.library.integration.track;
 
 import org.manazeak.manazeak.constant.cache.CacheEnum;
+import org.manazeak.manazeak.constant.file.FileExtensionEnum;
+import org.manazeak.manazeak.constant.library.moodbar.MoodbarSizeEnum;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
+import org.manazeak.manazeak.manager.library.moodbar.MoodbarManager;
 import org.manazeak.manazeak.util.FieldUtil;
+import org.manazeak.manazeak.util.HashUtil;
 
+import java.nio.file.Files;
 import java.util.*;
 
 /**
@@ -23,6 +28,23 @@ public class TrackIntegrationHelper {
 
     public TrackIntegrationHelper(CacheAccessManager cacheAccessManager) {
         this.cacheAccessManager = cacheAccessManager;
+    }
+
+    /**
+     * Checks if all the moodbars were generated and then set the track mood.
+     *
+     * @param track The information of the track being integrated.
+     */
+    private static void setMoodbar(TrackIntegrationDto track) {
+        String moodbarMd5 = HashUtil.getMd5HashLower(track.getLocation());
+        // Checking the moodbar for each size, if one size doesn't exist, then no moodbar.
+        for (MoodbarSizeEnum size : MoodbarSizeEnum.values()) {
+            if (!Files.exists(MoodbarManager.getMoodbarLocation(moodbarMd5, size))) {
+                return;
+            }
+        }
+
+        track.setMoodbar(moodbarMd5 + FileExtensionEnum.WEBP.getExtension());
     }
 
     /**
@@ -48,6 +70,9 @@ public class TrackIntegrationHelper {
         // Getting the ID of the genre.
         track.setGenreIds(getElementIdsByNames(extractedTrack.getGenres(), CacheEnum.GENRE_ID_BY_NAME));
         track.setKeyIds(getElementIdsByNames(extractedTrack.getKeys(), CacheEnum.KEY_ID_BY_NAME));
+
+        // Setting the moodbar if the files are present on the FS.
+        setMoodbar(track);
 
         // Getting the album ID from the cache.
         track.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_LOCATION, extractedAlbum.getLocation().toString()));
@@ -94,7 +119,6 @@ public class TrackIntegrationHelper {
 
         return ids;
     }
-
 
     private Set<Long> getElementIdsByNames(Collection<String> names, CacheEnum cache) {
         Set<Long> ids = new HashSet<>();
