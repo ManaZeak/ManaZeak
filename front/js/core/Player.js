@@ -461,7 +461,11 @@ class Player {
       return;
     }
 
-    this._player.currentTime = (percentage * this._player.duration) / 100; // Apply percentage to total duration
+    if (!isNaN((percentage * this._player.duration) / 100)) {
+      this._player.currentTime = (percentage * this._player.duration) / 100; // Apply percentage to total duration
+    } else {
+      this._player.currentTime = 0;
+    }
   }
 
 

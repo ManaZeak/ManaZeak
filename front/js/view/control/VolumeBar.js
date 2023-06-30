@@ -65,6 +65,7 @@ class VolumeBar {
     this._volume.container.addEventListener('mousedown', this._mouseDown.bind(this));
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
+    this._volume.container.addEventListener('mousewheel', this._scrolledInto.bind(this), true);
   }
 
 
@@ -130,6 +131,16 @@ class VolumeBar {
       this._isDragging = false;
       window.removeEventListener('mousemove', this._mouseMove);
       window.removeEventListener('mouseup', this._mouseUp);
+    }
+  }
+
+
+  _scrolledInto(e) {
+    // Scrolling up
+    if (e.deltaY < 0) {
+      mzk.adjustVolume(0.05);
+    } else {
+      mzk.adjustVolume(-0.05);
     }
   }
 

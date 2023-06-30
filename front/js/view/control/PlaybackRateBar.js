@@ -29,6 +29,7 @@ class PlaybackRateBar {
     this._resetPlaybackRate = this._resetPlaybackRate.bind(this);
     this._adjustPlaybackRateSlower = this._adjustPlaybackRateSlower.bind(this);
     this._adjustPlaybackRateFaster = this._adjustPlaybackRateFaster.bind(this);
+    this._scrolledInto = this._scrolledInto.bind(this);
     // Init plabackratebar
     this._init()
       .then(this._addEvents.bind(this))
@@ -91,6 +92,7 @@ class PlaybackRateBar {
     this._playbackRate.reset.addEventListener('click', this._resetPlaybackRate, false);
     this._playbackRate.slower.addEventListener('click', this._adjustPlaybackRateSlower, false);
     this._playbackRate.faster.addEventListener('click', this._adjustPlaybackRateFaster, false);
+    this._playbackRate.container.addEventListener('mousewheel', this._scrolledInto, true);
   }
 
 
@@ -99,6 +101,7 @@ class PlaybackRateBar {
     this._playbackRate.reset.removeEventListener('click', this._resetPlaybackRate, false);
     this._playbackRate.slower.removeEventListener('click', this._adjustPlaybackRateSlower, false);
     this._playbackRate.faster.removeEventListener('click', this._adjustPlaybackRateFaster, false);
+    this._playbackRate.container.removeEventListener('mousewheel', this._scrolledInto, true);
   }
 
 
@@ -235,6 +238,16 @@ class PlaybackRateBar {
       mzk.setPlaybackRate(progressPercentage + 0.05);
     } else {
       mzk.setPlaybackRate(1);
+    }
+  }
+
+
+  _scrolledInto(e) {
+    // Scrolling up
+    if (e.deltaY < 0) {
+      this._adjustPlaybackRateFaster();
+    } else {
+      this._adjustPlaybackRateSlower();
     }
   }
 

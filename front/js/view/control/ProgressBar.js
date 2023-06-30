@@ -63,6 +63,7 @@ class ProgressBar {
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
     this._updateMouseOver = this._updateMouseOver.bind(this);
+    this._scrolledInto = this._scrolledInto.bind(this);
 
     Evts.subscribe('TrackLoaded', () => {
       this.updateDuration(mzk.ctrl.player.duration);
@@ -85,6 +86,7 @@ class ProgressBar {
     this._progress.container.addEventListener('mouseleave', this._updateMouseOver);
     window.addEventListener('mousemove', this._mouseMove);
     window.addEventListener('mouseup', this._mouseUp);
+    this._progress.container.addEventListener('mousewheel', this._scrolledInto, true);
   }
 
 
@@ -103,6 +105,7 @@ class ProgressBar {
     this._progress.container.removeEventListener('mouseleave', this._updateMouseOver);
     window.removeEventListener('mousemove', this._mouseMove);
     window.removeEventListener('mouseup', this._mouseUp);
+    this._progress.container.removeEventListener('mousewheel', this._scrolledInto, true);
   }
 
 
@@ -207,6 +210,16 @@ class ProgressBar {
     } else if (event.type === 'mouseleave') {
       this._progress.hover.style.opacity = '0'; // Automatic CSS transition
       this._isMouseOver = false;
+    }
+  }
+
+
+  _scrolledInto(e) {
+    // Scrolling up
+    if (e.deltaY < 0) {
+      mzk.adjustProgress(3);
+    } else {
+      mzk.adjustProgress(-3);
     }
   }
 
