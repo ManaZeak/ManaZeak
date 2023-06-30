@@ -62,7 +62,6 @@ class LabelView extends ItemViewHelperMixin(SceneView) {
           }
         }));
         this._albums = this._albums.children[0].children[0];
-        console.log(this._artists, this._albums)
         this._handleItemSorting('albums', this._albums);
         this._handleItemSorting('artists', this._artists);
       } else {

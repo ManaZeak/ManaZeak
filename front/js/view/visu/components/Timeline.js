@@ -40,7 +40,7 @@ class Timeline extends VisuComponentMono {
     super(options);
 
     this._colors = {};
-    this.__defaultColors();
+    this.__defaultColors(options);
 
     this._canvas.style.backgroundColor = this._colors.background;
     this._canvasSpeed = options.speed ? options.speed : 5.0; // Time in seconds
@@ -56,7 +56,7 @@ class Timeline extends VisuComponentMono {
       scale: options.wave ? options.wave.scale || .95 : .95
     };
     // HotCues and beats arrays
-    this._hotCues = [...options.hotCues] || [];
+    this._hotCues = (options && options.hotCues) ? [...options.hotCues] : [];
     this._beatsArray = [];
     this._beatCount = '0.0';
     // Loop utils
@@ -87,7 +87,7 @@ class Timeline extends VisuComponentMono {
   }
 
 
-  __defaultColors() {
+  __defaultColors(options) {
     this._colors = {
       background: options.colors ? options.colors.background || ColorUtils.defaultBackgroundColor : ColorUtils.defaultBackgroundColor,
       track: options.colors ? options.colors.track || ColorUtils.defaultDarkPrimaryColor : ColorUtils.defaultDarkPrimaryColor,

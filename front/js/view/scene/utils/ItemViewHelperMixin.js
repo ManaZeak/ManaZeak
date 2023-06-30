@@ -1,4 +1,4 @@
-let ItemViewHelperMixin = (SuperClass) => class extends SuperClass {
+const ItemViewHelperMixin = (SuperClass) => class extends SuperClass {
   _artistClicked(e) {
     e.stopPropagation();
     mzk.setView({

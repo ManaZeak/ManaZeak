@@ -23,8 +23,7 @@
       }
     }
   }
-  /* Tooltip are desktop only */
-  @import "../tool/tooltip";
+
   /* Global class that disable element on desktop environment */
   .mobile-only {
     display: none !important;
