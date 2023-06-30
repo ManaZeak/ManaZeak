@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.library.moodbar.MoodbarSizeEnum;
 import org.manazeak.manazeak.daos.management.MoodbarErrorDAO;
+import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationDto;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationReport;
@@ -44,6 +45,7 @@ public class MoodbarManager {
     private final HttpClient client = HttpClient.newHttpClient();
     private final MoodbarErrorDAO moodbarErrorDAO;
     private final AutonomousTransactionManager transactionManager;
+    private final TrackDAO trackDAO;
 
     /**
      * Create the file that will contain the moodbar image.
@@ -120,7 +122,7 @@ public class MoodbarManager {
                 if (response.statusCode() != SUCCESS && !report.isError()) {
                     MoodbarError error = new MoodbarError();
                     error.setError(response.body());
-                    error.setMoodErrorId(trackInfo.getId());
+                    error.setTrack(trackDAO.findById(trackInfo.getId()).orElse(null));
 
                     transactionManager.runInTransaction(() -> moodbarErrorDAO.save(error));
                     report.setError(true);
