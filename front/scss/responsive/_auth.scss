@@ -9,8 +9,21 @@
 
 @media (max-width: 512px) {
   div.mzk-user {
+    height: 100%;
+    overflow-y: auto;
+
     form {
       padding: 3rem 1rem;
+
+      &.two-col-form {
+        grid-template-columns: 1fr;
+        justify-items: center;
+
+        .left-col,
+        .right-col {
+          margin: 0;
+        }
+      }
     }
   }
 }
