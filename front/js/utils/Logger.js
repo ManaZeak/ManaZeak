@@ -156,7 +156,7 @@ class Logger {
    * One can find such component <a href="https://github.com/ArthurBeaulieu/Notification.js" alt="notification-js">here</a>.</blockquote>
    * @param {object} errorParameters - The error with Logger standard properties (<code>severity</code>, <code>title</code> and <code>message</code>) */
   _logErrorToNotification(errorParameters) {
-    if (this._log && this._notification && typeof errorParameters === 'object') {
+    if (this._notification && typeof errorParameters === 'object') {
       this._notification.new({
         type: errorParameters.severity || 'error',
         title: errorParameters.title || 'Can\'t get error info',

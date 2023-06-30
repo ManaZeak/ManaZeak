@@ -32,14 +32,12 @@ class Mzk {
 
   setView(options) {
     this.ui.setSceneView(options)
-      .then(() => Logger.raise('F_VIEW_SET_SUCCESS'))
       .catch(() => Logger.raise('F_VIEW_SET_ERROR'));
   }
 
 
   setModal(options) {
     this.ui.setModal(options)
-      .then(() => Logger.raise('F_MODAL_SET_SUCCESS'))
       .catch(() => Logger.raise('F_MODAL_SET_ERROR'));
   }
 
