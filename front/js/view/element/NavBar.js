@@ -148,6 +148,10 @@ class NavBar {
 
 
   updateMoodbar(mood) {
+    const evtId = Evts.addEvent('error', this._moodbar, () => {
+      Evts.removeEvent(evtId);
+      this._moodbar.src = `/static/img/moodbar/default-1k.webp`;
+    });
     this._moodbar.src = `/resources/moods/hd/${mood}`;
   }
 
