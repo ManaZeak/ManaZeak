@@ -25,6 +25,8 @@ class UserInterface {
     this._navBar = new NavBar();
 
     this._history = new ViewHistory();
+
+    this._wrapper = document.getElementById('scene-wrapper');
     /** @private
      * @member {object} - Home button icon */
     this._homeButton = document.getElementById('mzk-home-icon');
@@ -237,7 +239,12 @@ class UserInterface {
 
 
   setRepeatMode(repeatMode) {
-    this._navBar.updateRepeatMode(repeatMode);
+    this._navBar.setRepeatMode(repeatMode);
+  }
+
+
+  setShuffleMode(shuffleMode) {
+    this._navBar.setShuffleMode(shuffleMode);
   }
 
 
@@ -263,6 +270,27 @@ class UserInterface {
 
   setPageTitle(string) {
     document.title = string;
+  }
+
+
+  setGradientColor(rgb) {
+    if (rgb.r > 133 && rgb.g > 133 && rgb.b > 133) {
+      // Darken if too bright
+      rgb.r -= 100;
+      rgb.g -= 100;
+      rgb.b -= 100;
+    } else if (rgb.r < 66 && rgb.g < 66 && rgb.b < 66) {
+      // Lighten if too dark
+      rgb.r += 33;
+      rgb.g += 33;
+      rgb.b += 33;
+    }
+    this._wrapper.style.backgroundImage = `linear-gradient(rgb(${rgb.r}, ${rgb.g}, ${rgb.b}),var(--color-bg-darker))`;
+  }
+
+
+  restoreGradientColor() {
+    this._wrapper.style.backgroundImage = `linear-gradient(var(--color-bg-lighter),var(--color-bg-darker))`;
   }
 
 

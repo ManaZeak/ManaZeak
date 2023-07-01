@@ -1,3 +1,6 @@
+import VolumeControlEnum from '../../utils/enum/VolumeControl.js';
+
+
 class VolumeBar {
 
 
@@ -138,9 +141,9 @@ class VolumeBar {
   _scrolledInto(e) {
     // Scrolling up
     if (e.deltaY < 0) {
-      mzk.adjustVolume(0.05);
+      mzk.adjustVolume(VolumeControlEnum.BIG);
     } else {
-      mzk.adjustVolume(-0.05);
+      mzk.adjustVolume(-VolumeControlEnum.BIG);
     }
   }
 

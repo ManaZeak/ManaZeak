@@ -25,7 +25,7 @@
 </head>
 <body class="dark-theme">
 <div class="components-wrapper">
-  <div class="scene-wrapper">
+  <div id="scene-wrapper" class="scene-wrapper">
     <div class="aside" id="aside">
       <div class="item-group">
         <div class="item tooltip" id="homepage-button">
@@ -77,8 +77,8 @@
           <span class="tooltip-text right" th:text="#{mp.navbar.tooltip.repeatoff}"></span>
         </div>
         <div class="image-wrapper shuffle tooltip">
-          <img src="/static/img/player/shuffle-off.svg" id="shuffle" alt="player-shuffle">
-          <span class="tooltip-text right" th:text="#{mp.navbar.tooltip.shuffle}"></span>
+          <img src="/static/img/player/shuffle-off.svg" id="shuffle" th:data-shuffleoff="#{mp.navbar.tooltip.shuffleoff}" th:data-shuffle="#{mp.navbar.tooltip.shuffle}" th:data-random="#{mp.navbar.tooltip.random}" alt="player-shuffle">
+          <span class="tooltip-text right" th:text="#{mp.navbar.tooltip.shuffleoff}"></span>
         </div>
         <div class="image-wrapper tooltip">
           <img src="/static/img/player/track-previous.svg" id="previous" alt="player-previous">

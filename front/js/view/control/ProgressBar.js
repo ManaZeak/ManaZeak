@@ -1,3 +1,6 @@
+import ProgressControlEnum from '../../utils/enum/ProgressControl.js';
+
+
 class ProgressBar {
 
 
@@ -217,9 +220,9 @@ class ProgressBar {
   _scrolledInto(e) {
     // Scrolling up
     if (e.deltaY < 0) {
-      mzk.adjustProgress(3);
+      mzk.adjustProgress(ProgressControlEnum.SMALL_JUMP);
     } else {
-      mzk.adjustProgress(-3);
+      mzk.adjustProgress(-ProgressControlEnum.SMALL_JUMP);
     }
   }
 

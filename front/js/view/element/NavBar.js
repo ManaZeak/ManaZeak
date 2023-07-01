@@ -79,6 +79,10 @@ class NavBar {
       mzk.toggleRepeatMode();
     });
 
+    this._controls.shuffle.addEventListener('click', () => {
+      mzk.toggleShuffleMode();
+    });
+
     this._controls.speedometer.addEventListener('click', () => {
       if (document.body.contains(this._playbackRateContext.dom)) {
         this._playbackRateContext.close();
@@ -131,7 +135,7 @@ class NavBar {
   }
 
 
-  updateRepeatMode(value) {
+  setRepeatMode(value) {
     if (value === 0) {
       this._controls.repeat.src = '/static/img/player/repeat-off.svg';
       this._controls.repeat.parentNode.dataset.tooltip = this._controls.repeat.dataset.repeatoff;
@@ -144,6 +148,22 @@ class NavBar {
     }
     // Update tooltip displayed text
     this._controls.repeat.parentNode.lastElementChild.textContent = this._controls.repeat.parentNode.dataset.tooltip;
+  }
+
+
+  setShuffleMode(value) {
+    if (value === 0) {
+      this._controls.shuffle.src = '/static/img/player/shuffle-off.svg';
+      this._controls.shuffle.parentNode.dataset.tooltip = this._controls.shuffle.dataset.shuffleoff;
+    } else if (value === 1) {
+      this._controls.shuffle.src = '/static/img/player/shuffle-on.svg';
+      this._controls.shuffle.parentNode.dataset.tooltip = this._controls.shuffle.dataset.shuffle;
+    } else if (value === 2) {
+      this._controls.shuffle.src = '/static/img/player/shuffle-random-on.svg';
+      this._controls.shuffle.parentNode.dataset.tooltip = this._controls.shuffle.dataset.random;
+    }
+    // Update tooltip displayed text
+    this._controls.shuffle.parentNode.lastElementChild.textContent = this._controls.shuffle.parentNode.dataset.tooltip;
   }
 
 

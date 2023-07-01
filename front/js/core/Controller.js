@@ -10,6 +10,7 @@ class Controller {
     this._player = null;
     this._playObject = null;
     this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
+    this._shuffleMode = 0; // 0 = off | 1 = shuffle | 2 = random
     this._queue = []; // User manual queue
     this._playingId = -1;
     this._trackHistory = [];
@@ -85,6 +86,7 @@ class Controller {
 
 
   _playNext() {
+    /* Queue > Shuffle > Repeat > PlayObject */
     // First, we check user manual queue that override everything
     if (this._queue.length > 0) {
       mzk.changeTrack({
@@ -97,7 +99,6 @@ class Controller {
       this._queue.shift();
       return;
     }
-
     // Now check last playObject in memory for tracks to play
     if (this._playObject.tracks.length > 0) {
       if (this._repeatMode === 1) { // Repet one
@@ -156,6 +157,11 @@ class Controller {
 
   toggleRepeatMode() {
     this._repeatMode = (++this._repeatMode) % 3;
+  }
+
+
+  toggleShuffleMode() {
+    this._shuffleMode = (++this._shuffleMode) % 3;    
   }
 
 
@@ -286,6 +292,11 @@ class Controller {
 
   get repeatMode() {
     return this._repeatMode;
+  }
+
+
+  get shuffleMode() {
+    return this._shuffleMode;
   }
 
 

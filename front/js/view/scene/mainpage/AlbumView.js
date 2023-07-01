@@ -36,11 +36,18 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
     super.destroy();
     Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
+    mzk.ui.restoreGradientColor();
   }
 
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
+      const cover = this.dom.querySelector('#album-picture').children[0].children[0].children[0];
+      cover.addEventListener('load', () => {
+        const avgRGB = Utils.getAverageRGB(cover);
+        mzk.ui.setGradientColor(avgRGB);
+      });
+
       this._artist = this.dom.querySelector('#release-artist').innerHTML;
       this._title = this.dom.querySelector('#album-title').innerHTML;
       this._performers = this.dom.querySelector('#album-performers').children;

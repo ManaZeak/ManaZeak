@@ -2,26 +2,28 @@
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 
 <svg
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:cc="http://creativecommons.org/ns#"
-        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-        version="1.1"
-        id="Layer_1"
-        x="0px"
-        y="0px"
-        viewBox="0 0 100 100"
-        xml:space="preserve"
-        inkscape:version="0.92.4 5da689c313, 2019-01-14"
-        width="32"
-        height="32"
-        sodipodi:docname="repeat-one.svg"><metadata
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 100 100"
+   xml:space="preserve"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   width="32"
+   height="32"
+   sodipodi:docname="repeat-one.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><metadata
    id="metadata47"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
    id="defs45">
+
 </defs><sodipodi:namedview
    pagecolor="#ffffff"
    bordercolor="#666666"
@@ -32,17 +34,20 @@
    inkscape:pageopacity="0"
    inkscape:pageshadow="2"
    inkscape:window-width="1920"
-   inkscape:window-height="1013"
+   inkscape:window-height="1021"
    id="namedview43"
    showgrid="false"
    inkscape:zoom="20.860505"
-   inkscape:cx="20.175515"
-   inkscape:cy="18.529935"
+   inkscape:cx="20.133741"
+   inkscape:cy="18.551804"
    inkscape:window-x="0"
-   inkscape:window-y="0"
+   inkscape:window-y="30"
    inkscape:window-maximized="1"
    inkscape:current-layer="Layer_1"
-   units="px" />
+   units="px"
+   inkscape:showpageshadow="2"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1" />
 
 
 
@@ -60,11 +65,9 @@
 
 
 <g
-   id="g830"
-   transform="matrix(1.0559451,0,0,1.0559451,-2.797257,-2.797257)"><g
-     transform="matrix(0.17578846,0,0,0.17578846,5,5)"
-     style="fill:#aaaabe;fill-opacity:1"
-     id="g3">
+   transform="matrix(0.18562296,0,0,0.18562296,2.4824685,2.4824685)"
+   style="fill:#aaaabe;fill-opacity:1"
+   id="g3">
 	<g
    style="fill:#aaaabe;fill-opacity:1"
    id="g5">
@@ -84,22 +87,21 @@
 		</g>
 	</g>
 </g><circle
-     id="path3001"
-     style="fill:#56d45b;fill-opacity:1;stroke:#9696aa;stroke-width:6.34714794;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-     cx="50"
-     cy="50"
-     r="27.74892" /><text
-     id="text3771"
-     y="63.966892"
-     x="37.142708"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.20399666px;line-height:0%;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.76699972"
-     xml:space="preserve"><tspan
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:42.40800095px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.76699972"
-       y="63.966892"
-       x="37.142708"
-       id="tspan3773"
-       sodipodi:role="line">1</tspan></text>
-</g>
+   id="path3001"
+   style="fill:#56d45b;fill-opacity:1;stroke:#9696aa;stroke-width:6.70224;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+   cx="49.999996"
+   cy="49.999996"
+   r="29.301336" /><text
+   id="text3771"
+   y="61.383152"
+   x="40.51672"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.3903px;line-height:0%;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.86585"
+   xml:space="preserve"><tspan
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:44.7805px;line-height:125%;font-family:Akaash;-inkscape-font-specification:'Akaash Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.86585"
+     y="61.383152"
+     x="40.51672"
+     id="tspan3773"
+     sodipodi:role="line">1</tspan></text>
 
 
 
