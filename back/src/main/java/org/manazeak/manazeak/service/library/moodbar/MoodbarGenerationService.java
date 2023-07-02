@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
+import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.daos.library.management.mood.MoodbarGeneratorDAO;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationReport;
+import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.moodbar.MoodbarManager;
+import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
@@ -37,26 +40,32 @@ public class MoodbarGenerationService {
     private final TrackDAO trackDAO;
     private final MoodbarManager moodbarManager;
     private final MoodbarGeneratorDAO moodbarGeneratorDAO;
+    private final LibraryScanStatusManager libraryScanStatusManager;
 
     /**
      * Launching the moodbar generation if not running already.
-     *
      */
-    @Async
-    public synchronized void launchMoodbarGeneration() {
+    public void checkMoodbarLaunchCondition() {
         // Checking if the moodbar generation isn't running.
         if (isRunning.get()) {
-            return;
+            throw new MzkRestException("admin.library.moodbar.gen.fail.message",
+                    "admin.library.moodbar.gen.fail.mood.message", NotificationSeverityEnum.WARNING);
         }
 
-        // Launching it if not running.
-        launchMoodbarGenThread();
+        try {
+            libraryScanStatusManager.checkNoActiveScan();
+        } catch (MzkRuntimeException e) {
+            throw new MzkRestException("admin.library.moodbar.gen.fail.message",
+                    "admin.library.moodbar.gen.fail.scanning.message", NotificationSeverityEnum.WARNING);
+        }
     }
+
 
     /**
      * Launch the moodbar generation thread pool.
      */
-    protected void launchMoodbarGenThread() {
+    @Async
+    public void launchMoodbarGenThread() {
         try {
             log.info("Launching moodbar generation.");
             isRunning.set(true);

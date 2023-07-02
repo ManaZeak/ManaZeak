@@ -29,6 +29,7 @@ public class MzkRestException extends RuntimeException {
      * @param severity    the serveity of the notification.
      */
     public MzkRestException(String titleCode, String messageCode, NotificationSeverityEnum severity) {
+        super(messageCode);
         NotificationDto notification = new NotificationDto();
         notification.setTitleKey(titleCode);
         notification.setMessageKey(messageCode);
