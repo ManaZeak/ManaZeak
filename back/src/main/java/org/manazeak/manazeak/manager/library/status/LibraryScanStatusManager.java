@@ -86,6 +86,16 @@ public class LibraryScanStatusManager {
     }
 
     /**
+     * Check if no scan is active in the application.
+     */
+    public void checkNoActiveScan() {
+        Optional<ScanStatus> scanStatus = scanStatusDAO.findScanStatusByIsActiveIsTrue();
+        if (scanStatus.isPresent()) {
+            throw new MzkRuntimeException("Another scan is in progress. The scan/rescan you asked can't be processed.");
+        }
+    }
+
+    /**
      * Check if another scan is in progress.
      */
     private ScanStatus getActiveScanStatus() {
@@ -96,10 +106,4 @@ public class LibraryScanStatusManager {
         return scanStatus.get();
     }
 
-    private void checkNoActiveScan() {
-        Optional<ScanStatus> scanStatus = scanStatusDAO.findScanStatusByIsActiveIsTrue();
-        if (scanStatus.isPresent()) {
-            throw new MzkRuntimeException("Another scan is in progress. The scan/rescan you asked can't be processed.");
-        }
-    }
 }

@@ -53,8 +53,10 @@ public class LibraryAdminControllerRest {
     @Security(PrivilegeEnum.ADMV)
     @GetMapping("admin/library/genMoods/")
     public KommunicatorDto launchMoodbarGeneration() {
+        // Checking if the moodbar generation can be launched.
+        moodbarGenerationService.checkMoodbarLaunchCondition();
         // Launching the moodbars generation, this is async; the response will be sent directly.
-        moodbarGenerationService.launchMoodbarGeneration();
+        moodbarGenerationService.launchMoodbarGenThread();
         return kommunicatorService.buildSuccessKom("admin.library.moodbar.gen.success.title", "admin.library.moodbar.gen.success.message");
     }
 }
