@@ -4,16 +4,16 @@
     <div class="text-container">
       <!-- <img th:src="'/static/img/object/' + *{error.error} + '.svg'"> -->
       <div th:if="*{error.labelId != null}" th:attr="data-id=*{error.labelId}">
-        <p th:text="*{error.elementName}" class="error-element-name"></p>
+        <p th:text="#{admin.thumb.label} + ' ' + *{error.elementName}" class="error-element-name"></p>
       </div>
       <div th:if="*{error.albumId != null}" th:attr="data-id=*{error.albumId}">
-        <p th:text="*{error.elementName}" class="error-element-name"></p>
+        <p th:text="#{admin.thumb.album} + ' ' + *{error.elementName}" class="error-element-name"></p>
       </div>
       <div th:if="*{error.genreId != null}" th:attr="data-id=*{error.genreId}">
-        <p th:text="*{error.elementName}" class="error-element-name"></p>
+        <p th:text="#{admin.thumb.genre} + ' ' + *{error.elementName}" class="error-element-name"></p>
       </div>
       <div th:if="*{error.artistId != null}" th:attr="data-id=*{error.artistId}">
-        <p th:text="*{error.elementName}" class="error-element-name"></p>
+        <p th:text="#{admin.thumb.artist} + ' ' + *{error.elementName}" class="error-element-name"></p>
       </div>
       <p th:text="#{*{error.typeCode}}" class="error-type-label"></p>      
     </div>
