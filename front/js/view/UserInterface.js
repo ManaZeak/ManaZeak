@@ -66,7 +66,7 @@ class UserInterface {
         .then(this._setTopBarView.bind(this, options))
         .then(resolve)
         .catch(reject)
-        .finally(this.stopLoading.bind(this)); // Clear loading overlay whatever happens
+        .finally(this.stopLoading.bind(this, options)); // Clear loading overlay whatever happens
     });
   }
 
@@ -175,8 +175,12 @@ class UserInterface {
    * @memberof UserInterface
    * @description <blockquote>The stop loading method will remove the overlay on the page.</blockquote>
    * @return {promise} - The action promise */
-  stopLoading() {
+  stopLoading(options) {
     return new Promise(resolve => {
+      if (options && options.keepLoading === true) {
+        resolve();
+        return;
+      }
       if (document.body.contains(this._loadingOverlay)) {
         document.body.removeChild(this._loadingOverlay);
       }
@@ -274,17 +278,6 @@ class UserInterface {
 
 
   setGradientColor(rgb) {
-    if (rgb.r > 133 && rgb.g > 133 && rgb.b > 133) {
-      // Darken if too bright
-      rgb.r -= 100;
-      rgb.g -= 100;
-      rgb.b -= 100;
-    } else if (rgb.r < 66 && rgb.g < 66 && rgb.b < 66) {
-      // Lighten if too dark
-      rgb.r += 33;
-      rgb.g += 33;
-      rgb.b += 33;
-    }
     this._wrapper.style.backgroundImage = `linear-gradient(rgb(${rgb.r}, ${rgb.g}, ${rgb.b}),var(--color-bg-darker))`;
   }
 

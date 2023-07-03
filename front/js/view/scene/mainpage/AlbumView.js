@@ -43,9 +43,19 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
   _buildNavigation() {
     return new Promise((resolve, reject) => {
       const cover = this.dom.querySelector('#album-picture').children[0].children[0].children[0];
+      cover.addEventListener('error', mzk.ui.stopLoading.bind(mzk.ui));
       cover.addEventListener('load', () => {
-        const avgRGB = Utils.getAverageRGB(cover);
+        let avgRGB = Utils.getAverageRGB(cover);
+        const luminance = Utils.getRelativeLuminance(avgRGB);
+        if (luminance > 0.6) {
+          avgRGB = Utils.lightenDarkenColor(avgRGB, -(luminance - 0.5) * 100);
+          avgRGB = Utils.hexToRgb(avgRGB);
+        } else if (luminance < 0.4) {
+          avgRGB = Utils.lightenDarkenColor(avgRGB, (0.5 - luminance) * 100);
+          avgRGB = Utils.hexToRgb(avgRGB);
+        }
         mzk.ui.setGradientColor(avgRGB);
+        mzk.ui.stopLoading();
       });
 
       this._artist = this.dom.querySelector('#release-artist').innerHTML;
@@ -280,6 +290,16 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
     if (list.children.length === 0) {
       list.parentNode.remove();
     }
+  }
+
+
+  _viewReady() {
+    return new Promise(resolve => {
+      Evts.publish('SceneViewReady', {
+        keepLoading: true
+      });
+      resolve();
+    });
   }
 
 

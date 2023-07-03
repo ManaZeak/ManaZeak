@@ -186,6 +186,87 @@ class Utils {
   }
 
 
+  getRelativeLuminance(c) {
+    return (0.2126 * (c.r / 255)) + (0.7152 * (c.g / 255)) + (0.0722 * (c.r / 255))
+  }
+
+
+  lightenDarkenColor(color, amount) {
+    // Test that caller sent mandatory arguments
+    if ((color === undefined || color === null) || (amount === undefined || amount === null)) {
+      return new Error('Utils.lightenDarkenColor : Missing arguments color or amount');
+    }
+    // Test that color is an hex code
+    if (!/^[a-fA-F0-9]+$/i.test(color)) {
+      color = this.rgbToHex(color);
+    }
+    // Pound color value to remove # char and memorize it had one
+    let usePound = false;
+    if (color[0] === '#') {
+      color = color.slice(1);
+      usePound = true;
+    }
+    // Check that alpha value is properly bounded to [0, 1]
+    if (amount < -100 || amount > 100) {
+      return new Error('Utils.lightenDarkenColor : Amount is not a valid float in [-100, 100]');
+    }
+
+    if (amount === 0) {
+      return (usePound ? '#' : '') + color.toLowerCase();
+    }
+
+    if (amount > 0) {
+      amount += 16;
+    } else {
+       amount -= 16;
+    }
+    // Perform method purpose
+    const num = parseInt(color, 16);
+    // Red channel bounding
+    let r = (num >> 16) + amount;
+    if (r > 255) {
+      r = 255;
+    } else if (r < 0) {
+      r = 0;
+    }
+    // Blue channel bounding
+    let b = ((num >> 8) & 0x00FF) + amount;
+    if (b > 255) {
+      b = 255;
+    } else if (b < 0) {
+      b = 0;
+    }
+    // Green channel bounding
+    let g = (num & 0x0000FF) + amount;
+    if (g > 255) {
+      g = 255;
+    } else if (g < 0) {
+      g = 0;
+    }
+    // Format returned hex value
+    return (usePound ? '#' : '') + (g | (b << 8) | (r << 16)).toString(16);
+  }
+
+
+  hexToRgb(c) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(c);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+
+  rgbToHex(c) {
+    const componentToHex = (c) => {
+      const hex = c.toString(16);
+      return hex.length == 1 ? `0${hex}` : hex;
+    };
+    return `#${componentToHex(c.r)}${componentToHex(c.g)}${componentToHex(c.b)}`;
+  }
+
+
 }
 
 
