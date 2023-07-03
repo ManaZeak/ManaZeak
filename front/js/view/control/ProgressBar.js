@@ -89,7 +89,7 @@ class ProgressBar {
     this._progress.container.addEventListener('mouseleave', this._updateMouseOver);
     window.addEventListener('mousemove', this._mouseMove);
     window.addEventListener('mouseup', this._mouseUp);
-    this._progress.container.addEventListener('mousewheel', this._scrolledInto, true);
+    this._progress.container.addEventListener('wheel', this._scrolledInto, true);
   }
 
 
@@ -108,7 +108,7 @@ class ProgressBar {
     this._progress.container.removeEventListener('mouseleave', this._updateMouseOver);
     window.removeEventListener('mousemove', this._mouseMove);
     window.removeEventListener('mouseup', this._mouseUp);
-    this._progress.container.removeEventListener('mousewheel', this._scrolledInto, true);
+    this._progress.container.removeEventListener('wheel', this._scrolledInto, true);
   }
 
 

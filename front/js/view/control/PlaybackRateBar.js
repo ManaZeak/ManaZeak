@@ -92,7 +92,7 @@ class PlaybackRateBar {
     this._playbackRate.reset.addEventListener('click', this._resetPlaybackRate, false);
     this._playbackRate.slower.addEventListener('click', this._adjustPlaybackRateSlower, false);
     this._playbackRate.faster.addEventListener('click', this._adjustPlaybackRateFaster, false);
-    this._playbackRate.container.addEventListener('mousewheel', this._scrolledInto, true);
+    this._playbackRate.container.addEventListener('wheel', this._scrolledInto, true);
   }
 
 
@@ -101,7 +101,7 @@ class PlaybackRateBar {
     this._playbackRate.reset.removeEventListener('click', this._resetPlaybackRate, false);
     this._playbackRate.slower.removeEventListener('click', this._adjustPlaybackRateSlower, false);
     this._playbackRate.faster.removeEventListener('click', this._adjustPlaybackRateFaster, false);
-    this._playbackRate.container.removeEventListener('mousewheel', this._scrolledInto, true);
+    this._playbackRate.container.removeEventListener('wheel', this._scrolledInto, true);
   }
 
 

@@ -623,7 +623,7 @@ class Canvas {
     this._evtIds.push(Evts.addEvent('touchend', this.canvas, this._mouseUp, this));
     this._evtIds.push(Evts.addEvent('mouseout', this.canvas, this._mouseOut, this));
     this._evtIds.push(Evts.addEvent('DOMMouseScroll', this.canvas, this._mouseWheel, this));
-    this._evtIds.push(Evts.addEvent('mousewheel', this.canvas, this._mouseWheel, this));
+    this._evtIds.push(Evts.addEvent('wheel', this.canvas, this._mouseWheel, this));
   }
 
 

@@ -68,7 +68,7 @@ class VolumeBar {
     this._volume.container.addEventListener('mousedown', this._mouseDown.bind(this));
     this._mouseMove = this._mouseMove.bind(this);
     this._mouseUp = this._mouseUp.bind(this);
-    this._volume.container.addEventListener('mousewheel', this._scrolledInto.bind(this), true);
+    this._volume.container.addEventListener('wheel', this._scrolledInto.bind(this), true);
   }
 
 
