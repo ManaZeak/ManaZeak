@@ -82,7 +82,7 @@
         overflow: hidden;
       }
   
-      .label-artist {
+      .label-item {
         /* Specific to artist items */
         position: absolute;
   
@@ -113,8 +113,9 @@
     .item {
       cursor: pointer;
       display: table-cell;
-      padding: var(--padding);
       max-width: 20rem;
+      padding: var(--padding);
+      position: relative;
       text-align: center;
   
       transition: .2s background-color, .2s box-shadow;
@@ -166,6 +167,16 @@
           margin-bottom: var(--margin);
           width: 100%;
           transition: transform .2s;
+        }
+      }
+
+      .label-item {
+        position: absolute;
+        right: 3rem;
+        top: 2rem;
+        
+        img {
+          height: 3rem;
         }
       }
     }

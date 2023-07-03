@@ -191,6 +191,32 @@ class Utils {
   }
 
 
+  getImageLightness(img) {
+    // create canvas
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+
+    var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    var data = imageData.data;
+    var r,g,b,avg;
+    var colorSum = 0;
+
+    for (let x = 0; x < data.length; x += 4) {
+        r = data[x];
+        g = data[x + 1];
+        b = data[x + 2];
+        avg = Math.floor((r + g + b) / 3);
+        colorSum += avg;
+    }
+
+    return Math.floor(colorSum / (img.width * img.height)) / 255;
+  }
+
+
   lightenDarkenColor(color, amount) {
     // Test that caller sent mandatory arguments
     if ((color === undefined || color === null) || (amount === undefined || amount === null)) {

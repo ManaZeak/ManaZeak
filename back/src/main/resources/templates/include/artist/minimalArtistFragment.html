@@ -3,7 +3,7 @@
   <!--/*@thymesVar id="artist" type="org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto"*/-->
   <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, *{size})}"></div>
   <h2 th:text="*{artist.name}"></h2>
-  <span th:if="*{artist.isLabel}" class="label-artist">
+  <span th:if="*{artist.isLabel}" class="label-item">
     <img alt="artist-is-label" class="artist-is-label" src="static/img/object/label.svg">
   </span>
 </div>
