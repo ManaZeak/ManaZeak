@@ -20,9 +20,29 @@ class ProfileFragment {
       this._target.querySelector('#user-info').removeChild(this._target.querySelector('#user-parent'));
     }
 
-    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#edit-account'), mzk.setModal.bind(mzk, { name: 'EditAccount' }), this));
+    const date = new Date(this._target.querySelector('#member-since').innerHTML);
+    this._target.querySelector('#member-since').innerHTML = Utils.formatDate(date);
+
+    this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#edit-account'), this._editAccount, this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#password'), mzk.setModal.bind(mzk, { name: 'ResetPassword' }), this));
     this._evtIds.push(Evts.addEvent('click', this._target.querySelector('#copy-invite-link'), this._copyInviteLink, this));
+  }
+
+
+  _editAccount() {
+    const userInfo = this._target.querySelector('#user-info');
+    mzk.setModal({
+      name: 'EditAccount',
+      data: {
+        email: userInfo.querySelector('#email').textContent,
+        name: userInfo.querySelector('#name').textContent,
+        surname: userInfo.querySelector('#surname').textContent,
+        bio: userInfo.querySelector('#bio').textContent,
+        birthDate: userInfo.querySelector('#birthdate').textContent,
+        country: userInfo.querySelector('#country').textContent,
+        locale: userInfo.querySelector('#locale').textContent
+      }
+    });
   }
 
 

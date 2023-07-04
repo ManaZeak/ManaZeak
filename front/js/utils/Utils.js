@@ -112,7 +112,8 @@ class Utils {
 
   formatDate(string) {
     const date = new Date(string);
-    return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+    const locale = navigator.languages[0] || navigator.language;
+    return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
   }
 
 
@@ -139,6 +140,10 @@ class Utils {
     return Math.round(value * multiplier) / multiplier;
   }
 
+
+  getElementsByText(str, el, tag = 'a') {
+    return Array.prototype.slice.call(el.getElementsByTagName(tag)).filter(el => el.textContent.trim() === str.trim());
+  }
 
 
   getAverageRGB(imgEl) {
