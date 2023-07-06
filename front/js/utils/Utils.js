@@ -147,19 +147,20 @@ class Utils {
 
 
   getAverageRGB(imgEl) {
-    var blockSize = 5, // only visit every 5 pixels
-      defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
-      canvas = document.createElement('canvas'),
-      context = canvas.getContext && canvas.getContext('2d'),
-      data, width, height,
-      i = -4,
-      length,
-      rgb = {r:0,g:0,b:0},
-      count = 0;
+    const defaultRGB = { r: 0, g: 0, b: 0 };
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext ? canvas.getContext('2d') : null;
 
     if (!context) {
       return defaultRGB;
     }
+
+    const blockSize = 5; // Distance between analysed pixels
+    const rgb = { r: 0, g: 0, b: 0 };
+    let imgData = null;
+    let width = 0;
+    let height = 0;
+    let count = 0;
 
     height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
     width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
@@ -167,19 +168,17 @@ class Utils {
     context.drawImage(imgEl, 0, 0);
 
     try {
-      data = context.getImageData(0, 0, width, height);
+      imgData = context.getImageData(0, 0, width, height);
     } catch(e) {
-      /* security error, img on diff domain */
-      return defaultRGB;
+      return defaultRGB; // Probably tainted canvas
     }
 
-    length = data.data.length;
-
-    while ( (i += blockSize * 4) < length ) {
+    let i = -4;
+    while ((i += blockSize * 4) < imgData.data.length) {
       ++count;
-      rgb.r += data.data[i];
-      rgb.g += data.data[i+1];
-      rgb.b += data.data[i+2];
+      rgb.r += imgData.data[i];
+      rgb.g += imgData.data[i+1];
+      rgb.b += imgData.data[i+2];
     }
 
     // ~~ used to floor values
@@ -198,17 +197,20 @@ class Utils {
 
   getImageLightness(img) {
     // create canvas
-    var canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext('2d');
     canvas.width = img.width;
     canvas.height = img.height;
 
-    var ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
 
-    var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
-    var data = imageData.data;
-    var r,g,b,avg;
-    var colorSum = 0;
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imgData.data;
+    let r = 0;
+    let g = 0;
+    let b = 0
+    let avg = 0;
+    let colorSum = 0;
 
     for (let x = 0; x < data.length; x += 4) {
         r = data[x];

@@ -50,10 +50,10 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
         const luminance = Utils.getRelativeLuminance(avgRGB);
         const lightness = Utils.getImageLightness(cover);
         if (luminance > 0.5 || lightness > 0.5) {
-          let lightValue = (lightness > luminance) ? lightness : luminance;
+          const lightValue = (lightness > luminance) ? lightness : luminance;
           avgRGB = Utils.hexToRgb(Utils.lightenDarkenColor(avgRGB, -((lightValue - 0.5) * 100)));
         } else if (luminance < 0.5 || lightness < 0.5) {
-          let lightValue = (lightness > luminance) ? luminance : lightness;
+          const lightValue = (lightness > luminance) ? luminance : lightness;
           avgRGB = Utils.hexToRgb(Utils.lightenDarkenColor(avgRGB, ((0.5 - lightValue) * 100)));
         }
         mzk.ui.setGradientColor(avgRGB);
