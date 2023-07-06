@@ -170,6 +170,9 @@ class Kom {
             reject(this._getErrorCodeFromHTTPStatus(response.status));
           }
         } else if (type === 'json' || type === 'text') { // Call are made using fetch API
+          if (response.status === 301) {
+            window.location.href = '/login/';
+          }
           if (response[type]) {
             resolve(response[type]());
           } else { // Fallback on standard error handling
