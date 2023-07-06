@@ -42,6 +42,7 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
 
   _buildNavigation() {
     return new Promise((resolve, reject) => {
+      // Cover determines when to free view from loading overlay
       const cover = this.dom.querySelector('#album-picture').children[0].children[0].children[0];
       cover.addEventListener('error', mzk.ui.stopLoading.bind(mzk.ui));
       cover.addEventListener('load', () => {
@@ -127,7 +128,7 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
 
 
   _buildAlbumPerformers() {
-    if (this._performers.length > 4) {
+    if (this._performers.length > 8) {
       this.dom.getElementsByClassName('album-container')[0].style.height = '78rem';
       this.dom.querySelector('#album-performers').style.height = '200px';
       // Ensure height is properly applied before creating scroll on performers

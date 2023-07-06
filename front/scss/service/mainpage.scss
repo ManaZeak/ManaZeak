@@ -38,7 +38,7 @@
   .items-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     padding-left: var(--padding);
     width: calc(100% - var(--default-scroll-size));
 
@@ -323,7 +323,7 @@
 .genre-view-wrapper,
 .label-view-wrapper {
   [class$="-header"] {
-    border-bottom: solid 1px var(--color-txt);
+    border-bottom: solid 1px var(--color-txt-alpha-10);
     display: flex;
     height: 30rem;
     margin: 0 var(--margin);
@@ -331,7 +331,7 @@
 
     [class$="-header-left"] {
       align-items: center;
-      border-right: solid 1px var(--color-txt);
+      border-right: solid 1px var(--color-txt-alpha-10);
       display: flex;
       flex-direction: column;
       height: calc(30rem - (2 * var(--margin)));
@@ -420,8 +420,9 @@
       &:hover {
         background-color: var(--color-primary-alpha-10);
         /* Make moodbar appear on hover */
-        img {
-          opacity: 1 !important;
+        .track-moodbar {
+          height: var(--padding-tiny);
+          opacity: .8 !important;
         }
 
         .track-info .toggle-track-expand {
@@ -445,7 +446,7 @@
       &.expanded {
         .track-moodbar {
           height: var(--padding);
-          opacity: .3;
+          opacity: .33;
         }
       }
 
@@ -644,9 +645,9 @@
         position: absolute;
         left: 0;
         width: 100%;
-        height: var(--padding-tiny);
+        height: calc(var(--padding-tiny) / 1.33);
         bottom: 0;
-        opacity: 0;
+        opacity: 0.1;
         transition: opacity .2s, height .2s;
       }
     }
@@ -669,7 +670,7 @@
   .artist-header {
     .artist-header-center {
       margin: var(--margin);
-      width: calc(100% - 30rem - 40rem - 4 * var(--margin));
+      width: calc(100% - 30rem - 36rem - 4 * var(--margin));
 
       &.expanded {
         width: calc(100% - 30rem - 2 * var(--margin));        
@@ -684,14 +685,14 @@
       }
 
       &.expanded-3 {
-        width: calc(100% - 30rem - 30rem - 4 * var(--margin));
+        width: calc(100% - 30rem - 28rem - 4 * var(--margin));
       }
     }
 
     .artist-header-right {
       margin: var(--margin);
       text-align: center;
-      width: 40rem;
+      width: 36rem;
 
       &.collapsed {
         display: none;
@@ -707,12 +708,22 @@
       }
 
       &.collapsed-3 {
-        width: 30rem;
+        width: 28rem;
+      }
+
+      &.many-members {
+        height: calc(100% - 2 * var(--margin));
+
+        .artists-small {
+          height: 205px;
+        }
       }
 
       .artists-small {
-        height: inherit;
+        height: 105px;
         margin: 0;
+        max-height: inherit;
+        overflow: hidden;
       }
     }
   }

@@ -3,6 +3,7 @@
 
 .navbar {
   background-color: var(--color-bg-light);
+  border-top: solid 1px var(--color-txt-alpha-10);
   height: var(--navbar-height);
   user-select: none;
   width: 100%;

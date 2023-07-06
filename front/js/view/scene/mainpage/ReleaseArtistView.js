@@ -71,16 +71,18 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
     }
     // Add scrollbar to members
     if (this._members.children.length > 4) {
-      this.dom.querySelector('.artist-header-right').style.height = 'calc(100% - 2 * var(--margin))';
+      this.dom.querySelector('.artist-header-right').classList.add('many-members');
       // Ensure height is properly applied before creating scroll on performers
-      requestAnimationFrame(() => {
-        this._scrolls.push(new ScrollBar({
-          target: this.dom.querySelector('.artist-header-right'),
-          style: {
-            color: '#56D45B'
-          }
-        }));
-      });
+      if (this._members.children.length > 8) {
+        requestAnimationFrame(() => {
+          this._scrolls.push(new ScrollBar({
+            target: this.dom.querySelector('.artist-header-right'),
+            style: {
+              color: '#56D45B'
+            }
+          }));
+        });
+      }
     }
   }
 
