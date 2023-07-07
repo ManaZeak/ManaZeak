@@ -1,5 +1,7 @@
 import ProgressControlEnum from '../utils/enum/ProgressControl.js';
 import VolumeControlEnum from '../utils/enum/VolumeControl.js';
+import PlayerRepeatModeEnum from '../utils/enum/PlayerRepeatMode.js';
+import PlayerPlaybackModeEnum from '../utils/enum/PlayerPlaybackMode.js';
 import Player from './Player.js';
 
 
@@ -9,9 +11,11 @@ class Controller {
   constructor() {
     this._player = null;
     this._playObject = null;
-    this._repeatMode = 0; // 0 = off | 1 = one | 2 = all
-    this._shuffleMode = 0; // 0 = off | 1 = shuffle | 2 = random
+    this._repeatMode = PlayerRepeatModeEnum.NO_REPEAT; // 0 = off | 1 = one | 2 = all
+    this._playbackMode = PlayerPlaybackModeEnum.NORMAL; // 0 = normal | 1 = shuffle | 2 = random
     this._queue = []; // User manual queue
+    this._shuffleQueue = []; // Internal for shuffle mode only
+    this._waitForShuffle = true; // Flag to know if shuffle queue needs to be inited when changeTrack called
     this._playingId = -1;
     this._trackHistory = [];
     this._init();
@@ -66,6 +70,11 @@ class Controller {
       if (options.playObject.type !== 'queue') { // Don't erase playObject if track to change came from queue
         this._playObject = options.playObject;
         track = this._playObject.tracks[this._playObject.playingIdx];
+        // Update shuffle queue with new playObject, only if shuffle queue empty (otherwise shuffle in progress)
+        if (this._waitForShuffle === true && this._playbackMode === PlayerPlaybackModeEnum.SHUFFLE) {
+          this._waitForShuffle = false;
+          this.__initShuffleQueue();
+        }
       }
 
       let startTimePercentage = -1;
@@ -85,51 +94,137 @@ class Controller {
   }
 
 
+  // --- Play next internal logic 
+
+
   _playNext() {
-    /* Queue > Shuffle > Repeat > PlayObject */
-    // First, we check user manual queue that override everything
+    // Priority order : Queue > Shuffle > Repeat > PlayObject
+
+    // First, we check user queue that overrides everything
     if (this._queue.length > 0) {
-      mzk.changeTrack({
-        id: this._queue[0].id,
-        playObject: {
-          type: 'queue',
-          track: this._queue[0]
-        }
-      });
-      this._queue.shift();
+      this.__playNextFromQueue();
       return;
     }
     // Now check last playObject in memory for tracks to play
     if (this._playObject.tracks.length > 0) {
-      if (this._repeatMode === 1) { // Repet one
-        mzk.changeTrack({
-          id: this._playObject.tracks[this._playObject.playingIdx].id,
-          playObject: this._playObject
-        });
+      // Then checking shuffle and random modes
+      if (this._playbackMode === PlayerPlaybackModeEnum.SHUFFLE) {
+        this.__playNextFromShuffle();
         return;
-      } else if (this._playObject.playingIdx === (this._playObject.tracks.length - 1)) { // Last track in playObj ended playback
-        if (this._repeatMode === 2) {
-          this._playObject.playingIdx = 0;
-          mzk.changeTrack({
-            id: this._playObject.tracks[this._playObject.playingIdx].id,
-            playObject: this._playObject
-          });
+      } else if (this._playbackMode === PlayerPlaybackModeEnum.RANDOM) {
+        this.__playNextFromRandom();
+        return;
+      }
+      // Followed by repeat mode inspection
+      if (this._repeatMode === PlayerRepeatModeEnum.REPEAT_ONE) { // Repet one
+        this.__playNextFromRepeatOne();
+        return;
+      } else if (this._playObject.playingIdx === (this._playObject.tracks.length - 1)) { // Last track in playObj reached
+        if (this._repeatMode === PlayerRepeatModeEnum.REPEAT_ALL) { // Repeat all
+          this.__playNextFromRepeatAll();
           return;
         }
+        // No track remaining in playObj, nor repeat mode enabled, stop playback.
         mzk.stopPlayback();
         return;
       }
-      // Getting next track in playObj
-      this._playObject.playingIdx = (this._playObject.playingIdx + 1) % this._playObject.tracks.length;
-      mzk.changeTrack({
-        id: this._playObject.tracks[this._playObject.playingIdx].id,
-        playObject: this._playObject
-      });
+      // Otherwise, play next from current playObject
+      this.__playNextFromPlayObject();
       return;
     }
-
+    // No track in playObj, stop playback.
     mzk.stopPlayback();
   }
+
+
+  __playNextFromQueue() {
+    mzk.changeTrack({
+      id: this._queue[0].id,
+      playObject: {
+        type: 'queue',
+        track: this._queue[0]
+      }
+    });
+    this._queue.shift();
+  }
+
+
+  __playNextFromShuffle() {
+    // reached the end of shuffle internal queue
+    if (!this._shuffleQueue.length) {
+      if (this._repeatMode === PlayerRepeatModeEnum.REPEAT_ALL) {
+        this._waitForShuffle = false;
+        this.__initShuffleQueue();
+        this.__playNextFromShuffle();
+        return;
+      }
+
+      this._waitForShuffle = true;
+      mzk.stopPlayback();
+      return;
+    }
+    // Pick rand idx in shuffle queue, apply value to playObj and remove from shuffle queue
+    const randIdx = Math.floor(Math.random() * this._shuffleQueue.length);
+    this._playObject.playingIdx = this._shuffleQueue[randIdx];
+    this._shuffleQueue.splice(randIdx, 1);
+    mzk.changeTrack({
+      id: this._playObject.tracks[this._playObject.playingIdx].id,
+      playObject: this._playObject
+    });
+
+  }
+
+
+  __playNextFromRandom() {
+    // Only draw a rand number in 0-x range for current playObject
+    this._playObject.playingIdx = Math.floor(Math.random() * this._playObject.tracks.length);
+    mzk.changeTrack({
+      id: this._playObject.tracks[this._playObject.playingIdx].id,
+      playObject: this._playObject
+    });
+  }
+
+
+  __playNextFromRepeatOne() {
+    mzk.changeTrack({
+      id: this._playObject.tracks[this._playObject.playingIdx].id,
+      playObject: this._playObject
+    });
+  }
+
+
+  __playNextFromRepeatAll() {
+    // Simply restart index to 0 in playObj
+    this._playObject.playingIdx = 0;
+    mzk.changeTrack({
+      id: this._playObject.tracks[this._playObject.playingIdx].id,
+      playObject: this._playObject
+    });
+  }
+
+
+  __playNextFromPlayObject() {
+    // Getting next track in playObj
+    this._playObject.playingIdx = (this._playObject.playingIdx + 1) % this._playObject.tracks.length;
+    mzk.changeTrack({
+      id: this._playObject.tracks[this._playObject.playingIdx].id,
+      playObject: this._playObject
+    });
+  }
+
+
+  __initShuffleQueue() {
+    this._shuffleQueue = Array.from(Array(this._playObject.tracks.length).keys());
+    // Must remove straight ahead track being played from shuffle if any
+    if (this._playObject) {
+      this._shuffleQueue.splice(this._playObject.playingIdx, 1);
+    } else {
+      this._waitForShuffle = true;
+    }
+  }
+
+
+  // -----
 
 
   _addTrackHistory(options, track) {
@@ -160,8 +255,14 @@ class Controller {
   }
 
 
-  toggleShuffleMode() {
-    this._shuffleMode = (++this._shuffleMode) % 3;    
+  togglePlaybackMode() {
+    this._playbackMode = (++this._playbackMode) % 3;    
+    // When toggling on shuffle, reset shuffle queue
+    if (this._playbackMode === PlayerPlaybackModeEnum.SHUFFLE && this._playObject?.tracks?.length) {
+      this.__initShuffleQueue();
+    } else { // Force shuffle queue reset
+      this._shuffleQueue = [];
+    }
   }
 
 
@@ -295,8 +396,8 @@ class Controller {
   }
 
 
-  get shuffleMode() {
-    return this._shuffleMode;
+  get playbackMode() {
+    return this._playbackMode;
   }
 
 

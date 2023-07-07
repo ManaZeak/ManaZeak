@@ -186,6 +186,7 @@
 /* Tiny artists form (performers on album view for exemple) */
 .artists-small {
   background-color: var(--color-bg-lighter-alpha-50);
+  border: solid 1px var(--color-txt-alpha-10);
   border-radius: .5rem;
   height: 105px;
   max-height: 200px;

@@ -67,9 +67,9 @@ class Mzk {
   }
 
 
-  toggleShuffleMode() {
-    this.ctrl.toggleShuffleMode();
-    this.ui.setShuffleMode(this.ctrl.shuffleMode);
+  togglePlaybackMode() {
+    this.ctrl.togglePlaybackMode();
+    this.ui.setPlaybackMode(this.ctrl.playbackMode);
   }
 
 

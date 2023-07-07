@@ -247,8 +247,8 @@ class UserInterface {
   }
 
 
-  setShuffleMode(shuffleMode) {
-    this._navBar.setShuffleMode(shuffleMode);
+  setPlaybackMode(playbackMode) {
+    this._navBar.setPlaybackMode(playbackMode);
   }
 
 

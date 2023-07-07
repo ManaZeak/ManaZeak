@@ -80,7 +80,7 @@ class NavBar {
     });
 
     this._controls.shuffle.addEventListener('click', () => {
-      mzk.toggleShuffleMode();
+      mzk.togglePlaybackMode();
     });
 
     this._controls.speedometer.addEventListener('click', () => {
@@ -151,7 +151,7 @@ class NavBar {
   }
 
 
-  setShuffleMode(value) {
+  setPlaybackMode(value) {
     if (value === 0) {
       this._controls.shuffle.src = '/static/img/player/shuffle-off.svg';
       this._controls.shuffle.parentNode.dataset.tooltip = this._controls.shuffle.dataset.shuffleoff;
@@ -239,7 +239,7 @@ class NavBar {
 
   /** @public
    * @member {number} - The FootBar control shuffle mode value in range int[0, 2] */
-  set shuffleMode(value) {
+  set playbackMode(value) {
     if (value === 0) {
       this._controls.shuffle.src = '/static/img/player/shuffle-off.svg';
       this._controls.shuffle.parentNode.dataset.tooltip = mzk.lang.player.shuffle.off;
