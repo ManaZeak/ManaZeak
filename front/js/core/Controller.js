@@ -155,6 +155,8 @@ class Controller {
       if (this._repeatMode === PlayerRepeatModeEnum.REPEAT_ALL) {
         this._waitForShuffle = false;
         this.__initShuffleQueue();
+        // Force repush, otherwise playingIdx would be missing from infinte shuffle
+        this._shuffleQueue.push(this._playObject.playingIdx);
         this.__playNextFromShuffle();
         return;
       }
