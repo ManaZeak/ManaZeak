@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/Shortcut.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/Shortcut.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class Shortcut {
+
+
+  /** @summary &lt;h1>JavaScript keyboard shortcut singleton to handle key strokes&lt;/h1>
+   * @author Arthur Beaulieu
+   * @since September 2020
+   * @description &lt;blockquote>The Shortcut class provides a singleton object to set custom keyboard shortcuts for
+   * web application. It allows to register key shortcuts using a string notation (ie. &lt;code>Ctrl+A&lt;/code>). It also exposes
+   * several methods to pause/resume the callback for a given event or for all of them. With the key string, you must provide
+   * a callback function to react to this shortcut fire event. That's all folks! For source code, please go to
+   * &lt;a href="https://github.com/ArthurBeaulieu/Shortcut.js" alt="shortcut-js">Shortcut.js&lt;/a>&lt;/blockquote>
+   * @param {object} [options={}] - The Shortcut singleton options, not mandatory
+   * @param {string} [options.keyEvent=keydown] - The key event to react from
+   * @param {boolean} [options.autoRepeat=true] - For &lt;code>keydown&lt;/code> and &lt;code>keypress&lt;/code>, auto repeat event if key is held on pushed
+   * @returns {object} - The Shortcut singleton instance */
+  constructor(options = {}) {
+    // If an instance of Shortcut already exists, we just return it
+    if (Shortcut.instance) {
+      return Shortcut.instance;
+    }
+    // Set object instance
+    Shortcut.instance = this;
+    // Prevent wrong type for arguments, fallback according to attribute utility
+    if (typeof options.keyEvent !== 'string' || (['keydown', 'keyup', 'keypress'].indexOf(options.keyEvent) === -1)) {
+      options.keyEvent = 'keydown';
+    }
+    if (typeof options.autoRepeat !== 'boolean') {
+      options.autoRepeat = true;
+    }
+    if (typeof options.noPrevention !== 'boolean') {
+      options.noPrevention = false;
+    }
+    /** @private
+     * @member {string} - Key event to use on keyboard event listener */
+    this._keyEvent = options.keyEvent;
+    /** @private
+     * @member {boolean} - The auto repeat of an event when key is held on push */
+    this._autoRepeat = options.autoRepeat;
+    /** @private
+     * @member {boolean} - Do not call prevent default on key event flag */
+    this._noPrevention = options.noPrevention;
+    /** @private
+     * @member {object[]} - Single key saved shortcuts */
+    this._singleKey = [];
+    /** @private
+     * @member {object[]} - Multi keys saved shortcuts */
+    this._multiKey = [];
+    /** @public
+     * @member {string} - Component version */
+    this.version = '1.0.3';
+    // Save singleton scope for testShortcuts method to be able to properly remove event on demand
+    this._testShortcuts = this._testShortcuts.bind(this);
+    // Retun singleton to the caller
+    return this;
+  }
+
+
+  /** @method
+   * @name destroy
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>Shortcut destructor. Will delete singleton instance, its events and its properties.&lt;/blockquote> */
+  destroy() {
+    // Remove all existing eventListener
+    this._removeEvents();
+    // Delete object attributes
+    Object.keys(this).forEach(key => {
+      delete this[key];
+    });
+    // Clear singleton instance
+    Shortcut.instance = null;
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  --------------------------------------  SHORTCUT JS INTERN METHODS  ------------------------------------------  */
+  /*                                                                                                                  */
+  /*  The following methods are made to abstract the event listeners from the JavaScript layer, so you can easily     */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name _addEvents
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>Internal private method to subscribe to DOM key stroke event, depending on which
+   * key event was set in constructor, or using the &lt;code>updateKeyEvent()&lt;/code> method. The key event is then
+   * calling back the &lt;code>_testShortcuts()&lt;/code> method to check if any event has to be fired.&lt;/blockquote> */
+  _addEvents() {
+    // Listen to keyboard's event
+    document.addEventListener(this._keyEvent, this._testShortcuts);
+
+  }
+
+
+  /** @method
+   * @name _removeEvents
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>Internal private method to revoke DOM subscribtion to a key stroke event, depending on which
+   * key event was set in constructor, or using the &lt;code>updateKeyEvent()&lt;/code> method. The key event won't then
+   * call back the &lt;code>_testShortcuts()&lt;/code> method.&lt;/blockquote> */
+  _removeEvents() {
+    // Revoke listener on keyboard's event
+    document.removeEventListener(this._keyEvent, this._testShortcuts);
+  }
+
+
+  /** @method
+   * @name _testShortcuts
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method needs to be called when a key event has been detected. It takes as a parameters
+   * the JavaScript event object, which contains several, required, information. It will then crawl the registered shortcuts to
+   * check if one needs to be fired and call back the application. It handle both single key and multi key shortcuts. Finally,
+   * it will not fire any event if the event &lt;code>repeat&lt;/code> flag is at &lt;code>true&lt;/code>, and the singleton is not in
+   * auto repeat event.&lt;/blockquote>
+   * @param {event} event - The keyboard event (&lt;code>keydown&lt;/code>, &lt;code>keypress&lt;/code> and &lt;code>keyup&lt;/code>) */
+  _testShortcuts(event) {
+    // Avoid auto repeat event if singleton is configured this way
+    if (this._autoRepeat === false &amp;&amp; event.repeat === true) {
+      event.preventDefault();
+      return;
+    }
+    // Analyze event to check proper shortcut array
+    if (event.ctrlKey || event.altKey || event.shiftKey) { // Multi key shortcut
+      this._multiKeyEvent(event);
+    } else { // Single key shortcut
+      this._singleKeyEvent(event);
+    }
+  }
+
+
+  /** @method
+   * @name _singleKeyEvent
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will parse all single key events registered in its internal attributes, and will
+   * fire the call back if its registered key matches the event key. It also prevent defaults on the event only if a match
+   * is found to keep browser behavior in case there is no regstered shortcut.&lt;/blockquote>
+   * @param {event} event - The keyboard event (&lt;code>keydown&lt;/code>, &lt;code>keypress&lt;/code> and &lt;code>keyup&lt;/code>) */
+  _singleKeyEvent(event) {
+    // Iterate over registered single key shortcut to fire it if one matches
+    for (let i = 0; i &lt; this._singleKey.length; ++i) {
+      // Check that event is active and flatten key string to compare
+      if (!this._singleKey[i].pause &amp;&amp; event.key.toLowerCase() === this._singleKey[i].keyString.toLowerCase()) {
+        if (this._noPrevention === false) {
+          event.preventDefault();
+        }
+
+        this._singleKey[i].fire(this);
+      }
+    }
+  }
+
+
+  /** @method
+   * @name _multiKeyEvent
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will parse all multi keys events registered in its internal attributes, and will
+   * fire the call back if its registered key matches the event key. Multi key events are made using ctrl, alt and shift modifiers.
+   * It also prevent defaults on the event only if a match is found to keep browser behavior in case there is no regstered
+   * shortcut.&lt;/blockquote>
+   * @param {event} event - The keyboard event (&lt;code>keydown&lt;/code>, &lt;code>keypress&lt;/code> and &lt;code>keyup&lt;/code>) */
+  _multiKeyEvent(event) {
+    for (let i = 0; i &lt; this._multiKey.length; ++i) {
+      // Handy shortcut variable to work with
+      const sh = this._multiKey[i];
+      // Check that event is active and flatten key string to compare
+      if (!sh.pause &amp;&amp; event.key.toLowerCase() === sh.key) {
+        switch (sh.modifierCount) {
+          case 1: // 2 key strokes
+            this.__multiKey2Keys(sh, event);
+            break;
+          case 2: // 3 key strokes
+            this.__multiKey3Keys(sh, event);
+            break;
+          case 3: // 4 key strokes
+            this.__multiKey4Keys(sh, event);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+
+  __multiKey2Keys(sh, event) {
+    if ((sh.modifiers.ctrlKey &amp;&amp; event.ctrlKey) || (sh.modifiers.altKey &amp;&amp; event.altKey) || (sh.modifiers.shiftKey &amp;&amp; event.shiftKey)) {
+      if (this._noPrevention === false) {
+        event.preventDefault();
+      }
+      sh.fire();
+    }
+  }
+
+
+  __multiKey3Keys(sh, event) {
+    if ((sh.modifiers.ctrlKey &amp;&amp; event.ctrlKey &amp;&amp; sh.modifiers.altKey &amp;&amp; event.altKey) || (sh.modifiers.ctrlKey &amp;&amp; event.ctrlKey &amp;&amp; sh.modifiers.shiftKey &amp;&amp; event.shiftKey) || (sh.modifiers.altKey &amp;&amp; event.altKey &amp;&amp; sh.modifiers.shiftKey &amp;&amp; event.shiftKey)) {
+      if (this._noPrevention === false) {
+        event.preventDefault();
+      }
+      sh.fire();
+    }
+  }
+
+
+  __multiKey4Keys(sh, event) {
+    if ((sh.modifiers.ctrlKey &amp;&amp; event.ctrlKey &amp;&amp; sh.modifiers.altKey &amp;&amp; event.altKey &amp;&amp; sh.modifiers.shiftKey &amp;&amp; event.shiftKey)) {
+      if (this._noPrevention === false) {
+        event.preventDefault();
+      }
+      sh.fire();
+    }
+  }
+
+
+  /** @method
+   * @name _getModifiersCount
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>Shorthand method to count modifiers in a given shrotcut string. It uses regex that are
+   * case insensitive to avoid multi testing (and because it's what this singleton do).&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event */
+  _getModifiersCount(keyString) {
+    // Build local modifiers count with regex
+    const modifiers = {
+      ctrlKey: /ctrl/i.test(keyString),
+      altKey: /alt/i.test(keyString),
+      shiftKey: /shift/i.test(keyString)
+    };
+    // Count modifiers that are set to true and update count with it
+    return Object.values(modifiers).reduce((a, b) => a + b, 0);
+  }
+
+
+  /** @method
+   * @name _setAllPauseFlag
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>Parse all registered event and make them listen or not to any key event.&lt;/blockquote>
+   * @param {boolean} value - The state to set, to pause/resume all registered shortcuts */
+  _setAllPauseFlag(value) {
+    // Iterate over both arays to update pause flag on each registered shortcut
+    for (let i = 0; i &lt; this._singleKey.length; ++i) {
+      this._setOnePauseFlag(this._singleKey[i].keyString, value);
+    }
+
+    for (let i = 0; i &lt; this._multiKey.length; ++i) {
+      this._setOnePauseFlag(this._multiKey[i].keyString, value);
+    }
+  }
+
+
+  /** @method
+   * @name _setOnePauseFlag
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>Parse all registered event and make the one that matches the key string listen or not
+   * to any key event.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event
+   * @param {boolean} value - The state to set, to pause/resume all registered shortcuts */
+  _setOnePauseFlag(keyString, value) {
+    if (this._getModifiersCount(keyString) === 0) {
+      for (let i = 0; i &lt; this._singleKey.length; ++i) {
+        if (this._singleKey[i].keyString === keyString) {
+          this._singleKey[i].pause = value;
+        }
+      }
+    } else {
+      for (let i = 0; i &lt; this._multiKey.length; ++i) {
+        if (this._multiKey[i].keyString === keyString) {
+          this._multiKey[i].pause = value;
+        }
+      }
+    }
+  }
+
+
+  /** @method
+   * @name _shortcutAlreadyExist
+   * @private
+   * @memberof Shortcut
+   * @description &lt;blockquote>Internal method to test if a given key string isn't already related to a registered
+   * shortcut.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event
+   * @returns {boolean} - The existence state of given key string */
+  _shortcutAlreadyExist(keyString) {
+    // Parse single or multi shortcuts depending on modifiers count to find maching one
+    if (this._getModifiersCount(keyString) === 0) {
+      for (let i = 0; i &lt; this._singleKey.length; ++i) {
+        if (this._singleKey[i].keyString === keyString) {
+          return true;
+        }
+      }
+    } else {
+      for (let i = 0; i &lt; this._multiKey.length; ++i) {
+        if (this._multiKey[i].keyString === keyString) {
+          return true;
+        }
+      }
+    }
+    // False by default to allow the shortcut creation
+    return false;
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  --------------------------------------  SHORTCUT JS PUBLIC METHOD  -------------------------------------------  */
+  /*                                                                                                                  */
+  /*  The following methods are made to register shortcut, to remove them, or to pause/resume all shortcuts.          */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name register
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method is the entry point to register a shortcut. The caller must send the key
+   * comibination as a string (ie. &lt;code>F&lt;/code>, &lt;code>Ctrl+shift+r&lt;/code>). The Shortcut singleton is case insensitive,
+   * which means you can write it with the case you want. For modifiers, please use &lt;code>ctrl&lt;/code>, &lt;code>alt&lt;/code> and
+   * &lt;code>shift&lt;/code> strings. Then the given callback will be called each time the key stroke matches the shortcut key
+   * string. For fine tuning on auto repeat, see constructor options.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event
+   * @param {function} fire - The callback to attach to the shortcut */
+  register(keyString, fire) {
+    if (typeof keyString !== 'string' || typeof fire !== 'function') {
+      return;
+    }
+
+    if (!this._shortcutAlreadyExist(keyString)) {
+      // First shortcut to be registered ; listen to keyboard key down event
+      if (this._singleKey.length === 0 &amp;&amp; this._multiKey.length === 0) {
+        this._addEvents();
+      }
+      // New shortcut internals
+      const shortcut = {
+        keyString: keyString,
+        modifiers: { // Regex insensitive to string case to search for modifiers
+          ctrlKey: /ctrl/i.test(keyString),
+          altKey: /alt/i.test(keyString),
+          shiftKey: /shift/i.test(keyString)
+        },
+        modifierCount: this._getModifiersCount(keyString),
+        key: keyString.toLowerCase().replace('ctrl', '').replace('alt', '').replace('shift', '').replaceAll(' ', '').replaceAll('+', ''),
+        paused: false,
+        fire: fire
+      };
+      // Save shortcut to its appropriated array
+      if (this._getModifiersCount(keyString) === 0) {
+        this._singleKey.push(shortcut);
+      } else {
+        this._multiKey.push(shortcut);
+      }
+    }
+  }
+
+
+  /** @method
+   * @name remove
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will remove a registered shortcut using its key string.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event */
+  remove(keyString) {
+    if (typeof keyString !== 'string') {
+      return;
+    }
+    // Reverse parsing to ensure proper slicing of shortcut arrays
+    if (this._getModifiersCount(keyString) === 0) {
+      for (let i = this._singleKey.length - 1; i >= 0; i--) {
+        if (this._singleKey[i].keyString === keyString) {
+          this._singleKey.splice(i, 1);
+        }
+      }
+    } else {
+      for (let i = this._multiKey.length - 1; i >= 0; i--) {
+        if (this._multiKey[i].keyString === keyString) {
+          this._multiKey.splice(i, 1);
+        }
+      }
+    }
+    // In case there are no remaining shortcut, we remove listener on keyboard's event
+    if (this._singleKey.length === 0 &amp;&amp; this._multiKey.length === 0) {
+      this._removeEvents();
+    }
+  }
+
+
+  /** @method
+   * @name removeAll
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will remove all registered shortcut events.&lt;/blockquote> */
+  removeAll() {
+    // Clear all saved shortcut
+    this._singleKey = [];
+    this._multiKey = [];
+    // Remove listener on keyboard's key down
+    this._removeEvents();
+  }
+
+
+  /** @method
+   * @name pause
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will pause a registered shortcut using its key string. The
+   * shortcut won't then fire the callback when the shortcut is used.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event */
+  pause(keyString) {
+    if (typeof keyString !== 'string') {
+      return;
+    }
+
+    this._setOnePauseFlag(keyString, true);
+  }
+
+
+  /** @method
+   * @name resume
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will resume a registered shortcut using its key string. The
+   * shortcut will then fire the callback when the shortcut is used.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event */
+  resume(keyString) {
+    if (typeof keyString !== 'string') {
+      return;
+    }
+
+    this._setOnePauseFlag(keyString, false);
+  }
+
+
+  /** @method
+   * @name pauseAll
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will pause all registered shortcuts.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event */
+  pauseAll() {
+    this._setAllPauseFlag(true);
+  }
+
+
+  /** @method
+   * @name resumeAll
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will resume all registered shortcuts.&lt;/blockquote>
+   * @param {string} keyString - The raw shortcut string that is defined when registering an event */
+  resumeAll() {
+    this._setAllPauseFlag(false);
+  }
+
+
+  /** @method
+   * @name updateKeyEvent
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will update the singleton's listener for a given keyboard event.&lt;/blockquote>
+   * @param {string} keyEvent - The key event to apply to the DOM listener in &lt;code>keydown&lt;/code>, &lt;code>keypress&lt;/code> and &lt;code>keyup&lt;/code> */
+  updateKeyEvent(keyEvent) {
+    // Prevent wrong type or un-existing key event
+    if (typeof keyEvent !== 'string' || (['keydown', 'keyup', 'keypress'].indexOf(keyEvent) === -1)) {
+      keyEvent = 'keydown';
+    }
+    // Key event actual update
+    this._removeEvents(); // Remove previous key event value and shortcut listener
+    this._keyEvent = keyEvent; // Update private attribute
+    this._addEvents(); // Restore shortcut listening with knew key event
+  }
+
+
+  /** @method
+   * @name updateAutoRepeat
+   * @public
+   * @memberof Shortcut
+   * @description &lt;blockquote>This method will update the auto repeat flag that makes an event continuously callback
+   * when the key is hed pushed.&lt;/blockquote>
+   * @param {boolean} autoRepeat - The auto repeat state to set */
+  updateAutoRepeat(autoRepeat) {
+    // Prevent wrong type for input
+    if (typeof autoRepeat !== 'boolean') {
+      autoRepeat = true;
+    }
+    // Update private attribute
+    this._autoRepeat = autoRepeat;
+  }
+
+
+}
+
+
+export default Shortcut;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AboutModal.html">AboutModal</a></li><li><a href="AlbumCoverModal.html">AlbumCoverModal</a></li><li><a href="ArtistPictureModal.html">ArtistPictureModal</a></li><li><a href="AudioVisualizer.html">AudioVisualizer</a></li><li><a href="BackgroundStar.html">BackgroundStar</a></li><li><a href="BaseComponent.html">BaseComponent</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="CanvasUtils.html">CanvasUtils</a></li><li><a href="ColorUtils.html">ColorUtils</a></li><li><a href="Controller.html">Controller</a></li><li><a href="CustomEvents.html">CustomEvents</a></li><li><a href="DragElement.html">DragElement</a></li><li><a href="DropElement.html">DropElement</a></li><li><a href="FrequencyBars.html">FrequencyBars</a></li><li><a href="FrequencyCircle.html">FrequencyCircle</a></li><li><a href="Graph.html">Graph</a></li><li><a href="Kom.html">Kom</a></li><li><a href="Lang.html">Lang</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Modal.html">Modal</a></li><li><a href="Node.html">Node</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Oscilloscope.html">Oscilloscope</a></li><li><a href="OscilloscopeRadialPoint.html">OscilloscopeRadialPoint</a></li><li><a href="PeakMeter.html">PeakMeter</a></li><li><a href="PlaybackRateBar.html">PlaybackRateBar</a></li><li><a href="Player.html">Player</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SceneView.html">SceneView</a></li><li><a href="ScrollBar.html">ScrollBar</a></li><li><a href="Shortcut.html">Shortcut</a></li><li><a href="Spectrum.html">Spectrum</a></li><li><a href="Timeline.html">Timeline</a></li><li><a href="Tree.html">Tree</a></li><li><a href="UserInterface.html">UserInterface</a></li><li><a href="ViewFactory.html">ViewFactory</a></li><li><a href="VisuComponentMono.html">VisuComponentMono</a></li><li><a href="VisuComponentStereo.html">VisuComponentStereo</a></li><li><a href="VolumeBar.html">VolumeBar</a></li><li><a href="Waveform.html">Waveform</a></li><li><a href="WishModal.html">WishModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#VolumeControl">VolumeControl</a></li><li><a href="global.html#_fillLevels">_fillLevels</a></li><li><a href="global.html#_generateLocations">_generateLocations</a></li><li><a href="global.html#_getHeight">_getHeight</a></li><li><a href="global.html#_getWidth">_getWidth</a></li><li><a href="global.html#_organizeLevels">_organizeLevels</a></li><li><a href="global.html#abortDrag">abortDrag</a></li><li><a href="global.html#addNode">addNode</a></li><li><a href="global.html#arrange">arrange</a></li><li><a href="global.html#click">click</a></li><li><a href="global.html#createCanvas">createCanvas</a></li><li><a href="global.html#draw">draw</a></li><li><a href="global.html#drawNode">drawNode</a></li><li><a href="global.html#eventListeners">eventListeners</a></li><li><a href="global.html#getConnectorCoordinates">getConnectorCoordinates</a></li><li><a href="global.html#hideChildren">hideChildren</a></li><li><a href="global.html#isInNode">isInNode</a></li><li><a href="global.html#loadNodes">loadNodes</a></li><li><a href="global.html#mouseDown">mouseDown</a></li><li><a href="global.html#mouseMove">mouseMove</a></li><li><a href="global.html#mouseOut">mouseOut</a></li><li><a href="global.html#mouseUp">mouseUp</a></li><li><a href="global.html#mouseWheel">mouseWheel</a></li><li><a href="global.html#reorganizeTree">reorganizeTree</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#showChildren">showChildren</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#trackTransforms">trackTransforms</a></li><li><a href="global.html#unselect">unselect</a></li><li><a href="global.html#unselectAll">unselectAll</a></li><li><a href="global.html#updateLayout">updateLayout</a></li><li><a href="global.html#zoom">zoom</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Jul 09 2023 11:31:32 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

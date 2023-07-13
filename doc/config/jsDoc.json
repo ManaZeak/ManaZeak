@@ -35,7 +35,6 @@
     ]
   },
   "opts": {
-    "template": "node_modules/tui-jsdoc-template",
     "destination": "./doc/front",
     "readme": "./README.md",
     "package": "./package.json",

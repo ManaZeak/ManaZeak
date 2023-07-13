@@ -21,3 +21,4 @@ window.Logger = new Logger({
 // Create new ManaZeak object to init internals then full init
 window.mzk = new Mzk();
 window.mzk.initSession();
+window.DEBUG = true;

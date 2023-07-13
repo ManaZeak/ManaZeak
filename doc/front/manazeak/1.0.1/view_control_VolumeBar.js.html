@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: view/control/VolumeBar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: view/control/VolumeBar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import VolumeControlEnum from '../../utils/enum/VolumeControl.js';
+
+
+class VolumeBar {
+
+
+  /**
+   * @summary UI VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description &lt;blockquote>Interactive volume bar that is linked to ManaZeak logic&lt;/blockquote>
+   **/
+  constructor() {
+    /** @private
+     * @member {object} - The VolumeBar DOM elements (image, wrapper, container, current, thumb) */
+    this._volume = {
+      image: {},
+      wrapper: {},
+      container: {},
+      current: {},
+      thumb: {}
+    };
+    /** @private
+     * @member {boolean} - Flag to notify that user is currently dragging the volume bar thumb */
+    this._isDragging = false;
+
+    this._init();
+    this._events();
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -------------------------------------  CLASS INTERNALS  --------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name _init
+   * @private
+   * @memberof VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Build VolumeBar object from DOM
+   **/
+  _init() {
+    this._volume = {
+      image: document.getElementById('volumebar-img'),
+      wrapper: document.getElementById('volumebar-wrapper'),
+      container: document.getElementById('volumebar-container'),
+      current: document.getElementById('volumebar-current'),
+      thumb: document.getElementById('volumebar-thumb')
+    };
+  }
+
+
+  /**
+   * @method
+   * @name _events
+   * @private
+   * @memberof VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Attach mouse events to the DOM elements
+   **/
+  _events() {
+    this._volume.image.addEventListener('click', mzk.toggleMute.bind(mzk));
+    this._volume.container.addEventListener('mousedown', this._mouseDown.bind(this));
+    this._mouseMove = this._mouseMove.bind(this);
+    this._mouseUp = this._mouseUp.bind(this);
+    this._volume.container.addEventListener('wheel', this._scrolledInto.bind(this), true);
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  ---------------------------------------  MOUSE EVENTS  ---------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name _mouseDown
+   * @private
+   * @memberof VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description When a mouse down event is triggered on &lt;code>this.volume.container&lt;/code>,
+   * attach mouse events to the windows while is &lt;code>this._isDragging&lt;/code> is a true
+   * @param {object} event - The mouse down event
+   **/
+  _mouseDown(event) {
+    if (!this._isDragging &amp;&amp; (event.target.id === 'volumebar-wrapper' ||
+        event.target.id === 'volumebar-container' ||
+        event.target.id === 'volumebar-current' ||
+        event.target.id === 'volumebar-thumb')) {
+
+      this._isDragging = true;
+      this._setVolumeFromEvent(event);
+
+      window.addEventListener('mousemove', this._mouseMove);
+      window.addEventListener('mouseup', this._mouseUp);
+    }
+  }
+
+
+  /**
+   * @method
+   * @name _mouseMove
+   * @private
+   * @memberof VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Change volume according to the mouse position in window
+   * @param {object} event - The mouse down event
+   **/
+  _mouseMove(event) {
+    if (this._isDragging) {
+      this._setVolumeFromEvent(event);
+    }
+  }
+
+
+  /**
+   * @method
+   * @name _mouseUp
+   * @private
+   * @memberof VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description End all mouse events attached to the window. Revoke the &lt;code>this._isDragging&lt;/code> truthness
+   **/
+  _mouseUp() {
+    if (this._isDragging) {
+      this._isDragging = false;
+      window.removeEventListener('mousemove', this._mouseMove);
+      window.removeEventListener('mouseup', this._mouseUp);
+    }
+  }
+
+
+  _scrolledInto(e) {
+    // Scrolling up
+    if (e.deltaY &lt; 0) {
+      mzk.adjustVolume(VolumeControlEnum.BIG);
+    } else {
+      mzk.adjustVolume(-VolumeControlEnum.BIG);
+    }
+  }
+
+
+  //  ------------------------------------------------------------------------------------------------//
+  //  -----------------------------------  VOLUME MANIPULATIONS ------------------------------------  //
+  //  ------------------------------------------------------------------------------------------------//
+
+
+  /**
+   * @method
+   * @name _setVolumeFromEvent
+   * @private
+   * @memberof VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Converts the user's mouse position into a volume value and send update info to &lt;code>Mzk&lt;/code> controller
+   * @param {object} event - The mouse event
+   **/
+  _setVolumeFromEvent(event) {
+    // Get container bound rectangle and compute difference in px and % (pr)
+    const boundRect = this._volume.container.getBoundingClientRect();
+    const toLeftInPx = event.clientX - boundRect.left; // Client X position minus container left X position equals X variation from container left side
+    let toLeftInPr = (toLeftInPx * 100) / boundRect.width; // Get width percentage depending on container width
+    // OOB protection
+    if (toLeftInPr > 100) {
+      toLeftInPr = 100;
+    }
+    if (toLeftInPr &lt; 0) {
+      toLeftInPr = 0;
+    }
+    // Set mzk global volume
+    mzk.setVolume(toLeftInPr / 100);
+  }
+
+
+  /**
+   * @method
+   * @name updateVolume
+   * @public
+   * @memberof VolumeBar
+   * @author Arthur Beaulieu
+   * @since July 2018
+   * @description Updates the VolumeBar UI with a given position
+   * @param {boolean} isMuted - The muted state
+   * @param {number} volume - The volume value to set in range float[0, 100]
+   **/
+  updateVolume(isMuted, volume) {
+    const removeFullClass = () => {
+      if (this._volume.current.classList.contains('full')) {
+        this._volume.current.classList.remove('full');
+      }
+    };
+
+    volume *= 100;
+    // Icon update
+    if (volume === 0 || (typeof isMuted === 'boolean' &amp;&amp; isMuted === true)) {
+      removeFullClass();
+      this._volume.image.src = '/static/img/player/volume-mute.svg';
+    } else if (volume > 0 &amp;&amp; volume &lt; 50) {
+      removeFullClass();
+      this._volume.image.src = '/static/img/player/volume-half.svg';
+    } else {
+      removeFullClass();
+      this._volume.image.src = '/static/img/player/volume-full.svg';
+    }
+
+    if (volume > 97 &amp;&amp; volume &lt;= 100) { // Add border radius on right side
+      this._volume.current.classList.add('full');
+    }
+
+    // Current and thumb update
+    if (typeof isMuted === 'boolean' &amp;&amp; isMuted === true) {
+      volume = 0;
+    } // To set volume current and thumb at 0% left when muted.
+    this._volume.current.style.width = `${volume}%`;
+    this._volume.thumb.style.left = `${volume}%`;
+  }
+
+
+}
+
+
+export default VolumeBar;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AboutModal.html">AboutModal</a></li><li><a href="AlbumCoverModal.html">AlbumCoverModal</a></li><li><a href="ArtistPictureModal.html">ArtistPictureModal</a></li><li><a href="AudioVisualizer.html">AudioVisualizer</a></li><li><a href="BackgroundStar.html">BackgroundStar</a></li><li><a href="BaseComponent.html">BaseComponent</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="CanvasUtils.html">CanvasUtils</a></li><li><a href="ColorUtils.html">ColorUtils</a></li><li><a href="Controller.html">Controller</a></li><li><a href="CustomEvents.html">CustomEvents</a></li><li><a href="DragElement.html">DragElement</a></li><li><a href="DropElement.html">DropElement</a></li><li><a href="FrequencyBars.html">FrequencyBars</a></li><li><a href="FrequencyCircle.html">FrequencyCircle</a></li><li><a href="Graph.html">Graph</a></li><li><a href="Kom.html">Kom</a></li><li><a href="Lang.html">Lang</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Modal.html">Modal</a></li><li><a href="Node.html">Node</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Oscilloscope.html">Oscilloscope</a></li><li><a href="OscilloscopeRadialPoint.html">OscilloscopeRadialPoint</a></li><li><a href="PeakMeter.html">PeakMeter</a></li><li><a href="PlaybackRateBar.html">PlaybackRateBar</a></li><li><a href="Player.html">Player</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SceneView.html">SceneView</a></li><li><a href="ScrollBar.html">ScrollBar</a></li><li><a href="Shortcut.html">Shortcut</a></li><li><a href="Spectrum.html">Spectrum</a></li><li><a href="Timeline.html">Timeline</a></li><li><a href="Tree.html">Tree</a></li><li><a href="UserInterface.html">UserInterface</a></li><li><a href="ViewFactory.html">ViewFactory</a></li><li><a href="VisuComponentMono.html">VisuComponentMono</a></li><li><a href="VisuComponentStereo.html">VisuComponentStereo</a></li><li><a href="VolumeBar.html">VolumeBar</a></li><li><a href="Waveform.html">Waveform</a></li><li><a href="WishModal.html">WishModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#VolumeControl">VolumeControl</a></li><li><a href="global.html#_fillLevels">_fillLevels</a></li><li><a href="global.html#_generateLocations">_generateLocations</a></li><li><a href="global.html#_getHeight">_getHeight</a></li><li><a href="global.html#_getWidth">_getWidth</a></li><li><a href="global.html#_organizeLevels">_organizeLevels</a></li><li><a href="global.html#abortDrag">abortDrag</a></li><li><a href="global.html#addNode">addNode</a></li><li><a href="global.html#arrange">arrange</a></li><li><a href="global.html#click">click</a></li><li><a href="global.html#createCanvas">createCanvas</a></li><li><a href="global.html#draw">draw</a></li><li><a href="global.html#drawNode">drawNode</a></li><li><a href="global.html#eventListeners">eventListeners</a></li><li><a href="global.html#getConnectorCoordinates">getConnectorCoordinates</a></li><li><a href="global.html#hideChildren">hideChildren</a></li><li><a href="global.html#isInNode">isInNode</a></li><li><a href="global.html#loadNodes">loadNodes</a></li><li><a href="global.html#mouseDown">mouseDown</a></li><li><a href="global.html#mouseMove">mouseMove</a></li><li><a href="global.html#mouseOut">mouseOut</a></li><li><a href="global.html#mouseUp">mouseUp</a></li><li><a href="global.html#mouseWheel">mouseWheel</a></li><li><a href="global.html#reorganizeTree">reorganizeTree</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#showChildren">showChildren</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#trackTransforms">trackTransforms</a></li><li><a href="global.html#unselect">unselect</a></li><li><a href="global.html#unselectAll">unselectAll</a></li><li><a href="global.html#updateLayout">updateLayout</a></li><li><a href="global.html#zoom">zoom</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Jul 09 2023 11:31:32 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

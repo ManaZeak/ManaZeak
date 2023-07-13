@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: view/UserInterface.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: view/UserInterface.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Aside from './element/Aside';
+import TopBar from './element/TopBar';
+import NavBar from './element/NavBar';
+import Scene from './element/Scene';
+import ViewHistory from './scene/utils/ViewHistory';
+
+
+class UserInterface {
+
+
+  /** @summary &lt;h1>ManaZeak user interface controller&lt;/h1>
+   * @author Arthur Beaulieu
+   * @since September 2020
+   * @description &lt;blockquote>This class is made to handle all interactions between UI and Mzk controller. It is in
+   * charge to load views and to append them into the DOM, but also to make them interactive with the app context.&lt;/blockquote> */
+  constructor() {
+    /** @private
+     * @member {object} - The aside controller */
+    this._aside = new Aside();
+    /** @private
+     * @member {object} - The scene controller */
+    this._scene = new Scene();
+
+    this._topBar = new TopBar();
+    this._navBar = new NavBar();
+
+    this._history = new ViewHistory();
+
+    this._wrapper = document.getElementById('scene-wrapper');
+    /** @private
+     * @member {object} - Home button icon */
+    this._homeButton = document.getElementById('mzk-home-icon');
+    /** @private
+     * @member {object} - The DOM loading overlay to use in transitions */
+    this._loadingOverlay = null;
+    // Build loading overlay and add its style class
+    this._loadingOverlay = document.getElementById('mzk-loading-overlay');
+    // The HTML comes with the loading overlay visible
+    this.stopLoading();
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  -------------------------------------------  VIEW MANIPULATION  ----------------------------------------------  */
+  /*                                                                                                                  */
+  /*  These methods will set the single page with a new view, while properly cleaning the previously used one.        */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name setSceneView
+   * @public
+   * @memberof UserInterface
+   * @description &lt;blockquote>This method will try to build a view according to the given options. If options are
+   * invalid, the Main Page will be loaded instead. It handle the transition with previous view to put a loading
+   * overlay while loading the new view.&lt;/blockquote>
+   * @param {object} options - The options to build the view from
+   * @param {object} options.name - The view name, must match one in the ViewFactory class
+   * @return {promise} - The action promise */
+  setSceneView(options) {
+    return new Promise((resolve, reject) => {
+      this.startLoading()
+        .then(this._updateHistory.bind(this, options))
+        .then(this._updateHomeIcon.bind(this, options))
+        .then(this._scene.buildView.bind(this._scene, options))
+        .then(this._setTopBarView.bind(this, options))
+        .then(resolve)
+        .catch(reject)
+        .finally(this.stopLoading.bind(this, options)); // Clear loading overlay whatever happens
+    });
+  }
+
+
+  setModal(options) {
+    return new Promise((resolve, reject) => {
+      this._scene.buildModal(options)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  getFragment(url) {
+    // The loading overlay must be handled caller, since fragment is only a part of viewport
+    return new Promise((resolve, reject) => {
+      mzk.kom.getText(url).then(fragment => {
+        resolve(fragment);
+      }).catch(() => {
+        Logger.raise('F_FRAGMENT_GET_ERROR');
+        reject();
+      });
+    });
+  }
+
+
+  previousHistoryView() {
+    const view = this._history.getPreviousView();
+    if (view !== null) {
+      mzk.setView(view);
+    }
+  }
+
+
+  nextHistoryView() {
+    const view = this._history.getNextView();
+    if (view !== null) {
+      mzk.setView(view);
+    }    
+  }
+
+
+  processLogFromServer(errors) {
+    if (errors &amp;&amp; errors.length > 0) {
+      for (let i = 0; i &lt; errors.length; ++i) {
+        Logger.raise(errors[i]);
+      }
+    }
+  }
+
+
+  _updateHistory(options) {
+    this._history.addView(options);
+  }
+
+
+  _updateHomeIcon(options) {
+    return new Promise(resolve => {
+      if (options.name === 'MainPage') {
+        this._homeButton.src = 'static/img/actions/random-roll.svg';
+      } else if (this._homeButton.src !== 'static/img/navigation/home.svg') {
+        this._homeButton.src = 'static/img/navigation/home.svg';
+      }
+
+      resolve();
+    });
+  }
+
+
+  _setTopBarView(options) {
+    return new Promise(resolve => {
+      this._topBar.setView(Object.assign({
+        displayName: this._scene.view.getDisplayName()
+      }, options));
+      resolve();
+    });
+  }
+
+
+  /*  --------------------------------------------------------------------------------------------------------------- */
+  /*  ----------------------------------------  LOADING OVERLAY METHODS  -------------------------------------------  */
+  /*                                                                                                                  */
+  /*  These methods add/remove the loading overlay on top of elements. It is meant to be used when switching view.    */
+  /*  --------------------------------------------------------------------------------------------------------------- */
+
+
+  /** @method
+   * @name startLoading
+   * @public
+   * @memberof UserInterface
+   * @description &lt;blockquote>The start loading method will add an overlay on the whole page that has a css animation.&lt;/blockquote>
+   * @return {promise} - The action promise */
+  startLoading() {
+    return new Promise(resolve => {
+      if (!document.body.contains(this._loadingOverlay)) {
+        document.body.appendChild(this._loadingOverlay);
+      }
+      requestAnimationFrame(resolve);
+    });
+  }
+
+
+  /** @method
+   * @name startLoading
+   * @public
+   * @memberof UserInterface
+   * @description &lt;blockquote>The stop loading method will remove the overlay on the page.&lt;/blockquote>
+   * @return {promise} - The action promise */
+  stopLoading(options) {
+    return new Promise(resolve => {
+      if (options &amp;&amp; options.keepLoading === true) {
+        resolve();
+        return;
+      }
+      if (document.body.contains(this._loadingOverlay)) {
+        document.body.removeChild(this._loadingOverlay);
+      }
+      requestAnimationFrame(resolve);
+    });
+  }
+
+
+  /* Playback */
+
+
+  changeTrack(track) {
+    if (track) {
+      this._topBar.setTrack(track, mzk.ctrl.playObject);
+      this._navBar.setQueuedTracks(mzk.ctrl.queuedTracks);
+      this._navBar.setQueuedPlayObject(mzk.ctrl.playObject);
+      this._navBar.updateMoodbar(track.mood);
+      this.setPlay(true);
+      this.setPageTitle(`${track.artist} – ${track.title}`);
+    }
+  }
+
+
+  setPlay(playing) {
+    if (mzk.ctrl.playingId !== -1) { // Only set play if payer is indeed playing
+      if (!this._navBar.progressBar.isActive) {
+        this._navBar.progressBar.activate();
+      }
+      this._navBar.updatePlayButton(playing);
+    } else if (this._scene.view.playFirstTrack) {
+      this._scene.view.playFirstTrack();
+    } else {
+      this._navBar.progressBar.deactivate();      
+    }
+  }
+
+
+  stopPlayback() {
+    this._topBar.clearTrack();
+    this._navBar.progressBar.deactivate();
+    this._navBar.updatePlayButton(false);
+    this.setPageTitle(`Mzk | Welcome!`);
+    if (this._scene.view.stopPlayback) {
+      this._scene.view.stopPlayback();
+    }
+  }
+
+
+  queue(queuedTracks) {
+    this._navBar.setQueuedTracks(queuedTracks);
+    
+  }
+
+
+  getTrackById(id) {
+    if (this._scene.view.getTrackById) {
+      return this._scene.view.getTrackById(id);
+    }
+  }
+
+
+  setRepeatMode(repeatMode) {
+    this._navBar.setRepeatMode(repeatMode);
+  }
+
+
+  setPlaybackMode(playbackMode) {
+    this._navBar.setPlaybackMode(playbackMode);
+  }
+
+
+  setMute(player) {
+    this._navBar.volumeBar.updateVolume(player.muted, player.volume);
+  }
+
+
+  setVolume(player) {
+    this._navBar.volumeBar.updateVolume(player.muted, player.volume);
+  }
+
+
+  setProgress(progress) {
+    this._navBar.progressBar.setProgress(progress); 
+  }
+
+
+  setPlaybackRate(rate) {
+    this._navBar.playbackRateContext.updatePlaybackRate(rate);
+  }
+
+
+  setPageTitle(string) {
+    document.title = string;
+  }
+
+
+  setGradientColor(rgb) {
+    this._wrapper.style.backgroundImage = `linear-gradient(rgb(${rgb.r}, ${rgb.g}, ${rgb.b}),var(--color-bg-darker))`;
+  }
+
+
+  restoreGradientColor() {
+    this._wrapper.style.backgroundImage = `linear-gradient(var(--color-bg-lighter),var(--color-bg-darker))`;
+  }
+
+
+  getViewDisplayName() {
+    return this._scene.view.getDisplayName();
+  }
+
+
+  clearQueueTracks() {
+    this.updateQueueNumber(0);
+  }
+
+
+  updateQueueNumber(length) {
+    this._navBar.updateQueueNumber(length);
+  }
+
+}
+
+
+export default UserInterface;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AboutModal.html">AboutModal</a></li><li><a href="AlbumCoverModal.html">AlbumCoverModal</a></li><li><a href="ArtistPictureModal.html">ArtistPictureModal</a></li><li><a href="AudioVisualizer.html">AudioVisualizer</a></li><li><a href="BackgroundStar.html">BackgroundStar</a></li><li><a href="BaseComponent.html">BaseComponent</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="CanvasUtils.html">CanvasUtils</a></li><li><a href="ColorUtils.html">ColorUtils</a></li><li><a href="Controller.html">Controller</a></li><li><a href="CustomEvents.html">CustomEvents</a></li><li><a href="DragElement.html">DragElement</a></li><li><a href="DropElement.html">DropElement</a></li><li><a href="FrequencyBars.html">FrequencyBars</a></li><li><a href="FrequencyCircle.html">FrequencyCircle</a></li><li><a href="Graph.html">Graph</a></li><li><a href="Kom.html">Kom</a></li><li><a href="Lang.html">Lang</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Modal.html">Modal</a></li><li><a href="Node.html">Node</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Oscilloscope.html">Oscilloscope</a></li><li><a href="OscilloscopeRadialPoint.html">OscilloscopeRadialPoint</a></li><li><a href="PeakMeter.html">PeakMeter</a></li><li><a href="PlaybackRateBar.html">PlaybackRateBar</a></li><li><a href="Player.html">Player</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SceneView.html">SceneView</a></li><li><a href="ScrollBar.html">ScrollBar</a></li><li><a href="Shortcut.html">Shortcut</a></li><li><a href="Spectrum.html">Spectrum</a></li><li><a href="Timeline.html">Timeline</a></li><li><a href="Tree.html">Tree</a></li><li><a href="UserInterface.html">UserInterface</a></li><li><a href="ViewFactory.html">ViewFactory</a></li><li><a href="VisuComponentMono.html">VisuComponentMono</a></li><li><a href="VisuComponentStereo.html">VisuComponentStereo</a></li><li><a href="VolumeBar.html">VolumeBar</a></li><li><a href="Waveform.html">Waveform</a></li><li><a href="WishModal.html">WishModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#VolumeControl">VolumeControl</a></li><li><a href="global.html#_fillLevels">_fillLevels</a></li><li><a href="global.html#_generateLocations">_generateLocations</a></li><li><a href="global.html#_getHeight">_getHeight</a></li><li><a href="global.html#_getWidth">_getWidth</a></li><li><a href="global.html#_organizeLevels">_organizeLevels</a></li><li><a href="global.html#abortDrag">abortDrag</a></li><li><a href="global.html#addNode">addNode</a></li><li><a href="global.html#arrange">arrange</a></li><li><a href="global.html#click">click</a></li><li><a href="global.html#createCanvas">createCanvas</a></li><li><a href="global.html#draw">draw</a></li><li><a href="global.html#drawNode">drawNode</a></li><li><a href="global.html#eventListeners">eventListeners</a></li><li><a href="global.html#getConnectorCoordinates">getConnectorCoordinates</a></li><li><a href="global.html#hideChildren">hideChildren</a></li><li><a href="global.html#isInNode">isInNode</a></li><li><a href="global.html#loadNodes">loadNodes</a></li><li><a href="global.html#mouseDown">mouseDown</a></li><li><a href="global.html#mouseMove">mouseMove</a></li><li><a href="global.html#mouseOut">mouseOut</a></li><li><a href="global.html#mouseUp">mouseUp</a></li><li><a href="global.html#mouseWheel">mouseWheel</a></li><li><a href="global.html#reorganizeTree">reorganizeTree</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#showChildren">showChildren</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#trackTransforms">trackTransforms</a></li><li><a href="global.html#unselect">unselect</a></li><li><a href="global.html#unselectAll">unselectAll</a></li><li><a href="global.html#updateLayout">updateLayout</a></li><li><a href="global.html#zoom">zoom</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Jul 09 2023 11:31:32 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

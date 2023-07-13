@@ -141,7 +141,7 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
         }));
         // Update performers bc of scroll DOM
         this._performers = this.dom.querySelector('#album-performers').children[0].children[0].children;
-      });        
+      });
     } else {
       this.dom.getElementsByClassName('album-container')[0].style.height = '68.1em';
       this.dom.querySelector('#album-performers').style.overflow = 'hidden';        
@@ -465,7 +465,7 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
   _buildTrackObject(track) {
     return {
       id: track.dataset.id,
-      title: track.children[0].children[0].textContent,
+      title: track.children[0].children[0].children[0].textContent,
       // TODO track artist instead of release artist
       artist: this.dom.querySelector('#release-artist').textContent,
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
