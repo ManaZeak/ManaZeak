@@ -22,7 +22,7 @@
         </sonar.exclusions>
         <thumbnailator.version>0.4.20</thumbnailator.version>
         <guava.version>32.0.0-jre</guava.version>
-        <srcimage.version>4.0.37</srcimage.version>
+        <srcimage.version>4.0.38</srcimage.version>
     </properties>
 
     <dependencies>
