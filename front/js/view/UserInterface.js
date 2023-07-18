@@ -276,14 +276,22 @@ class UserInterface {
   setGradientColor(rgb) {
     this._wrapper.style.setProperty('--background-gradient-override', `linear-gradient(rgb(${rgb.r}, ${rgb.g}, ${rgb.b}),var(--color-bg-darker))`);
     this._wrapper.style.setProperty('--background-gradient-override-opacity', 1);
+    this._backgroundOverrideInProgress = true;
+    /* Timeout to unlock gradient bug when resetting the same view */
+    setTimeout(() => {
+      delete this._backgroundOverrideInProgress;      
+    }, 300);
   }
 
 
   restoreGradientColor() {
     this._wrapper.style.setProperty('--background-gradient-override-opacity', 0);
     setTimeout(() => {
-      this._wrapper.style.setProperty('--background-gradient-override', 'none');
-    }, 500);
+      /* Avoid removing gradient when user reset the same page */ 
+      if (!this._backgroundOverrideInProgress) {
+        this._wrapper.style.setProperty('--background-gradient-override', 'none');
+      }
+    }, 300);
   }
 
 
