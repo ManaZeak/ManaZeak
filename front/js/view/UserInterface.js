@@ -175,12 +175,8 @@ class UserInterface {
    * @memberof UserInterface
    * @description <blockquote>The stop loading method will remove the overlay on the page.</blockquote>
    * @return {promise} - The action promise */
-  stopLoading(options) {
+  stopLoading() {
     return new Promise(resolve => {
-      if (options && options.keepLoading === true) {
-        resolve();
-        return;
-      }
       if (document.body.contains(this._loadingOverlay)) {
         document.body.removeChild(this._loadingOverlay);
       }
@@ -278,12 +274,16 @@ class UserInterface {
 
 
   setGradientColor(rgb) {
-    this._wrapper.style.backgroundImage = `linear-gradient(rgb(${rgb.r}, ${rgb.g}, ${rgb.b}),var(--color-bg-darker))`;
+    this._wrapper.style.setProperty('--background-gradient-override', `linear-gradient(rgb(${rgb.r}, ${rgb.g}, ${rgb.b}),var(--color-bg-darker))`);
+    this._wrapper.style.setProperty('--background-gradient-override-opacity', 1);
   }
 
 
   restoreGradientColor() {
-    this._wrapper.style.backgroundImage = `linear-gradient(var(--color-bg-lighter),var(--color-bg-darker))`;
+    this._wrapper.style.setProperty('--background-gradient-override-opacity', 0);
+    setTimeout(() => {
+      this._wrapper.style.setProperty('--background-gradient-override', 'none');
+    }, 500);
   }
 
 

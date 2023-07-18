@@ -86,6 +86,16 @@ class SceneView {
   }
 
 
+  _overrideBackgroundGradient(color) {
+    mzk.ui.setGradientColor(color);
+  }
+
+
+  _restoreBackgroundGradient() {
+    mzk.ui.restoreGradientColor();
+  }
+
+
   getDisplayName() {
     // Must be overriden in latest child class
   }

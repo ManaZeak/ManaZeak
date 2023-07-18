@@ -32,10 +32,6 @@ class Scene {
         mzk.ui.processLogFromServer(errors);
       }, true);
       Evts.subscribe('SceneViewReady', data => {
-        // To force UserInterface to leave loading overlay. Must be manually shut down by view
-        if (data && data.keepLoading === true) {
-          options.keepLoading = true;
-        }
         this._scene.append(this.view.dom);
         Evts.unsubscribe(failEvtId);
         resolve();

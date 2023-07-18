@@ -182,6 +182,9 @@ a {
 }
 
 .scene-wrapper {
+  --background-gradient-override: none;
+  --background-gradient-override-opacity: 0;
+
   background-image: linear-gradient(var(--color-bg-lighter), var(--color-bg-darker));
   display: grid;
   grid-template-columns: var(--aside-size) calc(100% - var(--aside-size));
@@ -189,6 +192,22 @@ a {
   height: calc(100% - var(--navbar-height));
   overflow: hidden;
   width: 100%;
+  z-index: 1;
+
+  &::before {
+    /* Before pseudo-element used for animating background linear gradient */
+    content: '';
+    background-image: var(--background-gradient-override); /* Must be set in Js */
+    bottom: 0;
+    left: 0;
+    opacity: var(--background-gradient-override-opacity);
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+
+    transition: opacity .33s;
+  }
 
   .aside {
     grid-row: 1 / span 2;
