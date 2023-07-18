@@ -1,17 +1,16 @@
 import HttpStatusCode from '../utils/enum/HttpStatusCode.js';
 
 
-/**
- * @class
- * @constructor
- * @public
- **/
 class Kom {
 
 
   /**
+   * @class
+   * @constructor
    * @summary Server communication abstraction
    * @author Arthur Beaulieu
+   * @since October 2020
+   * @licence GPL-v3.0
    * @description
    * <blockquote>
    * This class is the main object to deal with when requesting something from the server.
@@ -19,19 +18,15 @@ class Kom {
    * <code>Promise</code>.<br>Because it uses <code>Promise</code>, success and errors are to be handled in the caller
    * function, using <code>.then()</code> and <code>.catch()</code>. To properly deal with <code>POST</code> request,
    * the session must contain a csrf token in cookies. Otherwise, those <code>POST</code> call may fail.
-   * </blockquote>
-   **/
+   * </blockquote> **/
   constructor() {
-    /** User session CSRF token to use in POST request
-     * @private
-     * @member {String}
-     **/
+    /** @private
+     * @member {string} - User session CSRF token to use in POST request */
     this._csrfToken = this._getCsrfCookie();
-    /** Array of HTTP headers to be used in HTTP calls
-     * @private
-     * @member {Array[]}
-     **/
+    /** @private
+     * @member {Array[]} - Array of HTTP headers to be used in HTTP calls */
     this._headers = this._createRequestHeaders();
+
     // Check that CSRF token exists and that headers are properly created
     this._checkValidity();
   }

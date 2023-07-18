@@ -2,7 +2,6 @@ import ProgressControlEnum from '../utils/enum/ProgressControl.js';
 import VolumeControlEnum from '../utils/enum/VolumeControl.js';
 import PlayerRepeatModeEnum from '../utils/enum/PlayerRepeatMode.js';
 import PlayerPlaybackModeEnum from '../utils/enum/PlayerPlaybackMode.js';
-
 import Player from './Player.js';
 
 
@@ -23,6 +22,7 @@ class Controller {
    * determination for either previous and next track depending on the current playback context.
    * </blockquote> **/
   constructor() {
+    if (DEBUG) { console.log('new Controller() : called'); }
     /** @private
      * @member {object} - The audio player component */
     this._player = null;
@@ -38,13 +38,13 @@ class Controller {
     this._trackHistory = [];
     /** @private
      * @member {array} - The user queue, must only contains IDs  */
-    this._queue = []; // User manual queue
+    this._queue = [];
     /** @private
      * @member {array} - The shuffle queue is a virtual queue only enabled when playback mode is at shuffle (ie 1) */
-    this._shuffleQueue = []; // Internal for shuffle mode only
+    this._shuffleQueue = [];
     /** @private
      * @member {boolean} - Does the shuffle queue needs to be inited when `Controller` receives a new playObject? */
-    this._waitForShuffleTracks = true; // Flag to know if shuffle queue needs to be inited when changeTrack called
+    this._waitForShuffleTracks = true;
 
     /** @private
      * @member {number} - The player repeat mode enabled. See PlayerRepeatModeEnum */
@@ -52,7 +52,7 @@ class Controller {
     /** @private
      * @member {number} - The player playback mode enabled. See PlayerPlaybackModeEnum */
     this._playbackMode = PlayerPlaybackModeEnum.NORMAL; // 0 = normal | 1 = shuffle | 2 = random
-    // Start the init sequence to make `Controller` ready
+    // Start the init sequence to make `Controller` ready to control (huehuehue)
     this._init();
     this._events();
     this._shortcuts();
@@ -178,7 +178,7 @@ class Controller {
    * </blockquote> 
    * @param {number} amount - The amount of second to adjust player's progress with in seconds **/
   adjustProgress(amount) {
-    if (DEBUG) { console.log('Controller.adjustProgress : called', amount); }
+    if (DEBUG) { console.log('Controller.adjustProgress : called with (amount)', amount); }
     this._player.adjustProgress(amount);
   }
 
@@ -194,7 +194,7 @@ class Controller {
    * </blockquote>
    * @param {number} progress - The percentage to set the player's progress with **/
   setProgress(progress) {
-    if (DEBUG) { console.log('Controller.setProgress : called', progress); }
+    if (DEBUG) { console.log('Controller.setProgress : called with (progress)', progress); }
     this._player.progress = progress;
   }
 
@@ -260,7 +260,7 @@ class Controller {
    * </blockquote> 
    * @param {number} amount - The percentage to adjust player's volume with **/
   adjustVolume(amount) {
-    if (DEBUG) { console.log('Controller.adjustVolume : called', amount); }
+    if (DEBUG) { console.log('Controller.adjustVolume : called with (amount)', amount); }
     this._player.adjustVolume(amount);
   }
 
@@ -276,7 +276,7 @@ class Controller {
    * </blockquote>
    * @param {number} volume - The percentage to set the player's volume with **/
   setVolume(volume) {
-    if (DEBUG) { console.log('Controller.setVolume : called', volume); }
+    if (DEBUG) { console.log('Controller.setVolume : called with (volume)', volume); }
     this._player.volume = volume;
   }
 
@@ -305,7 +305,7 @@ class Controller {
    * @param {number} [data.startTimePercentage=null] - The progress percentage to start playback with 
    * @returns {promise} Resolved when track updated with playing track as argument, rejected otherwise **/
   changeTrack(data) {
-    if (DEBUG) { console.log('Controller.changeTrack : called', data); }
+    if (DEBUG) { console.log('Controller.changeTrack : called with (data)', data); }
     return new Promise((resolve, reject) => {
       let track = data.playObject.track;
       // Only replace playObject if track to change didn't came from queue
@@ -621,7 +621,7 @@ class Controller {
    * @param {string} track.cover - The track cover path
    * @param {string} track.mood - The track moodbar image filename **/
    _addTrackHistory(playObject, track) {
-    if (DEBUG) { console.log('Controller._addTrackHistory : called', playObject, track); }
+    if (DEBUG) { console.log('Controller._addTrackHistory : called with (playObject, track)', playObject, track); }
     // Don't add track if latest track in history is current one
     if (this._trackHistory.length && track.id === this._trackHistory[this._trackHistory.length - 1].id) {
       return;
@@ -689,7 +689,7 @@ class Controller {
    * @param {string} data.id - Only relevant in `type === 'track`, the track ID to store in queue
    * @param {array} data.ids - Only relevant in `type === 'tracklist'`, the track IDs to stored in queue **/
   queue(data) {
-    if (DEBUG) { console.log('Controller.queue : called', data); }
+    if (DEBUG) { console.log('Controller.queue : called with (data)', data); }
     if (data.type === 'track') {
       const track = mzk.ui.getTrackById(data.id);
       this._queue.push(track);
@@ -713,7 +713,7 @@ class Controller {
    * </blockquote>
    * @param {string} id - The track id to remove from queue **/
   removeFromQueue(id) {
-    if (DEBUG) { console.log('Controller.removeFromQueue : called', id); }
+    if (DEBUG) { console.log('Controller.removeFromQueue : called ith (id)', id); }
     for (let i = 0; i < this._queue.length; ++i) {
       if (this._queue[i].id === id) {
         this._queue.splice(i, 1);
@@ -776,7 +776,7 @@ class Controller {
    * @param {string} data.name - The output filename
    * @param {string} data.id - The track ID to download **/
   download(data) {
-    if (DEBUG) { console.log('Controller.download : called'); }
+    if (DEBUG) { console.log('Controller.download : called with (data)', data); }
     const link = document.createElement('A');
     link.download = data.name;
     link.href = `/play/${data.id}/`;
