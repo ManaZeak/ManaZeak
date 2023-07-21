@@ -141,9 +141,12 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
         // Update performers bc of scroll DOM
         this._performers = this.dom.querySelector('#album-performers').children[0].children[0].children;
       });
+    } else if (this._performers.length > 4) {
+      this.dom.getElementsByClassName('album-container')[0].style.height = '78rem';
+      this.dom.querySelector('#album-performers').style.height = '200px';
     } else {
       this.dom.getElementsByClassName('album-container')[0].style.height = '68.1em';
-      this.dom.querySelector('#album-performers').style.overflow = 'hidden';        
+      this.dom.querySelector('#album-performers').style.overflow = 'hidden';
     }
   }
 
