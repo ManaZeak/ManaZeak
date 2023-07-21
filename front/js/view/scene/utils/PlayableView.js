@@ -103,6 +103,11 @@ class PlayableView extends SceneView {
   }
 
 
+  get id() {
+    return this._id;
+  }
+
+
 }
 
 

@@ -191,6 +191,7 @@ a {
   grid-template-rows: var(--topbar-size) calc(100% - var(--topbar-size));
   height: calc(100% - var(--navbar-height));
   overflow: hidden;
+  position: relative;
   width: 100%;
   z-index: 1;
 

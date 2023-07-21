@@ -309,6 +309,12 @@ class UserInterface {
     this._navBar.updateQueueNumber(length);
   }
 
+
+  getCurrentView() {
+    return this._scene.view;
+  }
+
+
 }
 
 

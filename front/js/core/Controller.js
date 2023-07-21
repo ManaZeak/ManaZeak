@@ -388,8 +388,8 @@ class Controller {
           this.__playNextFromRepeatAll();
           return;
         }
-        // No track remaining in playObj, nor repeat mode enabled, stop playback.
-        mzk.stopPlayback();
+        // Try to play next track from view
+        this.__playNextFromView();
         return;
       }
       // Otherwise, play next from current playObject
@@ -542,6 +542,34 @@ class Controller {
       id: this._playObject.tracks[this._playObject.playingIdx].id,
       playObject: this._playObject
     });
+  }
+
+
+  /** @method
+   * @name __playNextFromView
+   * @private
+   * @memberof Controller
+   * @author Arthur Beaulieu
+   * @since July 2023
+   * @description <blockquote>
+   * Internal method for `_playNext()`, used to try to get a track to play from current view.
+   * </blockquote> **/
+  __playNextFromView() {
+    if (DEBUG) { console.log('Controller.__playNextFromView : called'); }
+
+    const currentView = mzk.ui.getCurrentView();
+    if (currentView.id === this._playObject.id) {
+      // Do not replay playObj if user is on the same view
+      mzk.stopPlayback();
+      return;
+    }
+
+    if (typeof currentView.playFirstTrack === 'function') {
+      // No track remaining in playObj, nor repeat mode enabled, stop playback.
+      currentView.playFirstTrack();
+    } else {
+      mzk.stopPlayback();
+    }
   }
 
 
