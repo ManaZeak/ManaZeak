@@ -15,7 +15,7 @@ window.Shortcut = new Shortcut();
 window.Notif = new Notification();
 window.Logger = new Logger({
   notification: window.Notif,
-  log: (window.location.href.indexOf('?debug') > -1) ? true : false
+  log: (window.location.href.indexOf('?debug') > -1)
 });
 
 // Create new ManaZeak object to init internals then full init
