@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
+import org.manazeak.manazeak.constant.file.ResourcePathEnum;
+import org.manazeak.manazeak.constant.library.moodbar.MoodbarSizeEnum;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.daos.library.management.mood.MoodbarGeneratorDAO;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationReport;
+import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarImageGenerationProjection;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.moodbar.MoodbarManager;
@@ -18,7 +21,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -60,6 +66,58 @@ public class MoodbarGenerationService {
         }
     }
 
+    /**
+     * Delete all the moodbar images and launch the generation of the images.
+     */
+    @Async
+    public void launchMoodbarImageRegenThread() {
+        try {
+            log.info("Launching the moodbar image regeneration.");
+            isRunning.set(true);
+            // Deleting all the images of the moodbars.
+            FileSystemUtils.deleteRecursively(ResourcePathEnum.MOOD_FOLDER.getPath());
+
+            // Creating the thread pool.
+            ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+
+            Long lastTrackId = 0L;
+            while (true) {
+                // Building a pageable for the SQL request.
+                Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
+
+                // Getting a packet of elements.
+                List<MoodbarImageGenerationProjection> elements = trackDAO.getAllMoodbars(lastTrackId, pageable);
+
+                // If the list is empty, then exiting the loop.
+                if (elements.isEmpty()) {
+                    break;
+                }
+
+                // Adding the job to the thread pool.
+                executor.submit(processMoodFileToPicture(elements));
+
+                // Getting the last element of the list.
+                lastTrackId = elements.get(elements.size() - 1).getId();
+            }
+
+            executor.shutdown();
+
+            try {
+                if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
+                    throw new MzkRuntimeException("The timeout for the moodbar gen.");
+                }
+            } catch (InterruptedException e) {
+                log.error("Thread interrupted during the moodbar gen.", e);
+                Thread.currentThread().interrupt();
+            }
+        } catch (IOException e) {
+            throw new MzkRuntimeException("Error when processing files during moodbar image regeneration.", e);
+        } finally {
+            // The job isn't running anymore.
+            isRunning.set(false);
+            log.info("Moodbar image regeneration has ended.");
+        }
+    }
 
     /**
      * Launch the moodbar generation thread pool.
@@ -130,6 +188,27 @@ public class MoodbarGenerationService {
                 moodbarGeneratorDAO.insertMoodbars(moodbarsToUpdate);
             } catch (Exception e) {
                 log.error("An error occurred during the moodbar generation.", e);
+            }
+        };
+    }
+
+    private Runnable processMoodFileToPicture(List<MoodbarImageGenerationProjection> moodbars) {
+        return () -> {
+            for (MoodbarImageGenerationProjection moodbar : moodbars) {
+                String moodbarMd5 = moodbar.getMoodbar()
+                        .substring(0, moodbar.getMoodbar().length() - FileExtensionEnum.WEBP.getExtension().length());
+                // Generating a moodbar for each size.
+                for (MoodbarSizeEnum size : MoodbarSizeEnum.values()) {
+                    Path moodbarFile = ResourcePathEnum.MOOD_ENCODED_FOLDER.getPath()
+                            .resolve(size.getFolderName())
+                            .resolve( moodbarMd5 + FileExtensionEnum.MOOD.getExtension());
+
+                    try {
+                        moodbarManager.launchMoodbarImageGen(moodbarFile, moodbarMd5, size);
+                    } catch (IOException e) {
+                        log.error("Error when generating the moodbar image for this moodbar : " + moodbar, e);
+                    }
+                }
             }
         };
     }
