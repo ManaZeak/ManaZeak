@@ -94,7 +94,8 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
             "gen.genreId," +
             "gen.name," +
             "gen.pictureFilename) " +
-            "from Genre gen")
+            "from Genre gen " +
+            "order by gen.name")
     List<GenreMinimalInfoDto> getAllMinimalGenre();
 
     /**
