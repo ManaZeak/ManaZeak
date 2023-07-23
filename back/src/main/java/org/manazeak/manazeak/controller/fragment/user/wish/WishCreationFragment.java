@@ -58,7 +58,7 @@ public class WishCreationFragment {
      * @return the page.
      */
     @RestSecurity(PrivilegeEnum.WISH)
-    @PostMapping("/wish/")
+    @PostMapping("/modal/wish/")
     public String saveUserWish(@ModelAttribute("wish") @Valid UserWishDto wish, BindingResult result, Model model) {
         // Returning into the modal of wish creation.
         if (result.hasErrors()) {
