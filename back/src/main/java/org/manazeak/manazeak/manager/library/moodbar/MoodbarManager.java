@@ -152,7 +152,7 @@ public class MoodbarManager {
      * @param size                 The size of the requested moodbar.
      * @throws IOException Error while generating the moodbar.
      */
-    private void launchMoodbarImageGen(Path moodbarGeneratedFile, String moodMd5, MoodbarSizeEnum size) throws IOException {
+    public void launchMoodbarImageGen(Path moodbarGeneratedFile, String moodMd5, MoodbarSizeEnum size) throws IOException {
         // Checking if the file exists.
         if (!Files.exists(moodbarGeneratedFile)) {
             log.error("No file where present for moodbar generation : {}", moodbarGeneratedFile);

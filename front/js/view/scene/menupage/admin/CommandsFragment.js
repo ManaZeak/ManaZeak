@@ -27,6 +27,9 @@ class CommandsFragment {
 
     const regenMoods = this._target.querySelector('#regen-moods');
     this._evtIds.push(Evts.addEvent('click', regenMoods, this._moodsClicked));
+
+    const regenMoodsImages = this._target.querySelector('#regen-moods-image');
+    this._evtIds.push(Evts.addEvent('click', regenMoodsImages, this._moodsImageClicked));
   }
 
 
@@ -59,6 +62,14 @@ class CommandsFragment {
     });
   }
 
+  _moodsImageClicked() {
+    mzk.kom.get('/admin/library/regenMoodImage/').then(response => {
+      response.notifications[0].type = response.notifications[0].severity;
+      Notif.new(response.notifications[0]);
+    }).catch(() => {
+      Notif.new(error.notifications[0]);
+    });
+  }
 
 }
 

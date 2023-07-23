@@ -2,6 +2,7 @@ package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
+import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarImageGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
@@ -40,6 +41,21 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
             order by trk.trackId
             """)
     List<MoodbarGenerationProjection> getTracksWithoutMoodbar(@Param("lastTrackId") Long lastTrackId, Pageable pageable);
+
+    /**
+     * Get all the moodbar of the application.
+     *
+     * @param lastTrackId The last id of the track associated to the moodbar
+     * @param pageable    The number of element to fetch in the request.
+     * @return The list of moodbars.
+     */
+    @Query("""
+            select trk.trackId as id, trk.mood as moodbar from Track as trk
+            where trk.mood is not null
+            and trk.trackId > :lastTrackId
+            order by trk.trackId
+            """)
+    List<MoodbarImageGenerationProjection> getAllMoodbars(@Param("lastTrackId") Long lastTrackId, Pageable pageable);
 
     /**
      * Getting the tracks of an album.
