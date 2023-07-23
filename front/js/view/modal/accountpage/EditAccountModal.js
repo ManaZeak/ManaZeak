@@ -36,8 +36,8 @@ class EditAccountModal extends Modal {
       name: r.querySelector('#name-input').value,
       bio: r.querySelector('#bio-input').value,
       birthDate: r.querySelector('#birthday-input').value,
-      country: r.querySelector('#country-select').options[r.querySelector('#country-select').selectedIndex].text,
-      locale: r.querySelector('#locale-select').options[r.querySelector('#locale-select').selectedIndex].text,
+      countryId: r.querySelector('#country-select').options[r.querySelector('#country-select').selectedIndex].value,
+      localeId: r.querySelector('#locale-select').options[r.querySelector('#locale-select').selectedIndex].value,
     }).finally(this.close.bind(this));
   }
 

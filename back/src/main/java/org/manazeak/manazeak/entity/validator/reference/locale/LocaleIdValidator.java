@@ -27,7 +27,7 @@ public class LocaleIdValidator implements ConstraintValidator<LocaleId, Long> {
     @Override
     public boolean isValid(Long localeId, ConstraintValidatorContext constraintValidatorContext) {
         // If the user didn't choose any local we skip this test
-        if (localeId == 0) {
+        if (localeId == 0L) {
             return true;
         }
         Optional<Locale> locale = localeDAO.findById(localeId);

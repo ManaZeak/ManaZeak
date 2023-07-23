@@ -1,4 +1,4 @@
-<!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
+<!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserEditDto*"*/-->
 <div class="modal" xmlns:th="http://www.thymeleaf.org" th:object="${userInfo}">
   <div class="header">
     <p th:text="#{modal.edit_account.title}"></p>
@@ -6,24 +6,30 @@
   </div>
   <div class="container">
     <!-- Email address field (256 char) and specific errors -->
-    <label for="email-input" th:text="#{user.tellusmore.email}"></label>
-    <input id="email-input" maxlength="256" type="email"/>
+    <p class="error" th:each="error : ${#fields.errors('email')}" th:text="${error}"></p>
+    <label for="email-input" th:text="#{user.tellusmore.email}"/>
+    <input id="email-input" th:field="*{email}" maxlength="256" type="email"/>
     <!-- Surname field (256 char) and specific errors -->
+    <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}"></p>
     <label for="surname-input" th:text="#{user.tellusmore.surname}"></label>
-    <input id="surname-input" maxlength="256" type="text"/>
+    <input id="surname-input" th:field="*{surname}" maxlength="256" type="text"/>
     <!-- Name field (256 char) and specific errors -->
-    <label for="name-input" th:text="#{user.tellusmore.name}"></label>
-    <input id="name-input" maxlength="256" type="text"/>
+    <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
+    <label for="name-input" th:text="#{user.tellusmore.name}"/>
+    <input id="name-input" th:field="*{name}" maxlength="256" type="text"/>
     <!-- Bio field (4096 char) -->
+    <p class="error" th:each="error : ${#fields.errors('bio')}" th:text="${error}"></p>
     <label for="bio-input" th:text="#{user.tellusmore.bio}"></label>
-    <textarea id="bio-input" maxlength="4096" th:placeholder="#{user.tellusmore.bio.placeholder}"></textarea>
+    <textarea id="bio-input" th:field="*{bio}" maxlength="4096" th:placeholder="#{user.tellusmore.bio.placeholder}"></textarea>
     <div class="right-col">
       <!-- Birthday field (date) and specific errors -->
+      <p class="error" th:each="error : ${#fields.errors('birthdate')}" th:text="${error}"></p>
       <label for="birthday-input" th:text="#{user.tellusmore.birthday}"></label>
-      <input id="birthday-input" min="1900-01-01" name="birthday" type="date">
+      <input id="birthday-input" min="1900-01-01" th:field="*{birthdate}" name="birthday" type="date">
       <!-- Max attribute is set with Js -->
       <!-- Country selection (set from db) and specific errors -->
       <!--/*@thymesVar id="countries" type="org.manazeak.manazeak.entity.dto.country.CountrySelectDto"*/-->
+      <p class="error" th:each="error : ${#fields.errors('countryId')}" th:text="${error}"></p>
       <label for="country-select" th:text="#{user.tellusmore.country}"></label>
       <select id="country-select" th:field="*{countryId}">
         <!-- Adding the empty value to the selection -->
@@ -33,10 +39,9 @@
       </select>
       <!-- Locale selection (set from db) and specific errors -->
       <!--/*@thymesVar id="locales" type="org.manazeak.manazeak.entity.reference.Locale"*/-->
+      <p class="error" th:each="error : ${#fields.errors('localeId')}" th:text="${error}"></p>
       <label for="locale-select" th:text="#{user.tellusmore.language}"></label>
       <select id="locale-select" th:field="*{localeId}">
-        <!-- Adding the empty value to the selection -->
-        <option value="0"></option>
         <!-- Adding the rest of the objects in the database. -->
         <option th:each="locale : ${locales}" th:text="${locale.value}" th:value="${locale.localeId}"></option>
       </select>

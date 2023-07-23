@@ -93,6 +93,9 @@ public final class DateUtil {
      * @return The formatted date as a string.
      */
     public static String formatDate(LocalDate date, DateTimeFormatter formatter) {
+        if (date == null) {
+            return "";
+        }
         return date.format(formatter);
     }
 }
