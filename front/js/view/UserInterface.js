@@ -58,6 +58,7 @@ class UserInterface {
    * @param {object} options.name - The view name, must match one in the ViewFactory class
    * @return {promise} - The action promise */
   setSceneView(options) {
+    if (DEBUG) { console.log('UserInterface.setSceneView : called with (options)', options); }
     return new Promise((resolve, reject) => {
       this.startLoading()
         .then(this._updateHistory.bind(this, options))
@@ -72,6 +73,7 @@ class UserInterface {
 
 
   setModal(options) {
+    if (DEBUG) { console.log('UserInterface.setModal : called with (options)', options); }
     return new Promise((resolve, reject) => {
       this._scene.buildModal(options)
         .then(resolve)
@@ -81,6 +83,7 @@ class UserInterface {
 
 
   getFragment(url) {
+    if (DEBUG) { console.log('UserInterface.getFragment : called with (url)', url); }
     // The loading overlay must be handled caller, since fragment is only a part of viewport
     return new Promise((resolve, reject) => {
       mzk.kom.getText(url).then(fragment => {
@@ -94,6 +97,7 @@ class UserInterface {
 
 
   previousHistoryView() {
+    if (DEBUG) { console.log('UserInterface.previousHistryView : called'); }
     const view = this._history.getPreviousView();
     if (view !== null) {
       mzk.setView(view);
@@ -102,6 +106,7 @@ class UserInterface {
 
 
   nextHistoryView() {
+    if (DEBUG) { console.log('UserInterface.nextHistoryView : called'); }
     const view = this._history.getNextView();
     if (view !== null) {
       mzk.setView(view);
@@ -110,6 +115,7 @@ class UserInterface {
 
 
   processLogFromServer(errors) {
+    if (DEBUG) { console.log('UserInterface.processLogFromServer : called with (errors)', errors); }
     if (errors && errors.length > 0) {
       for (let i = 0; i < errors.length; ++i) {
         Logger.raise(errors[i]);
@@ -119,11 +125,13 @@ class UserInterface {
 
 
   _updateHistory(options) {
+    if (DEBUG) { console.log('UserInterface._updateHistory : called with (options)', options); }
     this._history.addView(options);
   }
 
 
   _updateHomeIcon(options) {
+    if (DEBUG) { console.log('UserInterface._updateHomeIcon : called with (options)', options); }
     return new Promise(resolve => {
       if (options.name === 'MainPage') {
         this._homeButton.src = 'static/img/actions/random-roll.svg';
@@ -137,6 +145,7 @@ class UserInterface {
 
 
   _setTopBarView(options) {
+    if (DEBUG) { console.log('UserInterface.setTopBarView : called with (options)', options); }
     return new Promise(resolve => {
       this._topBar.setView(Object.assign({
         displayName: this._scene.view.getDisplayName()
@@ -160,6 +169,7 @@ class UserInterface {
    * @description <blockquote>The start loading method will add an overlay on the whole page that has a css animation.</blockquote>
    * @return {promise} - The action promise */
   startLoading() {
+    if (DEBUG) { console.log('UserInterface.startLoading : called'); }
     return new Promise(resolve => {
       if (!document.body.contains(this._loadingOverlay)) {
         document.body.appendChild(this._loadingOverlay);
@@ -176,6 +186,7 @@ class UserInterface {
    * @description <blockquote>The stop loading method will remove the overlay on the page.</blockquote>
    * @return {promise} - The action promise */
   stopLoading() {
+    if (DEBUG) { console.log('UserInterface.stopLoading : called'); }
     return new Promise(resolve => {
       if (document.body.contains(this._loadingOverlay)) {
         document.body.removeChild(this._loadingOverlay);
@@ -189,6 +200,7 @@ class UserInterface {
 
 
   changeTrack(track) {
+    if (DEBUG) { console.log('UserInterface.changeTrack : called with (track)', track); }
     if (track) {
       this._topBar.setTrack(track, mzk.ctrl.playObject);
       this._navBar.setQueuedTracks(mzk.ctrl.queuedTracks);
@@ -201,6 +213,7 @@ class UserInterface {
 
 
   setPlay(playing) {
+    if (DEBUG) { console.log('UserInterface.setPlay : called with (playing)', playing); }
     if (mzk.ctrl.playingId !== -1) { // Only set play if payer is indeed playing
       if (!this._navBar.progressBar.isActive) {
         this._navBar.progressBar.activate();
@@ -215,6 +228,7 @@ class UserInterface {
 
 
   stopPlayback() {
+    if (DEBUG) { console.log('UserInterface.stopPlayback : called'); }
     this._topBar.clearTrack();
     this._navBar.progressBar.deactivate();
     this._navBar.updatePlayButton(false);
@@ -226,12 +240,13 @@ class UserInterface {
 
 
   queue(queuedTracks) {
+    if (DEBUG) { console.log('UserInterface.queue : called with (queuedTracks)', queuedTracks); }
     this._navBar.setQueuedTracks(queuedTracks);
-    
   }
 
 
   getTrackById(id) {
+    if (DEBUG) { console.log('UserInterface.getTrackById : called with (id)', id); }
     if (this._scene.view.getTrackById) {
       return this._scene.view.getTrackById(id);
     }
@@ -239,78 +254,91 @@ class UserInterface {
 
 
   setRepeatMode(repeatMode) {
+    if (DEBUG) { console.log('UserInterface.setRepeatMode : called with (repeatMode)', repeatMode); }
     this._navBar.setRepeatMode(repeatMode);
   }
 
 
   setPlaybackMode(playbackMode) {
+    if (DEBUG) { console.log('UserInterface.setPlaybackMode : called with (playbackMode)', playbackMode); }
     this._navBar.setPlaybackMode(playbackMode);
   }
 
 
   setMute(player) {
+    if (DEBUG) { console.log('UserInterface.setMute : called with (player)', player); }
     this._navBar.volumeBar.updateVolume(player.muted, player.volume);
   }
 
 
   setVolume(player) {
+    if (DEBUG) { console.log('UserInterface.setVolume : called with (player)', player); }
     this._navBar.volumeBar.updateVolume(player.muted, player.volume);
   }
 
 
   setProgress(progress) {
+    if (DEBUG) { console.log('UserInterface.setProgress : called with (progress)', progress); }
     this._navBar.progressBar.setProgress(progress); 
   }
 
 
   setPlaybackRate(rate) {
+    if (DEBUG) { console.log('UserInterface.setPlaybackRate : called with (rate)', rate); }
     this._navBar.playbackRateContext.updatePlaybackRate(rate);
   }
 
 
-  setPageTitle(string) {
-    document.title = string;
+  setPageTitle(title) {
+    if (DEBUG) { console.log('UserInterface.setPageTitle : called with (title)', title); }
+    document.title = title;
   }
 
 
   setGradientColor(rgb) {
+    if (DEBUG) { console.log('UserInterface.setGradientColor : called with (rgb)', rgb); }
     this._wrapper.style.setProperty('--background-gradient-override', `linear-gradient(rgb(${rgb.r}, ${rgb.g}, ${rgb.b}),var(--color-bg-darker))`);
     this._wrapper.style.setProperty('--background-gradient-override-opacity', 1);
     this._backgroundOverrideInProgress = true;
     /* Timeout to unlock gradient bug when resetting the same view */
     setTimeout(() => {
       delete this._backgroundOverrideInProgress;      
-    }, 300);
+    }, 1000); // Match value with css transition time
   }
 
 
   restoreGradientColor() {
+    if (DEBUG) { console.log('UserInterface.restoreGradientColor : called'); }
     this._wrapper.style.setProperty('--background-gradient-override-opacity', 0);
     setTimeout(() => {
       /* Avoid removing gradient when user reset the same page */ 
       if (!this._backgroundOverrideInProgress) {
         this._wrapper.style.setProperty('--background-gradient-override', 'none');
       }
-    }, 300);
+    }, 1000); // Match value with css transition time
   }
 
 
   getViewDisplayName() {
+    if (DEBUG) { console.log('UserInterface.getViewDisplayName : called'); }
     return this._scene.view.getDisplayName();
   }
 
 
   clearQueueTracks() {
+    if (DEBUG) { console.log('UserInterface.clearQueueTracks : called'); }
     this.updateQueueNumber(0);
   }
 
 
   updateQueueNumber(length) {
+    if (DEBUG) { console.log('UserInterface.updateQueueNumber : called with (length)', length); }
     this._navBar.updateQueueNumber(length);
   }
 
 
   getCurrentView() {
+    if (DEBUG) { console.log('UserInterface.getCurrentView : called'); }
     return this._scene.view;
   }
 

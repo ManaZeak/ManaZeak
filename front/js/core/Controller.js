@@ -556,7 +556,6 @@ class Controller {
    * </blockquote> **/
   __playNextFromView() {
     if (DEBUG) { console.log('Controller.__playNextFromView : called'); }
-
     const currentView = mzk.ui.getCurrentView();
     if (currentView.id === this._playObject.id) {
       // Do not replay playObj if user is on the same view
