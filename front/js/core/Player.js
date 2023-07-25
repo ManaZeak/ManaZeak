@@ -46,6 +46,7 @@ class Player {
    * @description Build player object and set loop/volume values
    **/
   _init() {
+    if (DEBUG) { console.log('Player._init : called'); }
     this._player = document.createElement('AUDIO'); // Create HTML audio object
     this._player.id = 'mzk-audio-player'; // Assign player ID
     this.volume = 1; // Initialize volume to its maximum value, prefs
@@ -62,6 +63,7 @@ class Player {
    * @description Listen to ended track event on audio player
    **/
   _events() {
+    if (DEBUG) { console.log('Player._events : called'); }
     Evts.addEvent('ended', this._player, this._trackEnded, this); // Handle track end playback event
     Evts.addEvent('error', this._player, this._handleErrors, this);
   }
@@ -77,8 +79,8 @@ class Player {
    * @description Handle all the player's media errors
    **/
   _handleErrors(event) {
+    if (DEBUG) { console.log('Player._handleErrors : called with (event)', event); }
     const error = event.target.error;
-
     if (error.code === error.MEDIA_ERR_DECODE) {
       Logger.raise({
         code: 'MEDIA_DECODE_ERROR',
@@ -118,6 +120,7 @@ class Player {
    * @description Append audio player to the DOM using a fragment
    **/
   _attach() {
+    if (DEBUG) { console.log('Player._attach : called'); }
     const fragment = document.createDocumentFragment(); // Fragment creation
     fragment.appendChild(this._player); // Append audio player to the fragment
     document.body.appendChild(fragment); // Append fragment to the document body
@@ -139,6 +142,7 @@ class Player {
    * @description Swap playing state and start playback at currentTime
    **/
   play(startTimePercentage) {
+    if (DEBUG) { console.log('Player.play : called with (startTimePercentage)', startTimePercentage); }
     if (this._player.src) { // Apply only if src is defined
       this._isPlaying = true; // Set playing state to true
       this._player.play(); // Start player efective playback
@@ -159,6 +163,7 @@ class Player {
    * @description Swap playing state and pause playback at currentTime
    **/
   pause() {
+    if (DEBUG) { console.log('Player.pause : called'); }
     if (this._player.src) { // Apply only if src is defined
       this._isPlaying = false; // Set playing state to false
       this._player.pause(); // Pause player playback
@@ -176,10 +181,12 @@ class Player {
    * @description Stop playback and remove source from player attributes
    **/
   stop() {
+    if (DEBUG) { console.log('Player.stop : called'); }
     if (this._player.src) { // Apply only if src is defined
       this._player.pause(); // Pause player playback
       this._isPlaying = false; // Set playing state to false
       this._player.removeAttribute('src'); // Remove src attribute from player (since this._player.src = null doesn't delete src)
+      Evts.publish('PlayerStop');
     }
   }
 
@@ -194,6 +201,7 @@ class Player {
    * @description Toggle the playback state of the player
    **/
   togglePlay() {
+    if (DEBUG) { console.log('Player.togglePlay : called'); }
     if (!this._isPlaying) {
       this.play();
     } else {
@@ -214,6 +222,7 @@ class Player {
    * @returns {Promise} A Promise that resolves when player is operating
    **/
   changeTrack(url, startTimePercentage) {
+    if (DEBUG) { console.log('Player.changeTrack : called with (url, startTimePercentage)', url, startTimePercentage); }
     return new Promise((resolve) => {
       // Invalid url type
       if (typeof url !== 'string') {
@@ -258,6 +267,7 @@ class Player {
    * @description restart immediately the current track in the player
    **/
   repeatTrack() {
+    if (DEBUG) { console.log('Player.repeatTrack : called'); }
     if (this._player.src) { // Apply only if src is defined
       this._player.currentTime = 0; // Reset current time
       this.play(); // Start playback
@@ -275,6 +285,7 @@ class Player {
    * @description Action to take when the current track reaches its end
    **/
   _trackEnded() {
+    if (DEBUG) { console.log('Player._trackEnded : called'); }
     this._isPlaying = false; // Update playling state
     Evts.publish('TrackEnded');
   }
@@ -295,6 +306,7 @@ class Player {
    * @description Set player effective volume to zero
    **/
   mute() {
+    if (DEBUG) { console.log('Player.mute : called'); }
     if (!this._isMuted) { // Avoid multi call
       this._isMuted = true; // Set mute state to true
       this._player.volume = 0; // Mute audio player
@@ -312,6 +324,7 @@ class Player {
    * @description Restore player volume to previous its value
    **/
   unmute() {
+    if (DEBUG) { console.log('Player.unmute : called'); }
     if (this._isMuted) { // Avoid multi call
       let volume = 0.5; // Prevent old volume value was zero, we need to restore at half, to avoid unmuting to volume = 0
 
@@ -335,6 +348,7 @@ class Player {
    * @description Toggle the mute status of the player
    **/
   toggleMute() {
+    if (DEBUG) { console.log('Player.toggleMute : called'); }
     if (!this._isMuted) {
       this.mute();
     } else {
@@ -354,6 +368,7 @@ class Player {
    * @param {number} amount - Volume to add/substract in range [0, 1]
    **/
   adjustVolume(amount) {
+    if (DEBUG) { console.log('Player.adjustVolume : called with (amount)', amount); }
     this._setVolume(this._volume + amount); // Inner call
   }
 
@@ -369,6 +384,7 @@ class Player {
    * @param {number} value - The volume value to set in range [0, 1]
    **/
   _setVolume(value) {
+    if (DEBUG) { console.log('Player._setVolume : called with (value)', value); }
     if (typeof value !== 'number') { // Bad format for value
       Logger.raise({
         code: 'INVALID_VOLUME',
@@ -414,6 +430,7 @@ class Player {
    * @param {number} amount - Percentage value to adjust progress in range [0, 100]
    **/
   adjustProgress(amount) {
+    if (DEBUG) { console.log('Player.adjustProgress : called with (amount)', amount); }
     this._setProgress(this._getProgress() + amount); // Inner call with current progression
   }
 
@@ -429,6 +446,7 @@ class Player {
    * @returns {number} The track progression in completion percentage in range [0, 100]
    **/
   _getProgress() {
+    if (DEBUG) { console.log('Player._getProgress : called'); }
     return Utils.precisionRound((this._player.currentTime * 100) / this._player.duration, 3) || 0; // Compute percentage from current time
   }
 
@@ -444,6 +462,7 @@ class Player {
    * @param {number} percentage - The progression percentage in range [0, 100]
    **/
   _setProgress(percentage) {
+    if (DEBUG) { console.log('Player._setProgress : called with (percentage)', percentage); }
     if (typeof percentage !== 'number') { // Bad format for value
       Logger.raise({
         code: 'INVALID_PROGRESS',
@@ -470,6 +489,7 @@ class Player {
 
 
   setPlaybackRate(percentage) {
+    if (DEBUG) { console.log('Player.setPlaybackRate : called with (percentage)', percentage); }
     const _setPlaybackRate = (value) => {
       this._playbackRate = value;
       this._player.playbackRate = value;
@@ -518,6 +538,7 @@ class Player {
    * @returns {string} - The player current source url
    **/
   getSource() {
+    if (DEBUG) { console.log('Player.getSource : called'); }
     if (this._player.src !== null) {
       return this._player.src;
     } else {
@@ -537,6 +558,7 @@ class Player {
    * @returns {boolean} - The presence of a source in player state
    **/
   hasSource() {
+    if (DEBUG) { console.log('Player.hasSource : called'); }
     return !!this._player.src;
   }
 

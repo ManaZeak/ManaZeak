@@ -68,6 +68,7 @@ class ProgressBar {
     this._updateMouseOver = this._updateMouseOver.bind(this);
     this._scrolledInto = this._scrolledInto.bind(this);
 
+    Evts.subscribe('PlayerStop', this._stopAnimation.bind(this));
     Evts.subscribe('TrackLoaded', () => {
       this.updateDuration(mzk.ctrl.player.duration);
     });
