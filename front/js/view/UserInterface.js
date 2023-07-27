@@ -242,6 +242,11 @@ class UserInterface {
   queue(queuedTracks) {
     if (DEBUG) { console.log('UserInterface.queue : called with (queuedTracks)', queuedTracks); }
     this._navBar.setQueuedTracks(queuedTracks);
+    Notif.new({
+      type: 'info',
+      title: 'Track(s) queue',
+      message: `There is now currently ${queuedTracks.length} track(s) in the queue`
+    })
   }
 
 
