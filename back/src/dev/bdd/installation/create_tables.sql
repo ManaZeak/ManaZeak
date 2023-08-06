@@ -154,6 +154,7 @@ CREATE TABLE label (
 	label_id BIGINT not null,
 	name VARCHAR(100) not null,
 	picture_filename VARCHAR(50),
+	artist_released BOOLEAN not null,
 	CONSTRAINT PK_LABEL PRIMARY KEY (label_id)
 );
 

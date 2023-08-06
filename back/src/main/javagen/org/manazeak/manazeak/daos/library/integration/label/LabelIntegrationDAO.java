@@ -2,6 +2,7 @@ package org.manazeak.manazeak.daos.library.integration.label;
 
 import org.manazeak.manazeak.daos.library.integration.cover.ThumbNameUpdaterSetter;
 import org.manazeak.manazeak.entity.dto.library.integration.label.LabelIntegrationDto;
+import org.manazeak.manazeak.util.audio.tag.TagCheckerUtil;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,8 +19,8 @@ import java.util.List;
 public class LabelIntegrationDAO {
     private static final String TRUNCATE_LABELS = "truncate table label CASCADE";
 
-    private static final String MERGE_LABEL = "INSERT INTO label (label_id, name) " +
-            "VALUES (?, ?) " +
+    private static final String MERGE_LABEL = "INSERT INTO label (label_id, name, artist_released) " +
+            "VALUES (?, ?, ?) " +
             "ON CONFLICT (label_id) do nothing";
 
     /**
@@ -45,6 +46,7 @@ public class LabelIntegrationDAO {
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         ps.setLong(1, labels.get(i).getLabelId());
                         ps.setString(2, labels.get(i).getName());
+                        ps.setBoolean(3, !TagCheckerUtil.isArtistRecord(labels.get(i).getName()));
                     }
 
                     @Override

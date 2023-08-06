@@ -23,6 +23,7 @@ public class Label implements Serializable{
 	private Long labelId;
 	private String name;
 	private String pictureFilename;
+	private Boolean artistReleased;
 
     /**
      * No comment found in model diagram
@@ -72,6 +73,21 @@ public class Label implements Serializable{
 	public void setPictureFilename(final String pictureFilename){
 		this.pictureFilename = pictureFilename;
     }  
+    /**
+     * No comment found in model diagram
+     * @return value of artistReleased
+     */
+    @Column(name="artist_released", nullable=false)
+	public Boolean getArtistReleased(){
+		return artistReleased;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param artistReleased new value to give to artistReleased
+     */
+	public void setArtistReleased(final Boolean artistReleased){
+		this.artistReleased = artistReleased;
+    }  
 
 	@Override
 	public int hashCode(){
@@ -82,6 +98,7 @@ public class Label implements Serializable{
 		result = 31 * result + (labelId == null? 0 : labelId.hashCode());
 		result = 31 * result + (name == null? 0 : name.hashCode());
 		result = 31 * result + (pictureFilename == null? 0 : pictureFilename.hashCode());
+		result = 31 * result + (artistReleased == null? 0 : artistReleased.hashCode());
 			
 		return result;
 	}
@@ -109,6 +126,7 @@ public class Label implements Serializable{
 		return (labelId == null ?  (otherLabel.labelId == null) : labelId.equals(otherLabel.labelId))
 			&& (name == null ?  (otherLabel.name == null) : name.equals(otherLabel.name))
 			&& (pictureFilename == null ?  (otherLabel.pictureFilename == null) : pictureFilename.equals(otherLabel.pictureFilename))
+			&& (artistReleased == null ?  (otherLabel.artistReleased == null) : artistReleased.equals(otherLabel.artistReleased))
 		;
 	}
 
