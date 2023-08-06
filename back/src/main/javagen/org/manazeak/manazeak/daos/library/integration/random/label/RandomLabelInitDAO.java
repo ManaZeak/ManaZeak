@@ -14,8 +14,11 @@ public class RandomLabelInitDAO extends AbstractRandomInit {
 
     private static final String TABLE_NAME = "random_label";
 
-    private static final String INIT_RANDOM_LABELS = "insert into random_label (random_label_id, random_index, label_id)" +
-            " select nextval('seq_random_label'), nextval('seq_random_label_index'), label_id from label";
+    private static final String INIT_RANDOM_LABELS = """
+            insert into random_label (random_label_id, random_index, label_id)
+            select nextval('seq_random_label'), nextval('seq_random_label_index'), label_id from label
+            where artist_released = false
+            """;
 
     protected RandomLabelInitDAO(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
