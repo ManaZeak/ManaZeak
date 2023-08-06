@@ -38,8 +38,12 @@ public class UserEditManager {
         userEdit.setBirthdate(DateUtil.formatDate(user.getBirthDate(), DateUtil.US_DATE_FORMATTER));
         userEdit.setEmail(user.getMail());
         userEdit.setName(user.getName());
-        userEdit.setCountryId(user.getCountry().getCountryId());
-        userEdit.setLocaleId(user.getLocale().getLocaleId());
+        if (user.getCountry() != null) {
+            userEdit.setCountryId(user.getCountry().getCountryId());
+        }
+        if (user.getLocale() != null) {
+            userEdit.setLocaleId(user.getLocale().getLocaleId());
+        }
 
         return userEdit;
     }
@@ -59,7 +63,9 @@ public class UserEditManager {
         user.setBirthDate(DateUtil.parseString(editedUser.getBirthdate(), DateUtil.US_DATE_FORMATTER));
         user.setMail(editedUser.getEmail());
         user.setName(editedUser.getName());
-        user.setCountry(countryService.getCountryById(editedUser.getCountryId()));
+        if (editedUser.getCountryId() != 0L) {
+            user.setCountry(countryService.getCountryById(editedUser.getCountryId()));
+        }
         localeService.setUserLocale(editedUser.getLocaleId(), user);
 
         // Saving the information

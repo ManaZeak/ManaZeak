@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.controller.rest.user;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
@@ -15,16 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
  * Allows to manage the users of the application.
  */
 @RestController
+@RequiredArgsConstructor
 public class UserControllerRest {
 
     private final UserService userService;
 
     private final KommunicatorService kommunicatorService;
-
-    public UserControllerRest(UserService userService, KommunicatorService kommunicatorService) {
-        this.userService = userService;
-        this.kommunicatorService = kommunicatorService;
-    }
 
     /**
      * Delete a user of the application.
