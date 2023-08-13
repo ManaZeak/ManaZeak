@@ -2,6 +2,7 @@ package org.manazeak.manazeak.controller.fragment.library.artist;
 
 import jakarta.validation.constraints.NotNull;
 import org.manazeak.manazeak.configuration.security.Security;
+import org.manazeak.manazeak.constant.library.album.AlbumContributionTypeEnum;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.library.artist.ArtistFragmentEnum;
@@ -40,6 +41,8 @@ public class ArtistFragment {
         // Loading the artist.
         model.addAttribute("artist", artistService.getArtistDetail(artistId));
         model.addAttribute("albums", albumService.getMinimalAlbumByArtistId(artistId));
+        model.addAttribute("contrib", albumService.getMinimalAlbumContributionByArtistId(artistId));
+        model.addAttribute("contribType", AlbumContributionTypeEnum.class);
 
         return ArtistFragmentEnum.ARTIST_DETAIL.getPage();
     }

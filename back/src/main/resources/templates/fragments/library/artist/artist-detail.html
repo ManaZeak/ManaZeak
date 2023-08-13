@@ -3,7 +3,8 @@
   <!--/*@thymesVar id="albums" type="org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto"*/-->
   <div class="artist-header">
     <div class="artist-header-left">
-      <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')}"></div>
+      <div
+          th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{artist.cover}, 'orig')}"></div>
       <h1 th:text="${artist.name}" id="artist-name"></h1>
     </div>
     <div class="artist-header-center">
@@ -22,7 +23,8 @@
       <p th:text="#{view.rlartist.members}"></p>
       <div id="artist-members" class="artists-small">
         <div th:each="member : ${artist.members}" class="artist" th:attr="data-id=*{member.id}">
-          <div th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, medium)}"></div>
+          <div
+              th:replace="~{/include/artist/artistPictureFragment.html :: artistPictureDisplay (*{member.cover}, medium)}"></div>
           <p th:text="*{member.name}"></p>
         </div>
       </div>
@@ -35,4 +37,14 @@
   </h1>
   <!-- Displaying the list of albums. -->
   <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${albums}, medium)}"></div>
+  <div th:each="type : ${contribType.values()}">
+    <div th:unless="${contrib.get(type).isEmpty()}">
+      <!-- Display the linked album of the albums.-->
+      <h1>
+        <span th:text="#{${type.getNameCode()}}"></span>
+      </h1>
+      <div
+          th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${contrib.get(type)}, medium)}"></div>
+    </div>
+  </div>
 </div>
