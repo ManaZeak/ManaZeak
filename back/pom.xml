@@ -22,7 +22,7 @@
         </sonar.exclusions>
         <thumbnailator.version>0.4.20</thumbnailator.version>
         <guava.version>32.0.0-jre</guava.version>
-        <srcimage.version>4.0.38</srcimage.version>
+        <scrimage.version>4.0.39</scrimage.version>
     </properties>
 
     <dependencies>
@@ -155,7 +155,7 @@
         <dependency>
             <groupId>com.sksamuel.scrimage</groupId>
             <artifactId>scrimage-webp</artifactId>
-            <version>${srcimage.version}</version>
+            <version>${scrimage.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
