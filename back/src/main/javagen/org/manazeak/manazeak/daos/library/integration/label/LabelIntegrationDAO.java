@@ -19,9 +19,11 @@ import java.util.List;
 public class LabelIntegrationDAO {
     private static final String TRUNCATE_LABELS = "truncate table label CASCADE";
 
-    private static final String MERGE_LABEL = "INSERT INTO label (label_id, name, artist_released) " +
-            "VALUES (?, ?, ?) " +
-            "ON CONFLICT (label_id) do nothing";
+    private static final String MERGE_LABEL = """
+            INSERT INTO label (label_id, name, artist_released)
+            VALUES (?, ?, ?)
+            ON CONFLICT (label_id) do nothing
+            """;
 
     /**
      * Update the picture name for the label.

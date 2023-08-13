@@ -45,38 +45,44 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
      *
      * @return The artist detail.
      */
-    @Query("SELECT new org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto(" +
-            "   a.artistId, " +
-            "   a.name, " +
-            "   a.location, " +
-            "   a.birthDate, " +
-            "   a.deathDate, " +
-            "   a.isLabel, " +
-            "   a.testimonyFrom, " +
-            "   a.testimonyText, " +
-            "   country.trigram, " +
-            "   label.labelId, " +
-            "   label.name, " +
-            "   a.pictureFilename, " +
-            "   bio.text" +
-            ") " +
-            "FROM Artist a " +
-            "LEFT JOIN a.country country " +
-            "LEFT JOIN a.label label " +
-            "LEFT JOIN a.bio bio " +
-            "WHERE a.artistId = :artistId")
+    @Query("""
+            SELECT new org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto(
+               a.artistId,
+               a.name,
+               a.location,
+               a.birthDate,
+               a.deathDate,
+               a.isLabel,
+               a.testimonyFrom,
+               a.testimonyText,
+               country.trigram,
+               label.labelId,
+               label.name,
+               a.pictureFilename,
+               bio.text
+            )
+            FROM Artist a
+            LEFT JOIN a.country country
+            LEFT JOIN a.label label
+            LEFT JOIN a.bio bio
+            WHERE a.artistId = :artistId
+            """)
     Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId);
 
     /**
      * @return All the release artist of the application.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(" +
-            "art.artistId," +
-            "art.name," +
-            "art.pictureFilename," +
-            "art.isLabel) from Artist art " +
-            "where art.location is not null " +
-            "order by art.name")
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(
+                art.artistId,
+                art.name,
+                art.pictureFilename,
+                art.isLabel
+            )
+            from Artist art
+            where art.location is not null
+            order by art.name
+            """)
     List<ArtistMinimalInfoDto> getAllReleaseArtistMinimalInfo();
 
     /**
@@ -85,15 +91,18 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
      * @param albumId The id of the album.
      * @return The list of performers on the album.
      */
-    @Query("select distinct new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(" +
-            "perf.artistId," +
-            "perf.name," +
-            "perf.pictureFilename," +
-            "perf.isLabel) " +
-            "from Track trk " +
-            "join trk.performerList perf " +
-            "where trk.album.albumId = :albumId " +
-            "order by perf.name")
+    @Query("""
+            select distinct new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(
+                perf.artistId,
+                perf.name,
+                perf.pictureFilename,
+                perf.isLabel
+            )
+            from Track trk
+            join trk.performerList perf
+            where trk.album.albumId = :albumId
+            order by perf.name
+            """)
     List<ArtistMinimalInfoDto> getAlbumPerformers(@Param("albumId") Long albumId);
 
     /**
@@ -102,14 +111,17 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
      * @param labelId The identifier of the label.
      * @return The list of artist released by this label.
      */
-    @Query("select distinct new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(" +
-            "art.artistId," +
-            "art.name," +
-            "art.pictureFilename," +
-            "art.isLabel) " +
-            "from Album alb " +
-            "join alb.artist art " +
-            "where alb.label.labelId = :labelId")
+    @Query("""
+            select distinct new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(
+                art.artistId,
+                art.name,
+                art.pictureFilename,
+                art.isLabel
+            )
+            from Album alb
+            join alb.artist art
+            where alb.label.labelId = :labelId
+            """)
     List<ArtistMinimalInfoDto> getArtistFromLabelId(@Param("labelId") Long labelId);
 
     /**
@@ -119,9 +131,11 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
      * @param pageable     The pageable object to handle the pagination for the request.
      * @return The artists with no image generated.
      */
-    @Query("select artistId as elementId, name as name from Artist where " +
-            "artistId > :lastArtistId " +
-            "ORDER BY artistId")
+    @Query("""
+            select artistId as elementId, name as name from Artist
+            where artistId > :lastArtistId
+            order by artistId
+            """)
     List<ThumbnailGenerationProjection> getArtistsToGenerateThumbPacket(@Param("lastArtistId") Long lastArtistId, Pageable pageable);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

@@ -27,10 +27,14 @@ public interface LabelDAO extends CrudRepository<Label, Long> {
     @Query("select name as labelName, labelId as labelId from Label where name in (:labelNames)")
     List<LabelLinkerProjection> getLabelsByNames(@Param("labelNames") Collection<String> labelNames);
 
-    @Query("select labelId as elementId, name as name " +
-            "from Label " +
-            "where labelId > :lastLabelId " +
-            "order by labelId")
+    @Query("""
+            select
+                labelId as elementId,
+                name as name
+            from Label
+            where labelId > :lastLabelId
+            order by labelId
+            """)
     List<ThumbnailGenerationProjection> getLabelThumbsGeneration(@Param("lastLabelId") Long lastLabelId, Pageable pageable);
 
 }

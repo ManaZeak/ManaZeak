@@ -26,13 +26,15 @@ public interface ScanStatusDAO extends CrudRepository<ScanStatus, Long> {
      *
      * @return An optional containing the scan status found.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.scan.ScanStatusDto(" +
-            "step.code, " +
-            "step.scanStepId, " +
-            "st.startTime " +
-            ") from ScanStatus st " +
-            "join st.scanStep step " +
-            "where st.isActive")
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.scan.ScanStatusDto(
+                step.code,
+                step.scanStepId,
+                st.startTime
+            ) from ScanStatus st
+            join st.scanStep step
+            where st.isActive
+            """)
     ScanStatusDto getCurrentScanStatus();
 
 }

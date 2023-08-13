@@ -57,21 +57,23 @@ public interface InviteCodeDAO extends CrudRepository<InviteCode, Long> {
      * @param userId The id of the user.
      * @return the depth of the user.
      */
-    @Query(value = "WITH RECURSIVE descendants AS ( " +
-            "SELECT usr.user_id, cast(0 AS bigint) parent, 0 depth " +
-            "FROM mzk_user usr " +
-            "WHERE user_id = 1 " +
-            "UNION " +
-            "SELECT son.user_id, ic.parent parent, d.depth+ 1 " +
-            "FROM mzk_user son " +
-            "INNER JOIN invite_code ic on son.invite_code_id = ic.invite_code_id " +
-            "INNER JOIN descendants d ON ic.parent = d.user_id " +
-            ")" +
-            "SELECT depth " +
-            "FROM descendants d " +
-            "INNER JOIN mzk_user usr on d.user_id = usr.user_id " +
-            "where d.user_id != 1 " +
-            "and d.user_id =  :user  "
+    @Query(value = """
+            WITH RECURSIVE descendants AS (
+            SELECT usr.user_id, cast(0 AS bigint) parent, 0 depth
+            FROM mzk_user usr
+            WHERE user_id = 1
+            UNION
+            SELECT son.user_id, ic.parent parent, d.depth+ 1
+            FROM mzk_user son
+            INNER JOIN invite_code ic on son.invite_code_id = ic.invite_code_id
+            INNER JOIN descendants d ON ic.parent = d.user_id
+            )
+            SELECT depth
+            FROM descendants d
+            INNER JOIN mzk_user usr on d.user_id = usr.user_id
+            where d.user_id != 1
+            and d.user_id =  :user
+            """
             , nativeQuery = true)
     Optional<Integer> getParentUserDepth(@Param("user") Long userId);
 }

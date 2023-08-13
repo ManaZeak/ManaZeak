@@ -30,13 +30,16 @@ public interface RandomLabelDAO extends CrudRepository<RandomLabel, Long> {
      * @param indexIds The random index of the label in the database.
      * @return The genre matching the random indexes.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.label.LabelMinimalInfoDto(" +
-            "lab.labelId," +
-            "lab.name," +
-            "lab.pictureFilename) " +
-            "from RandomLabel rand " +
-            "join rand.label lab " +
-            "where rand.randomIndex in (:indexIds)")
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.label.LabelMinimalInfoDto(
+                lab.labelId,
+                lab.name,
+                lab.pictureFilename
+            )
+            from RandomLabel rand
+            join rand.label lab
+            where rand.randomIndex in (:indexIds)
+            """)
     List<LabelMinimalInfoDto> getListMinimalInfoByIndexes(@Param("indexIds") Set<Long> indexIds);
 
 }

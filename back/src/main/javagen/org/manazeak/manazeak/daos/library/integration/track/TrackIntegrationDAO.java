@@ -12,22 +12,24 @@ import java.util.*;
 @Repository
 public class TrackIntegrationDAO {
 
-    private static final String SQL_TRACK_MERGE = "INSERT INTO track (track_id, title, disc_number, track_number, isrc, lyrics, duration, opus, subtitle, album_id, " +
-            "                   location, bpm, is_mp3, mood) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-            "ON CONFLICT (track_id) DO UPDATE SET title        = excluded.title, " +
-            "                                     disc_number  = excluded.disc_number, " +
-            "                                     track_number = excluded.track_number, " +
-            "                                     isrc         = excluded.isrc, " +
-            "                                     lyrics       = excluded.lyrics, " +
-            "                                     duration     = excluded.duration, " +
-            "                                     opus         = excluded.opus, " +
-            "                                     subtitle     = excluded.subtitle, " +
-            "                                     album_id     = excluded.album_id, " +
-            "                                     location     = excluded.location, " +
-            "                                     bpm          = excluded.bpm, " +
-            "                                     is_mp3       = excluded.is_mp3, " +
-            "                                     mood         = excluded.mood";
+    private static final String SQL_TRACK_MERGE = """
+            INSERT INTO track (track_id, title, disc_number, track_number, isrc, lyrics, duration, opus, subtitle, album_id,
+                               location, bpm, is_mp3, mood)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT (track_id) DO UPDATE SET title        = excluded.title,
+                                                 disc_number  = excluded.disc_number,
+                                                 track_number = excluded.track_number,
+                                                 isrc         = excluded.isrc,
+                                                 lyrics       = excluded.lyrics,
+                                                 duration     = excluded.duration,
+                                                 opus         = excluded.opus,
+                                                 subtitle     = excluded.subtitle,
+                                                 album_id     = excluded.album_id,
+                                                 location     = excluded.location,
+                                                 bpm          = excluded.bpm,
+                                                 is_mp3       = excluded.is_mp3,
+                                                 mood         = excluded.mood
+            """;
 
     private final JdbcTemplate jdbcTemplate;
 

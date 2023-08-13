@@ -21,10 +21,12 @@ public interface BandMemberDAO extends CrudRepository<BandMember, Long> {
      * @param artistId The id of the band.
      * @return The list of member of this band.
      */
-    @Query("select mb from BandMember bm " +
-            "join bm.member mb " +
-            "where bm.band.artistId = :artistId " +
-            "order by mb.name")
+    @Query("""
+            select mb from BandMember bm
+            join bm.member mb
+            where bm.band.artistId = :artistId
+            order by mb.name
+            """)
     List<Artist> getLinkedArtists(@Param("artistId") Long artistId);
 
 }

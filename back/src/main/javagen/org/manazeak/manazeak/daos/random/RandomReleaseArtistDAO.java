@@ -29,14 +29,17 @@ public interface RandomReleaseArtistDAO extends CrudRepository<RandomReleaseArti
      * @param indexIds The list of index ids that will be fecthed.
      * @return The list of minimal artist info to display.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(" +
-            "art.artistId," +
-            "art.name," +
-            "art.pictureFilename," +
-            "art.isLabel) " +
-            "from RandomReleaseArtist rand " +
-            "join rand.artist art " +
-            "where rand.randomIndex in (:indexIds)")
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto(
+                art.artistId,
+                art.name,
+                art.pictureFilename,
+                art.isLabel
+            )
+            from RandomReleaseArtist rand
+            join rand.artist art
+            where rand.randomIndex in (:indexIds)
+            """)
     List<ArtistMinimalInfoDto> getListMinimalInfoByIndexes(@Param("indexIds") Set<Long> indexIds);
 
 

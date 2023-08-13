@@ -20,12 +20,13 @@ public interface PrivilegeDAO extends CrudRepository<Privilege, Long> {
      * @param username the username of the user.
      * @return The list of privilege of the user.
      */
-    @Query("select listPrivileges " +
-            "from MzkUser as u " +
-            "inner join u.role as role " +
-            "inner join role.privilegeList as listPrivileges " +
-            "where u.username = :username "
-    )
+    @Query("""
+            select listPrivileges
+            from MzkUser as u
+            inner join u.role as role
+            inner join role.privilegeList as listPrivileges
+            where u.username = :username
+            """)
     List<Privilege> getPrivilegesByUsername(@Param("username") String username);
 
 }

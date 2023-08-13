@@ -15,10 +15,13 @@ import java.util.Optional;
  */
 public interface CountryDAO extends CrudRepository<Country, Long> {
 
-    @Query("select new org.manazeak.manazeak.entity.dto.country.CountrySelectDto(" +
-            "name, " +
-            "countryId) " +
-            "from Country")
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.country.CountrySelectDto(
+                name,
+                countryId
+            )
+            from Country
+            """)
     List<CountrySelectDto> getAllCountrySelect();
 
     /**

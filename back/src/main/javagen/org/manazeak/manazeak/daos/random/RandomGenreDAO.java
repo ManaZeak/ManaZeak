@@ -29,13 +29,16 @@ public interface RandomGenreDAO extends CrudRepository<RandomGenre, Long> {
      * @param indexIds The ids of the index of the genre in the database.
      * @return The genre matching the index.
      */
-    @Query("select new org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto(" +
-            "gen.genreId," +
-            "gen.name," +
-            "gen.pictureFilename) " +
-            "from RandomGenre rand " +
-            "join rand.genre gen " +
-            "where rand.randomIndex in (:indexIds)")
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto(
+                gen.genreId,
+                gen.name,
+                gen.pictureFilename
+            )
+            from RandomGenre rand
+            join rand.genre gen
+            where rand.randomIndex in (:indexIds)
+            """)
     List<GenreMinimalInfoDto> getListMinimalInfoByIndexes(@Param("indexIds") Set<Long> indexIds);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT
