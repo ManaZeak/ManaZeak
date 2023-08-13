@@ -18,15 +18,14 @@ import java.util.List;
 @Slf4j
 public class AlbumCoverIntegrationManager extends AbstractThumbnailGenerator{
 
-    private final AlbumDAO albumDAO;
-    private final CoverIntegrationDAO coverIntegrationDAO;
-
     private static final ThumbSizeEnum[] LIST_THUMB_SIZE_TO_GENERATE = {
             ThumbSizeEnum.ORIGINAL,
             ThumbSizeEnum.LARGE,
             ThumbSizeEnum.MEDIUM,
             ThumbSizeEnum.SMALL
     };
+    private final AlbumDAO albumDAO;
+    private final CoverIntegrationDAO coverIntegrationDAO;
 
     @Override
     protected List<ThumbnailGenerationProjection> getElementsPacket(Long lastId, Pageable pageable) {

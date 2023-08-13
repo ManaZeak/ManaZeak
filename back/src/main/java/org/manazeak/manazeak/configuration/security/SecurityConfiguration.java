@@ -2,8 +2,7 @@ package org.manazeak.manazeak.configuration.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,9 +27,10 @@ import java.util.function.Supplier;
  */
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SecurityConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SecurityConfiguration.class);
+    private static final int CSRF_SIZE = 36;
     @Value("${app.dev}")
     private boolean devMode;
 
@@ -50,10 +50,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(final HttpSecurity httpSecurity) throws Exception {
         // Allowing the spring dev tools.
         if (devMode) {
-            LOG.warn("CAUTION: you are in debug mode, DON'T USE THIS IN PRODUCTION !");
+            log.warn("CAUTION: you are in debug mode, DON'T USE THIS IN PRODUCTION !");
             httpSecurity
-                    .authorizeHttpRequests((config) -> config.requestMatchers("/.~~spring-boot!~/restart").anonymous())
-                    .csrf((config) -> config.ignoringRequestMatchers("/.~~spring-boot!~/restart"));
+                    .authorizeHttpRequests(config -> config.requestMatchers("/.~~spring-boot!~/restart").anonymous())
+                    .csrf(config -> config.ignoringRequestMatchers("/.~~spring-boot!~/restart"));
         }
 
         XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
@@ -69,7 +69,7 @@ public class SecurityConfiguration {
             @Override
             public String resolveCsrfTokenValue(HttpServletRequest request, CsrfToken csrfToken) {
                 String tokenValue = CsrfTokenRequestHandler.super.resolveCsrfTokenValue(request, csrfToken);
-                if (tokenValue.length() == 36) {
+                if (tokenValue.length() == CSRF_SIZE) {
                     return tokenValue;
                 }
                 return delegate.resolveCsrfTokenValue(request, csrfToken);
@@ -78,17 +78,17 @@ public class SecurityConfiguration {
 
 
         httpSecurity
-                .authorizeHttpRequests((authorizeRequest) -> {
+                .authorizeHttpRequests(authorizeRequest -> {
                     authorizeRequest.requestMatchers("/register/", "/login/", "/logoutSuccess/").permitAll();
                     authorizeRequest.requestMatchers("/**").authenticated();
                 })
-                .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
-                .formLogin((config) -> config
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .formLogin(config -> config
                         .loginPage("/login/")
                         .defaultSuccessUrl("/", true)
                 )
-                .logout((config) -> config.logoutSuccessUrl("/logoutSuccess/"))
-                .csrf((config) -> config
+                .logout(config -> config.logoutSuccessUrl("/logoutSuccess/"))
+                .csrf(config -> config
                         .csrfTokenRequestHandler(requestHandler)
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )

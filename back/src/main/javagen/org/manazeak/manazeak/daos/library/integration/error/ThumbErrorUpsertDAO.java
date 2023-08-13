@@ -67,7 +67,7 @@ public class ThumbErrorUpsertDAO {
          * @param ps            The prepared statement.
          * @throws SQLException Error while setting the values.
          */
-        private void setEntityId(ThumbnailTypeEnum evaluatedType, int index, PreparedStatement ps, ThumbnailErrorDto error) throws SQLException {
+        private static void setEntityId(ThumbnailTypeEnum evaluatedType, int index, PreparedStatement ps, ThumbnailErrorDto error) throws SQLException {
             if (evaluatedType == error.type()) {
                 ps.setLong(index, error.entityId());
             } else {

@@ -40,6 +40,9 @@ import static org.manazeak.manazeak.constant.file.ResourcePathEnum.MOOD_FOLDER;
 public class MoodbarManager {
 
     private static final URI MOODBAR_CONTAINER_ENDPOINT = URI.create("http://moodbar:4545/generate_mood");
+    private static final int CHANEL_NUMBER = 3;
+    private static final int QUALITY = 80;
+    private static final int COMPRESSION = 6;
     private static final int SUCCESS = 200;
     private final ObjectMapper objectMapper;
     private final HttpClient client = HttpClient.newHttpClient();
@@ -165,7 +168,7 @@ public class MoodbarManager {
         // Preparing to read the moodbar file.
         for (int i = 0; i < size.getSize() * 3; i += 3) {
             Pixel pixel = new Pixel(
-                    i / 3,
+                    i / CHANEL_NUMBER,
                     0,
                     Byte.toUnsignedInt(moodbarSource[i]),
                     Byte.toUnsignedInt(moodbarSource[i + 1]),
@@ -176,7 +179,7 @@ public class MoodbarManager {
         }
         // Writing the image to the FS.
         Path moodFile = createMoodbarImageDestination(moodMd5, size);
-        image.output(WebpWriter.DEFAULT.withoutAlpha().withQ(80).withM(6), moodFile);
+        image.output(WebpWriter.DEFAULT.withoutAlpha().withQ(QUALITY).withM(COMPRESSION), moodFile);
     }
 
 }

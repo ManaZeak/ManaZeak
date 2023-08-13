@@ -142,7 +142,6 @@ public abstract class AbstractThumbnailGenerator {
                 return Pair.of(thumbProjection.getElementId(), thumbName);
             }
         } catch (Exception e) {
-            // FIXME: put this object in a list and save the list 1 time.
             log.error("Error generating the thumbnail for the element : '" + thumbProjection.getName()
                     + "' for the type : " + getThumbType());
             thumbnailErrors.add(new ThumbnailErrorDto(getThumbType(), e.getMessage(), thumbProjection.getElementId(),
