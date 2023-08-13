@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.daos.track;
 
+import org.manazeak.manazeak.entity.dto.library.album.AlbumContributionMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumLinkerProjection;
@@ -44,6 +45,44 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             "where alb.artist.artistId = :artistId " +
             "order by alb.releaseDate desc")
     List<AlbumMinimalInfoDto> getMinimalAlbumByArtistId(@Param("artistId") Long artistId);
+
+    /**
+     * Get all the albums where the album has contributed.
+     *
+     * @param artistId The id of the artist searched.
+     * @return The list of album with at least one contribution.
+     */
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.album.AlbumContributionMinimalInfoDto(
+               alb.albumId,
+               alb.title,
+               alb.cover,
+               alb.releaseYear,
+               comp.artistId,
+               arr.artistId,
+               eng.artistId,
+               perf.artistId,
+               lyri.artistId
+            ) from Track trk
+            left join trk.composerList comp
+            left join trk.arrangerList arr
+            left join trk.engineerList eng
+            left join trk.performerList perf
+            left join trk.lyricistList lyri
+            join trk.album alb
+            where alb.artist.artistId <> :artistId
+            and (
+                perf.artistId = :artistId
+                or eng.artistId = :artistId
+                or arr.artistId = :artistId
+                or comp.artistId = :artistId
+                or lyri.artistId = :artistId
+            )
+            group by alb.albumId, alb.title, alb.cover, alb.releaseYear, comp.artistId, arr.artistId, eng.artistId,
+            perf.artistId, lyri.artistId
+            order by alb.releaseDate desc
+            """)
+    List<AlbumContributionMinimalInfoDto> getMinimalAlbumContributionByArtistId(@Param("artistId") Long artistId);
 
     /**
      * Get the detail of an album from the database.
