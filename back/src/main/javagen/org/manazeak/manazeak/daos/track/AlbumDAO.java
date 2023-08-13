@@ -64,11 +64,11 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
                perf.artistId,
                lyri.artistId
             ) from Track trk
-            left join trk.composerList comp
-            left join trk.arrangerList arr
-            left join trk.engineerList eng
-            left join trk.performerList perf
-            left join trk.lyricistList lyri
+            left join trk.composerList comp on comp.artistId = :artistId
+            left join trk.arrangerList arr on arr.artistId = :artistId
+            left join trk.engineerList eng on eng.artistId = :artistId
+            left join trk.performerList perf on perf.artistId = :artistId
+            left join trk.lyricistList lyri on lyri.artistId = :artistId
             join trk.album alb
             where alb.artist.artistId <> :artistId
             and (
