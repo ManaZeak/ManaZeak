@@ -53,7 +53,7 @@ class MainPageView extends SceneView {
       amount = 24;
     } else if (bRect.width < 1720) {
       amount = 26;
-    } else if (bRect.width < 1840) {
+    } else if (bRect.width < 1920) {
       amount = 28;
     } else if (bRect.width >= 1920) {
       amount = 30;
