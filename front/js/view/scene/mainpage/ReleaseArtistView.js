@@ -115,22 +115,21 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
         color: '#56D45B'
       }
     }));
-
-    elements = elements.children[0].children[0];
   }
 
 
-  _handleAlbumSorting(elements) {
+  _handleAlbumSorting(elementsList) {
+    elementsList = elementsList.children[0].children[0]; // Forget about scrollbar here
     const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
     sortArtistReleases.addEventListener('click', () => {
       sortArtistReleases.classList.toggle('active');
-      let elements = [].slice.call(elements.children);
+      let elements = [].slice.call(elementsList.children);
       elements = elements.reverse();
-      for (let i = 0; i < elements.children.length; ++i) {
-        elements.children[i].remove();
+      for (let i = 0; i < elementsList.children.length; ++i) {
+        elementsList.children[i].remove();
       }
       for (let i = 0; i < elements.length; ++i) {
-        elements.appendChild(elements[i]);
+        elementsList.appendChild(elements[i]);
       }
     });    
   }
