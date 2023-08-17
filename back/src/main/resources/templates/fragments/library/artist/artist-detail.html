@@ -37,14 +37,12 @@
   </h1>
   <!-- Displaying the list of albums. -->
   <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${albums}, medium)}"></div>
+  <!-- Artist contribution -->
   <div th:each="type : ${contribType.values()}">
     <div th:unless="${contrib.get(type).isEmpty()}">
       <!-- Display the linked album of the albums.-->
-      <h1>
-        <span th:text="#{${type.getNameCode()}}"></span>
-      </h1>
-      <div
-          th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${contrib.get(type)}, medium)}"></div>
+      <h1><span th:text="#{${type.getNameCode()}}"></span></h1>
+      <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${contrib.get(type)}, medium)}"></div>
     </div>
   </div>
 </div>
