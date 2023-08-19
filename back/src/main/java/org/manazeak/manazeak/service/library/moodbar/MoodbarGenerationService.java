@@ -16,6 +16,7 @@ import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.moodbar.MoodbarManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
+import org.manazeak.manazeak.util.thread.ThreadPoolHelper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
@@ -100,16 +101,9 @@ public class MoodbarGenerationService {
                 lastTrackId = elements.get(elements.size() - 1).getId();
             }
 
+            // Closing the thread pool
             executor.shutdown();
-
-            try {
-                if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                    throw new MzkRuntimeException("The timeout for the moodbar gen.");
-                }
-            } catch (InterruptedException e) {
-                log.error("Thread interrupted during the moodbar gen.", e);
-                Thread.currentThread().interrupt();
-            }
+            ThreadPoolHelper.waitPoolFinish(executor, "Timeout during the moodbar regeneration.");
         } catch (IOException e) {
             throw new MzkRuntimeException("Error when processing files during moodbar image regeneration.", e);
         } finally {
@@ -150,16 +144,9 @@ public class MoodbarGenerationService {
                 lastTrackId = elements.get(elements.size() - 1).getId();
             }
 
+            // Stopping the thread pool
             executor.shutdown();
-
-            try {
-                if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                    throw new MzkRuntimeException("The timeout for the moodbar gen.");
-                }
-            } catch (InterruptedException e) {
-                log.error("Thread interrupted during the moodbar gen.", e);
-                Thread.currentThread().interrupt();
-            }
+            ThreadPoolHelper.waitPoolFinish(executor, "Timeout during the moodbar generation.");
         } finally {
             // The job isn't running anymore.
             isRunning.set(false);
@@ -201,7 +188,7 @@ public class MoodbarGenerationService {
                 for (MoodbarSizeEnum size : MoodbarSizeEnum.values()) {
                     Path moodbarFile = ResourcePathEnum.MOOD_ENCODED_FOLDER.getPath()
                             .resolve(size.getFolderName())
-                            .resolve( moodbarMd5 + FileExtensionEnum.MOOD.getExtension());
+                            .resolve(moodbarMd5 + FileExtensionEnum.MOOD.getExtension());
 
                     try {
                         moodbarManager.launchMoodbarImageGen(moodbarFile, moodbarMd5, size);

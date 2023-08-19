@@ -4,7 +4,6 @@ package org.manazeak.manazeak.entity.dto.library.artist;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +19,13 @@ public class ArtistDetailsDto {
     private Long artistId;
     private String name;
     private String location;
-    private LocalDate birthDate;
-    private LocalDate deathDate;
+    private Integer birthDate;
+    private Integer deathDate;
     private Boolean isLabel;
-    private String testimonyFrom;
-    private String testimonyText;
     private String countryCode;
     private Long labelId;
     private String label;
     private String cover;
-    private String bio;
 
     public void addMember(ArtistMinimalInfoDto member) {
         members.add(member);

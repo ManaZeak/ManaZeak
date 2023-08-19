@@ -8,6 +8,7 @@ import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistFolderExtractorHelper;
 import org.manazeak.manazeak.manager.library.integration.cache.CacheIntegrationInitializer;
+import org.manazeak.manazeak.util.thread.ThreadPoolHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Integrate the data contains in the track tags into the database.
@@ -71,15 +71,7 @@ public class LibraryIntegrationManager {
         // No more job accepted.
         executor.shutdown();
 
-        try {
-            // Waiting for all the jobs to finish.
-            if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                LOG.error("The thread executor was terminated by the thread pool timeout.");
-            }
-        } catch (InterruptedException e) {
-            LOG.warn("The integration thread interrupted.", e);
-            Thread.currentThread().interrupt();
-        }
+        ThreadPoolHelper.waitPoolFinish(executor);
         // Flushing all the modification of the database.
         entityManager.flush();
         clearAllIntegrationCaches();

@@ -1,13 +1,19 @@
 package org.manazeak.manazeak.entity.reference;
 
 import java.io.Serializable;
-import jakarta.persistence.GeneratedValue;
+import org.manazeak.manazeak.entity.track.Artist;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import java.util.Set;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 
 /**
  * The countries on the earth.
@@ -28,6 +34,7 @@ public class Country implements Serializable{
 	private Double capitalLong;
 	private Double centerLat;
 	private Double centerLong;
+	private Set<Artist> artistOriginCountryList;
 
     /**
      * No comment found in model diagram
@@ -151,6 +158,22 @@ public class Country implements Serializable{
      */
 	public void setCenterLong(final Double centerLong){
 		this.centerLong = centerLong;
+    }  
+    /**
+     * Association artist_origin_country to Artist
+     * @return value of artistOriginCountryList
+     */
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name="artist_origin_country", joinColumns=@JoinColumn(name = "country_id"), inverseJoinColumns=@JoinColumn(name = "artist_id"))
+	public Set<Artist> getArtistOriginCountryList(){
+		return artistOriginCountryList;
+    }  
+    /**
+     * Association artist_origin_country to Artist
+     * @param artistOriginCountryList new value to give to artistOriginCountryList
+     */
+	public void setArtistOriginCountryList(final Set<Artist> artistOriginCountryList){
+		this.artistOriginCountryList = artistOriginCountryList;
     }  
 
 	@Override

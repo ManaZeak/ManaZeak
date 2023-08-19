@@ -4,16 +4,21 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.util.Set;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.SequenceGenerator;
-import java.time.LocalDate;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import org.manazeak.manazeak.entity.reference.Country;
 import jakarta.persistence.Id;
+import org.manazeak.manazeak.entity.reference.ArtistType;
+import jakarta.persistence.JoinTable;
 
 /**
  * Contains the bands of the application.
@@ -29,17 +34,22 @@ public class Artist implements Serializable{
 	private Long artistId;
 	private String name;
 	private String location;
-	private LocalDate birthDate;
-	private LocalDate deathDate;
+	private Integer birthDate;
+	private Integer deathDate;
 	private LocalDateTime lastModificationDate;
 	private Boolean isLabel;
-	private String testimonyFrom;
 	private String pictureFilename;
-	private String testimonyText;
-	private Country country;
+	private String birthPlace;
+	private String deathPlace;
+	private Set<Alias> aliasList;
+	private Set<Country> originCountryList;
+	private Country countryOfDeath;
+	private Country countryOfBirth;
 	private Label label;
-	private Link link;
-	private Bio bio;
+	private Set<Link> linkList;
+	private Set<Artist> previousMemberList;
+	private ArtistType artistType;
+	private Set<Testimony> testimonyList;
 
     /**
      * No comment found in model diagram
@@ -94,14 +104,14 @@ public class Artist implements Serializable{
      * @return value of birthDate
      */
     @Column(name="birth_date", nullable=true)
-	public LocalDate getBirthDate(){
+	public Integer getBirthDate(){
 		return birthDate;
     }  
     /**
      * No comment found in model diagram
      * @param birthDate new value to give to birthDate
      */
-	public void setBirthDate(final LocalDate birthDate){
+	public void setBirthDate(final Integer birthDate){
 		this.birthDate = birthDate;
     }  
     /**
@@ -109,14 +119,14 @@ public class Artist implements Serializable{
      * @return value of deathDate
      */
     @Column(name="death_date", nullable=true)
-	public LocalDate getDeathDate(){
+	public Integer getDeathDate(){
 		return deathDate;
     }  
     /**
      * No comment found in model diagram
      * @param deathDate new value to give to deathDate
      */
-	public void setDeathDate(final LocalDate deathDate){
+	public void setDeathDate(final Integer deathDate){
 		this.deathDate = deathDate;
     }  
     /**
@@ -151,21 +161,6 @@ public class Artist implements Serializable{
     }  
     /**
      * No comment found in model diagram
-     * @return value of testimonyFrom
-     */
-    @Column(name="testimony_from", nullable=true)
-	public String getTestimonyFrom(){
-		return testimonyFrom;
-    }  
-    /**
-     * No comment found in model diagram
-     * @param testimonyFrom new value to give to testimonyFrom
-     */
-	public void setTestimonyFrom(final String testimonyFrom){
-		this.testimonyFrom = testimonyFrom;
-    }  
-    /**
-     * No comment found in model diagram
      * @return value of pictureFilename
      */
     @Column(name="picture_filename", nullable=true)
@@ -181,34 +176,96 @@ public class Artist implements Serializable{
     }  
     /**
      * No comment found in model diagram
-     * @return value of testimonyText
+     * @return value of birthPlace
      */
-    @Column(name="testimony_text", nullable=true)
-	public String getTestimonyText(){
-		return testimonyText;
+    @Column(name="birth_place", nullable=true)
+	public String getBirthPlace(){
+		return birthPlace;
     }  
     /**
      * No comment found in model diagram
-     * @param testimonyText new value to give to testimonyText
+     * @param birthPlace new value to give to birthPlace
      */
-	public void setTestimonyText(final String testimonyText){
-		this.testimonyText = testimonyText;
+	public void setBirthPlace(final String birthPlace){
+		this.birthPlace = birthPlace;
     }  
     /**
-     * Association artist_birth_country to Country
-     * @return value of country
+     * No comment found in model diagram
+     * @return value of deathPlace
+     */
+    @Column(name="death_place", nullable=true)
+	public String getDeathPlace(){
+		return deathPlace;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param deathPlace new value to give to deathPlace
+     */
+	public void setDeathPlace(final String deathPlace){
+		this.deathPlace = deathPlace;
+    }  
+    /**
+     * Association artist_alias to Alias
+     * @return value of aliasList
+     */
+    @JoinColumn(name="artist_id", referencedColumnName="artist_id")
+    @OneToMany(orphanRemoval=true)
+	public Set<Alias> getAliasList(){
+		return aliasList;
+    }  
+    /**
+     * Association artist_alias to Alias
+     * @param aliasList new value to give to aliasList
+     */
+	public void setAliasList(final Set<Alias> aliasList){
+		this.aliasList = aliasList;
+    }  
+    /**
+     * Association artist_origin_country to Country
+     * @return value of originCountryList
+     */
+    @ManyToMany(mappedBy="artistOriginCountryList", cascade={CascadeType.PERSIST,CascadeType.MERGE})
+	public Set<Country> getOriginCountryList(){
+		return originCountryList;
+    }  
+    /**
+     * Association artist_origin_country to Country
+     * @param originCountryList new value to give to originCountryList
+     */
+	public void setOriginCountryList(final Set<Country> originCountryList){
+		this.originCountryList = originCountryList;
+    }  
+    /**
+     * Association country_of_death to Country
+     * @return value of countryOfDeath
      */
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="country_id", referencedColumnName="country_id")
-	public Country getCountry(){
-		return country;
+    @JoinColumn(name="death_country_id", referencedColumnName="country_id")
+	public Country getCountryOfDeath(){
+		return countryOfDeath;
     }  
     /**
-     * Association artist_birth_country to Country
-     * @param country new value to give to country
+     * Association country_of_death to Country
+     * @param countryOfDeath new value to give to countryOfDeath
      */
-	public void setCountry(final Country country){
-		this.country = country;
+	public void setCountryOfDeath(final Country countryOfDeath){
+		this.countryOfDeath = countryOfDeath;
+    }  
+    /**
+     * Association country_of_birth to Country
+     * @return value of countryOfBirth
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="birth_country_id", referencedColumnName="country_id")
+	public Country getCountryOfBirth(){
+		return countryOfBirth;
+    }  
+    /**
+     * Association country_of_birth to Country
+     * @param countryOfBirth new value to give to countryOfBirth
+     */
+	public void setCountryOfBirth(final Country countryOfBirth){
+		this.countryOfBirth = countryOfBirth;
     }  
     /**
      * Association band_label to Label
@@ -228,35 +285,67 @@ public class Artist implements Serializable{
     }  
     /**
      * Association band_link to Link
-     * @return value of link
+     * @return value of linkList
      */
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="link_id", referencedColumnName="link_id")
-	public Link getLink(){
-		return link;
+    @JoinColumn(name="artist_id", referencedColumnName="artist_id")
+    @OneToMany(orphanRemoval=true)
+	public Set<Link> getLinkList(){
+		return linkList;
     }  
     /**
      * Association band_link to Link
-     * @param link new value to give to link
+     * @param linkList new value to give to linkList
      */
-	public void setLink(final Link link){
-		this.link = link;
+	public void setLinkList(final Set<Link> linkList){
+		this.linkList = linkList;
     }  
     /**
-     * Association band_bio to Bio
-     * @return value of bio
+     * Association band_previous_member to Artist
+     * @return value of previousMemberList
+     */
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name="band_previous_member", joinColumns=@JoinColumn(name = "band_id"), inverseJoinColumns=@JoinColumn(name = "prev_member_id"))
+	public Set<Artist> getPreviousMemberList(){
+		return previousMemberList;
+    }  
+    /**
+     * Association band_previous_member to Artist
+     * @param previousMemberList new value to give to previousMemberList
+     */
+	public void setPreviousMemberList(final Set<Artist> previousMemberList){
+		this.previousMemberList = previousMemberList;
+    }  
+    /**
+     * Association artist_type to ArtistType
+     * @return value of artistType
      */
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="bio_id", referencedColumnName="bio_id")
-	public Bio getBio(){
-		return bio;
+    @JoinColumn(name="artist_type_id", referencedColumnName="artist_type_id")
+	public ArtistType getArtistType(){
+		return artistType;
     }  
     /**
-     * Association band_bio to Bio
-     * @param bio new value to give to bio
+     * Association artist_type to ArtistType
+     * @param artistType new value to give to artistType
      */
-	public void setBio(final Bio bio){
-		this.bio = bio;
+	public void setArtistType(final ArtistType artistType){
+		this.artistType = artistType;
+    }  
+    /**
+     * Association artist_testimony to Testimony
+     * @return value of testimonyList
+     */
+    @JoinColumn(name="artist_id", referencedColumnName="artist_id")
+    @OneToMany(orphanRemoval=true)
+	public Set<Testimony> getTestimonyList(){
+		return testimonyList;
+    }  
+    /**
+     * Association artist_testimony to Testimony
+     * @param testimonyList new value to give to testimonyList
+     */
+	public void setTestimonyList(final Set<Testimony> testimonyList){
+		this.testimonyList = testimonyList;
     }  
 
 	@Override
@@ -272,9 +361,9 @@ public class Artist implements Serializable{
 		result = 31 * result + (deathDate == null? 0 : deathDate.hashCode());
 		result = 31 * result + (lastModificationDate == null? 0 : lastModificationDate.hashCode());
 		result = 31 * result + (isLabel == null? 0 : isLabel.hashCode());
-		result = 31 * result + (testimonyFrom == null? 0 : testimonyFrom.hashCode());
 		result = 31 * result + (pictureFilename == null? 0 : pictureFilename.hashCode());
-		result = 31 * result + (testimonyText == null? 0 : testimonyText.hashCode());
+		result = 31 * result + (birthPlace == null? 0 : birthPlace.hashCode());
+		result = 31 * result + (deathPlace == null? 0 : deathPlace.hashCode());
 			
 		return result;
 	}
@@ -306,9 +395,9 @@ public class Artist implements Serializable{
 			&& (deathDate == null ?  (otherArtist.deathDate == null) : deathDate.equals(otherArtist.deathDate))
 			&& (lastModificationDate == null ?  (otherArtist.lastModificationDate == null) : lastModificationDate.equals(otherArtist.lastModificationDate))
 			&& (isLabel == null ?  (otherArtist.isLabel == null) : isLabel.equals(otherArtist.isLabel))
-			&& (testimonyFrom == null ?  (otherArtist.testimonyFrom == null) : testimonyFrom.equals(otherArtist.testimonyFrom))
 			&& (pictureFilename == null ?  (otherArtist.pictureFilename == null) : pictureFilename.equals(otherArtist.pictureFilename))
-			&& (testimonyText == null ?  (otherArtist.testimonyText == null) : testimonyText.equals(otherArtist.testimonyText))
+			&& (birthPlace == null ?  (otherArtist.birthPlace == null) : birthPlace.equals(otherArtist.birthPlace))
+			&& (deathPlace == null ?  (otherArtist.deathPlace == null) : deathPlace.equals(otherArtist.deathPlace))
 		;
 	}
 

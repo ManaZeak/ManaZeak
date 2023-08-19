@@ -1,13 +1,19 @@
 package org.manazeak.manazeak.entity.track;
 
 import java.io.Serializable;
-import jakarta.persistence.GeneratedValue;
+import org.manazeak.manazeak.entity.reference.Locale;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import java.util.Set;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 
 /**
  * No comment found in model diagram
@@ -22,6 +28,8 @@ public class Bio implements Serializable{
 
 	private Long bioId;
 	private String text;
+	private Set<Artist> artistList;
+	private Locale locale;
 
     /**
      * No comment found in model diagram
@@ -55,6 +63,38 @@ public class Bio implements Serializable{
      */
 	public void setText(final String text){
 		this.text = text;
+    }  
+    /**
+     * Association band_bio to Artist
+     * @return value of artistList
+     */
+    @JoinColumn(name="bio_id", referencedColumnName="bio_id")
+    @OneToMany(orphanRemoval=true)
+	public Set<Artist> getArtistList(){
+		return artistList;
+    }  
+    /**
+     * Association band_bio to Artist
+     * @param artistList new value to give to artistList
+     */
+	public void setArtistList(final Set<Artist> artistList){
+		this.artistList = artistList;
+    }  
+    /**
+     * Association bio_locale to Locale
+     * @return value of locale
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="locale_id", referencedColumnName="locale_id")
+	public Locale getLocale(){
+		return locale;
+    }  
+    /**
+     * Association bio_locale to Locale
+     * @param locale new value to give to locale
+     */
+	public void setLocale(final Locale locale){
+		this.locale = locale;
     }  
 
 	@Override

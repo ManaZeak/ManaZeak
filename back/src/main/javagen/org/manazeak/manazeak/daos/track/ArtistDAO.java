@@ -53,18 +53,14 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
                a.birthDate,
                a.deathDate,
                a.isLabel,
-               a.testimonyFrom,
-               a.testimonyText,
                country.trigram,
                label.labelId,
                label.name,
-               a.pictureFilename,
-               bio.text
+               a.pictureFilename
             )
             FROM Artist a
-            LEFT JOIN a.country country
+            LEFT JOIN a.countryOfBirth country
             LEFT JOIN a.label label
-            LEFT JOIN a.bio bio
             WHERE a.artistId = :artistId
             """)
     Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId);

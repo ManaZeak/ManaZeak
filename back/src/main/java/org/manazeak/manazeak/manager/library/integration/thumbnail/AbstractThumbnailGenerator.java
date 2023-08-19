@@ -6,8 +6,8 @@ import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailErrorTypeEnum;
 import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
 import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailErrorDto;
 import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.integration.error.ThumbnailErrorManager;
+import org.manazeak.manazeak.util.thread.ThreadPoolHelper;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Contains the base for generating the thumbnails in the application.
@@ -60,15 +59,8 @@ public abstract class AbstractThumbnailGenerator {
 
         // Stopping the thread pool.
         executor.shutdown();
-
-        try {
-            if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                throw new MzkRuntimeException("The time out for the artist profile picture generation was reached, stopping.");
-            }
-        } catch (InterruptedException e) {
-            log.error("Thread interrupted during the artist profile integration.", e);
-            Thread.currentThread().interrupt();
-        }
+        ThreadPoolHelper.waitPoolFinish(executor, "The time out for the artist profile picture " +
+                "generation was reached, stopping.");
     }
 
     /**
