@@ -30,10 +30,10 @@
       </div>
     </div>
   </div>
-  <h1>
+  <h1 class="items-title">
     <span th:text="#{view.rlartist.album_released}"></span>
     <span th:text="${artist.name}"></span>
-    <img src="/static/img/navigation/sort-number.svg" id="sort-artist-releases" alt="sort-artist-releases">
+    <img src="/static/img/navigation/sort-number.svg" class="sort-releases" alt="sort-artist-releases">
   </h1>
   <!-- Displaying the list of albums. -->
   <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${albums}, medium)}"></div>
@@ -41,7 +41,10 @@
   <div th:each="type : ${contribType.values()}">
     <div th:unless="${contrib.get(type).isEmpty()}">
       <!-- Display the linked album of the albums.-->
-      <h1><span th:text="#{${type.getNameCode()}}"></span></h1>
+      <h1 class="items-title">
+        <span th:text="#{${type.getNameCode()}}"></span>
+        <img src="/static/img/navigation/sort-number.svg" class="sort-releases" alt="sort-artist-releases">
+      </h1>
       <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${contrib.get(type)}, medium)}"></div>
     </div>
   </div>

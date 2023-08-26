@@ -42,14 +42,24 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
         this.dom.querySelector('.artist-header-center').classList.add('expanded');
       }
       /* Build albums */
+      this._itemsTitle = this.dom.querySelectorAll('.items-title');
       this._itemsContainers = this.dom.querySelectorAll('.items-container');
 
       if (this._itemsContainers.length > 0) {
         this._albums = this._itemsContainers[0];
-        // Start at one to avoid recreating albums scrollbar
+
         for (let i = 0; i < this._itemsContainers.length; ++i) {
-          this._buildArtistAlbums(this._itemsContainers[i]);
-          this._handleAlbumSorting(this._itemsContainers[i]);
+          this._buildArtistAlbums(this._itemsContainers[i], this._itemsTitle[i]);
+
+          this._scrolls.push(new ScrollBar({
+            target: this._itemsContainers[i],
+            horizontal: true,
+            style: {
+              color: '#56D45B'
+            }
+          }));
+
+          this._handleAlbumSorting(this._itemsContainers[i], this._itemsTitle[i].querySelector('.sort-releases'));
         }
         // Global view scroll
         this._scrolls.push(new ScrollBar({
@@ -91,7 +101,12 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
   }
 
 
-  _buildArtistAlbums(elements) {
+  _buildArtistAlbums(elements, title) {
+    if (elements.children.length === 0) {
+      title.remove();
+      return;
+    }
+
     for (let i = 0; i < elements.children.length; ++i) {
       let title = elements.children[i].lastElementChild.innerHTML;
       if (title.includes(' EP')) {
@@ -107,20 +122,11 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
       elements.children[i].lastElementChild.innerHTML = title;
       elements.children[i].addEventListener('click', this._albumClicked);
     }
-
-    this._scrolls.push(new ScrollBar({
-      target: elements,
-      horizontal: true,
-      style: {
-        color: '#56D45B'
-      }
-    }));
   }
 
 
-  _handleAlbumSorting(elementsList) {
+  _handleAlbumSorting(elementsList, sortArtistReleases) {
     elementsList = elementsList.children[0].children[0]; // Forget about scrollbar here
-    const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
     sortArtistReleases.addEventListener('click', () => {
       sortArtistReleases.classList.toggle('active');
       let elements = [].slice.call(elementsList.children);
