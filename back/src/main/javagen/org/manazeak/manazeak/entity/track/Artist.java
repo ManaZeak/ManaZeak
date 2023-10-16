@@ -208,8 +208,8 @@ public class Artist implements Serializable{
      * Association artist_alias to Alias
      * @return value of aliasList
      */
-    @JoinColumn(name="artist_id", referencedColumnName="artist_id")
-    @OneToMany(orphanRemoval=true)
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name="artist_alias", joinColumns=@JoinColumn(name = "artist_id"), inverseJoinColumns=@JoinColumn(name = "alias_id"))
 	public Set<Alias> getAliasList(){
 		return aliasList;
     }  

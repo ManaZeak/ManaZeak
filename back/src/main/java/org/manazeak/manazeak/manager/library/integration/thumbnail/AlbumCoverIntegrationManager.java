@@ -6,7 +6,7 @@ import org.manazeak.manazeak.constant.file.ThumbSizeEnum;
 import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
 import org.manazeak.manazeak.daos.library.integration.cover.CoverIntegrationDAO;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
-import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class AlbumCoverIntegrationManager extends AbstractThumbnailGenerator{
     private final CoverIntegrationDAO coverIntegrationDAO;
 
     @Override
-    protected List<ThumbnailGenerationProjection> getElementsPacket(Long lastId, Pageable pageable) {
+    protected List<NameIdentifierProjection> getElementPacket(Long lastId, Pageable pageable) {
         return albumDAO.getAlbumThumbsGenerations(lastId, pageable);
     }
 

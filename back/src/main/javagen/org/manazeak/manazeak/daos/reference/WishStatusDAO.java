@@ -1,14 +1,14 @@
 package org.manazeak.manazeak.daos.reference;
 
-import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.reference.WishStatus;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * Data Access Object for WishStatus using Spring CrudRepository interface
- *
+ * <p>
  * This file has been automatically generated
  */
-public interface WishStatusDAO extends CrudRepository<WishStatus,  Long> {
+public interface WishStatusDAO extends CrudRepository<WishStatus, Long> {
 
     WishStatus getWishStatusByWishStatusId(Long wishStatusId);
 

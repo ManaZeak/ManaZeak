@@ -2,7 +2,7 @@ package org.manazeak.manazeak.manager.library.integration.artist;
 
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
-import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistLinkerProjection;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.manazeak.manazeak.manager.library.integration.cache.AbstractIntegrationCacheLoaderManager;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -14,7 +14,7 @@ import java.util.List;
  * Manager used to manipulate the artists in the cache and in the database.
  */
 @Component
-public class ArtistIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<ArtistLinkerProjection> {
+public class ArtistIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<NameIdentifierProjection> {
 
     private final CacheManager cacheManager;
 
@@ -26,7 +26,7 @@ public class ArtistIntegrationCacheManager extends AbstractIntegrationCacheLoade
     }
 
     @Override
-    protected List<ArtistLinkerProjection> getDatabaseObjects(List<String> elements) {
+    protected List<NameIdentifierProjection> getDatabaseObjects(List<String> elements) {
         return artistDao.getArtistByNames(elements);
     }
 

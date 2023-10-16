@@ -23,6 +23,7 @@
         <thumbnailator.version>0.4.20</thumbnailator.version>
         <guava.version>32.0.0-jre</guava.version>
         <scrimage.version>4.0.39</scrimage.version>
+        <json.version>20230618</json.version>
     </properties>
 
     <dependencies>
@@ -172,6 +173,14 @@
             </exclusions>
         </dependency>
 
+        <!-- JSON handling in the application. -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
+        </dependency>
+
+        <!-- Cache management. -->
         <dependency>
             <groupId>org.cache2k</groupId>
             <artifactId>cache2k-api</artifactId>

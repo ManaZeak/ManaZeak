@@ -91,10 +91,8 @@ COMMENT ON COLUMN album_recording_location.recording_location_id IS 'ManyToMany 
 CREATE TABLE alias (
 	alias_id BIGINT not null,
 	value VARCHAR(100) not null,
-	artist_id BIGINT,
 	CONSTRAINT PK_ALIAS PRIMARY KEY (alias_id)
 );
-COMMENT ON COLUMN alias.artist_id IS 'ManyToOne FK artist';
 
 CREATE TABLE artist (
 	artist_id BIGINT not null,
@@ -120,6 +118,15 @@ COMMENT ON COLUMN artist.birth_country_id IS 'ManyToOne FK country';
 COMMENT ON COLUMN artist.label_id IS 'ManyToOne FK label';
 COMMENT ON COLUMN artist.bio_id IS 'ManyToOne FK bio';
 COMMENT ON COLUMN artist.artist_type_id IS 'ManyToOne FK artist_type';
+
+CREATE TABLE artist_alias (
+	artist_id BIGINT not null,
+	alias_id BIGINT not null,
+	CONSTRAINT PK_ARTIST_ALIAS PRIMARY KEY (artist_id,alias_id)
+);
+COMMENT ON TABLE artist_alias IS 'ManyToMany artist / alias';
+COMMENT ON COLUMN artist_alias.artist_id IS 'ManyToMany FK artist';
+COMMENT ON COLUMN artist_alias.alias_id IS 'ManyToMany FK alias';
 
 CREATE TABLE artist_origin_country (
 	artist_id BIGINT not null,
@@ -223,7 +230,8 @@ COMMENT ON COLUMN testimony.locale_id IS 'ManyToOne FK locale';
 CREATE TABLE time_interval (
 	interval_id BIGINT not null,
 	starting_date DATE not null,
-	ending_date DATE not null,
+	ending_date DATE,
+	interval_key VARCHAR(50) not null,
 	CONSTRAINT PK_TIME_INTERVAL PRIMARY KEY (interval_id)
 );
 COMMENT ON TABLE time_interval IS 'A time interval between two dates.';
@@ -563,7 +571,8 @@ ALTER TABLE album ADD CONSTRAINT FK_album_label FOREIGN KEY (label_id) REFERENCE
 ALTER TABLE album_recording_location ADD CONSTRAINT FK_album_recording_location_1 FOREIGN KEY (album_id) REFERENCES album(album_id);
 ALTER TABLE album_recording_location ADD CONSTRAINT FK_album_recording_location_2 FOREIGN KEY (recording_location_id) REFERENCES recording_location(recording_location_id);
 ALTER TABLE album ADD CONSTRAINT FK_album_band FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
-ALTER TABLE alias ADD CONSTRAINT FK_artist_alias FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
+ALTER TABLE artist_alias ADD CONSTRAINT FK_artist_alias_1 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
+ALTER TABLE artist_alias ADD CONSTRAINT FK_artist_alias_2 FOREIGN KEY (alias_id) REFERENCES alias(alias_id);
 ALTER TABLE artist_origin_country ADD CONSTRAINT FK_artist_origin_country_1 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE artist_origin_country ADD CONSTRAINT FK_artist_origin_country_2 FOREIGN KEY (country_id) REFERENCES country(country_id);
 ALTER TABLE artist ADD CONSTRAINT FK_country_of_death FOREIGN KEY (death_country_id) REFERENCES country(country_id);
@@ -637,7 +646,8 @@ CREATE INDEX IDX_album_label ON album (label_id);
 CREATE INDEX IDX_album_recording_location_1 ON album_recording_location (album_id);
 CREATE INDEX IDX_album_recording_location_2 ON album_recording_location (recording_location_id);
 CREATE INDEX IDX_album_band ON album (artist_id);
-CREATE INDEX IDX_artist_alias ON alias (artist_id);
+CREATE INDEX IDX_artist_alias_1 ON artist_alias (artist_id);
+CREATE INDEX IDX_artist_alias_2 ON artist_alias (alias_id);
 CREATE INDEX IDX_artist_origin_country_1 ON artist_origin_country (artist_id);
 CREATE INDEX IDX_artist_origin_country_2 ON artist_origin_country (country_id);
 CREATE INDEX IDX_country_of_death ON artist (death_country_id);

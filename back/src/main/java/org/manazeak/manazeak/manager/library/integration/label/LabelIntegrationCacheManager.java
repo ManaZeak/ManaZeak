@@ -3,7 +3,7 @@ package org.manazeak.manazeak.manager.library.integration.label;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.daos.track.LabelDAO;
-import org.manazeak.manazeak.entity.dto.library.integration.label.LabelLinkerProjection;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.manazeak.manazeak.manager.library.integration.cache.AbstractIntegrationCacheLoaderManager;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -13,14 +13,14 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class LabelIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<LabelLinkerProjection> {
+public class LabelIntegrationCacheManager extends AbstractIntegrationCacheLoaderManager<NameIdentifierProjection> {
 
     private final LabelDAO labelDao;
 
     private final CacheManager cacheManager;
 
     @Override
-    protected List<LabelLinkerProjection> getDatabaseObjects(List<String> elements) {
+    protected List<NameIdentifierProjection> getDatabaseObjects(List<String> elements) {
         return labelDao.getLabelsByNames(elements);
     }
 

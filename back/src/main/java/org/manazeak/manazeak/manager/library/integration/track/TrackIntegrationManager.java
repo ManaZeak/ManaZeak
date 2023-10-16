@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.track.TrackIntegrationDAO;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackIntegrationDto;
-import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.manazeak.manazeak.entity.track.Track;
 import org.manazeak.manazeak.util.database.PkIdProvider;
 import org.springframework.stereotype.Component;
@@ -78,9 +78,9 @@ public class TrackIntegrationManager {
      * @param tracksByLocation The map containing the locations associated to the tracks.
      */
     private void getIdFromLocationAndUpdateTracks(List<String> locations, Map<String, TrackIntegrationDto> tracksByLocation) {
-        List<TrackLinkerProjection> trackLinkers = trackDao.getTrackIdByLocation(locations);
-        for (TrackLinkerProjection linker : trackLinkers) {
-            tracksByLocation.get(linker.getLocation()).setTrackId(linker.getTrackId());
+        List<NameIdentifierProjection> trackLinkers = trackDao.getTrackIdByLocation(locations);
+        for (NameIdentifierProjection linker : trackLinkers) {
+            tracksByLocation.get(linker.getName()).setTrackId(linker.getIdentifier());
         }
     }
 

@@ -3,8 +3,7 @@ package org.manazeak.manazeak.daos.track;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
-import org.manazeak.manazeak.entity.dto.library.integration.genre.GenreLinkerProjection;
-import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.manazeak.manazeak.entity.track.Genre;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -27,15 +26,23 @@ public interface GenreDAO extends CrudRepository<Genre, Long> {
      * @param genreNames The list of genre to select.
      * @return The genre found in the database that match.
      */
-    @Query("select genreId, name as genreName from Genre where name in :genreNames")
-    List<GenreLinkerProjection> getGenreByNames(List<String> genreNames);
+    @Query("""
+            select
+                genreId as identifier,
+                name as name
+            from Genre
+            where name in :genreNames
+            """)
+    List<NameIdentifierProjection> getGenreByNames(List<String> genreNames);
 
     @Query("""
-            select genreId as elementId, name as name
+            select
+                genreId as identifier,
+                name as name
             from Genre where genreId > :lastGenreId
             order by genreId
             """)
-    List<ThumbnailGenerationProjection> getGenresPictureProjection(@Param("lastGenreId") Long lastGenreId, Pageable pageable);
+    List<NameIdentifierProjection> getGenresPictureProjection(@Param("lastGenreId") Long lastGenreId, Pageable pageable);
 
     @Query("""
             select new org.manazeak.manazeak.entity.dto.library.genre.GenreCompleteInfoDbDto(

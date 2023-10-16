@@ -3,7 +3,7 @@ package org.manazeak.manazeak.manager.library.integration.key;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.daos.reference.KeyDAO;
-import org.manazeak.manazeak.entity.dto.library.integration.key.KeyLinkerProjection;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.manazeak.manazeak.manager.library.integration.cache.AbstractIntegrationCacheLoaderManager;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -16,14 +16,14 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class TonalKeyCacheManager extends AbstractIntegrationCacheLoaderManager<KeyLinkerProjection> {
+public class TonalKeyCacheManager extends AbstractIntegrationCacheLoaderManager<NameIdentifierProjection> {
 
     private final CacheManager cacheManager;
 
     private final KeyDAO keyDAO;
 
     @Override
-    protected List<KeyLinkerProjection> getDatabaseObjects(List<String> elements) {
+    protected List<NameIdentifierProjection> getDatabaseObjects(List<String> elements) {
         return keyDAO.getAll();
     }
 

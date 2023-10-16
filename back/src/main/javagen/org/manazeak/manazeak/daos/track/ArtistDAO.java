@@ -2,8 +2,7 @@ package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
-import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistLinkerProjection;
-import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.manazeak.manazeak.entity.track.Artist;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -25,11 +24,11 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
     /**
      * Get the artist id from the artist name.
      *
-     * @param artistNames The list of the name of the artists.
+     * @param artistNames The artist's name.
      * @return The artist name linked to the artist ID.
      */
-    @Query("select artistId, name as artistName from Artist where name in :artistNames")
-    List<ArtistLinkerProjection> getArtistByNames(@Param("artistNames") Collection<String> artistNames);
+    @Query("select artistId as identifier, name as name from Artist where name in :artistNames")
+    List<NameIdentifierProjection> getArtistByNames(@Param("artistNames") Collection<String> artistNames);
 
     /**
      * Get the artists by the locations.
@@ -46,7 +45,7 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
      * @return The artist detail.
      */
     @Query("""
-            SELECT new org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto(
+            select new org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto(
                a.artistId,
                a.name,
                a.location,
@@ -58,10 +57,10 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
                label.name,
                a.pictureFilename
             )
-            FROM Artist a
-            LEFT JOIN a.countryOfBirth country
-            LEFT JOIN a.label label
-            WHERE a.artistId = :artistId
+            from Artist a
+            left join a.countryOfBirth country
+            left join a.label label
+            where a.artistId = :artistId
             """)
     Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId);
 
@@ -128,10 +127,13 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
      * @return The artists with no image generated.
      */
     @Query("""
-            select artistId as elementId, name as name from Artist
+            select
+                artistId as identifier,
+                name as name
+               from Artist
             where artistId > :lastArtistId
             order by artistId
             """)
-    List<ThumbnailGenerationProjection> getArtistsToGenerateThumbPacket(@Param("lastArtistId") Long lastArtistId, Pageable pageable);
+    List<NameIdentifierProjection> getArtistsToGenerateThumbPacket(@Param("lastArtistId") Long lastArtistId, Pageable pageable);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

@@ -1,11 +1,11 @@
 package org.manazeak.manazeak.daos.track;
 
-import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarImageGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
+import org.manazeak.manazeak.entity.dto.utils.NameIdentifierProjection;
 import org.manazeak.manazeak.entity.track.Track;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +21,19 @@ import java.util.List;
  */
 public interface TrackDAO extends CrudRepository<Track, Long> {
 
-    @Query("select location, trackId from Track where location in (:locations)")
-    List<TrackLinkerProjection> getTrackIdByLocation(@Param("locations") List<String> locations);
+    /**
+     * Get the track id associated to the track location.
+     * @param locations The list of track locations to filter.
+     * @return The list of track location associated to the     AEZ
+     */
+    @Query("""
+            select
+                location as name,
+                trackId as identifier
+            from Track
+            where location in (:locations)
+            """)
+    List<NameIdentifierProjection> getTrackIdByLocation(@Param("locations") List<String> locations);
 
     /**
      * Fetch the tracks without moodbar.

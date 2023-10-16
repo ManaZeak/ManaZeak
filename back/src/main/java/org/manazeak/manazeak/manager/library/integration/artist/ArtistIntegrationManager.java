@@ -2,6 +2,8 @@ package org.manazeak.manazeak.manager.library.integration.artist;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.daos.library.integration.artist.ArtistIntegrationDAO;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistAdditionalInfoContainer;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistAdditionalInfoLinkerDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
@@ -70,5 +72,34 @@ public class ArtistIntegrationManager {
         }
         // Inserting the links into the database.
         artistIntegrationDAO.createBandMembers(new ArrayList<>(artistsLinks));
+    }
+
+    /**
+     * Add information contained in the JSON file into the artist.
+     *
+     * @param container The information about the extracted data in the JSON.
+     * @return The object that will be used to link the artist with the other objects.
+     */
+    public ArtistAdditionalInfoLinkerDto enrichArtistFromJson(ArtistAdditionalInfoContainer container) {
+        return artistIntegrationDAO.enrichArtistFromJson(container);
+    }
+
+    /**
+     * Insert in the database all the artists found in the JSON that were not present in the database.
+     *
+     * @param container The information fetched from the JSON.
+     */
+    public void createMissingArtistsFromJson(ArtistAdditionalInfoContainer container) {
+        ArrayList<String> artists = new ArrayList<>();
+
+        // Checking if the artist is present in the database.
+        for (String artist : container.getArtists()) {
+            if (!container.getArtists().contains(artist)) {
+                artists.add(artist);
+            }
+        }
+
+        // Inserting the artists and updating the container.
+        artistIntegrationDAO.insertMinimalArtists(container, artists);
     }
 }

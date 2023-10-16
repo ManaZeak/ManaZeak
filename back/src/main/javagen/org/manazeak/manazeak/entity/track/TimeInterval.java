@@ -24,6 +24,7 @@ public class TimeInterval implements Serializable{
 	private Long intervalId;
 	private LocalDate startingDate;
 	private LocalDate endingDate;
+	private String intervalKey;
 
     /**
      * No comment found in model diagram
@@ -62,7 +63,7 @@ public class TimeInterval implements Serializable{
      * No comment found in model diagram
      * @return value of endingDate
      */
-    @Column(name="ending_date", nullable=false)
+    @Column(name="ending_date", nullable=true)
 	public LocalDate getEndingDate(){
 		return endingDate;
     }  
@@ -72,6 +73,21 @@ public class TimeInterval implements Serializable{
      */
 	public void setEndingDate(final LocalDate endingDate){
 		this.endingDate = endingDate;
+    }  
+    /**
+     * No comment found in model diagram
+     * @return value of intervalKey
+     */
+    @Column(name="interval_key", nullable=false)
+	public String getIntervalKey(){
+		return intervalKey;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param intervalKey new value to give to intervalKey
+     */
+	public void setIntervalKey(final String intervalKey){
+		this.intervalKey = intervalKey;
     }  
 
 	@Override
@@ -83,6 +99,7 @@ public class TimeInterval implements Serializable{
 		result = 31 * result + (intervalId == null? 0 : intervalId.hashCode());
 		result = 31 * result + (startingDate == null? 0 : startingDate.hashCode());
 		result = 31 * result + (endingDate == null? 0 : endingDate.hashCode());
+		result = 31 * result + (intervalKey == null? 0 : intervalKey.hashCode());
 			
 		return result;
 	}
@@ -110,6 +127,7 @@ public class TimeInterval implements Serializable{
 		return (intervalId == null ?  (otherTimeInterval.intervalId == null) : intervalId.equals(otherTimeInterval.intervalId))
 			&& (startingDate == null ?  (otherTimeInterval.startingDate == null) : startingDate.equals(otherTimeInterval.startingDate))
 			&& (endingDate == null ?  (otherTimeInterval.endingDate == null) : endingDate.equals(otherTimeInterval.endingDate))
+			&& (intervalKey == null ?  (otherTimeInterval.intervalKey == null) : intervalKey.equals(otherTimeInterval.intervalKey))
 		;
 	}
 
