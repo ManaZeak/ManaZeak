@@ -63,7 +63,9 @@ public class AdditionalArtistIntegrationManager {
         try (Stream<Path> fileStream = Files.walk(AssetPathEnum.ARTIST_ADDITIONAL_INFO_FOLDER.getFolder(), 1)) {
             for (Iterator<Path> it = fileStream.iterator(); it.hasNext(); ) {
                 Path file = it.next();
-                files.add(file);
+                if (!Files.isDirectory(file)) {
+                    files.add(file);
+                }
             }
         } catch (IOException e) {
             throw new MzkRuntimeException("Error when opening the asset folder containing the artist additional info", e);

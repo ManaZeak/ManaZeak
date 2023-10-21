@@ -94,7 +94,7 @@ public class ArtistIntegrationManager {
 
         // Checking if the artist is present in the database.
         for (String artist : container.getArtists()) {
-            if (!container.getArtists().contains(artist)) {
+            if (container.getArtistMap().get(artist) == null) {
                 artists.add(artist);
             }
         }

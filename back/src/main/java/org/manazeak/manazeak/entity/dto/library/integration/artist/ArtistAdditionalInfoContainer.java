@@ -48,6 +48,7 @@ public class ArtistAdditionalInfoContainer {
         countries.add(additionalInfoDto.countryOfDeath());
         artists.addAll(additionalInfoDto.members());
         artists.addAll(additionalInfoDto.pastMembers());
+        artists.add(additionalInfoDto.name());
         yearsActive.addAll(additionalInfoDto.yearsActive());
     }
 
