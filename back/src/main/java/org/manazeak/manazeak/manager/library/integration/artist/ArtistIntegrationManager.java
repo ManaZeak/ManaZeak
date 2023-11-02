@@ -25,7 +25,7 @@ public class ArtistIntegrationManager {
     private final ArtistIntegrationDAO artistIntegrationDAO;
 
     /**
-     * Extract the artists names from the tags of a track.
+     * Extract the artist names from the tags of a track.
      *
      * @param track        The extracted information about the track.
      * @param artistsNames The names of the artist that were extracted.
@@ -61,7 +61,7 @@ public class ArtistIntegrationManager {
         // Creating the pairs of ids to be inserted.
         Set<Pair<Long, Long>> artistsLinks = new HashSet<>();
         for (ArtistIntegrationDto artist : artistsByName.values()) {
-            // If there is no sub artists, nothing to do.
+            // If there are no sub artists, nothing to do.
             if (artist.getSubArtists() == null || artist.getSubArtists().isEmpty()) {
                 continue;
             }
@@ -78,10 +78,9 @@ public class ArtistIntegrationManager {
      * Add information contained in the JSON file into the artist.
      *
      * @param container The information about the extracted data in the JSON.
-     * @return The object that will be used to link the artist with the other objects.
      */
-    public ArtistAdditionalInfoLinkerDto enrichArtistFromJson(ArtistAdditionalInfoContainer container) {
-        return artistIntegrationDAO.enrichArtistFromJson(container);
+    public void enrichArtistFromJson(ArtistAdditionalInfoContainer container, ArtistAdditionalInfoLinkerDto linker) {
+        artistIntegrationDAO.enrichArtistFromJson(container, linker);
     }
 
     /**

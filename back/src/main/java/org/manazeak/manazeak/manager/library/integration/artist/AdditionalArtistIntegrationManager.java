@@ -8,13 +8,16 @@ import org.manazeak.manazeak.daos.library.integration.artist.ArtistAdditionalInf
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistAdditionalInfoContainer;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistAdditionalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistAdditionalInfoLinkerDto;
+import org.manazeak.manazeak.entity.dto.library.integration.artist.ParsedArtistAdditionalInfoDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.alias.AliasManager;
 import org.manazeak.manazeak.manager.library.artist.ArtistManager;
 import org.manazeak.manazeak.manager.library.country.CountryManager;
 import org.manazeak.manazeak.manager.library.integration.alias.AliasIntegrationManager;
+import org.manazeak.manazeak.manager.library.integration.bio.BioIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.interval.TimeIntervalIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.link.LinkIntegrationManager;
+import org.manazeak.manazeak.manager.library.integration.testimony.ArtistTestimonyIntegrationManager;
 import org.manazeak.manazeak.manager.library.interval.TimeIntervalManager;
 import org.manazeak.manazeak.util.thread.ThreadPoolHelper;
 import org.springframework.stereotype.Component;
@@ -51,6 +54,9 @@ public class AdditionalArtistIntegrationManager {
     private final ArtistManager artistManager;
     private final ArtistIntegrationManager artistIntegrationManager;
     private final ArtistAdditionalInfoLinkerDAO artistAdditionalInfoLinkerDAO;
+
+    private final ArtistTestimonyIntegrationManager testimonyIntegrationManager;
+    private final BioIntegrationManager bioIntegrationManager;
 
 
     /**
@@ -99,21 +105,26 @@ public class AdditionalArtistIntegrationManager {
             for (Path file : files) {
                 try {
                     // Reading the JSON file and adding it to the container.
-                    container.addAdditionalInfo(objectMapper.readValue(file.toFile(), ArtistAdditionalInfoDto.class));
+                    ParsedArtistAdditionalInfoDto artistInfo = objectMapper.readValue(file.toFile(), ParsedArtistAdditionalInfoDto.class);
+                    // Adding the artist information into the container.
+                    container.addAdditionalInfo(ArtistAdditionalInfoDto.buildFromParsed(artistInfo));
+                    // Adding the testimonies and the bio in the container.
+                    container.addTestimonies(testimonyIntegrationManager.buildTestimonies(artistInfo.testimony(), artistInfo.name()));
+                    container.addBios(bioIntegrationManager.buildBio(artistInfo.bio(), artistInfo.name()));
                 } catch (IOException e) {
                     log.error("Error while reading the file : {}", file, e);
                 }
             }
 
-            log.info("Loading the ");
+            log.info("Loading the information contained in the database.");
             // Fetching the information into the database.
             loadDatabaseReferenceData(container);
 
             // Inserting the element in the database.
-            insertElementsIntoDatabase(container);
+            ArtistAdditionalInfoLinkerDto linker = insertElementsIntoDatabase(container);
 
             // Updating all the artists with the data contained in the JSON.
-            ArtistAdditionalInfoLinkerDto linker = artistIntegrationManager.enrichArtistFromJson(container);
+            artistIntegrationManager.enrichArtistFromJson(container, linker);
 
             // Creating the links between artists and the other objects.
             artistAdditionalInfoLinkerDAO.linkArtistAdditionalInfo(linker);
@@ -144,13 +155,21 @@ public class AdditionalArtistIntegrationManager {
      *
      * @param container The information retrieved in the JSONs.
      */
-    private void insertElementsIntoDatabase(ArtistAdditionalInfoContainer container) {
+    private ArtistAdditionalInfoLinkerDto insertElementsIntoDatabase(ArtistAdditionalInfoContainer container) {
         // Inserting the aliases into the database.
         aliasIntegrationManager.insertAliases(container);
         // Inserting the time intervals into the database.
         timeIntervalIntegrationManager.insertTimeIntervals(container);
         // Inserting the artists not present in the database.
         artistIntegrationManager.createMissingArtistsFromJson(container);
+        // Inserting the testimonies into the database.
+        ArtistAdditionalInfoLinkerDto linkerInfo = new ArtistAdditionalInfoLinkerDto();
+        testimonyIntegrationManager.insertTestimonies(container, linkerInfo);
+        // Inserting the artist bios
+        bioIntegrationManager.insertBios(container, linkerInfo);
+
+
+        return linkerInfo;
     }
 
 }

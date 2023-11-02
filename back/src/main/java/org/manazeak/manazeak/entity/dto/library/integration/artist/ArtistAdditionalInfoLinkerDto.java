@@ -18,7 +18,23 @@ public class ArtistAdditionalInfoLinkerDto {
     List<Pair<Long, Long>> artistYearsActive = new ArrayList<>();
     List<Pair<Long, Long>> artistMembers = new ArrayList<>();
     List<Pair<Long, Long>> artistPastMembers = new ArrayList<>();
+    List<Pair<Long, Long>> artistBios = new ArrayList<>();
 
+    private static void addIfNotNull(@NonNull Long artistId, Long elementId, @NonNull List<Pair<Long, Long>> association) {
+        if (elementId != null) {
+            association.add(Pair.of(artistId, elementId));
+        }
+    }
+
+    /**
+     * Add a bio link to an artist
+     *
+     * @param bioId    The id of the bio.
+     * @param artistId The id of the artist.
+     */
+    public void addBioLink(Long bioId, Long artistId) {
+        addIfNotNull(artistId, bioId, artistBios);
+    }
 
     /**
      * Add associations for the artist using the information in the container.
@@ -53,14 +69,9 @@ public class ArtistAdditionalInfoLinkerDto {
             addIfNotNull(artistId, container.resolveArtistId(prevMember), artistPastMembers);
         }
 
+        // Adding the references of the artist to save the link into the database.
         for (ArtistLink link : artist.links()) {
             container.addLink(link, artistId);
-        }
-    }
-
-    private static void addIfNotNull(@NonNull Long artistId, Long elementId, @NonNull List<Pair<Long, Long>> association) {
-        if (elementId != null) {
-            association.add(Pair.of(artistId, elementId));
         }
     }
 }

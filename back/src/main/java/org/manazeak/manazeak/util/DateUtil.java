@@ -20,7 +20,7 @@ public final class DateUtil {
     }
 
     /**
-     * Allows to parse a date from a string.
+     * Allows parsing a date from a string.
      *
      * @param strDate   The string containing a date.
      * @param formatter The formatter that will be used to parse the date.
@@ -62,10 +62,10 @@ public final class DateUtil {
     }
 
     /**
-     * Get a SQL timestamp from a LocaleDateTime.
+     * Get an SQL timestamp from a LocaleDateTime.
      *
-     * @param date The
-     * @return
+     * @param date The date to convert into the timestamp.
+     * @return The timestamp from the date.
      */
     public static Timestamp getTimeStamp(LocalDateTime date) {
         if (date == null) {

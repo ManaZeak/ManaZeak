@@ -40,6 +40,10 @@ public class ArtistAdditionalInfoLinkerDAO {
             ON CONFLICT (band_id, prev_member_id) DO NOTHING
             """;
 
+    private static final String INSERT_ARTIST_BIO = """
+            INSERT INTO band_bio (artist_id, bio_id) VALUES (?, ?)
+            """;
+
     private final JdbcTemplate jdbcTemplate;
 
     public void linkArtistAdditionalInfo(ArtistAdditionalInfoLinkerDto artistLinks) {
@@ -53,6 +57,8 @@ public class ArtistAdditionalInfoLinkerDAO {
         jdbcTemplate.batchUpdate(INSERT_BAND_MEMBER, new LinkerPreparedSetter(artistLinks.getArtistMembers()));
         // Inserting the previous band members.
         jdbcTemplate.batchUpdate(INSERT_PREVIOUS_BAND_MEMBER, new LinkerPreparedSetter(artistLinks.getArtistPastMembers()));
+        // Inserting the artist bios.
+        jdbcTemplate.batchUpdate(INSERT_ARTIST_BIO, new LinkerPreparedSetter(artistLinks.getArtistBios()));
     }
 
     private record LinkerPreparedSetter(List<Pair<Long, Long>> elements) implements BatchPreparedStatementSetter {

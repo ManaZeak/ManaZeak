@@ -1,7 +1,8 @@
 package org.manazeak.manazeak.entity.dto.library.integration.artist;
 
 import lombok.Data;
-import lombok.Getter;
+import org.manazeak.manazeak.entity.dto.library.integration.bio.BioDto;
+import org.manazeak.manazeak.entity.dto.library.integration.testimony.TestimonyDto;
 
 import java.util.*;
 
@@ -9,7 +10,6 @@ import java.util.*;
  * Contains all the data extracted from the JSONs in a buffer.
  */
 @Data
-@Getter
 public class ArtistAdditionalInfoContainer {
 
     private final List<ArtistAdditionalInfoDto> artistAdditionalInfo = new ArrayList<>();
@@ -24,16 +24,20 @@ public class ArtistAdditionalInfoContainer {
 
     private final Set<ArtistLink> links = new HashSet<>();
 
-    private Map<String, Long> countryMap;
+    private List<BioDto> bios = new ArrayList<>();
 
-    private Map<String, Long> artistMap;
+    private Map<String, Long> countryMap = new HashMap<>();
 
-    private Map<String, Long> aliasMap;
+    private Map<String, Long> artistMap = new HashMap<>();
 
-    private Map<String, Long> intervalMap;
+    private Map<String, Long> aliasMap = new HashMap<>();
+
+    private Map<String, Long> intervalMap = new HashMap<>();
 
     // This map contains the link associated to the artist ids to save them into the database.
-    private Map<ArtistLink, Long> linkMap;
+    private Map<ArtistLink, Long> linkMap = new HashMap<>();
+
+    private List<TestimonyDto> testimonies;
 
     /**
      * Add into the object new additional information about an artist.
@@ -50,6 +54,18 @@ public class ArtistAdditionalInfoContainer {
         artists.addAll(additionalInfoDto.pastMembers());
         artists.add(additionalInfoDto.name());
         yearsActive.addAll(additionalInfoDto.yearsActive());
+    }
+
+    /**
+     * Adds a collection of testimonies into the container to be inserted.
+     *
+     * @param testimonies The collection of testimonies to insert.
+     */
+    public void addTestimonies(Collection<TestimonyDto> testimonies) {
+        for (TestimonyDto testimony : testimonies) {
+            this.testimonies.add(testimony);
+            artists.add(testimony.getFrom());
+        }
     }
 
     /**
@@ -84,6 +100,10 @@ public class ArtistAdditionalInfoContainer {
 
     public void addLink(ArtistLink link, Long artistId) {
         linkMap.put(link, artistId);
+    }
+
+    public void addBios(List<BioDto> bios) {
+        this.bios.addAll(bios);
     }
 
     /**

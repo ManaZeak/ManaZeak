@@ -75,15 +75,14 @@ public class ArtistIntegrationDAO {
      *
      * @param container The extracted data from the JSON.
      */
-    public ArtistAdditionalInfoLinkerDto enrichArtistFromJson(ArtistAdditionalInfoContainer container) {
-        ArtistAdditionalInfoLinkerDto linkerInfo = new ArtistAdditionalInfoLinkerDto();
+    public void enrichArtistFromJson(ArtistAdditionalInfoContainer container, ArtistAdditionalInfoLinkerDto linkerInfo) {
         jdbcTemplate.batchUpdate(UPDATE_ARTIST_ADDITIONAL_INFO, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(@NonNull PreparedStatement ps, int i) throws SQLException {
                 // Updating the artist table with the data contained in the JSON.
                 ArtistAdditionalInfoDto additionalInfo = container.getArtistAdditionalInfo().get(i);
-                ps.setInt(1, additionalInfo.birth());
-                ps.setInt(2, additionalInfo.death());
+                ps.setTimestamp(1, DateUtil.getTimeStamp(DateUtil.parseString(additionalInfo.birth(), DateUtil.US_DATE_FORMATTER)));
+                ps.setTimestamp(2, DateUtil.getTimeStamp(DateUtil.parseString(additionalInfo.death(), DateUtil.US_DATE_FORMATTER)));
                 ps.setString(3, additionalInfo.placeOfBirth());
                 ps.setString(4, additionalInfo.placeOfDeath());
                 ps.setLong(5, container.resolveCountry(additionalInfo.countryOfBirth()));
@@ -99,8 +98,6 @@ public class ArtistIntegrationDAO {
                 return container.getArtistAdditionalInfo().size();
             }
         });
-
-        return linkerInfo;
     }
 
     /**

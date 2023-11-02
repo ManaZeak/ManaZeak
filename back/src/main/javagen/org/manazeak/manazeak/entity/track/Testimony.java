@@ -1,17 +1,9 @@
 package org.manazeak.manazeak.entity.track;
 
-import java.io.Serializable;
-import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.*;
 import org.manazeak.manazeak.entity.reference.Locale;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.GenerationType;
+
+import java.io.Serializable;
 
 /**
  * No comment found in model diagram
@@ -26,6 +18,7 @@ public class Testimony implements Serializable{
 
 	private Integer testimonyId;
 	private String text;
+	private Artist fromArtist;
 	private Locale locale;
 
     /**
@@ -60,6 +53,22 @@ public class Testimony implements Serializable{
      */
 	public void setText(final String text){
 		this.text = text;
+    }  
+    /**
+     * Association testimony_from_artist to Artist
+     * @return value of fromArtist
+     */
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="from_artist_id", referencedColumnName="artist_id")
+	public Artist getFromArtist(){
+		return fromArtist;
+    }  
+    /**
+     * Association testimony_from_artist to Artist
+     * @param fromArtist new value to give to fromArtist
+     */
+	public void setFromArtist(final Artist fromArtist){
+		this.fromArtist = fromArtist;
     }  
     /**
      * Association testimony_locale to Locale

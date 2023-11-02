@@ -28,6 +28,7 @@ public enum LibraryTablesEnum {
     LINK,
     ARTIST_ORIGIN_COUNTRY,
     BAND_PREVIOUS_MEMBER,
+    BAND_BIO,
     TESTIMONY,
     BIO,
     ARTIST,

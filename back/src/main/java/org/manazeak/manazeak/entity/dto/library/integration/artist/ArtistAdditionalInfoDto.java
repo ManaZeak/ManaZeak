@@ -1,11 +1,9 @@
 package org.manazeak.manazeak.entity.dto.library.integration.artist;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 /**
- * Represents the JSON file containing the artist additional information.
+ * Contains the information needed to launch the insertion of an artist into the database.
  */
 public record ArtistAdditionalInfoDto(
         String type,
@@ -13,17 +11,35 @@ public record ArtistAdditionalInfoDto(
         String realName,
         List<String> alias,
         List<String> originCountry,
-        Integer birth,
+        String birth,
         String placeOfBirth,
         String countryOfBirth,
-        Integer death,
+        String death,
         String placeOfDeath,
         String countryOfDeath,
         List<String> yearsActive,
         List<String> members,
         List<String> pastMembers,
-        List<ArtistLink> links,
-        JSONObject bio,
-        JSONObject testimony
+        List<ArtistLink> links
 ) {
+
+    public static ArtistAdditionalInfoDto buildFromParsed(ParsedArtistAdditionalInfoDto parsed) {
+        return new ArtistAdditionalInfoDto(
+                parsed.type(),
+                parsed.name(),
+                parsed.realName(),
+                parsed.alias(),
+                parsed.originCountry(),
+                parsed.birth(),
+                parsed.placeOfBirth(),
+                parsed.countryOfBirth(),
+                parsed.death(),
+                parsed.placeOfDeath(),
+                parsed.countryOfDeath(),
+                parsed.yearsActive(),
+                parsed.members(),
+                parsed.pastMembers(),
+                parsed.links()
+        );
+    }
 }
