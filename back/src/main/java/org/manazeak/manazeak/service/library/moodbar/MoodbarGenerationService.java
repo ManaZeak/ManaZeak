@@ -78,37 +78,35 @@ public class MoodbarGenerationService {
             FileSystemUtils.deleteRecursively(ResourcePathEnum.MOOD_FOLDER.getPath());
 
             // Creating the thread pool.
-            ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+            try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+                Long lastTrackId = 0L;
+                while (true) {
+                    // Building a pageable for the SQL request.
+                    Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
 
-            Long lastTrackId = 0L;
-            while (true) {
-                // Building a pageable for the SQL request.
-                Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
+                    // Getting a packet of elements.
+                    List<MoodbarImageGenerationProjection> elements = trackDAO.getAllMoodbars(lastTrackId, pageable);
 
-                // Getting a packet of elements.
-                List<MoodbarImageGenerationProjection> elements = trackDAO.getAllMoodbars(lastTrackId, pageable);
+                    // If the list is empty, then exiting the loop.
+                    if (elements.isEmpty()) {
+                        break;
+                    }
 
-                // If the list is empty, then exiting the loop.
-                if (elements.isEmpty()) {
-                    break;
+                    // Adding the job to the thread pool.
+                    executor.submit(processMoodFileToPicture(elements));
+
+                    // Getting the last element of the list.
+                    lastTrackId = elements.get(elements.size() - 1).getId();
                 }
 
-                // Adding the job to the thread pool.
-                executor.submit(processMoodFileToPicture(elements));
-
-                // Getting the last element of the list.
-                lastTrackId = elements.get(elements.size() - 1).getId();
-            }
-
-            executor.shutdown();
-
-            try {
-                if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                    throw new MzkRuntimeException("The timeout for the moodbar gen.");
+                try {
+                    if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
+                        throw new MzkRuntimeException("The timeout for the moodbar gen.");
+                    }
+                } catch (InterruptedException e) {
+                    log.error("Thread interrupted during the moodbar gen.", e);
+                    Thread.currentThread().interrupt();
                 }
-            } catch (InterruptedException e) {
-                log.error("Thread interrupted during the moodbar gen.", e);
-                Thread.currentThread().interrupt();
             }
         } catch (IOException e) {
             throw new MzkRuntimeException("Error when processing files during moodbar image regeneration.", e);
@@ -128,7 +126,7 @@ public class MoodbarGenerationService {
             log.info("Launching moodbar generation.");
             isRunning.set(true);
             // Creating the thread pool.
-            ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+            ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
             Long lastTrackId = 0L;
             while (true) {
