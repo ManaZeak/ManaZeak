@@ -99,38 +99,42 @@ public class AdditionalArtistIntegrationManager {
 
     private Runnable integrateArtistAdditionalInfoBuffer(List<Path> files) {
         return () -> {
-            log.info("Adding the additional information processing: {} JSON files", files.size());
-            // Converting each file into JSON object and converting it into database objects ready to be added.
-            ArtistAdditionalInfoContainer container = new ArtistAdditionalInfoContainer();
-            for (Path file : files) {
-                try {
-                    // Reading the JSON file and adding it to the container.
-                    ParsedArtistAdditionalInfoDto artistInfo = objectMapper.readValue(file.toFile(), ParsedArtistAdditionalInfoDto.class);
-                    // Adding the artist information into the container.
-                    container.addAdditionalInfo(ArtistAdditionalInfoDto.buildFromParsed(artistInfo));
-                    // Adding the testimonies and the bio in the container.
-                    container.addTestimonies(testimonyIntegrationManager.buildTestimonies(artistInfo.testimony(), artistInfo.name()));
-                    container.addBios(bioIntegrationManager.buildBio(artistInfo.bio(), artistInfo.name()));
-                } catch (IOException e) {
-                    log.error("Error while reading the file : {}", file, e);
+            try {
+                log.info("Adding the additional information processing: {} JSON files", files.size());
+                // Converting each file into JSON object and converting it into database objects ready to be added.
+                ArtistAdditionalInfoContainer container = new ArtistAdditionalInfoContainer();
+                for (Path file : files) {
+                    try {
+                        // Reading the JSON file and adding it to the container.
+                        ParsedArtistAdditionalInfoDto artistInfo = objectMapper.readValue(file.toFile(), ParsedArtistAdditionalInfoDto.class);
+                        // Adding the artist information into the container.
+                        container.addAdditionalInfo(ArtistAdditionalInfoDto.buildFromParsed(artistInfo));
+                        // Adding the testimonies and the bio in the container.
+                        container.addTestimonies(testimonyIntegrationManager.buildTestimonies(artistInfo.testimony(), artistInfo.name()));
+                        container.addBios(bioIntegrationManager.buildBio(artistInfo.bio(), artistInfo.name()));
+                    } catch (IOException e) {
+                        log.error("Error while reading the file : {}", file, e);
+                    }
                 }
+
+                log.info("Loading the information contained in the database.");
+                // Fetching the information into the database.
+                loadDatabaseReferenceData(container);
+
+                // Inserting the element in the database.
+                ArtistAdditionalInfoLinkerDto linker = insertElementsIntoDatabase(container);
+
+                // Updating all the artists with the data contained in the JSON.
+                artistIntegrationManager.enrichArtistFromJson(container, linker);
+
+                // Creating the links between artists and the other objects.
+                artistAdditionalInfoLinkerDAO.linkArtistAdditionalInfo(linker);
+
+                // Inserting the links (they need the artist id before)
+                linkIntegrationManager.insertLinks(container);
+            } catch (Exception e) {
+                log.error("An error occurred during the integration of the additional artist information.", e);
             }
-
-            log.info("Loading the information contained in the database.");
-            // Fetching the information into the database.
-            loadDatabaseReferenceData(container);
-
-            // Inserting the element in the database.
-            ArtistAdditionalInfoLinkerDto linker = insertElementsIntoDatabase(container);
-
-            // Updating all the artists with the data contained in the JSON.
-            artistIntegrationManager.enrichArtistFromJson(container, linker);
-
-            // Creating the links between artists and the other objects.
-            artistAdditionalInfoLinkerDAO.linkArtistAdditionalInfo(linker);
-
-            // Inserting the links (they need the artist id before)
-            linkIntegrationManager.insertLinks(container);
         };
     }
 
