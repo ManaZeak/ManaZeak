@@ -144,6 +144,15 @@ COMMENT ON TABLE band_previous_member IS 'ManyToMany artist / artist';
 COMMENT ON COLUMN band_previous_member.band_id IS 'ManyToMany FK artist';
 COMMENT ON COLUMN band_previous_member.prev_member_id IS 'ManyToMany FK artist';
 
+CREATE TABLE member_time_interval (
+	artist_id BIGINT not null,
+	interval_id BIGINT not null,
+	CONSTRAINT PK_MEMBER_TIME_INTERVAL PRIMARY KEY (artist_id,interval_id)
+);
+COMMENT ON TABLE member_time_interval IS 'ManyToMany artist / time_interval';
+COMMENT ON COLUMN member_time_interval.artist_id IS 'ManyToMany FK artist';
+COMMENT ON COLUMN member_time_interval.interval_id IS 'ManyToMany FK time_interval';
+
 CREATE TABLE band_bio (
 	artist_id BIGINT not null,
 	bio_id BIGINT not null,
@@ -162,15 +171,6 @@ CREATE TABLE band_member (
 COMMENT ON TABLE band_member IS 'Contains the information about each band member.';
 COMMENT ON COLUMN band_member.band_id IS 'ManyToOne FK artist';
 COMMENT ON COLUMN band_member.member_id IS 'ManyToOne FK artist';
-
-CREATE TABLE member_time_interval (
-	band_member_id BIGINT not null,
-	interval_id BIGINT not null,
-	CONSTRAINT PK_MEMBER_TIME_INTERVAL PRIMARY KEY (band_member_id,interval_id)
-);
-COMMENT ON TABLE member_time_interval IS 'ManyToMany band_member / time_interval';
-COMMENT ON COLUMN member_time_interval.band_member_id IS 'ManyToMany FK band_member';
-COMMENT ON COLUMN member_time_interval.interval_id IS 'ManyToMany FK time_interval';
 
 CREATE TABLE member_role (
 	band_member_id BIGINT not null,
@@ -238,8 +238,8 @@ COMMENT ON COLUMN testimony.locale_id IS 'ManyToOne FK locale';
 
 CREATE TABLE time_interval (
 	interval_id BIGINT not null,
-	starting_date DATE not null,
-	ending_date DATE,
+	starting_date INTEGER not null,
+	ending_date INTEGER,
 	interval_key VARCHAR(50) not null,
 	CONSTRAINT PK_TIME_INTERVAL PRIMARY KEY (interval_id)
 );
@@ -589,13 +589,13 @@ ALTER TABLE artist ADD CONSTRAINT FK_country_of_birth FOREIGN KEY (birth_country
 ALTER TABLE artist ADD CONSTRAINT FK_band_label FOREIGN KEY (label_id) REFERENCES label(label_id);
 ALTER TABLE band_previous_member ADD CONSTRAINT FK_band_previous_member_1 FOREIGN KEY (band_id) REFERENCES artist(artist_id);
 ALTER TABLE band_previous_member ADD CONSTRAINT FK_band_previous_member_2 FOREIGN KEY (prev_member_id) REFERENCES artist(artist_id);
+ALTER TABLE member_time_interval ADD CONSTRAINT FK_member_time_interval_1 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
+ALTER TABLE member_time_interval ADD CONSTRAINT FK_member_time_interval_2 FOREIGN KEY (interval_id) REFERENCES time_interval(interval_id);
 ALTER TABLE band_bio ADD CONSTRAINT FK_band_bio_1 FOREIGN KEY (artist_id) REFERENCES artist(artist_id);
 ALTER TABLE band_bio ADD CONSTRAINT FK_band_bio_2 FOREIGN KEY (bio_id) REFERENCES bio(bio_id);
 ALTER TABLE artist ADD CONSTRAINT FK_artist_type FOREIGN KEY (artist_type_id) REFERENCES artist_type(artist_type_id);
 ALTER TABLE band_member ADD CONSTRAINT FK_artist_band_member FOREIGN KEY (band_id) REFERENCES artist(artist_id);
 ALTER TABLE band_member ADD CONSTRAINT FK_band_member_artist FOREIGN KEY (member_id) REFERENCES artist(artist_id);
-ALTER TABLE member_time_interval ADD CONSTRAINT FK_member_time_interval_1 FOREIGN KEY (band_member_id) REFERENCES band_member(band_member_id);
-ALTER TABLE member_time_interval ADD CONSTRAINT FK_member_time_interval_2 FOREIGN KEY (interval_id) REFERENCES time_interval(interval_id);
 ALTER TABLE member_role ADD CONSTRAINT FK_member_role_1 FOREIGN KEY (band_member_id) REFERENCES band_member(band_member_id);
 ALTER TABLE member_role ADD CONSTRAINT FK_member_role_2 FOREIGN KEY (band_role_id) REFERENCES band_role(band_role_id);
 ALTER TABLE bio ADD CONSTRAINT FK_bio_locale FOREIGN KEY (locale_id) REFERENCES locale(locale_id);
@@ -666,13 +666,13 @@ CREATE INDEX IDX_country_of_birth ON artist (birth_country_id);
 CREATE INDEX IDX_band_label ON artist (label_id);
 CREATE INDEX IDX_band_previous_member_1 ON band_previous_member (band_id);
 CREATE INDEX IDX_band_previous_member_2 ON band_previous_member (prev_member_id);
+CREATE INDEX IDX_member_time_interval_1 ON member_time_interval (artist_id);
+CREATE INDEX IDX_member_time_interval_2 ON member_time_interval (interval_id);
 CREATE INDEX IDX_band_bio_1 ON band_bio (artist_id);
 CREATE INDEX IDX_band_bio_2 ON band_bio (bio_id);
 CREATE INDEX IDX_artist_type ON artist (artist_type_id);
 CREATE INDEX IDX_artist_band_member ON band_member (band_id);
 CREATE INDEX IDX_band_member_artist ON band_member (member_id);
-CREATE INDEX IDX_member_time_interval_1 ON member_time_interval (band_member_id);
-CREATE INDEX IDX_member_time_interval_2 ON member_time_interval (interval_id);
 CREATE INDEX IDX_member_role_1 ON member_role (band_member_id);
 CREATE INDEX IDX_member_role_2 ON member_role (band_role_id);
 CREATE INDEX IDX_bio_locale ON bio (locale_id);

@@ -27,7 +27,7 @@ public class ArtistAdditionalInfoLinkerDAO {
             """;
 
     private static final String INSERT_TIME_INTERVALS = """
-            INSERT INTO member_time_interval (band_member_id, interval_id) VALUES (?, ?)
+            INSERT INTO member_time_interval (artist_id, interval_id) VALUES (?, ?)
             """;
 
     private static final String INSERT_BAND_MEMBER = """

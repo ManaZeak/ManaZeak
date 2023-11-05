@@ -1,25 +1,13 @@
 package org.manazeak.manazeak.entity.track;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import java.util.Set;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import java.time.LocalDate;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Column;
-import jakarta.persistence.CascadeType;
-import org.manazeak.manazeak.entity.reference.Country;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.manazeak.manazeak.entity.reference.ArtistType;
-import jakarta.persistence.JoinTable;
+import org.manazeak.manazeak.entity.reference.Country;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Contains the bands of the application.
@@ -50,6 +38,7 @@ public class Artist implements Serializable{
 	private Label label;
 	private Set<Link> linkList;
 	private Set<Artist> previousMemberList;
+	private Set<TimeInterval> timeIntervalList;
 	private Set<Bio> bioList;
 	private ArtistType artistType;
 
@@ -332,6 +321,22 @@ public class Artist implements Serializable{
      */
 	public void setPreviousMemberList(final Set<Artist> previousMemberList){
 		this.previousMemberList = previousMemberList;
+    }  
+    /**
+     * Association member_time_interval to TimeInterval
+     * @return value of timeIntervalList
+     */
+    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name="member_time_interval", joinColumns=@JoinColumn(name = "artist_id"), inverseJoinColumns=@JoinColumn(name = "interval_id"))
+	public Set<TimeInterval> getTimeIntervalList(){
+		return timeIntervalList;
+    }  
+    /**
+     * Association member_time_interval to TimeInterval
+     * @param timeIntervalList new value to give to timeIntervalList
+     */
+	public void setTimeIntervalList(final Set<TimeInterval> timeIntervalList){
+		this.timeIntervalList = timeIntervalList;
     }  
     /**
      * Association band_bio to Bio

@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Id;
-import java.time.LocalDate;
 import jakarta.persistence.GenerationType;
 
 /**
@@ -22,8 +21,8 @@ public class TimeInterval implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long intervalId;
-	private LocalDate startingDate;
-	private LocalDate endingDate;
+	private Integer startingDate;
+	private Integer endingDate;
 	private String intervalKey;
 
     /**
@@ -49,14 +48,14 @@ public class TimeInterval implements Serializable{
      * @return value of startingDate
      */
     @Column(name="starting_date", nullable=false)
-	public LocalDate getStartingDate(){
+	public Integer getStartingDate(){
 		return startingDate;
     }  
     /**
      * No comment found in model diagram
      * @param startingDate new value to give to startingDate
      */
-	public void setStartingDate(final LocalDate startingDate){
+	public void setStartingDate(final Integer startingDate){
 		this.startingDate = startingDate;
     }  
     /**
@@ -64,14 +63,14 @@ public class TimeInterval implements Serializable{
      * @return value of endingDate
      */
     @Column(name="ending_date", nullable=true)
-	public LocalDate getEndingDate(){
+	public Integer getEndingDate(){
 		return endingDate;
     }  
     /**
      * No comment found in model diagram
      * @param endingDate new value to give to endingDate
      */
-	public void setEndingDate(final LocalDate endingDate){
+	public void setEndingDate(final Integer endingDate){
 		this.endingDate = endingDate;
     }  
     /**

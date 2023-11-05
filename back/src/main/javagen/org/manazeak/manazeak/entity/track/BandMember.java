@@ -31,7 +31,6 @@ public class BandMember implements Serializable{
 	private Long bandMemberId;
 	private Artist band;
 	private Artist member;
-	private Set<TimeInterval> timeIntervalList;
 	private Set<BandRole> bandRoleList;
 
     /**
@@ -83,22 +82,6 @@ public class BandMember implements Serializable{
      */
 	public void setMember(final Artist member){
 		this.member = member;
-    }  
-    /**
-     * Association member_time_interval to TimeInterval
-     * @return value of timeIntervalList
-     */
-    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable(name="member_time_interval", joinColumns=@JoinColumn(name = "band_member_id"), inverseJoinColumns=@JoinColumn(name = "interval_id"))
-	public Set<TimeInterval> getTimeIntervalList(){
-		return timeIntervalList;
-    }  
-    /**
-     * Association member_time_interval to TimeInterval
-     * @param timeIntervalList new value to give to timeIntervalList
-     */
-	public void setTimeIntervalList(final Set<TimeInterval> timeIntervalList){
-		this.timeIntervalList = timeIntervalList;
     }  
     /**
      * Association member_role to BandRole

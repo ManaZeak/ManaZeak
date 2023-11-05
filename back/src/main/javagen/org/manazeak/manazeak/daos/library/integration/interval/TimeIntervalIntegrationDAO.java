@@ -2,7 +2,6 @@ package org.manazeak.manazeak.daos.library.integration.interval;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistAdditionalInfoContainer;
 import org.manazeak.manazeak.entity.track.TimeInterval;
 import org.manazeak.manazeak.util.database.PkIdProvider;
@@ -24,7 +23,10 @@ import java.util.regex.Pattern;
 @Slf4j
 public class TimeIntervalIntegrationDAO {
 
-    private static final Pattern HYPHEN_PATTERN = Pattern.compile("-");
+    private static final String HYPHEN = "-";
+    private static final String OTHER_HYPHEN = "–";
+
+    private static final Pattern HYPHEN_PATTERN = Pattern.compile("[-–]");
 
     private static final String TIME_INTERVAL_INSERT_SQL = """
             insert into time_interval (interval_id, starting_date, ending_date, interval_key) values (?, ?, ?, ?)
@@ -51,21 +53,21 @@ public class TimeIntervalIntegrationDAO {
 
                 // Setting the elements into the database.
                 ps.setLong(1, id);
-                if (HYPHEN_PATTERN.matcher(interval).matches()) {
+                if (interval.contains(HYPHEN) || interval.contains(OTHER_HYPHEN)) {
                     String[] splitString = HYPHEN_PATTERN.split(interval);
                     if (splitString.length > 2) {
                         log.warn("The time interval '{}' has too much parts.", interval);
                     }
-                    ps.setString(2, splitString[0]);
+                    ps.setInt(2, Integer.parseInt(splitString[0]));
 
                     // Setting the other value to null if the separator is present but not valued.
-                    if (StringUtils.isEmpty(splitString[i])) {
-                        ps.setNull(3, Types.VARCHAR);
+                    if (splitString.length == 1) {
+                        ps.setNull(3, Types.INTEGER);
                     } else {
-                        ps.setString(3, splitString[1]);
+                        ps.setInt(3, Integer.parseInt(splitString[1]));
                     }
                 } else {
-                    ps.setString(2, interval);
+                    ps.setInt(2, Integer.parseInt(interval));
                 }
                 ps.setString(4, interval);
             }

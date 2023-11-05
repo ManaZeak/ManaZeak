@@ -1,9 +1,17 @@
 package org.manazeak.manazeak.entity.track;
 
-import jakarta.persistence.*;
-import org.manazeak.manazeak.entity.reference.Locale;
-
 import java.io.Serializable;
+import jakarta.persistence.GeneratedValue;
+import org.manazeak.manazeak.entity.reference.Locale;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GenerationType;
 
 /**
  * No comment found in model diagram

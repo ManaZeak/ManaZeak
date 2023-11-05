@@ -13,6 +13,7 @@ import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.util.DateUtil;
 import org.manazeak.manazeak.util.audio.tag.TagCheckerUtil;
 import org.manazeak.manazeak.util.database.PkIdProvider;
+import org.manazeak.manazeak.util.database.PreparedStatementSetterHelper;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -85,9 +86,10 @@ public class ArtistIntegrationDAO {
                 ps.setTimestamp(2, DateUtil.getTimeStamp(DateUtil.parseString(additionalInfo.death(), DateUtil.US_DATE_FORMATTER)));
                 ps.setString(3, additionalInfo.placeOfBirth());
                 ps.setString(4, additionalInfo.placeOfDeath());
-                ps.setLong(5, container.resolveCountry(additionalInfo.countryOfBirth()));
-                ps.setLong(6, container.resolveCountry(additionalInfo.countryOfDeath()));
+                PreparedStatementSetterHelper.setNullableLong(ps,5, container.resolveCountry(additionalInfo.countryOfBirth()));
+                PreparedStatementSetterHelper.setNullableLong(ps,6, container.resolveCountry(additionalInfo.countryOfDeath()));
                 ps.setLong(7, ArtistTypeEnum.getArtistTypeIdByCode(additionalInfo.type()));
+                ps.setLong(8, container.resolveArtistId(additionalInfo.name()));
 
                 // Keeping the id for linking the entities after the insertion.
                 linkerInfo.addAssociation(container, additionalInfo);
