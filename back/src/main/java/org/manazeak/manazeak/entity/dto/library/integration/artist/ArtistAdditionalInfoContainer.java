@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.dto.library.integration.artist;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.manazeak.manazeak.entity.dto.library.integration.bio.BioDto;
 import org.manazeak.manazeak.entity.dto.library.integration.testimony.TestimonyDto;
 
@@ -37,7 +38,38 @@ public class ArtistAdditionalInfoContainer {
     // This map contains the link associated to the artist ids to save them into the database.
     private Map<ArtistLink, Long> linkMap = new HashMap<>();
 
-    private List<TestimonyDto> testimonies;
+    private List<TestimonyDto> testimonies = new ArrayList<>();
+
+    /**
+     * Add an element in the list only if it is not empty.
+     *
+     * @param list    The list where the element will be added.
+     * @param element The element to add in the list.
+     * @param <T>     The type of the added element and the list.
+     */
+    private static <T> void addIfNotEmpty(Collection<T> list, T element) {
+        if (element instanceof String str) {
+            if (StringUtils.isEmpty(str)) {
+                return;
+            }
+        } else if (element == null) {
+            return;
+        }
+        list.add(element);
+    }
+
+    /**
+     * Add multiple elements to a list and check if they are not null.
+     *
+     * @param list     The list of element to change.
+     * @param elements The elements to add to the list.
+     * @param <T>      The type of the collections.
+     */
+    private static <T> void addIfNotEmpty(Collection<T> list, Collection<T> elements) {
+        for (T element : elements) {
+            addIfNotEmpty(list, element);
+        }
+    }
 
     /**
      * Add into the object new additional information about an artist.
@@ -46,14 +78,15 @@ public class ArtistAdditionalInfoContainer {
      */
     public void addAdditionalInfo(ArtistAdditionalInfoDto additionalInfoDto) {
         artistAdditionalInfo.add(additionalInfoDto);
-        aliases.addAll(additionalInfoDto.alias());
-        countries.addAll(additionalInfoDto.originCountry());
-        countries.add(additionalInfoDto.countryOfBirth());
-        countries.add(additionalInfoDto.countryOfDeath());
-        artists.addAll(additionalInfoDto.members());
-        artists.addAll(additionalInfoDto.pastMembers());
-        artists.add(additionalInfoDto.name());
-        yearsActive.addAll(additionalInfoDto.yearsActive());
+        addIfNotEmpty(aliases, additionalInfoDto.alias());
+        addIfNotEmpty(countries, additionalInfoDto.originCountry());
+        addIfNotEmpty(countries, additionalInfoDto.countryOfBirth());
+        addIfNotEmpty(countries, additionalInfoDto.countryOfDeath());
+        addIfNotEmpty(artists, additionalInfoDto.members());
+        addIfNotEmpty(artists, additionalInfoDto.pastMembers());
+        addIfNotEmpty(artists, additionalInfoDto.name());
+        addIfNotEmpty(artists, additionalInfoDto.realName());
+        addIfNotEmpty(yearsActive, additionalInfoDto.yearsActive());
     }
 
     /**
