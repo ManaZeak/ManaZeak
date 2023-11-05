@@ -69,6 +69,9 @@ public class ArtistAdditionalInfoLinkerDto {
             addIfNotNull(artistId, container.resolveArtistId(prevMember), artistPastMembers);
         }
 
+        // Artist to artist real name
+        addIfNotNull(artistId, container.resolveArtistId(artist.realName()), artistMembers);
+
         // Adding the references of the artist to save the link into the database.
         for (ArtistLink link : artist.links()) {
             container.addLink(link, artistId);
