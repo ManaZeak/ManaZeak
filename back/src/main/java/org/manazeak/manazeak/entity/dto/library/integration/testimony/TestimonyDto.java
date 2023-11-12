@@ -6,19 +6,9 @@ import lombok.Data;
 public class TestimonyDto {
 
     /**
-     * The identifier that will be used in the database when inserting it.
-     */
-    private Long testimonyId;
-
-    /**
      * The artist who the testimony is about.
      */
     private String artistName;
-
-    /**
-     * The artist from who originated the testimony.
-     */
-    private Long fromArtistId;
 
     /**
      * The name of the artist who did this testimony.
@@ -29,6 +19,11 @@ public class TestimonyDto {
      * The testimony content.
      */
     private String text;
+
+    /**
+     * The code of the locale of the testimony.
+     */
+    private String locale;
 
     /**
      * The language the testimony is written.

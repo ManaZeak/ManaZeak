@@ -88,7 +88,7 @@ public class ArtistIntegrationDAO {
                 ps.setString(4, additionalInfo.placeOfDeath());
                 PreparedStatementSetterHelper.setNullableLong(ps,5, container.resolveCountry(additionalInfo.countryOfBirth()));
                 PreparedStatementSetterHelper.setNullableLong(ps,6, container.resolveCountry(additionalInfo.countryOfDeath()));
-                ps.setLong(7, ArtistTypeEnum.getArtistTypeIdByCode(additionalInfo.type()));
+                PreparedStatementSetterHelper.setNullableLong(ps, 7, ArtistTypeEnum.getArtistTypeIdByCode(additionalInfo.type()));
                 ps.setLong(8, container.resolveArtistId(additionalInfo.name()));
 
                 // Keeping the id for linking the entities after the insertion.

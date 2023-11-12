@@ -115,7 +115,7 @@ public final class PkIdProvider {
             throw new IllegalArgumentException("The pool size can't be null." + entityClass.getName());
         }
 
-        if (poolSize > 0) {
+        if (poolSize < 0) {
             throw new IllegalArgumentException("The number of id to be fecthed must be superior to 0 ("
                     + poolSize + " provided)");
         }

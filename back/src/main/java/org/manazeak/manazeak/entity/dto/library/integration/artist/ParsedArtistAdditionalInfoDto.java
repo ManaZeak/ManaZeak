@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.dto.library.integration.artist;
 
-import org.json.JSONObject;
+import org.manazeak.manazeak.entity.dto.library.integration.bio.BioDto;
+import org.manazeak.manazeak.entity.dto.library.integration.testimony.TestimonyDto;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public record ParsedArtistAdditionalInfoDto(
         List<String> members,
         List<String> pastMembers,
         List<ArtistLink> links,
-        JSONObject bio,
-        JSONObject testimony
+        List<BioDto> bio,
+        List<TestimonyDto> testimony
 ) {
 }

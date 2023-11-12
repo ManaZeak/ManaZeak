@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -100,9 +99,10 @@ public class MoodbarGenerationService {
                     lastTrackId = elements.get(elements.size() - 1).getId();
                 }
 
-            // Closing the thread pool
-            executor.shutdown();
-            ThreadPoolHelper.waitPoolFinish(executor, "Timeout during the moodbar regeneration.");
+                // Closing the thread pool
+                executor.shutdown();
+                ThreadPoolHelper.waitPoolFinish(executor, "Timeout during the moodbar regeneration.");
+            }
         } catch (IOException e) {
             throw new MzkRuntimeException("Error when processing files during moodbar image regeneration.", e);
         } finally {
@@ -110,6 +110,7 @@ public class MoodbarGenerationService {
             isRunning.set(false);
             log.info("Moodbar image regeneration has ended.");
         }
+
     }
 
     /**

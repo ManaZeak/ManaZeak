@@ -25,6 +25,10 @@ public enum ArtistTypeEnum {
     private final String code;
 
     public static Long getArtistTypeIdByCode(String code) {
-        return TYPE_MAP.get(code).getArtistTypeId();
+        ArtistTypeEnum type = TYPE_MAP.get(code);
+        if (type == null) {
+            return null;
+        }
+        return type.getArtistTypeId();
     }
 }

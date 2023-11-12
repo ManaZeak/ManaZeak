@@ -41,11 +41,11 @@ public class BioIntegrationDAO {
                 BioDto bio = container.getBios().get(i);
                 Long bioId = PkIdProvider.singleton().getNewPkId(Bio.class);
                 ps.setLong(1, bioId);
-                ps.setString(2, bio.bio());
-                ps.setLong(3, bio.localeId());
+                ps.setString(2, bio.getText());
+                ps.setLong(3, bio.getLocaleId());
 
                 // Adding the bio in the linker.
-                linker.addBioLink(bioId, container.resolveArtistId(bio.artistName()));
+                linker.addBioLink(bioId, container.resolveArtistId(bio.getArtistName()));
             }
 
             @Override

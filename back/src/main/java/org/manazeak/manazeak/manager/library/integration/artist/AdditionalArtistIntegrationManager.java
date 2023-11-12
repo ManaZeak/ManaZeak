@@ -110,8 +110,10 @@ public class AdditionalArtistIntegrationManager {
                         // Adding the artist information into the container.
                         container.addAdditionalInfo(ArtistAdditionalInfoDto.buildFromParsed(artistInfo));
                         // Adding the testimonies and the bio in the container.
-                        container.addTestimonies(testimonyIntegrationManager.buildTestimonies(artistInfo.testimony(), artistInfo.name()));
-                        container.addBios(bioIntegrationManager.buildBio(artistInfo.bio(), artistInfo.name()));
+                        testimonyIntegrationManager.fillTestimonies(artistInfo.testimony(), artistInfo.name());
+                        container.addTestimonies(artistInfo.testimony());
+                        bioIntegrationManager.fillBios(artistInfo.bio(), artistInfo.name());
+                        container.addBios(artistInfo.bio());
                     } catch (IOException e) {
                         log.error("Error while reading the file : {}", file, e);
                     }
