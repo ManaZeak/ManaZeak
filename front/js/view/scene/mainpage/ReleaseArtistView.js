@@ -42,11 +42,25 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
         this.dom.querySelector('.artist-header-center').classList.add('expanded');
       }
       /* Build albums */
-      this._albums = this.dom.querySelector('#released-albums');
-      if (this._albums?.children) {
-        this._buildArtistAlbums();
-        this._handleAlbumSorting(); // Release sorting
+      this._itemsTitle = this.dom.querySelectorAll('.items-title');
+      this._itemsContainers = this.dom.querySelectorAll('.items-container');
 
+      if (this._itemsContainers.length > 0) {
+        this._albums = this._itemsContainers[0];
+
+        for (let i = 0; i < this._itemsContainers.length; ++i) {
+          this._buildArtistAlbums(this._itemsContainers[i], this._itemsTitle[i]);
+
+          this._scrolls.push(new ScrollBar({
+            target: this._itemsContainers[i],
+            horizontal: true,
+            style: {
+              color: '#56D45B'
+            }
+          }));
+
+          this._handleAlbumSorting(this._itemsContainers[i], this._itemsTitle[i].querySelector('.sort-releases'));
+        }
         // Global view scroll
         this._scrolls.push(new ScrollBar({
           target: this.dom,
@@ -87,46 +101,41 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
   }
 
 
-  _buildArtistAlbums() {
-    for (let i = 0; i < this._albums.children.length; ++i) {
-      let title = this._albums.children[i].lastElementChild.innerHTML;
+  _buildArtistAlbums(elements, title) {
+    if (elements.children.length === 0) {
+      title.remove();
+      return;
+    }
+
+    for (let i = 0; i < elements.children.length; ++i) {
+      let title = elements.children[i].lastElementChild.innerHTML;
       if (title.includes(' EP')) {
         title = title.replace(' EP', '');
-        this._albums.children[i].querySelector('.ep-sp').innerHTML = 'EP';
+        elements.children[i].querySelector('.ep-sp').innerHTML = 'EP';
       }
 
       if (title.includes(' - Single')) {
         title = title.replace(' - Single', '');
-        this._albums.children[i].querySelector('.ep-sp').innerHTML = 'SP';
+        elements.children[i].querySelector('.ep-sp').innerHTML = 'SP';
       }
       // Update album title if needed
-      this._albums.children[i].lastElementChild.innerHTML = title;
-      this._albums.children[i].addEventListener('click', this._albumClicked);
+      elements.children[i].lastElementChild.innerHTML = title;
+      elements.children[i].addEventListener('click', this._albumClicked);
     }
-
-    this._scrolls.push(new ScrollBar({
-      target: this._albums,
-      horizontal: true,
-      style: {
-        color: '#56D45B'
-      }
-    }));
-
-    this._albums = this._albums.children[0].children[0];
   }
 
 
-  _handleAlbumSorting() {
-    const sortArtistReleases = this.dom.querySelector('#sort-artist-releases');
+  _handleAlbumSorting(elementsList, sortArtistReleases) {
+    elementsList = elementsList.children[0].children[0]; // Forget about scrollbar here
     sortArtistReleases.addEventListener('click', () => {
       sortArtistReleases.classList.toggle('active');
-      let elements = [].slice.call(this._albums.children);
+      let elements = [].slice.call(elementsList.children);
       elements = elements.reverse();
-      for (let i = 0; i < this._albums.children.length; ++i) {
-        this._albums.children[i].remove();
+      for (let i = 0; i < elementsList.children.length; ++i) {
+        elementsList.children[i].remove();
       }
       for (let i = 0; i < elements.length; ++i) {
-        this._albums.appendChild(elements[i]);
+        elementsList.appendChild(elements[i]);
       }
     });    
   }

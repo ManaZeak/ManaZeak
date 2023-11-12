@@ -323,6 +323,9 @@
 .release-artist-view-wrapper,
 .genre-view-wrapper,
 .label-view-wrapper {
+  height: 100%;
+  width: 100%;
+
   [class$="-header"] {
     border-bottom: solid 1px var(--color-txt-alpha-10);
     display: flex;

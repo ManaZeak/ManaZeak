@@ -1,5 +1,5 @@
 # Getting a maven image to build the project.
-FROM maven:3.8.6-eclipse-temurin-17-alpine as builder
+FROM maven:3-eclipse-temurin-21-alpine AS builder
 RUN mkdir /ManaZeak/
 ADD pom.xml /ManaZeak/pom.xml
 WORKDIR /ManaZeak
@@ -17,7 +17,7 @@ RUN mvn clean package -DskipTests -Dskip.npm -Dskip.karma -Dskip.webpack -Dskip.
 
 
 # Creating the production image
-FROM eclipse-temurin:17-jdk-alpine as app_debug
+FROM eclipse-temurin:21-jdk-alpine AS app_debug
 # Getting the jar from the builder container.
 COPY --from=builder /ManaZeak/back/target/*.jar /manazeak.jar
 # Unpacking the jar
@@ -33,7 +33,7 @@ ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,addres
 
 
 # Creating the production image
-FROM eclipse-temurin:17-jdk-alpine as app
+FROM eclipse-temurin:21-jdk-alpine AS app
 # Getting the jar from the builder container.
 COPY --from=builder /ManaZeak/back/target/*.jar /manazeak.jar
 # Unpacking the jar

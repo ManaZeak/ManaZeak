@@ -3,7 +3,6 @@ package org.manazeak.manazeak.manager.library.integration;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
-import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistFolderExtractorHelper;
@@ -50,7 +49,7 @@ public class LibraryIntegrationManager {
         // Adding the data needed to complete the integration.
         cacheIntegrationInitializer.initCacheIntegration();
 
-        final ExecutorService executor = Executors.newFixedThreadPool(LibraryConstant.LIBRARY_SCAN_THREAD_NUMBER);
+        final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
         int startIndex = 0;
         int numberOfPackage = 1;

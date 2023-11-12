@@ -1,5 +1,6 @@
 import DragElement from '../../../../utils/DragElement';
 import DropElement from '../../../../utils/DropElement';
+import ScrollBar from '../../../../view/navigation/ScrollBar';
 
 
 class UsersFragment {
@@ -14,6 +15,7 @@ class UsersFragment {
 
     this._dropElements = [];
     this._dragElements = [];
+    this._scrolls = [];
     this._evtIds = [];
 
     this._fillAttributes();
@@ -28,6 +30,10 @@ class UsersFragment {
       this._dragElements[i].destroy();
     }
 
+    for (let i = 0; i < this._scrolls.length; ++i) {
+      this._scrolls[i].destroy();
+    }
+
     Utils.clearAllEvents(this._evtIds);
     Utils.removeAllObjectKeys(this);
   }
@@ -39,6 +45,14 @@ class UsersFragment {
     for (let i = 0; i < usersWrapper.children.length; ++i) {
       this._users.push(usersWrapper.children[i]);
     }
+/*
+    this._scrolls.push(new ScrollBar({
+      target: usersWrapper,
+      style: {
+        color: '#56D45B'
+      }
+    }));
+*/
     const badgesWrapper = this._target.querySelector('#badges-wrapper');
     for (let i = 0; i < badgesWrapper.children.length; ++i) {
       this._badges.push(badgesWrapper.children[i]);

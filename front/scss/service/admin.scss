@@ -81,6 +81,7 @@
             img {
               aspect-ratio: 1 / 1;
               height: 100%;
+              max-height: calc((var(--font-size) * 7) - (var(--margin-small) * 2));
               padding: var(--padding);
             }
           }

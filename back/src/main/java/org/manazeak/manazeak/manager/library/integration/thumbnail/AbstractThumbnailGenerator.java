@@ -34,7 +34,7 @@ public abstract class AbstractThumbnailGenerator {
      */
     public void generateThumbnails() {
         // Creating an executor for generating multiple thumbs at the same time.
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
         // Setting the last element id.
         Long lastElementId = 0L;
