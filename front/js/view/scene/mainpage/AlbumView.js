@@ -466,8 +466,8 @@ class AlbumView extends ItemViewHelperMixin(PlayableView) {
     return {
       id: track.dataset.id,
       title: track.children[0].children[0].children[0].textContent,
-      // TODO track artist instead of release artist
-      artist: this.dom.querySelector('#release-artist').textContent,
+      artist: track.querySelectorAll('.track-performers')[0].innerText.replace('\n', ', '),
+      album: this.dom.querySelector('#album-title').innerHTML.trim(),
       cover: this.dom.querySelector('#album-picture').children[0].children[0].children[0].src,
       duration: track.children[0].children[2].innerHTML,
       mood: track.dataset.mood

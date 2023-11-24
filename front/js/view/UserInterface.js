@@ -3,6 +3,7 @@ import TopBar from './element/TopBar';
 import NavBar from './element/NavBar';
 import Scene from './element/Scene';
 import ViewHistory from './scene/utils/ViewHistory';
+import MediaSessionController from './control/MediaSessionController';
 
 
 class UserInterface {
@@ -25,6 +26,7 @@ class UserInterface {
     this._navBar = new NavBar();
 
     this._history = new ViewHistory();
+    this._msController = new MediaSessionController();
 
     this._wrapper = document.getElementById('scene-wrapper');
     /** @private
@@ -202,6 +204,7 @@ class UserInterface {
   changeTrack(track) {
     if (DEBUG) { console.log('UserInterface.changeTrack : called with (track)', track); }
     if (track) {
+      this._msController.setTrack(track);
       this._topBar.setTrack(track, mzk.ctrl.playObject);
       this._navBar.setQueuedTracks(mzk.ctrl.queuedTracks);
       this._navBar.setQueuedPlayObject(mzk.ctrl.playObject);
@@ -214,21 +217,33 @@ class UserInterface {
 
   setPlay(playing) {
     if (DEBUG) { console.log('UserInterface.setPlay : called with (playing)', playing); }
-    if (mzk.ctrl.playingId !== -1) { // Only set play if payer is indeed playing
-      if (!this._navBar.progressBar.isActive) {
-        this._navBar.progressBar.activate();
+    if (mzk.ctrl.playingId !== -1) { // Only set play if player is having loaded track
+      if (playing === true) {
+        if (!this._navBar.progressBar.isActive) {
+          this._navBar.progressBar.activate();
+        }
+        this._msController.setPlay(true);
+        this._navBar.updatePlayButton(true);
+      } else {
+        this._msController.setPlay(false);
+        this._navBar.updatePlayButton(false);
+        // Pause progress bar to avoid spamming getProgress on player
+        // Deactivate would have close progressbar which is not 'pause' scenario
+        this._navBar.progressBar.pause();
       }
-      this._navBar.updatePlayButton(playing);
     } else if (this._scene.view.playFirstTrack) {
+      this._msController.setPlay(true);
       this._scene.view.playFirstTrack();
     } else {
-      this._navBar.progressBar.deactivate();      
+      this._msController.setPlay(false);
+      this._navBar.progressBar.deactivate();
     }
   }
 
 
   stopPlayback() {
     if (DEBUG) { console.log('UserInterface.stopPlayback : called'); }
+    this._msController.setDefault();
     this._topBar.clearTrack();
     this._navBar.progressBar.deactivate();
     this._navBar.updatePlayButton(false);

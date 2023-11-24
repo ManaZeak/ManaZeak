@@ -328,6 +328,12 @@ class ProgressBar {
   }
 
 
+  pause() {
+    this._isActive = false;
+    this._stopAnimation();
+  }
+
+
   /**
    * @method
    * @name toggleActive

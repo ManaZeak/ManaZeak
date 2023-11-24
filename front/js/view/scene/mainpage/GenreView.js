@@ -236,9 +236,9 @@ class GenreView extends ItemViewHelperMixin(PlayableView) {
   _buildTrackObject(track) {
     return {
       id: track.dataset.id,
-      title: track.children[0].children[0].textContent,
-      // TODO track artist instead of release artist
-      artist: track.parentNode.parentNode.parentNode.parentNode.querySelector('.artist-info').firstElementChild.textContent,
+      title: track.children[0].children[0].textContent.trim(),
+      artist: track.querySelectorAll('.track-performers')[0].innerText.replace('\n', ', '),
+      album: track.parentNode.previousElementSibling.getElementsByTagName('H3')[0].textContent.trim(),
       cover: track.parentNode.parentNode.parentNode.parentNode.querySelector('.album-cover').src,
       duration: track.children[0].children[2].innerHTML,
       mood: track.dataset.mood
