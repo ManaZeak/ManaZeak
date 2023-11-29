@@ -222,20 +222,16 @@ class UserInterface {
         if (!this._navBar.progressBar.isActive) {
           this._navBar.progressBar.activate();
         }
-        this._msController.setPlay(true);
         this._navBar.updatePlayButton(true);
       } else {
-        this._msController.setPlay(false);
         this._navBar.updatePlayButton(false);
         // Pause progress bar to avoid spamming getProgress on player
         // Deactivate would have close progressbar which is not 'pause' scenario
         this._navBar.progressBar.pause();
       }
     } else if (this._scene.view.playFirstTrack) {
-      this._msController.setPlay(true);
       this._scene.view.playFirstTrack();
     } else {
-      this._msController.setPlay(false);
       this._navBar.progressBar.deactivate();
     }
   }
@@ -299,7 +295,8 @@ class UserInterface {
 
   setProgress(progress) {
     if (DEBUG) { console.log('UserInterface.setProgress : called with (progress)', progress); }
-    this._navBar.progressBar.setProgress(progress); 
+    this._navBar.progressBar.setProgress(progress);
+    this._msController.updatePositionState();
   }
 
 

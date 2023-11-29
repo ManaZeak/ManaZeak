@@ -146,11 +146,14 @@ class Controller {
    * </blockquote> **/
    setPlay(state) {
     if (DEBUG) { console.log('Controller.setPlay : called with', state); }
-    if (state === true) {
-      this._player.play();
-    } else {
-      this._player.pause();
-    }
+    return new Promise(resolve => {
+      if (state === true) {
+        this._player.play().then(resolve);
+      } else {
+        this._player.pause();
+        resolve();
+      }
+    });
   }
 
 
@@ -164,8 +167,10 @@ class Controller {
    * Toggles the player's playback state between playing/paused.
    * </blockquote> **/
   togglePlay() {
-    if (DEBUG) { console.log('Controller.togglePlay : called'); }
-    this._player.togglePlay();
+    return new Promise(resolve => {
+      if (DEBUG) { console.log('Controller.togglePlay : called'); }
+      this._player.togglePlay().then(resolve);
+    });
   }
 
 

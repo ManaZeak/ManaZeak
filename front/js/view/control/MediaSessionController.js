@@ -14,9 +14,10 @@ class MediaSessionController {
     /** @private
      * @member {boolean} - Wether MediaSession is supported on device */
     this._isSupported = false;
-    this._appliedMetadata = null
+    this._audio = null;
 
     this._init();
+    this._events();
     this._setActionHandlers();
   }
 
@@ -25,8 +26,9 @@ class MediaSessionController {
     if (DEBUG) { console.log('MediaSessionController._init : called'); }
     if ('mediaSession' in navigator) {
       this._isSupported = true;
+      this._audio = mzk.ctrl.player.player;
       // TODO Translate with local front nls
-      this._appliedMetadata = new MediaMetadata({
+      navigator.mediaSession.metadata = new MediaMetadata({
         title: 'ManaZeak',
         artist: '',
         album: `Let's play something!`,
@@ -36,19 +38,25 @@ class MediaSessionController {
           type: 'image/png'
         }, {
           src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
-          sizes: '500x500',
+          sizes: '512x512',
           type: 'image/png'
         }, {
           src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
-          sizes: '200x200',
+          sizes: '256x256',
           type: 'image/png'
         }, {
           src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
-          sizes: '100x100',
+          sizes: '128x128',
           type: 'image/png'
         }]
       });
     }
+  }
+
+
+  _events() {
+    this._audio.addEventListener('play', this.setPlay.bind(this, true));
+    this._audio.addEventListener('pause', this.setPlay.bind(this, false));
   }
 
 
@@ -63,7 +71,7 @@ class MediaSessionController {
         ['stop', () => { mzk.stopPlayback(); }],
         ['seekbackward', () => { mzk.adjustProgress(-ProgressControlEnum.SMALL_JUMP); }],
         ['seekforward', () => { mzk.adjustProgress(ProgressControlEnum.SMALL_JUMP); }],
-        ['seekto', data => { mzk.setProgress(Utils.precisionRound((data.seekTime * 100) / mzk.ctrl.player.duration, 3)); }]
+        ['seekto', data => { mzk.setProgress(Utils.precisionRound((data.seekTime * 100) / this._audio.duration, 3)); }]
       ];
 
       for (const [action, handler] of actionHandlers) {
@@ -81,29 +89,29 @@ class MediaSessionController {
     if (DEBUG) { console.log('MediaSessionController.setDefault : called'); }
     if (this._isSupported === true) {
       this.setPlay(false);
-      this._appliedMetadata.title = 'ManaZeak';
-      this._appliedMetadata.artist = '';
-      this._appliedMetadata.album = `Let's play something!`;
 
-      this._appliedMetadata.artwork = [{
-        src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
-        sizes: '1000x1000',
-        type: 'image/png'
-      }, {
-        src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
-        sizes: '500x500',
-        type: 'image/png'
-      }, {
-        src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
-        sizes: '200x200',
-        type: 'image/png'
-      }, {
-        src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
-        sizes: '100x100',
-        type: 'image/png'
-      }];
-
-      navigator.mediaSession.metadata = this._appliedMetadata;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'ManaZeak',
+        artist: '',
+        album: `Let's play something!`,
+        artwork: [{
+          src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
+          sizes: '1000x1000',
+          type: 'image/png'
+        }, {
+          src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
+          sizes: '512x512',
+          type: 'image/png'
+        }, {
+          src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
+          sizes: '256x256',
+          type: 'image/png'
+        }, {
+          src: `${window.location.origin}/static/img/logo/manazeak-logo-square.png`,
+          sizes: '128x128',
+          type: 'image/png'
+        }]
+      });
     }
   }
 
@@ -111,30 +119,30 @@ class MediaSessionController {
   setTrack(track) {
     if (DEBUG) { console.log('MediaSessionController.setDefault : called with', track); }
     if (this._isSupported === true) {
-      this._appliedMetadata.title = track.title;
-      this._appliedMetadata.artist = track.artist;
-      this._appliedMetadata.album = track.album;
-
       const cover = track.cover.substring(track.cover.lastIndexOf('/') + 1, track.cover.length);
-      this._appliedMetadata.artwork = [{
-        src: `${window.location.origin}/resources/covers/orig/${cover}`,
-        sizes: '1000x1000',
-        type: 'image/jpeg'
-      }, {
-        src: `${window.location.origin}/resources/covers/large/${cover}`,
-        sizes: '500x500',
-        type: 'image/jpeg'
-      }, {
-        src: `${window.location.origin}/resources/covers/medium/${cover}`,
-        sizes: '200x200',
-        type: 'image/jpeg'
-      }, {
-        src: `${window.location.origin}/resources/covers/small/${cover}`,
-        sizes: '100x100',
-        type: 'image/jpeg'
-      }];
-
-      navigator.mediaSession.metadata = this._appliedMetadata;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: track.title,
+        artist: track.artist,
+        album: track.album,
+        artwork: [{
+          src: `${window.location.origin}/resources/covers/orig/${cover}`,
+          sizes: '1000x1000',
+          type: 'image/jpeg'
+        }, {
+          src: `${window.location.origin}/resources/covers/large/${cover}`,
+          sizes: '512x512',
+          type: 'image/jpeg'
+        }, {
+          src: `${window.location.origin}/resources/covers/medium/${cover}`,
+          sizes: '256x256',
+          type: 'image/jpeg'
+        }, {
+          src: `${window.location.origin}/resources/covers/small/${cover}`,
+          sizes: '128x128',
+          type: 'image/jpeg'
+        }]
+      });
+      this.updatePositionState();
     }
   }
 
@@ -146,6 +154,15 @@ class MediaSessionController {
     } else {
       navigator.mediaSession.playbackState = 'paused';
     }
+  }
+
+
+  updatePositionState() {
+    navigator.mediaSession.setPositionState({
+      duration: this._audio.duration,
+      playbackRate: this._audio.playbackRate,
+      position: this._audio.currentTime
+    });
   }
 
 
