@@ -245,8 +245,7 @@ class Player {
       // Start playback callback used when player source has been loaded
       const startPlayback = () => {
         if (!startTimePercentage) { startTimePercentage = -1; } // Ensuring false value for time to set
-        this.play(startTimePercentage); // Call player play method (not actually play after that line)
-        resolve(); // Resolve promise
+        this.play(startTimePercentage).then(resolve); // Call player play method (not actually play after that line)
       };
       // Stop any previous playback before updating player
       if (this._isPlaying) {
