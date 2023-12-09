@@ -140,13 +140,37 @@ class Controller {
    * @public
    * @memberof Controller
    * @author Arthur Beaulieu
+   * @since November 2023
+   * @description <blockquote>
+   * Toggles the player's playback state between playing/paused.
+   * </blockquote> **/
+   setPlay(state) {
+    if (DEBUG) { console.log('Controller.setPlay : called with', state); }
+    return new Promise(resolve => {
+      if (state === true) {
+        this._player.play().then(resolve);
+      } else {
+        this._player.pause();
+        resolve();
+      }
+    });
+  }
+
+
+  /** @method
+   * @name togglePlay
+   * @public
+   * @memberof Controller
+   * @author Arthur Beaulieu
    * @since July 2023
    * @description <blockquote>
    * Toggles the player's playback state between playing/paused.
    * </blockquote> **/
   togglePlay() {
-    if (DEBUG) { console.log('Controller.togglePlay : called'); }
-    this._player.togglePlay();
+    return new Promise(resolve => {
+      if (DEBUG) { console.log('Controller.togglePlay : called'); }
+      this._player.togglePlay().then(resolve);
+    });
   }
 
 
@@ -647,7 +671,7 @@ class Controller {
    * @param {string} track.duration - The track duration in HH:MM:SS or MM:SS
    * @param {string} track.cover - The track cover path
    * @param {string} track.mood - The track moodbar image filename **/
-   _addTrackHistory(playObject, track) {
+  _addTrackHistory(playObject, track) {
     if (DEBUG) { console.log('Controller._addTrackHistory : called with (playObject, track)', playObject, track); }
     // Don't add track if latest track in history is current one
     if (this._trackHistory.length && track.id === this._trackHistory[this._trackHistory.length - 1].id) {

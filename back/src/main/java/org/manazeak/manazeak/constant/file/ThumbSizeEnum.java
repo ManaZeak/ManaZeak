@@ -6,9 +6,9 @@ package org.manazeak.manazeak.constant.file;
 public enum ThumbSizeEnum {
 
     TINY("tiny", 50, 50),
-    SMALL("small", 100, 100),
-    MEDIUM("medium", 200, 200),
-    LARGE("large", 500, 500),
+    SMALL("small", 128, 128),
+    MEDIUM("medium", 256, 256),
+    LARGE("large", 512, 512),
     ORIGINAL("orig", 0, 0);
 
     private final String folderName;

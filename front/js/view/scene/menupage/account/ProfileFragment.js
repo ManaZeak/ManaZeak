@@ -38,7 +38,7 @@ class ProfileFragment {
         name: userInfo.querySelector('#name').textContent,
         surname: userInfo.querySelector('#surname').textContent,
         bio: userInfo.querySelector('#bio').textContent,
-        birthDate: userInfo.querySelector('#birthdate').textContent,
+        birthdate: userInfo.querySelector('#birthdate').textContent,
         country: userInfo.querySelector('#country').textContent,
         locale: userInfo.querySelector('#locale').textContent
       }

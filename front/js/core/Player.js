@@ -143,13 +143,20 @@ class Player {
    **/
   play(startTimePercentage) {
     if (DEBUG) { console.log('Player.play : called with (startTimePercentage)', startTimePercentage); }
-    if (this._player.src) { // Apply only if src is defined
-      this._isPlaying = true; // Set playing state to true
-      this._player.play(); // Start player efective playback
-      if (startTimePercentage > 0) {
-        this._setProgress(startTimePercentage);
+    return new Promise(resolve => {
+      if (this._player.src) { // Apply only if src is defined
+        this._isPlaying = true; // Set playing state to true
+        // Start player efective playback
+        this._player.play().then(() => {
+          if (startTimePercentage > 0) {
+            this._setProgress(startTimePercentage);
+          }
+          resolve();
+        });
+      } else {
+        resolve();
       }
-    }
+    });
   }
 
 
@@ -202,11 +209,14 @@ class Player {
    **/
   togglePlay() {
     if (DEBUG) { console.log('Player.togglePlay : called'); }
-    if (!this._isPlaying) {
-      this.play();
-    } else {
-      this.pause();
-    }
+    return new Promise(resolve => {
+      if (!this._isPlaying) {
+        this.play().then(resolve);
+      } else {
+        this.pause();
+        resolve();
+      }
+    });
   }
 
 
@@ -235,8 +245,7 @@ class Player {
       // Start playback callback used when player source has been loaded
       const startPlayback = () => {
         if (!startTimePercentage) { startTimePercentage = -1; } // Ensuring false value for time to set
-        this.play(startTimePercentage); // Call player play method (not actually play after that line)
-        resolve(); // Resolve promise
+        this.play(startTimePercentage).then(resolve); // Call player play method (not actually play after that line)
       };
       // Stop any previous playback before updating player
       if (this._isPlaying) {

@@ -28,6 +28,15 @@ class EditAccountModal extends Modal {
   }
 
 
+  _postSubmission() {
+    this.close();
+    // Force page redraw on user account
+    mzk.setView({
+      name: 'AccountPage'
+    });
+  }
+
+
   _submit() {
     const r = this._rootElement;
     mzk.kom.post('/fragment/account/profile-edit/', {
@@ -35,10 +44,10 @@ class EditAccountModal extends Modal {
       surname: r.querySelector('#surname-input').value,
       name: r.querySelector('#name-input').value,
       bio: r.querySelector('#bio-input').value,
-      birthDate: r.querySelector('#birthday-input').value,
+      birthdate: r.querySelector('#birthday-input').value,
       countryId: r.querySelector('#country-select').options[r.querySelector('#country-select').selectedIndex].value,
       localeId: r.querySelector('#locale-select').options[r.querySelector('#locale-select').selectedIndex].value,
-    }).finally(this.close.bind(this));
+    }).finally(this._postSubmission.bind(this));
   }
 
 

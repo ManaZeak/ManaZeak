@@ -1,4 +1,4 @@
-import Modal from '../utils/Modal.js';
+import Modal from '../utils/Modal';
 import AudioVisualizer from '../../visu/AudioVisualizer';
 
 
@@ -10,8 +10,6 @@ class TrackDetailModal extends Modal {
     super(`track-detail/${options.id}`);
 
     this._id = options.id;
-    console.log(options)
-
     this._waveform = null;
     /** @private
      * @member {object} - The modal close button */

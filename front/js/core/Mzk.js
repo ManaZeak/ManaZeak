@@ -22,8 +22,8 @@ class Mzk {
     // Initializing communication and UI controllers
     this.kom = new Kom();
     this.nls = new Lang('en');
-    this.ui = new UserInterface();
     this.ctrl = new Controller();
+    this.ui = new UserInterface();
     this.data = new Data();
     // Init scene with main page
     this.setView({ name: 'MainPage' });
@@ -50,8 +50,18 @@ class Mzk {
 
 
   togglePlay() {
-    this.ctrl.togglePlay();
-    this.ui.setPlay(this.ctrl.player.playing);    
+    this.ctrl.togglePlay().then(() => {
+      this.ui.setPlay(this.ctrl.player.playing);
+    });
+  }
+
+
+  setPlay(play) {
+    if (play === true) {
+      this.ctrl.setPlay(true).then(this.ui.setPlay.bind(this.ui, true));
+    } else {
+      this.ctrl.setPlay(false).then(this.ui.setPlay.bind(this.ui, false));
+    }
   }
 
 
