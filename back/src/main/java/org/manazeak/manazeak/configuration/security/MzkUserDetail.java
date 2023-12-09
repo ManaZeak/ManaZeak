@@ -17,7 +17,7 @@ public class MzkUserDetail extends User {
     private final MzkUser user;
 
     public MzkUserDetail(final MzkUser user, final List<MzkGrantedAuthority> privileges) {
-        super(user.getUsername(), user.getPassword(), true, true, true, true,
+        super(user.getUsername(), user.getPassword(), user.getIsActive(), true, true, true,
                 privileges);
         this.user = user;
     }

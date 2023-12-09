@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.configuration.security;
 
+import org.apache.commons.lang3.StringUtils;
 import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
@@ -30,7 +31,7 @@ public class MzkUserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        if (username == null || "".equals(username)) {
+        if (StringUtils.isEmpty(username)) {
             // Can't find user.
             throw new MzkRuntimeException("No user given.", UserNotificationEnum.NO_USERNAME_ERROR);
         }
@@ -38,9 +39,9 @@ public class MzkUserDetailServiceImpl implements UserDetailsService {
         final Optional<MzkUser> user = userService.findByUsername(username);
         if (user.isEmpty()) {
             LOG.warn("The unknown user {} tried to connect.", username);
-            throw new MzkRuntimeException("An unknow user tryed to connect", UserNotificationEnum.USER_AUTH_ERROR);
+            throw new MzkRuntimeException("An unknown user tried to connect", UserNotificationEnum.USER_AUTH_ERROR);
         }
-        // If the user is not active he can't connect
+        // If the user is not active, he can't connect
         if (Boolean.FALSE.equals(user.get().getIsActive())) {
             LOG.warn("The disabled user {} tried to connect.", username);
             throw new MzkRuntimeException("An disabled user tried to connect to the database.",

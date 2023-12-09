@@ -31,7 +31,7 @@ public class MzkUserEditDto {
 
     @NotEmpty(message = "{user.tellusmore.error.empty_birthdate}")
     @Date
-    private String birthdate;
+    private String birthDate;
 
     @CountryId
     private Long countryId;

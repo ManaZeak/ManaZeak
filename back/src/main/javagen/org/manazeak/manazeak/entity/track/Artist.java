@@ -1,13 +1,25 @@
 package org.manazeak.manazeak.entity.track;
 
-import jakarta.persistence.*;
-import org.manazeak.manazeak.entity.reference.ArtistType;
-import org.manazeak.manazeak.entity.reference.Country;
-
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.util.Set;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
+import org.manazeak.manazeak.entity.reference.Country;
+import jakarta.persistence.Id;
+import org.manazeak.manazeak.entity.reference.ArtistType;
+import jakarta.persistence.JoinTable;
 
 /**
  * Contains the bands of the application.

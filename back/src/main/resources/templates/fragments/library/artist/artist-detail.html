@@ -16,7 +16,17 @@
         <span th:text="${artist.birthDate}"></span>&nbsp;–&nbsp;
         <span th:text="${artist.deathDate}"></span>
       </em></p>
-      <p th:text="${artist.countryCode}"></p>
+      <p><em>
+        <span th:text="${artist.birthCountryId}"></span>
+        <span th:text="${artist.birthCountry}"></span>
+        <span th:text="${artist.birthPlace}"></span>
+      </em></p>
+      <p><em>
+        <span th:text="${artist.deathCountryId}"></span>
+        <span th:text="${artist.deathCountry}"></span>
+        <span th:text="${artist.deathPlace}"></span>
+      </em></p>
+      <p><em><span th:text="${artist.bio}"></span></em></p>
     </div>
     <div class="artist-header-right">
       <p th:text="#{view.rlartist.members}"></p>

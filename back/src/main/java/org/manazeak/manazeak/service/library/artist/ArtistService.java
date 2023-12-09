@@ -2,10 +2,12 @@ package org.manazeak.manazeak.service.library.artist;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.constant.LocaleEnum;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.daos.track.BandMemberDAO;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
+import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.manager.library.artist.ArtistHelper;
@@ -13,9 +15,10 @@ import org.manazeak.manazeak.manager.library.random.artist.RandomReleaseArtistMa
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Allows to interact with the artists of the application.
+ * Allows interacting with the artists of the application.
  */
 @TransactionalWithRollback
 @Service
@@ -63,9 +66,10 @@ public class ArtistService {
      *
      * @return The detail of the artist.
      */
-    public ArtistDetailsDto getArtistDetail(Long artistId) {
+    public ArtistDetailsDto getArtistDetail(Long artistId, MzkUser user) {
         // Getting the information of the artist.
-        ArtistDetailsDto detail = artistDAO.getArtistDetailById(artistId).orElseThrow(
+        ArtistDetailsDto detail = artistDAO.getArtistDetailById(artistId,
+                Objects.requireNonNullElse(user.getLocale().getLocaleId(), LocaleEnum.ENGLISH.getId())).orElseThrow(
                 MzkExceptionHelper.generateSupplierObjectNotFoundException("artist.error.not_found")
         );
         // Getting the minimal information on the members.

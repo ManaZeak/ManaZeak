@@ -18,7 +18,7 @@ public class MzkUserEditDataCreation {
         edit.setCountryId(UserTestConstants.COUNTRY_ID_EDITED);
         edit.setName(UserTestConstants.NAME_EDITED);
         edit.setEmail(UserTestConstants.MAIL_EDITED);
-        edit.setBirthdate(UserTestConstants.BIRTH_DATE_EDITED);
+        edit.setBirthDate(UserTestConstants.BIRTH_DATE_EDITED);
         edit.setBio(UserTestConstants.BIO_EDITED);
         edit.setSurname(UserTestConstants.SURNAME_EDITED);
 

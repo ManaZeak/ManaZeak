@@ -35,7 +35,7 @@ public class UserEditManager {
         MzkUserEditDto userEdit = new MzkUserEditDto();
         userEdit.setSurname(user.getSurname());
         userEdit.setBio(user.getBio());
-        userEdit.setBirthdate(DateUtil.formatDate(user.getBirthDate(), DateUtil.US_DATE_FORMATTER));
+        userEdit.setBirthDate(DateUtil.formatDate(user.getBirthDate(), DateUtil.US_DATE_FORMATTER));
         userEdit.setEmail(user.getMail());
         userEdit.setName(user.getName());
         if (user.getCountry() != null) {
@@ -49,18 +49,18 @@ public class UserEditManager {
     }
 
     /**
-     * Allows to save the modified user with the information send by the user.
+     * Allows saving the modified user with the information send by the user.
      *
      * @param editedUser The information modified by the user.
      */
-    public void saveCurrentUserModification(MzkUserEditDto editedUser) {
+    public MzkUser saveCurrentUserModification(MzkUserEditDto editedUser) {
         // Getting the current user connected
         MzkUser user = userManager.getCurrentUser();
 
         // Setting the new fields on the user.
         user.setSurname(editedUser.getSurname());
         user.setBio(editedUser.getBio());
-        user.setBirthDate(DateUtil.parseString(editedUser.getBirthdate(), DateUtil.US_DATE_FORMATTER));
+        user.setBirthDate(DateUtil.parseString(editedUser.getBirthDate(), DateUtil.US_DATE_FORMATTER));
         user.setMail(editedUser.getEmail());
         user.setName(editedUser.getName());
         if (editedUser.getCountryId() != 0L) {
@@ -69,6 +69,6 @@ public class UserEditManager {
         localeService.setUserLocale(editedUser.getLocaleId(), user);
 
         // Saving the information
-        userManager.saveUser(user);
+        return userManager.saveUser(user);
     }
 }

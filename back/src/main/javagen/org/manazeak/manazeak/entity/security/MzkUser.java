@@ -263,7 +263,7 @@ public class MzkUser implements Serializable{
      * Association user_locale to Locale
      * @return value of locale
      */
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="locale_id", referencedColumnName="locale_id")
 	public Locale getLocale(){
 		return locale;

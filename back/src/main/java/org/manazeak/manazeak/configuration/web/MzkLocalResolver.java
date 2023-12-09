@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.configuration.web;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 /**
- * This class allows to select the local for a given user.
+ * This class allows selecting the local for a given user.
  * If there is no user, we select the user agent language.
  */
 @Component
@@ -73,7 +74,7 @@ public class MzkLocalResolver extends SessionLocaleResolver {
      * @return The local of the user.
      */
     @Override
-    public Locale resolveLocale(HttpServletRequest request) {
+    public Locale resolveLocale(@NonNull HttpServletRequest request) {
         // Getting the name of the user.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         // If there is no user connected, getting the information from the user agent.

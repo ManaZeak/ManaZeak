@@ -2,12 +2,14 @@ package org.manazeak.manazeak.service.security.user.info;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
+import org.manazeak.manazeak.configuration.security.MzkUserDetail;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailDto;
 import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.manager.security.user.UserEditManager;
 import org.manazeak.manazeak.manager.security.user.UserManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,6 +51,10 @@ public class UserInformationServiceImpl implements UserInformationService {
      */
     @Override
     public void saveCurrentUserEditInformation(MzkUserEditDto mzkUserEditDto) {
-        userEditManager.saveCurrentUserModification(mzkUserEditDto);
+        MzkUser user = userEditManager.saveCurrentUserModification(mzkUserEditDto);
+        // Updating the locale of the user. Otherwise, the application isn't traduced correctly.
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof MzkUserDetail userDetail) {
+            userDetail.getUser().setLocale(user.getLocale());
+        }
     }
 }

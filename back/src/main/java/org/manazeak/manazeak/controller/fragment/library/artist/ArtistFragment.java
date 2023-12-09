@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.controller.fragment.library.artist;
 
 import jakarta.validation.constraints.NotNull;
+import org.manazeak.manazeak.configuration.security.MzkUserDetail;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.library.album.AlbumContributionTypeEnum;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
@@ -8,6 +9,7 @@ import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.library.artist.ArtistFragmentEnum;
 import org.manazeak.manazeak.service.library.album.AlbumService;
 import org.manazeak.manazeak.service.library.artist.ArtistService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,9 +39,9 @@ public class ArtistFragment {
     @Security(PrivilegeEnum.PLAY)
     @GetMapping("/library/artist/{artistId}/")
     public String getArtistDetailFragment(@PathVariable @NotNull(message = "general.error.no_id") Long artistId,
-                                          Model model) {
+                                          Model model, @AuthenticationPrincipal MzkUserDetail user) {
         // Loading the artist.
-        model.addAttribute("artist", artistService.getArtistDetail(artistId));
+        model.addAttribute("artist", artistService.getArtistDetail(artistId, user.getUser()));
         model.addAttribute("albums", albumService.getMinimalAlbumByArtistId(artistId));
         model.addAttribute("contrib", albumService.getMinimalAlbumContributionByArtistId(artistId));
         model.addAttribute("contribType", AlbumContributionTypeEnum.class);

@@ -4624,7 +4624,7 @@
 				<target xmi:idref="EAID_2F0269E1_66C7_41e9_91DF_028A71AA14BB">
 					<model ea_localid="160" type="Class" name="locale"/>
 					<role visibility="Public" targetScope="instance"/>
-					<type multiplicity="0..1" aggregation="none" containment="Unspecified"/>
+					<type multiplicity="0..1" aggregation="none" containment="Value"/>
 					<constraints/>
 					<modifiers isOrdered="false" changeable="none" isNavigable="true"/>
 					<style value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Navigable;"/>

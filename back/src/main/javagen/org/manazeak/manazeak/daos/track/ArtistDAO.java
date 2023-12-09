@@ -50,19 +50,28 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
                a.name,
                a.location,
                a.birthDate,
+               birthC.countryId,
+               birthC.name,
+               a.birthPlace,
                a.deathDate,
+               deathC.countryId,
+               deathC.name,
+               a.deathPlace,
                a.isLabel,
-               country.trigram,
                label.labelId,
                label.name,
-               a.pictureFilename
+               a.pictureFilename,
+               bio.text
             )
             from Artist a
-            left join a.countryOfBirth country
+            left join a.countryOfBirth birthC
+            left join a.countryOfDeath deathC
             left join a.label label
+            left join a.bioList bio
             where a.artistId = :artistId
+            and (bio.locale.localeId = :localeId or bio.locale.localeId is null)
             """)
-    Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId);
+    Optional<ArtistDetailsDto> getArtistDetailById(@Param("artistId") Long artistId, @Param("localeId") Long localeId);
 
     /**
      * @return All the release artist of the application.

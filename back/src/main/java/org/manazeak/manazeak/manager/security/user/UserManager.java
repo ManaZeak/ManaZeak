@@ -104,8 +104,8 @@ public class UserManager {
      *
      * @param user The user that will be saved.
      */
-    public void saveUser(MzkUser user) {
-        userDAO.save(user);
+    public MzkUser saveUser(MzkUser user) {
+        return userDAO.save(user);
     }
 
     /**
