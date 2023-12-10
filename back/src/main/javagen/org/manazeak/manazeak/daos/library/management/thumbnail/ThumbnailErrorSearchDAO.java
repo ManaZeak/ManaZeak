@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Allows to search the thumbnails error in the database.
+ * Allows searching thumbnail error in the database.
  */
 @Repository
 @RequiredArgsConstructor

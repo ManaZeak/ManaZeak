@@ -23,6 +23,7 @@
         <thumbnailator.version>0.4.20</thumbnailator.version>
         <guava.version>32.0.0-jre</guava.version>
         <scrimage.version>4.0.39</scrimage.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     </properties>
 
     <dependencies>
@@ -60,11 +61,12 @@
         </dependency>
         <!-- Meta model generation -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
-            <version>${hibernate.version}</version>
+            <version>6.3.1.Final</version>
             <scope>provided</scope>
         </dependency>
+
         <!-- Need for the metamodel generation -->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
@@ -197,6 +199,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+        <!-- Annotation processor for mapper code generation. -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
