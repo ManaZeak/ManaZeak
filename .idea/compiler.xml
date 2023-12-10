@@ -8,6 +8,34 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="mda-generator" />
+      </profile>
+      <profile name="Annotation profile for ManaZeak" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/hibernate/orm/hibernate-jpamodelgen/6.3.1.Final/hibernate-jpamodelgen-6.3.1.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.5.0.Final/jboss-logging-3.5.0.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/jakarta/xml/bind/jakarta.xml.bind-api/4.0.0/jakarta.xml.bind-api-4.0.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/jakarta/activation/jakarta.activation-api/2.1.0/jakarta.activation-api-2.1.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/glassfish/jaxb/jaxb-runtime/4.0.2/jaxb-runtime-4.0.2.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/glassfish/jaxb/jaxb-core/4.0.2/jaxb-core-4.0.2.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/eclipse/angus/angus-activation/2.0.0/angus-activation-2.0.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/glassfish/jaxb/txw2/4.0.2/txw2-4.0.2.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/sun/istack/istack-commons-runtime/4.1.1/istack-commons-runtime-4.1.1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.10.1/antlr4-runtime-4.10.1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/hibernate/orm/hibernate-core/6.3.1.Final/hibernate-core-6.3.1.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/jakarta/persistence/jakarta.persistence-api/3.1.0/jakarta.persistence-api-3.1.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/hibernate/common/hibernate-commons-annotations/6.0.6.Final/hibernate-commons-annotations-6.0.6.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/io/smallrye/jandex/3.1.2/jandex-3.1.2.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/fasterxml/classmate/1.5.1/classmate-1.5.1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.14.7/byte-buddy-1.14.7.jar" />
+          <entry name="$MAVEN_REPOSITORY$/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar" />
+        </processorPath>
         <module name="manazeak_back" />
       </profile>
     </annotationProcessing>
