@@ -18,7 +18,7 @@ public class TrackManager {
 
     private final TrackDAO trackDAO;
 
-    private final TrackCompleteConverterManager converterManager;
+    private final TrackConverterManager converterManager;
 
     /**
      * Get the tracks of an album and set the performer of the album.

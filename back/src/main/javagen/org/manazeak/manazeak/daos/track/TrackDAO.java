@@ -6,6 +6,7 @@ import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarImageGenerationPr
 import org.manazeak.manazeak.entity.dto.library.track.AlbumTrackDbInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.TrackWithPartialPerformerDto;
 import org.manazeak.manazeak.entity.track.Track;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -41,6 +42,28 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
             order by trk.trackId
             """)
     List<MoodbarGenerationProjection> getTracksWithoutMoodbar(@Param("lastTrackId") Long lastTrackId, Pageable pageable);
+
+    /**
+     * Get all the tracks contained in the albums of an artist.
+     *
+     * @param artistId The id of the artist.
+     * @return The tracks contained in the artist album.
+     */
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.track.TrackWithPartialPerformerDto(
+                trk.trackId,
+                trk.title,
+                perf.name,
+                trk.duration
+            )
+            from Track trk
+            join trk.album alb
+            join alb.artist art
+            join trk.performerList perf
+            where art.artistId = :artistId
+            order by trk.trackId
+            """)
+    List<TrackWithPartialPerformerDto> getMinimalTracksWhereArtistIsReleaseArtist(@Param("artistId") Long artistId);
 
     /**
      * Get all the moodbar of the application.
