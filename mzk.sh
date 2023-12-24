@@ -19,7 +19,7 @@ isInstalled() {
 echo # Line break
 echo -e "  ## ---------------------------------- ##"
 echo -e "  ##              \e[92mManaZeak\e[39m              ##"
-echo -e "  ##        2017/2022 -- GPL-3.0        ##"
+echo -e "  ##        2017/2023 -- GPL-3.0        ##"
 echo -e "  ##               v$vers               ##"
 echo -e "  ## ---------------------------------- ##"
 echo # Line break

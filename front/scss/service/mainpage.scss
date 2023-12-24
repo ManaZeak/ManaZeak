@@ -732,6 +732,44 @@
     }
   }
 
+  .items-title {
+    align-items: center;
+    display: flex;
+    width: calc(100% - 4rem);
+
+    h1 {
+      width: auto;
+    }
+
+    .play-all {
+      color: var(--color-txt-darker);
+      cursor: pointer;
+      font-size: var(--font-size);
+      font-style: italic;
+      margin: 0;
+      transition: color .2s;
+  
+      &:active,
+      &:focus,
+      &:hover {
+        color: var(--color-primary);
+      }
+    }
+
+    img {
+      cursor: pointer;
+      height: var(--font-size-big);
+      margin-left: auto;
+      right: 0;
+
+      transition: filter .2s;
+
+      &.active {
+        filter: invert(62%) sepia(100%) saturate(288%) hue-rotate(73deg) brightness(95%) contrast(92%);
+      }
+    }
+  }
+
   .artist-content {
     margin: var(--margin);
     width: calc(100% - (2 * var(--margin)));

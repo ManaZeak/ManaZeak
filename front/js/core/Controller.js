@@ -744,6 +744,11 @@ class Controller {
     if (data.type === 'track') {
       const track = mzk.ui.getTrackById(data.id);
       this._queue.push(track);
+    } else if (data.type === 'tracks') {
+      // To add tracks that are already built and ready to open
+      for (let i = 0; i < data.tracks.length; ++i) {
+        this._queue.push(data.tracks[i]);
+      }      
     } else if (data.type === 'tracklist') {
       for (let i = 0; i < data.ids.length; ++i) {
         const track = mzk.ui.getTrackById(data.ids[i]);

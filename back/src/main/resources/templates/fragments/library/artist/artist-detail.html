@@ -30,21 +30,25 @@
       </div>
     </div>
   </div>
-  <h1 class="items-title">
-    <span th:text="#{view.rlartist.album_released}"></span>
-    <span th:text="${artist.name}"></span>
+  <div class="items-title">
+    <h1>
+      <span th:text="#{view.rlartist.album_released}"></span>
+      <span th:text="${artist.name}"></span>
+    </h1>
+    <h3 th:text="#{view.rlartist.play_all}" class="play-all"></h3>
     <img src="/static/img/navigation/sort-number.svg" class="sort-releases" alt="sort-artist-releases">
-  </h1>
+  </div>
   <!-- Displaying the list of albums. -->
   <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${albums}, medium)}"></div>
   <!-- Artist contribution -->
   <div th:each="type : ${contribType.values()}">
     <div th:unless="${contrib.get(type).isEmpty()}">
       <!-- Display the linked album of the albums.-->
-      <h1 class="items-title">
-        <span th:text="#{${type.getNameCode()}}"></span>
+      <div class="items-title">
+        <h1 th:text="#{${type.getNameCode()}}"></h1>
+        <h3 th:text="#{view.rlartist.play_all}" class="play-all"></h3>
         <img src="/static/img/navigation/sort-number.svg" class="sort-releases" alt="sort-artist-releases">
-      </h1>
+      </div>
       <div th:replace="~{/include/album/minimalAlbumFragment :: displayMinimalAlbums(${contrib.get(type)}, medium)}"></div>
     </div>
   </div>

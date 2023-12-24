@@ -14,6 +14,7 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
 
     this._artist = '';
     this._albums = [];
+    this._id = options.id;
     this._scrolls = [];
     
     this._fetchWrapper(this._url)
@@ -50,6 +51,7 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
 
         for (let i = 0; i < this._itemsContainers.length; ++i) {
           this._buildArtistAlbums(this._itemsContainers[i], this._itemsTitle[i]);
+          this._handlePlayAll(this._itemsTitle[i]);
 
           this._scrolls.push(new ScrollBar({
             target: this._itemsContainers[i],
@@ -108,19 +110,27 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
     }
 
     for (let i = 0; i < elements.children.length; ++i) {
-      let title = elements.children[i].lastElementChild.innerHTML;
-      if (title.includes(' EP')) {
-        title = title.replace(' EP', '');
+      let releaseTitle = elements.children[i].lastElementChild.innerHTML;
+      if (releaseTitle.includes(' EP')) {
+        releaseTitle = releaseTitle.replace(' EP', '');
         elements.children[i].querySelector('.ep-sp').innerHTML = 'EP';
       }
 
-      if (title.includes(' - Single')) {
-        title = title.replace(' - Single', '');
+      if (releaseTitle.includes(' - Single')) {
+        releaseTitle = releaseTitle.replace(' - Single', '');
         elements.children[i].querySelector('.ep-sp').innerHTML = 'SP';
       }
       // Update album title if needed
-      elements.children[i].lastElementChild.innerHTML = title;
+      elements.children[i].lastElementChild.innerHTML = releaseTitle;
       elements.children[i].addEventListener('click', this._albumClicked);
+    }
+  }
+
+
+  _handlePlayAll(title) {
+    const playAll = title.querySelector('.play-all');
+    if (playAll) {
+      playAll.addEventListener('click', this._playAllClicked.bind(this, this._id));
     }
   }
 
@@ -146,6 +156,34 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
       name: 'ArtistPicture',
       path: this.dom.querySelector('#artist-picture').children[0].children[0].children[0].src,
       artist: this.dom.querySelector('#artist-name').innerHTML
+    });
+  }
+
+
+  _playAllClicked(id) {
+    mzk.kom.get(` /album/${id}/queue`).then(tracks => {
+      console.log(tracks)
+      const tracklist = [];
+      for (let i = 0; i < tracks.length; ++i) {
+        tracklist.push({
+          id: tracks[i].trackId,
+          title: tracks[i].title,
+          artist: tracks[i].performers.join(', '),
+          album: tracks[i].album,
+          cover: `/resources/covers/orig/${tracks[i].cover}`,
+          duration: Utils.secondsToTimecode(tracks[i].duration),
+          mood: `/resources/moods/hd/${tracks[i].mood}`
+        });
+      }
+
+      mzk.queue({
+        type: 'tracks',
+        tracks: tracklist
+      });
+      // Force queue to be consumed
+      mzk.next();
+    }).catch(() => {
+      console.error('Could not retrieve artist tracks for the queue');
     });
   }
 
