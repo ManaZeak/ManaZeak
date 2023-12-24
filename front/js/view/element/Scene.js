@@ -53,6 +53,13 @@ class Scene {
   }
 
 
+  closeModal() {
+    if (this.modal) {
+      this.modal.close();
+    }
+  }
+
+
 }
 
 

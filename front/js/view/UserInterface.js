@@ -103,6 +103,7 @@ class UserInterface {
     const view = this._history.getPreviousView();
     if (view !== null) {
       mzk.setView(view);
+      this._scene.closeModal();
     }
   }
 
@@ -112,6 +113,7 @@ class UserInterface {
     const view = this._history.getNextView();
     if (view !== null) {
       mzk.setView(view);
+      this._scene.closeModal();
     }    
   }
 
