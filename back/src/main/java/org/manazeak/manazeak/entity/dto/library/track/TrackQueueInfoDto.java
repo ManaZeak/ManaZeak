@@ -16,6 +16,12 @@ public class TrackQueueInfoDto {
 
     private List<String> performers;
 
+    private String albumTitle;
+
     private Double duration;
+
+    private String cover;
+
+    private String mood;
 
 }

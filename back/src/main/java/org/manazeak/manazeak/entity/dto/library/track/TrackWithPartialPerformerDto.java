@@ -7,5 +7,8 @@ public record TrackWithPartialPerformerDto(
         Long trackId,
         String title,
         String performer,
-        Double duration) {
+        String albumTitle,
+        Double duration,
+        String cover,
+        String mood) {
 }
