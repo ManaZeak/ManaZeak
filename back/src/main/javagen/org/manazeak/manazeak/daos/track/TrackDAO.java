@@ -54,14 +54,17 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
                 trk.trackId,
                 trk.title,
                 perf.name,
-                trk.duration
+                alb.title,
+                trk.duration,
+                alb.cover,
+                trk.mood
             )
             from Track trk
             join trk.album alb
             join alb.artist art
             join trk.performerList perf
             where art.artistId = :artistId
-            order by trk.trackNumber asc, alb.releaseDate desc, trk.trackId asc
+            order by alb.releaseDate desc, trk.trackNumber asc, trk.trackId asc
             """)
     List<TrackWithPartialPerformerDto> getMinimalTracksWhereArtistIsReleaseArtist(@Param("artistId") Long artistId);
 
