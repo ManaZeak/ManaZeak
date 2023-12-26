@@ -168,7 +168,7 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
           id: tracks[i].trackId,
           title: tracks[i].title,
           artist: tracks[i].performers.join(', '),
-          album: tracks[i].album,
+          album: tracks[i].albumTitle,
           cover: `/resources/covers/small/${tracks[i].cover}.jpg`,
           duration: Utils.secondsToTimecode(tracks[i].duration),
           mood: `${tracks[i].mood}`
