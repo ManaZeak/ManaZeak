@@ -162,7 +162,6 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
 
   _playAllClicked(id) {
     mzk.kom.get(` /album/${id}/queue`).then(tracks => {
-      console.log(tracks)
       const tracklist = [];
       for (let i = 0; i < tracks.length; ++i) {
         tracklist.push({
@@ -170,9 +169,9 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
           title: tracks[i].title,
           artist: tracks[i].performers.join(', '),
           album: tracks[i].album,
-          cover: `/resources/covers/orig/${tracks[i].cover}`,
+          cover: `/resources/covers/small/${tracks[i].cover}.jpg`,
           duration: Utils.secondsToTimecode(tracks[i].duration),
-          mood: `/resources/moods/hd/${tracks[i].mood}`
+          mood: `${tracks[i].mood}`
         });
       }
 

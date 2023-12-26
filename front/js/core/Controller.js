@@ -341,6 +341,12 @@ class Controller {
           this._waitForShuffleTracks = false; // New playObject, not waiting for tracks to shuffle anymore
           this._initShuffleQueue();
         }
+      } else {
+        this._playObject = {
+          type: 'album', // PlayObject is simulated to be an album
+          id: data.playObject.track.albumId, // Required for topbar to restore album view on click
+          tracks: [data.playObject.track]
+        };
       }
       // Request a track change on pPlayer with track information
       this._player.changeTrack(`/play/${track.id}/`, data.startTimePercentage).then(() => {

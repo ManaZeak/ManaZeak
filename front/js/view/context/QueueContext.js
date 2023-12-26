@@ -18,6 +18,8 @@ class QueueContext extends ContextMenu {
 
     this._emptyQueueDom = null;
     this._emptyPlayObjectDom = null;
+    this._queuedTrackDom = null;
+    this._playObjectDom = null;
   }
 
 
@@ -35,6 +37,12 @@ class QueueContext extends ContextMenu {
     this._emptyPlayObjectDom = doc.getElementsByClassName('play-object')[0].innerHTML;
     this._clearQueueButton = doc.getElementsByClassName('queue-remove-all-tracks')[0];
     this._evtIds.push(Evts.addEvent('click', this._clearQueueButton, this._clearQueueTracksClicked, this));
+    mzk.kom.getText('/fragment/entry/queuetrack/').then(response => {
+      this._queuedTrackDom = response;
+    });
+    mzk.kom.getText('/fragment/entry/queueplayobject/').then(response => {
+      this._playObjectDom = response;
+    });
   }
 
 
@@ -81,45 +89,52 @@ class QueueContext extends ContextMenu {
     const queue = this._dom.getElementsByClassName('queue')[0];
     if (tracks.length === 0) {
       this._restoreQueueEmptyDom();
+      setTimeout(() => {
+        this._updateQueueHeight();
+      }, 200);
     } else {
+      this._scroll?.destroy();
+      this._scroll = null;
       queue.innerHTML = '';
       this._clearQueueButton.classList.remove('hidden');
+      const promises = [];
       for (let i = 0; i < tracks.length; ++i) {
-        this._buildQueuedTrackDom(tracks[i]).then(track => {
-          queue.appendChild(track);
-          this._evtIds.push(Evts.addEvent('click', track.querySelector('.queue-track-remove'), () => {
-            mzk.ctrl.removeFromQueue(track.dataset.id);
-            if (track.parentNode.children.length === 1) {
-              this._restoreQueueEmptyDom();
-              mzk.ui.updateQueueNumber(0);
-            } else {
-              mzk.ui.updateQueueNumber(track.parentNode.children.length - 1);
-              track.remove();
-            }
-            this._updateQueueHeight();
-          }, this));
-        }).catch(err => console.error(err));
+        promises.push(new Promise(resolve => {
+          this._buildQueuedTrackDom(tracks[i]).then(track => {
+            queue.appendChild(track);
+            this._evtIds.push(Evts.addEvent('click', track.querySelector('.queue-track-remove'), () => {
+              mzk.ctrl.removeFromQueue(parseInt(track.dataset.id));
+              if (track.parentNode.children.length === 1) {
+                this._restoreQueueEmptyDom();
+                mzk.ui.updateQueueNumber(0);
+              } else {
+                mzk.ui.updateQueueNumber(track.parentNode.children.length - 1);
+                track.remove();
+              }
+              this._updateQueueHeight();
+            }, this));
+          }).catch(err => console.error(err));
+          resolve();
+        }));
       }
+      Promise.all(promises).then(() => {
+        this._updateQueueHeight();
+      });
     }
-    setTimeout(() => {
-      this._updateQueueHeight();
-    }, 200);
   }
 
 
   _buildQueuedTrackDom(track) {
     return new Promise(resolve => {
-      mzk.kom.getText('/fragment/entry/queuetrack/').then(response => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(response, 'text/html');
-        const entry = doc.getElementsByClassName('queue-track-entry')[0];
-        entry.querySelector('#queue-track-cover').src = track.cover;
-        entry.querySelector('#queue-track-title').innerHTML = track.title;
-        entry.querySelector('#queue-track-artist').innerHTML = track.artist;
-        entry.querySelector('#queue-track-duration').innerHTML = track.duration;
-        entry.dataset.id = track.id;
-        resolve(entry);
-      });
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this._queuedTrackDom, 'text/html');
+      const entry = doc.getElementsByClassName('queue-track-entry')[0];
+      entry.querySelector('#queue-track-cover').src = track.cover;
+      entry.querySelector('#queue-track-title').innerHTML = track.title;
+      entry.querySelector('#queue-track-artist').innerHTML = track.artist;
+      entry.querySelector('#queue-track-duration').innerHTML = track.duration;
+      entry.dataset.id = track.id;
+      resolve(entry);
     });
   }
 
@@ -163,16 +178,14 @@ class QueueContext extends ContextMenu {
 
   _buildQueuedPlayObjectDom(playObject) {
     return new Promise(resolve => {
-      mzk.kom.getText('/fragment/entry/queueplayobject/').then(response => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(response, 'text/html');
-        const entry = doc.getElementsByClassName('queue-play-object-entry')[0];
-        entry.querySelector('#queue-play-object-cover').src = playObject.cover;
-        entry.querySelector('#queue-play-object-track').innerHTML = playObject.tracks[0].title;
-        entry.querySelector('#queue-play-object-artist').innerHTML = playObject.artist;
-        entry.querySelector('#queue-play-object-title').innerHTML = playObject.title;
-        resolve(entry);
-      });
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this._playObjectDom, 'text/html');
+      const entry = doc.getElementsByClassName('queue-play-object-entry')[0];
+      entry.querySelector('#queue-play-object-cover').src = playObject.cover || playObject.tracks[0].cover;
+      entry.querySelector('#queue-play-object-track').innerHTML = playObject.tracks[0].title;
+      entry.querySelector('#queue-play-object-artist').innerHTML = playObject.artist || playObject.tracks[0].artist;
+      entry.querySelector('#queue-play-object-title').innerHTML = playObject.title || playObject.tracks[0].album;
+      resolve(entry);
     });
   }
 
