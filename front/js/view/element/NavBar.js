@@ -195,6 +195,11 @@ class NavBar {
   updateQueueNumber(length) {
     if (length === 0) {
       length = '';
+    } else if (length >= 100) {
+      length = '+99';
+      this._controls.queue.parentNode.classList.add('hundred');
+    } else {
+      this._controls.queue.parentNode.classList.remove('hundred');      
     }
 
     this._controls.queue.parentNode.dataset.before = length;

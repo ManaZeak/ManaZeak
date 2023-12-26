@@ -174,7 +174,7 @@ class ReleaseArtistView extends ItemViewHelperMixin(SceneView) {
           mood: `${tracks[i].mood}`
         });
       }
-
+      // TODO on last drop improve playObject type
       mzk.queue({
         type: 'tracks',
         tracks: tracklist
