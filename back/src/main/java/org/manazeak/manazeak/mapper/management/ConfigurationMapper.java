@@ -10,6 +10,7 @@ public interface ConfigurationMapper {
 
     @Mapping(target = "value", source = "defaultValue")
     @Mapping(target = "configurationId", source = "configId")
+    @Mapping(target = "configurationTechId", ignore = true)
     Configuration fromConfigurationEnum(ConfigurationEnum config);
 
 }

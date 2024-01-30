@@ -288,10 +288,12 @@ COMMENT ON COLUMN track_key.track_id IS 'ManyToMany FK track';
 COMMENT ON COLUMN track_key.key_id IS 'ManyToMany FK key';
 
 CREATE TABLE configuration (
+	configuration_tech_id BIGINT not null,
 	configuration_id BIGINT not null,
+	code VARCHAR(100) not null,
 	value VARCHAR(1000) not null,
 	type VARCHAR(100) not null,
-	CONSTRAINT PK_CONFIGURATION PRIMARY KEY (configuration_id)
+	CONSTRAINT PK_CONFIGURATION PRIMARY KEY (configuration_tech_id)
 );
 
 CREATE TABLE moodbar_error (

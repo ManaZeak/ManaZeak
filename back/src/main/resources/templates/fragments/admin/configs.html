@@ -1,0 +1,20 @@
+<!-- HTML fragment used to display all the configuration keys of the application. -->
+<div class="commands-wrapper" xmlns:th="http://www.thymeleaf.org">
+  <!--/*@thymesVar id="config" type="org.manazeak.manazeak.entity.management.Configuration"*/-->
+  <div th:attr="data-id=*{config.configurationId}" th:each="config : ${configs}">
+    <!-- Configuration value, to be found in the i18n. -->
+    <div>
+      <label th:for="*{config.configurationId}" th:text="#{*{config.code}}"></label>:
+      <!-- Select the input type with the type of the field. -->
+      <span th:if="*{config.type == 'STRING'}">
+        <input th:id="*{config.configurationId}" th:type="text">
+      </span>
+      <span th:if="*{config.type == 'BOOLEAN'}">
+        <input th:id="*{config.configurationId}" th:type="checkbox">
+      </span>
+      <span th:if="*{config.type == 'INTEGER'}">
+        <input th:id="*{config.configurationId}" th:type="number">
+      </span>
+    </div>
+  </div>
+</div>

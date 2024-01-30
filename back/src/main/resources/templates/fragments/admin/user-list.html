@@ -4,7 +4,7 @@
   <div class="users-wrapper" id="users-wrapper">
     <div class="user-container" th:attr="data-id=*{user.userId}" th:each="user : ${users}" xmlns:th="http://www.thymeleaf.org">
       <!-- User doesn't have an avatar. Displaying default -->
-      <!--/*@thymesVar id="users" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
+      <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.admin.UserListLineDto"*/-->
       <span th:if="*{user.avatar == null}">
         <img alt="user-avatar" src="/static/img/default/user.svg">
       </span>
