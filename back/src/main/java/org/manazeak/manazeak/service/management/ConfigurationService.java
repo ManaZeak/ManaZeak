@@ -51,7 +51,7 @@ public class ConfigurationService implements InitializingBean {
      */
     public void setKey(ConfigurationDto configuration) {
         // Getting the key if it exists in the database.
-        Configuration config = configurationDAO.findById(configuration.configurationId())
+        Configuration config = configurationDAO.getConfigurationByConfigurationId(configuration.configurationId())
                 .orElseThrow(
                         () -> new MzkRuntimeException("The configuration wasn't found in the database.")
                 );

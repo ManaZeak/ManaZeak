@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -28,5 +29,13 @@ public interface ConfigurationDAO extends CrudRepository<Configuration, Long> {
      */
     @Query("select configurationId from Configuration")
     Set<Long> getAllConfigurationIds();
+
+    /**
+     * Get a configuration by its configuration identifier.
+     *
+     * @param configurationId The identifier of the configuration.
+     * @return The configuration if found.
+     */
+    Optional<Configuration> getConfigurationByConfigurationId(Long configurationId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT
