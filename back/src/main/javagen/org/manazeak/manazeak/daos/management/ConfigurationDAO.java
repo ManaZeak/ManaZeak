@@ -5,6 +5,7 @@ import org.manazeak.manazeak.entity.management.Configuration;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +30,14 @@ public interface ConfigurationDAO extends CrudRepository<Configuration, Long> {
      */
     @Query("select configurationId from Configuration")
     Set<Long> getAllConfigurationIds();
+
+    /**
+     * Get the configurations matching the identifiers.
+     *
+     * @param configurationIds The list of configurations identifier to fetch.
+     * @return The configurations fetched.
+     */
+    List<Configuration> getConfigurationsByConfigurationIdIsIn(Collection<Long> configurationIds);
 
     /**
      * Get a configuration by its configuration identifier.

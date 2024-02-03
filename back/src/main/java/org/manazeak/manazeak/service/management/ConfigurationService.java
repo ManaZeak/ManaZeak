@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.management;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.management.ConfigurationEnum;
@@ -7,12 +8,12 @@ import org.manazeak.manazeak.daos.management.ConfigurationDAO;
 import org.manazeak.manazeak.entity.dto.admin.configuration.ConfigurationDto;
 import org.manazeak.manazeak.entity.management.Configuration;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.manager.management.ConfigurationManager;
 import org.manazeak.manazeak.mapper.management.ConfigurationMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Allows interacting with the configuration of the application.
@@ -23,6 +24,8 @@ import java.util.Set;
 public class ConfigurationService implements InitializingBean {
 
     private final ConfigurationDAO configurationDAO;
+
+    private final ConfigurationManager configurationManager;
 
     private final ConfigurationMapper configurationMapper;
 
@@ -59,6 +62,39 @@ public class ConfigurationService implements InitializingBean {
         config.setValue(config.getValue());
         // When saving a merge request is done by Hibernate.
         configurationDAO.save(config);
+    }
+
+    /**
+     * Get the configurations in the database matching the given configuration in the enum.
+     *
+     * @param configurations The configurations to get in the database.
+     * @return The configurations associated to the configuration enum.
+     */
+    public Map<ConfigurationEnum, Configuration> getConfigs(Collection<ConfigurationEnum> configurations) {
+        Set<Long> configIds = new HashSet<>();
+        // Adding all the configuration ids to the set.
+        configurations.forEach(c -> configIds.add(c.getConfigId()));
+
+        // Getting the configs in the database.
+        List<Configuration> dbConfigs = configurationDAO.getConfigurationsByConfigurationIdIsIn(configIds);
+
+        // Associating the configurations in the database to the enum value.
+        EnumMap<ConfigurationEnum, Configuration> configMap = new EnumMap<>(ConfigurationEnum.class);
+        dbConfigs.forEach(c -> configMap.put(ConfigurationEnum.getConfigById(c.getConfigurationId()), c));
+
+        return configMap;
+    }
+
+    /**
+     * Get the value of the configuration converted to the right type.
+     *
+     * @param config The configuration object.
+     * @param clazz  The class associated to the configuration.
+     * @param <T>    The type of the returned configuration.
+     * @return The value contained in the configuration.
+     */
+    public <T> T resolveConfiguration(Configuration config, @NonNull Class<T> clazz) {
+        return configurationManager.resolveConfiguration(config.getValue(), clazz);
     }
 
     /**

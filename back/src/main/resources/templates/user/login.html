@@ -31,7 +31,7 @@
     <span><a href="/register/" alt="register-link"><span th:text="#{user.login.register}"></span></a></span>
   </p>
   <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
-  <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
+  <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.UserLoginDto"*/-->
   <form method="POST" th:object="${user}" id="login-form">
     <!-- Username field (128 char) and specific errors -->
     <div class="tooltip">
@@ -46,7 +46,7 @@
       <span class="tooltip-top" th:text="#{user.login.password.help}"></span>
     </div>
     <p th:each="error : ${#fields.errors('password')}" th:text="${error}"></p>
-    <input id="password-input" maxlength="256" th:errorClass="'error'" th:field="*{password}" type="password"/>
+    <input id="password-input" maxlength="256" th:errorClass="'error'" name="password" th:value="*{password}" type="password"/>
     <!-- Global form errors -->
     <p class="global-error" th:if="${param.error}" th:text="#{user.login.error.fail}"></p>
     <!-- Required csrf token from session cookies -->

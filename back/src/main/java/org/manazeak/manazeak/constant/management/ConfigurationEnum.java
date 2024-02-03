@@ -3,10 +3,10 @@ package org.manazeak.manazeak.constant.management;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Contains the configuration keys of the application.
@@ -35,7 +35,12 @@ public enum ConfigurationEnum {
      * @param configId The configuration identifier.
      * @return The configuration if it exists.
      */
-    private Optional<ConfigurationEnum> getConfigById(Long configId) {
-        return Optional.ofNullable(LOOKUP.get(configId));
+    public static ConfigurationEnum getConfigById(Long configId) {
+        ConfigurationEnum config = LOOKUP.get(configId);
+        if (config == null) {
+            throw new MzkRuntimeException("The configuration key doesn't exist.");
+        }
+
+        return config;
     }
 }
