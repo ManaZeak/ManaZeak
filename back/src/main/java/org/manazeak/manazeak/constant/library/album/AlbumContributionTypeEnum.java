@@ -22,7 +22,8 @@ public enum AlbumContributionTypeEnum {
     ARRANGER("object.artist.arranger"),
     ENGINEER("object.artist.engineer"),
     PERFORMER("object.artist.performer"),
-    LYRICIST("object.artist.lyricist");
+    LYRICIST("object.artist.lyricist"),
+    PRODUCER("object.artist.producer");
 
     private final String nameCode;
 
@@ -60,6 +61,9 @@ public enum AlbumContributionTypeEnum {
         }
         if (contrib.getPerformerId() != null) {
             return PERFORMER;
+        }
+        if (contrib.getProducerId() != null) {
+            return PRODUCER;
         }
 
         throw new MzkRuntimeException("The contribution type couldn't be found.");

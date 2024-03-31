@@ -65,13 +65,15 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
                arr.artistId,
                eng.artistId,
                perf.artistId,
-               lyri.artistId
+               lyri.artistId,
+               prod.artistId
             ) from Track trk
             left join trk.composerList comp on comp.artistId = :artistId
             left join trk.arrangerList arr on arr.artistId = :artistId
             left join trk.engineerList eng on eng.artistId = :artistId
             left join trk.performerList perf on perf.artistId = :artistId
             left join trk.lyricistList lyri on lyri.artistId = :artistId
+            left join trk.producerList prod on prod.artistId = :artistId
             join trk.album alb
             where alb.artist.artistId <> :artistId
             and (
@@ -80,9 +82,10 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
                 or arr.artistId = :artistId
                 or comp.artistId = :artistId
                 or lyri.artistId = :artistId
+                or prod.artistId = :artistId
             )
             group by alb.albumId, alb.title, alb.cover, alb.releaseYear, comp.artistId, arr.artistId, eng.artistId,
-            perf.artistId, lyri.artistId
+            perf.artistId, lyri.artistId, prod.artistId
             order by alb.releaseDate desc
             """)
     List<AlbumContributionMinimalInfoDto> getMinimalAlbumContributionByArtistId(@Param("artistId") Long artistId);
