@@ -26,6 +26,15 @@ public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
     Optional<MzkUser> getByUsername(String username);
 
     /**
+     * Get a user with a username and a password.
+     *
+     * @param username The username associated to the user.
+     * @param password The password of the user encoded with the bcrypt.
+     * @return The user corresponding to the criteria.
+     */
+    Optional<MzkUser> getByUsernameAndPassword(String username, String password);
+
+    /**
      * Get a user projection from the user id.
      *
      * @param userId The id of the user needed to get the details.

@@ -4,8 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
-import org.manazeak.manazeak.configuration.security.MzkUserDetail;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkSecurityException;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -81,7 +81,8 @@ public class MzkLocalResolver extends SessionLocaleResolver {
             return getLocalFromRequestHeader(request);
         }
         // Getting the username from the security context.
-        MzkUser user = ((MzkUserDetail) auth.getPrincipal()).getUser();
+        // FIXME : change exception thrown
+        MzkUser user = userService.findByUsername(auth.getName()).orElseThrow(() -> new MzkSecurityException("ezr", "ezr"));
         if (user == null) {
             log.warn("A user has no user name and is connected.");
             return Locale.US;

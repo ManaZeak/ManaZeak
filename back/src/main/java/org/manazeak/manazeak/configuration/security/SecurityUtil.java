@@ -4,6 +4,7 @@ import org.manazeak.manazeak.constant.security.PrivilegeInterface;
 import org.manazeak.manazeak.util.CastUtil;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
@@ -25,14 +26,15 @@ public final class SecurityUtil {
      */
     public static boolean currentUserHasPrivilege(PrivilegeInterface privilege) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // If the user is not authenticated we don't check.
+        // FIXME : fix me
+        // If the user is not authenticated, we don't check.
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             // Get the list of privileges
-            List<MzkGrantedAuthority> authorities = CastUtil.castList(MzkGrantedAuthority.class,
+            List<SimpleGrantedAuthority> authorities = CastUtil.castList(SimpleGrantedAuthority.class,
                     authentication.getAuthorities());
             // Checking if the privilege is present.
-            for (MzkGrantedAuthority authority : authorities) {
-                if (authority.getAuthority().equals(privilege.name())) {
+            for (SimpleGrantedAuthority authority : authorities) {
+                if (authority.getAuthority().equals("SCOPE_" + privilege.name())) {
                     // The privilege is present.
                     return true;
                 }
