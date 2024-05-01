@@ -50,10 +50,10 @@ public class SecurityConfiguration {
     private boolean devMode;
 
 
-    @Value("${jwt.public.key}")
+    @Value("file:/key/public")
     private RSAPublicKey key;
 
-    @Value("${jwt.private.key}")
+    @Value("file:/key/private")
     private RSAPrivateKey privateKey;
 
 
