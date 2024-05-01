@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.entity.dto.user;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 /**
@@ -8,6 +9,8 @@ import lombok.Data;
 @Data
 public class UserLoginDto {
 
+    @NotEmpty
     private String username;
+    @NotEmpty
     private String password;
 }

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.exception;
 
+import lombok.Getter;
 import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 /**
  * This exception is used by the errors in the WS controller.
  */
+@Getter
 public class MzkRestException extends RuntimeException {
 
     private final Set<NotificationDto> notifications = new HashSet<>();
@@ -37,10 +39,6 @@ public class MzkRestException extends RuntimeException {
         notifications.add(notification);
     }
 
-    public Set<NotificationDto> getNotifications() {
-        return notifications;
-    }
-
     /**
      * Add one message to the set of messages.
      *
@@ -57,5 +55,9 @@ public class MzkRestException extends RuntimeException {
      */
     public void addNotifications(List<NotificationDto> messages) {
         this.notifications.addAll(messages);
+    }
+
+    public static MzkRestException error(String titleCode, String messageCode) {
+        return new MzkRestException(titleCode, messageCode, NotificationSeverityEnum.ERROR);
     }
 }

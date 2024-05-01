@@ -103,19 +103,11 @@ public class SecurityConfiguration {
         httpSecurity
                 .authorizeHttpRequests(authorizeRequest -> {
                     // Public URLs.
-                    authorizeRequest.requestMatchers("/register/", "/login/", "/logoutSuccess/", "/token/").permitAll();
+                    authorizeRequest.requestMatchers("/register/", "/logoutSuccess/", "/login/", "/token/").permitAll();
                     // To see the other URLs, you must be authenticated.
                     authorizeRequest.anyRequest().authenticated();
                 })
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                /*
-                .formLogin(config -> config
-                        .loginPage("/login/")
-                        .defaultSuccessUrl("/", true)
-                )
-                FIXME : clean this.
-                */
-                //.logout(config -> config.logoutSuccessUrl("/logoutSuccess/"))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(exceptions -> exceptions
