@@ -26,10 +26,10 @@ public final class SecurityUtil {
      */
     public static boolean currentUserHasPrivilege(PrivilegeInterface privilege) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // FIXME : fix me
-        // If the user is not authenticated, we don't check.
+         // If the user is not authenticated, we don't check.
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            // Get the list of privileges
+            // Get the list of privileges contained in the JWT.
+            // This data cannot be tempered, since it is signed.
             List<SimpleGrantedAuthority> authorities = CastUtil.castList(SimpleGrantedAuthority.class,
                     authentication.getAuthorities());
             // Checking if the privilege is present.

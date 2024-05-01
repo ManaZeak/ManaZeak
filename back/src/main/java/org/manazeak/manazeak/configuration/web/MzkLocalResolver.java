@@ -1,11 +1,11 @@
 package org.manazeak.manazeak.configuration.web;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.exception.MzkSecurityException;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * This class allows to select the local for a given user.
@@ -73,7 +74,8 @@ public class MzkLocalResolver extends SessionLocaleResolver {
      * @return The local of the user.
      */
     @Override
-    public Locale resolveLocale(HttpServletRequest request) {
+    @NonNull
+    public Locale resolveLocale(@NonNull HttpServletRequest request) {
         // Getting the name of the user.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         // If there is no user connected, getting the information from the user agent.
@@ -81,17 +83,14 @@ public class MzkLocalResolver extends SessionLocaleResolver {
             return getLocalFromRequestHeader(request);
         }
         // Getting the username from the security context.
-        // FIXME : change exception thrown
-        MzkUser user = userService.findByUsername(auth.getName()).orElseThrow(() -> new MzkSecurityException("ezr", "ezr"));
-        if (user == null) {
+        Optional<MzkUser> user = userService.findByUsername(auth.getName());
+        if (user.isEmpty()) {
             log.warn("A user has no user name and is connected.");
             return Locale.US;
         }
         // Database user.
-        if (user.getLocale() != null) {
-            // If the user has a locale set in his profile, load the complete user.
-            user = userService.findByUsername(user.getUsername()).orElseThrow();
-            return getAvailableLocale(Locale.forLanguageTag(user.getLocale().getCode()));
+        if (user.get().getLocale() != null) {
+            return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale().getCode()));
         } else {
             return getLocalFromRequestHeader(request);
         }
