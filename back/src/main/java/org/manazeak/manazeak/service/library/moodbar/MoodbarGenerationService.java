@@ -99,6 +99,8 @@ public class MoodbarGenerationService {
                     lastTrackId = elements.get(elements.size() - 1).getId();
                 }
 
+                executor.shutdown();
+
                 try {
                     if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
                         throw new MzkRuntimeException("The timeout for the moodbar gen.");
