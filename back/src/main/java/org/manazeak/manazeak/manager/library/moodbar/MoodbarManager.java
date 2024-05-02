@@ -179,7 +179,7 @@ public class MoodbarManager {
         }
         // Writing the image to the FS.
         Path moodFile = createMoodbarImageDestination(moodMd5, size);
-        image.output(WebpWriter.DEFAULT.withoutAlpha().withQ(QUALITY).withM(COMPRESSION), moodFile);
+        image.output(WebpWriter.DEFAULT.withoutAlpha().withQ(QUALITY).withM(COMPRESSION).withMultiThread(), moodFile);
     }
 
 }
