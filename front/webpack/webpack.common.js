@@ -17,6 +17,7 @@ let entry = {
   admin: ['./front/scss/service/admin.scss'],
   mainpage: ['./front/scss/service/mainpage.scss'],
   // Authentication pages
+  login: ['./front/js/auth/Login.js'],
   register: ['./front/js/auth/Register.js'],
   tellusmore: ['./front/js/auth/TellUsMore.js'],
   redirect: ['./front/js/auth/Redirect.js']

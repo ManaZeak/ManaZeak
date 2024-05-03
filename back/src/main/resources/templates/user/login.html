@@ -32,7 +32,7 @@
   </p>
   <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
   <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.security.MzkUser"*/-->
-  <form method="POST" th:object="${user}" id="login-form">
+  <form th:object="${user}" id="login-form">
     <!-- Username field (128 char) and specific errors -->
     <div class="tooltip">
       <label for="username-input" th:text="#{user.login.username}"></label>
@@ -48,21 +48,13 @@
     <p th:each="error : ${#fields.errors('password')}" th:text="${error}"></p>
     <input id="password-input" maxlength="256" th:errorClass="'error'" th:field="*{password}" type="password"/>
     <!-- Global form errors -->
-    <p class="global-error" th:if="${param.error}" th:text="#{user.login.error.fail}"></p>
+    <p class="global-error" id="global-error" th:if="${param.error}" th:text="#{user.login.error.fail}"></p>
     <!-- Required csrf token from session cookies -->
-    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-    <button th:text="#{user.login.submit}" type="submit"></button>
+    <input th:name="${_csrf.parameterName}" id="csrf-token" th:value="${_csrf.token}" type="hidden"/>
+    <button th:text="#{user.login.submit}" id="submit-login"></button>
   </form>
   <p th:utext="#{user.login.footer}"></p>
 </div>
-<script type="text/javascript">
-// Script so user can only enter to submit credentials 
-document.addEventListener('keypress', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    document.getElementById('login-form').submit();
-  }
-});
-</script>
+<script src="/static/dist/js/login.bundle.js" type="text/javascript"></script>
 </body>
 </html>
