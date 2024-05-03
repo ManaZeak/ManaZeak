@@ -4,9 +4,12 @@ import Shortcut from './utils/Shortcut';
 import Logger from './utils/Logger';
 import Notification from './utils/Notification';
 
-
 import Mzk from './core/Mzk';
 
+// Redirect user to /login if no jwt token is found in ls
+if (localStorage.getItem('mzk-jwt-token') === null) {
+  window.location = '/login/';
+}
 
 // Globally used components (singleton)
 window.Utils = new Utils();
