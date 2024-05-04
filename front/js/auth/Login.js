@@ -32,6 +32,8 @@ document.getElementById('submit-login').addEventListener('click', (e) => {
           } catch (error) {
             // Otherwise, the server gave a token
             localStorage.setItem('mzk-jwt-token', response);
+            // Redirect to boarding to x-check JWT and build /app
+            window.location = '/';
           }
         })
         .catch(err => {

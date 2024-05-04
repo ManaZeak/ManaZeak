@@ -110,8 +110,8 @@ class Kom {
    * </blockquote>
    **/
   _checkValidity() {
-    if (this._csrfToken !== '') {
-      if (this._headers.length !== 3) {
+    if (this._csrfToken !== '' && this._jwtToken !== '') {
+      if (this._headers.length !== 4) {
         console.error('F_KOM_HEADERS_ERROR');
       }
     } else {
@@ -275,7 +275,7 @@ class Kom {
     return new Promise((resolve, reject) => {
       const options = {
         method: 'GET',
-        headers: new Headers([this._headers[0]]) // Content type to JSON
+        headers: new Headers(this._headers) // Content type to JSON
       };
 
       fetch(url, options)
@@ -514,6 +514,11 @@ class Kom {
       };
       xhr.send(data);
     });
+  }
+
+
+  get jwt() {
+    return this._jwtToken;
   }
 
 

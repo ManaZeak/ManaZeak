@@ -5,7 +5,7 @@ const id = setInterval(() => {
   // Stoping condition, redirect to login page
   if (counter === 4) {
     clearInterval(id);
-    location.replace('login');
+    location.replace('login/');
   }
   // Update text with remaining time, 5 must be displayed by default in HTML when loaded
   if (redirectString?.innerHTML) {

@@ -251,17 +251,36 @@ class Player {
       if (this._isPlaying) {
         this.stop();
       }
-      // Set new track url and set playback rate according to internal value
-      this._player.src = url;
-      this._player.playbackRate = this._playbackRate;
-      // Start loading in event      
-      let loadingEventId = -1;
-      const loadedListener = () => {
-        Evts.removeEvent(loadingEventId);
-        Evts.publish('TrackLoaded');
-        startPlayback();
-      };
-      loadingEventId = Evts.addEvent('loadedmetadata', this._player, loadedListener, this);
+      // Proceed to fetch track with jwt token
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${window.mzk.kom.jwt}`
+        }
+      }).then(result => {
+        result.blob().then(blob => {
+          if (blob) {
+            // Set new track url and set playback rate according to internal value
+            this._player.src = URL.createObjectURL(blob);
+            this._player.playbackRate = this._playbackRate;
+            // Start loading in event      
+            let loadingEventId = -1;
+            const loadedListener = () => {
+              Evts.removeEvent(loadingEventId);
+              Evts.publish('TrackLoaded');
+              startPlayback();
+            };
+            loadingEventId = Evts.addEvent('loadedmetadata', this._player, loadedListener, this);
+          } else {
+            console.error('Impossible to build blob from track url', url);
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
     });
   }
 

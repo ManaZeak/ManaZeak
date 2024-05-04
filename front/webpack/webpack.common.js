@@ -20,7 +20,8 @@ let entry = {
   login: ['./front/js/auth/Login.js'],
   register: ['./front/js/auth/Register.js'],
   tellusmore: ['./front/js/auth/TellUsMore.js'],
-  redirect: ['./front/js/auth/Redirect.js']
+  redirect: ['./front/js/auth/Redirect.js'],
+  boarding: ['./front/js/auth/Boarding.js']
 };
 
 

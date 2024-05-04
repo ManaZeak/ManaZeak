@@ -7,6 +7,8 @@ import Notification from './utils/Notification';
 import Mzk from './core/Mzk';
 
 // Redirect user to /login if no jwt token is found in ls
+// This verification have previously occured in Boarding.js
+// But we know users can be pesky so here is ANOTHER ONE.
 if (localStorage.getItem('mzk-jwt-token') === null) {
   window.location = '/login/';
 }
