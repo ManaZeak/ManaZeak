@@ -20,6 +20,14 @@ public class MainContainerController {
     }
 
     /**
+     * @return The page used to start the mzk application.
+     */
+    @GetMapping("/boarding/")
+    public String geBoarding() {
+        return "boarding";
+    }
+
+    /**
      * Loading the template for the main page.
      *
      * @return the main page to the user.
@@ -30,6 +38,6 @@ public class MainContainerController {
         if (!additionalInfoManager.isUserComplete()) {
             return UserPageEnum.ADDITIONAL_INFO.getRedirectToPage();
         }
-        return "index.html";
+        return "index";
     }
 }
