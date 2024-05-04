@@ -103,7 +103,7 @@ public class SecurityConfiguration {
         httpSecurity
                 .authorizeHttpRequests(authorizeRequest -> {
                     // Public URLs.
-                    authorizeRequest.requestMatchers("/register/", "/logoutSuccess/", "/login/", "/boarding/", "/").permitAll();
+                    authorizeRequest.requestMatchers("/register/", "/logoutSuccess/", "/login/", "/").permitAll();
                     // To see the other URLs, you must be authenticated.
                     authorizeRequest.anyRequest().authenticated();
                 })
