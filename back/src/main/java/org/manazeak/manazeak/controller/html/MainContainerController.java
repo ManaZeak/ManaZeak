@@ -22,7 +22,7 @@ public class MainContainerController {
     /**
      * @return The page used to start the mzk application.
      */
-    @GetMapping("/boarding/")
+    @GetMapping("/")
     public String geBoarding() {
         return "boarding";
     }
@@ -32,7 +32,7 @@ public class MainContainerController {
      *
      * @return the main page to the user.
      */
-    @GetMapping("/")
+    @GetMapping("/app/")
     @Security(PrivilegeEnum.PLAY)
     public String getMainPage() {
         if (!additionalInfoManager.isUserComplete()) {
