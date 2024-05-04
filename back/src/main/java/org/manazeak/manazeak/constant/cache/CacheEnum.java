@@ -1,13 +1,11 @@
 package org.manazeak.manazeak.constant.cache;
 
 import lombok.Getter;
-import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 
 /**
  * Contains the information about the cache of the application.
@@ -37,11 +35,7 @@ public enum CacheEnum {
     /**
      * Contains the keys names linked to their id in the reference table of the database.
      */
-    KEY_ID_BY_NAME("key_id_by_name", String.class, Long.class, true, 100),
-    /**
-     * Contains the all artist view results.
-     */
-    ALL_ARTISTS_VIEW("all_artists_view", String.class, ArtistMinimalInfoDto.class, Duration.of(10, ChronoUnit.MINUTES), 1);
+    KEY_ID_BY_NAME("key_id_by_name", String.class, Long.class, true, 100);
 
 
     private static final int UNLIMITED_SIZE = 100000;
@@ -87,15 +81,6 @@ public enum CacheEnum {
         this.isEternal = isEternal;
         this.capacity = UNLIMITED_SIZE;
         this.expiry = null;
-    }
-
-    CacheEnum(String cacheName, Class<?> keyType, Class<?> valueType, Duration expiry, long capacity) {
-        this.cacheName = cacheName;
-        this.keyType = keyType;
-        this.valueType = valueType;
-        this.isEternal = false;
-        this.expiry = expiry;
-        this.capacity = capacity;
     }
 
     /**
