@@ -8,7 +8,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 /**
- * Allows to access the cache.
+ * Allows accessing the cache.
  */
 @Component
 @RequiredArgsConstructor
@@ -32,15 +32,12 @@ public class CacheAccessManager {
             return null;
         }
         Object cacheObject = cacheValue.get();
-        if (cacheObject == null) {
-            return null;
-        }
-        if (cacheObject instanceof String stringValue) {
-            return Long.parseLong(stringValue);
-        } else if (cacheObject instanceof Long longValue) {
-            return longValue;
-        }
-        throw new MzkRuntimeException("Invalid cache type " + cache.name() + ".");
+        return switch (cacheObject) {
+            case null -> null;
+            case String stringValue -> Long.parseLong(stringValue);
+            case Long longValue -> longValue;
+            default -> throw new MzkRuntimeException("Invalid cache type " + cache.name() + ".");
+        };
     }
 
     /**

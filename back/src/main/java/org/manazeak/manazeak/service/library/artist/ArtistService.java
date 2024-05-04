@@ -10,6 +10,7 @@ import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.manager.library.artist.ArtistHelper;
 import org.manazeak.manazeak.manager.library.random.artist.RandomReleaseArtistManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class ArtistService {
      *
      * @return The list of artists.
      */
+    @Cacheable("all_artists_view")
     public List<ArtistMinimalInfoDto> getAllReleaseArtistsMinimal() {
         return artistDAO.getAllReleaseArtistMinimalInfo();
     }

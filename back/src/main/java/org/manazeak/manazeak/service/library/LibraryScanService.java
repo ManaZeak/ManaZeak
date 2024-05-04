@@ -13,13 +13,14 @@ import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
 import org.manazeak.manazeak.manager.library.thumbnail.ThumbnailManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 /**
- * This service allows to scan the music library to get the information contained in the tracks.
+ * This service allows scanning the music library to get the information contained in the tracks.
  */
 @Service
 @TransactionalWithRollback
@@ -37,6 +38,7 @@ public class LibraryScanService {
     /**
      * Cleaning all the data contained in the library and importing all the tracks.
      */
+    @CacheEvict("all_artists_view") // The library is rescanned, cleaning the cache.
     @Async
     public void scanLibrary() {
         LOG.info("Starting the library scan.");
