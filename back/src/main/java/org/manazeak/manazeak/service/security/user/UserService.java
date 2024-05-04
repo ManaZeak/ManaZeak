@@ -85,4 +85,13 @@ public interface UserService {
      * @param userId The id of the user that will be deactivated.
      */
     void deactivateUser(Long userId);
+
+    /**
+     * Create a JWT token for the user provided.
+     *
+     * @param username The username.
+     * @param password The password of the user to check.
+     * @return The JWT token for the user.
+     */
+    String createJwtToken(String username, String password);
 }
