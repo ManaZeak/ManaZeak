@@ -38,7 +38,7 @@ public class ErrorHandlerManager {
             NotificationDto notification = new NotificationDto();
             notification.setTitleKey("general.error.validation_error");
             notification.setMessage(error.getDefaultMessage());
-            notification.setSeverity(NotificationSeverityEnum.ERROR);
+            notification.setType(NotificationSeverityEnum.ERROR);
             exception.addNotification(notification);
         }
         throw exception;
@@ -54,7 +54,7 @@ public class ErrorHandlerManager {
             NotificationDto notification = new NotificationDto();
             notification.setTitleKey(error.getTitleKey());
             notification.setMessageKey(error.getMessageKey());
-            notification.setSeverity(error.getSeverity());
+            notification.setType(error.getSeverity());
             exception.addNotification(notification);
         }
         throw exception;

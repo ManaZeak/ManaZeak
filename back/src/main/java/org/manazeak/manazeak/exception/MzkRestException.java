@@ -35,7 +35,7 @@ public class MzkRestException extends RuntimeException {
         NotificationDto notification = new NotificationDto();
         notification.setTitleKey(titleCode);
         notification.setMessageKey(messageCode);
-        notification.setSeverity(severity);
+        notification.setType(severity);
         notifications.add(notification);
     }
 

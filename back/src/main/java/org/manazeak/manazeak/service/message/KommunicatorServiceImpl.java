@@ -41,7 +41,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
             } else {
                 komNotif.setMessage(messageManager.getMessage(notification.getMessageKey()));
             }
-            komNotif.setSeverity(notification.getSeverity().getStatus());
+            komNotif.setSeverity(notification.getType().getStatus());
             kom.addNotification(komNotif);
         }
 

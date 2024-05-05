@@ -24,7 +24,7 @@ public class NotificationDto {
     /**
      * The severity of the notification.
      */
-    private NotificationSeverityEnum severity;
+    private NotificationSeverityEnum type;
 
     public boolean hasMessage() {
         return message != null;
