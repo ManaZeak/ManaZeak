@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Allows to interact with the artists of the application.
+ * Allows interacting with the artists of the application.
  */
 @TransactionalWithRollback
 @Service
