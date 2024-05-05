@@ -2,6 +2,7 @@ package org.manazeak.manazeak.constant.cache;
 
 import lombok.Getter;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -41,7 +42,11 @@ public enum CacheEnum {
     /**
      * Contains the all artist view results.
      */
-    ALL_ARTISTS_VIEW("all_artists_view", String.class, ArtistMinimalInfoDto.class, Duration.of(30, ChronoUnit.MINUTES), 1);
+    ALL_ARTISTS_VIEW("all_artists_view", String.class, ArtistMinimalInfoDto.class, Duration.of(30, ChronoUnit.MINUTES), 1),
+    /**
+     * Contains the result of a genre detail.
+     */
+    DETAIL_GENRE_VIEW("detail_genre_view", String.class, GenreMinimalInfoDto.class, Duration.of(30, ChronoUnit.MINUTES), 500);
 
 
     private static final int UNLIMITED_SIZE = 100000;

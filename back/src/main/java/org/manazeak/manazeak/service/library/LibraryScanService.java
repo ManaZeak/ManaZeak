@@ -38,7 +38,7 @@ public class LibraryScanService {
     /**
      * Cleaning all the data contained in the library and importing all the tracks.
      */
-    @CacheEvict("all_artists_view") // The library is rescanned, cleaning the cache.
+    @CacheEvict({"all_artists_view", "detail_genre_view"}) // The library is rescanned, cleaning the caches.
     @Async
     public void scanLibrary() {
         LOG.info("Starting the library scan.");
