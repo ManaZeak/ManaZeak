@@ -11,9 +11,9 @@ import lombok.Data;
 public class UserLoginDto {
 
     @Size(max = 200)
-    @NotEmpty
+    @NotEmpty(message = "{user.login.error.login_not_empty}")
     private String username;
     @Size(max = 512)
-    @NotEmpty
+    @NotEmpty(message = "{user.login.error.password_not_empty}")
     private String password;
 }

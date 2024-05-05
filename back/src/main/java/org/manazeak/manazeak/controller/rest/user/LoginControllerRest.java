@@ -3,7 +3,9 @@ package org.manazeak.manazeak.controller.rest.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.entity.dto.user.UserLoginDto;
+import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
 import org.manazeak.manazeak.service.security.user.UserService;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,8 @@ public class LoginControllerRest {
 
     private final UserService userService;
 
+    private final ErrorHandlerManager errorHandlerManager;
+
     @GetMapping("/test/")
     public String test() {
         return "test";
@@ -29,7 +33,8 @@ public class LoginControllerRest {
      * @return The token if the user exists in the database.
      */
     @PostMapping("/login/")
-    public String getToken(@RequestBody @Valid UserLoginDto loginInfo) {
+    public String getToken(@RequestBody @Valid UserLoginDto loginInfo, BindingResult bindingResult) {
+        errorHandlerManager.handleValidationErrors(bindingResult);
         return userService.createJwtToken(loginInfo.getUsername(), loginInfo.getPassword());
     }
 
