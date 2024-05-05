@@ -48,7 +48,7 @@
     <p th:each="error : ${#fields.errors('password')}" th:text="${error}"></p>
     <input id="password-input" maxlength="256" th:errorClass="'error'" th:field="*{password}" type="password"/>
     <!-- Global form errors -->
-    <p class="global-error" id="global-error" th:if="${param.error}" th:text="#{user.login.error.fail}"></p>
+    <p class="global-error" id="global-error"></p>
     <!-- Required csrf token from session cookies -->
     <input th:name="${_csrf.parameterName}" id="csrf-token" th:value="${_csrf.token}" type="hidden"/>
     <button th:text="#{user.login.submit}" id="submit-login"></button>

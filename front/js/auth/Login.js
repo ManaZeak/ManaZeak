@@ -2,7 +2,7 @@
 document.addEventListener('keypress', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
-    document.getElementById('login-form').submit();
+    document.getElementById('submit-login').click();
   }
 });
 // Submit event listener
