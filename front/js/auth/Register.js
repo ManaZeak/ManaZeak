@@ -14,7 +14,7 @@ document.addEventListener('keypress', e => {
   }
 });
 // Submit event listener
-document.getElementById('submit-register').addEventListener('click', (e) => {
+document.getElementById('submit-register').addEventListener('click', e => {
   e.preventDefault();
   // Restore errors
   document.getElementById('username-error').innerHTML = '';
@@ -36,7 +36,7 @@ document.getElementById('submit-register').addEventListener('click', (e) => {
       inviteCode: document.getElementById('inviteCode-input').value
     })
   };
-  // Execute POST request on login
+  // Execute POST request on register
   fetch('/register/', options)
     .then(data => {
       data.text()
