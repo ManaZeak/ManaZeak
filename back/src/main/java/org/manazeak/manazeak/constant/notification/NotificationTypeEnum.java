@@ -1,9 +1,12 @@
 package org.manazeak.manazeak.constant.notification;
 
+import lombok.Getter;
+
 /**
- * Contains the level of severity of an error
+ * Contains the notification type to display in the UI.
  */
-public enum NotificationSeverityEnum {
+@Getter
+public enum NotificationTypeEnum {
     SUCCESS("success"),
     INFO("info"),
     WARNING("warning"),
@@ -11,11 +14,8 @@ public enum NotificationSeverityEnum {
 
     private final String status;
 
-    NotificationSeverityEnum(String status) {
+    NotificationTypeEnum(String status) {
         this.status = status;
     }
 
-    public String getStatus() {
-        return status;
-    }
 }

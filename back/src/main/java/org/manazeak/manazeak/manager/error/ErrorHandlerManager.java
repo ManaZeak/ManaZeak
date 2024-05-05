@@ -2,7 +2,7 @@ package org.manazeak.manazeak.manager.error;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.message.ErrorEnum;
-import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.constant.notification.NotificationTypeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ public class ErrorHandlerManager {
             NotificationDto notification = new NotificationDto();
             notification.setTitleKey("general.error.validation_error");
             notification.setMessage(error.getDefaultMessage());
-            notification.setType(NotificationSeverityEnum.ERROR);
+            notification.setType(NotificationTypeEnum.ERROR);
             exception.addNotification(notification);
         }
         throw exception;

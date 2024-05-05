@@ -1,7 +1,7 @@
 package org.manazeak.manazeak.exception;
 
 import lombok.Getter;
-import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.constant.notification.NotificationTypeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
 
 import java.util.HashSet;
@@ -28,14 +28,14 @@ public class MzkRestException extends RuntimeException {
      *
      * @param titleCode   the code of the string for the notification title.
      * @param messageCode the code of the string for the notification message.
-     * @param severity    the serveity of the notification.
+     * @param type    the serveity of the notification.
      */
-    public MzkRestException(String titleCode, String messageCode, NotificationSeverityEnum severity) {
+    public MzkRestException(String titleCode, String messageCode, NotificationTypeEnum type) {
         super(messageCode);
         NotificationDto notification = new NotificationDto();
         notification.setTitleKey(titleCode);
         notification.setMessageKey(messageCode);
-        notification.setType(severity);
+        notification.setType(type);
         notifications.add(notification);
     }
 
@@ -58,6 +58,6 @@ public class MzkRestException extends RuntimeException {
     }
 
     public static MzkRestException error(String titleCode, String messageCode) {
-        return new MzkRestException(titleCode, messageCode, NotificationSeverityEnum.ERROR);
+        return new MzkRestException(titleCode, messageCode, NotificationTypeEnum.ERROR);
     }
 }

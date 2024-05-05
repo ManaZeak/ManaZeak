@@ -2,7 +2,7 @@ package org.manazeak.manazeak.constant.notification.file;
 
 import org.manazeak.manazeak.constant.notification.NotificationMessage;
 import org.manazeak.manazeak.constant.notification.NotificationMessageEnum;
-import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.constant.notification.NotificationTypeEnum;
 
 /**
  * Contains the different notification possible for the file notification.
@@ -16,12 +16,12 @@ public enum FileNotificationEnum implements NotificationMessageEnum {
      * Error when reading a file.
      */
     IO_ERROR(NotificationMessage.of("error.file_system.io_error", "error.file_system.io_error_title",
-            NotificationSeverityEnum.ERROR)),
+            NotificationTypeEnum.ERROR)),
     /**
      * A type of file wasn't handled by the application.
      */
     MIME_TYPE_NOT_FOUND_ERROR(NotificationMessage.of("general.error.file.mime_type_error",
-            "general.error.file.mime_type_error_title", NotificationSeverityEnum.ERROR));
+            "general.error.file.mime_type_error_title", NotificationTypeEnum.ERROR));
 
 
     private final NotificationMessage message;

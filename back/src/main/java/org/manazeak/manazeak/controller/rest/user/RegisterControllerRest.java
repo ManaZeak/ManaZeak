@@ -2,7 +2,7 @@ package org.manazeak.manazeak.controller.rest.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.constant.notification.NotificationTypeEnum;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
@@ -37,7 +37,7 @@ public class RegisterControllerRest {
 
         // If the user is connected, sending an error.
         if (userService.isUserConnected()) {
-            throw new MzkRestException("general.error", "user.register.error.already_connected", NotificationSeverityEnum.ERROR);
+            throw new MzkRestException("general.error", "user.register.error.already_connected", NotificationTypeEnum.ERROR);
         }
 
         // Creating the user.

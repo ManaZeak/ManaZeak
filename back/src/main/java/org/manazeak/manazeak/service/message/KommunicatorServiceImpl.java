@@ -2,7 +2,7 @@ package org.manazeak.manazeak.service.message;
 
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
-import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.constant.notification.NotificationTypeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorNotificationDto;
 import org.manazeak.manazeak.entity.dto.kommunicator.NotificationDto;
@@ -96,7 +96,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
         KommunicatorNotificationDto komNotif = new KommunicatorNotificationDto();
         komNotif.setTitle(messageManager.getMessage(titleKey));
         komNotif.setMessage(messageManager.getMessage(messageKey));
-        komNotif.setSeverity(NotificationSeverityEnum.SUCCESS.getStatus());
+        komNotif.setSeverity(NotificationTypeEnum.SUCCESS.getStatus());
 
         kom.addNotification(komNotif);
 
@@ -111,7 +111,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
         KommunicatorNotificationDto komNotif = new KommunicatorNotificationDto();
         komNotif.setTitle(messageManager.getMessage(e.getTitleKey()));
         komNotif.setMessage(messageManager.getMessage(e.getMessageKey()));
-        komNotif.setSeverity(NotificationSeverityEnum.ERROR.getStatus());
+        komNotif.setSeverity(NotificationTypeEnum.ERROR.getStatus());
 
         kom.addNotification(komNotif);
 
