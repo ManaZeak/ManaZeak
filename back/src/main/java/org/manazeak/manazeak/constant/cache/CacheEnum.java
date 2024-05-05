@@ -9,6 +9,7 @@ import org.springframework.cache.CacheManager;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 /**
  * Contains the information about the cache of the application.
@@ -46,7 +47,11 @@ public enum CacheEnum {
     /**
      * Contains the result of a genre detail.
      */
-    DETAIL_GENRE_VIEW("detail_genre_view", String.class, GenreMinimalInfoDto.class, Duration.of(30, ChronoUnit.MINUTES), 500);
+    DETAIL_GENRE_VIEW("detail_genre_view", String.class, GenreMinimalInfoDto.class, Duration.of(30, ChronoUnit.MINUTES), 500),
+    /**
+     * Contains the locale of the user by identifier.
+     */
+    USER_LOCALE("user_locale", Long.class, Locale.class, Duration.of(30, ChronoUnit.MINUTES), 100);
 
 
     private static final int UNLIMITED_SIZE = 100000;
