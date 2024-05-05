@@ -54,7 +54,7 @@ public class ErrorHandlerManager {
             NotificationDto notification = new NotificationDto();
             notification.setTitleKey(error.getTitleKey());
             notification.setMessageKey(error.getMessageKey());
-            notification.setType(error.getSeverity());
+            notification.setType(error.getType());
             exception.addNotification(notification);
         }
         throw exception;

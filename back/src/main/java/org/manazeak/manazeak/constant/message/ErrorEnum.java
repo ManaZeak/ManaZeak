@@ -18,12 +18,12 @@ public enum ErrorEnum {
 
     private final String titleKey;
 
-    private final NotificationTypeEnum severity;
+    private final NotificationTypeEnum type;
 
-    ErrorEnum(String titleKey, String messageKey, NotificationTypeEnum severity) {
+    ErrorEnum(String titleKey, String messageKey, NotificationTypeEnum type) {
         this.titleKey = titleKey;
         this.messageKey = messageKey;
-        this.severity = severity;
+        this.type = type;
     }
 
 }

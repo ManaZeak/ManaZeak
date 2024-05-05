@@ -41,7 +41,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
             } else {
                 komNotif.setMessage(messageManager.getMessage(notification.getMessageKey()));
             }
-            komNotif.setSeverity(notification.getType().getStatus());
+            komNotif.setType(notification.getType().getStatus());
             kom.addNotification(komNotif);
         }
 
@@ -96,7 +96,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
         KommunicatorNotificationDto komNotif = new KommunicatorNotificationDto();
         komNotif.setTitle(messageManager.getMessage(titleKey));
         komNotif.setMessage(messageManager.getMessage(messageKey));
-        komNotif.setSeverity(NotificationTypeEnum.SUCCESS.getStatus());
+        komNotif.setType(NotificationTypeEnum.SUCCESS.getStatus());
 
         kom.addNotification(komNotif);
 
@@ -111,7 +111,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
         KommunicatorNotificationDto komNotif = new KommunicatorNotificationDto();
         komNotif.setTitle(messageManager.getMessage(e.getTitleKey()));
         komNotif.setMessage(messageManager.getMessage(e.getMessageKey()));
-        komNotif.setSeverity(NotificationTypeEnum.ERROR.getStatus());
+        komNotif.setType(NotificationTypeEnum.ERROR.getStatus());
 
         kom.addNotification(komNotif);
 
