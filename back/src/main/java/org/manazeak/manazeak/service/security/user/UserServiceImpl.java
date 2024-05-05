@@ -150,12 +150,12 @@ public class UserServiceImpl implements UserService {
         // Getting the user from the database.
         MzkUser user = userDAO.getByUsername(username)
                 .orElseThrow(
-                        () -> MzkRestException.error("user.login.error.fail", "user.login.error.fail")
+                        () -> MzkRestException.error("user.login.error.title", "user.login.error.message")
                 );
 
         // Checking if the passwords match.
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw MzkRestException.error("user.login.error.fail", "user.login.error.fail");
+            throw MzkRestException.error("user.login.error.title", "user.login.error.message");
         }
 
         // All the checks are ok, building the token with the user information.

@@ -1,4 +1,14 @@
 {
+  "AUTH_NETWORK_ERROR": {
+    "title": "Erreur réseau",
+    "message": "Impossible d'executer la requète au serveur. Contactez un administrateur ou regarder les log du navigateur.",
+    "type": "error"
+  },
+  "AUTH_PARSE_ERROR": {
+    "title": "Erreur ",
+    "message": "Impossible de décoder la réponse du serveur. Contactez un administrateur ou regarder les log du navigateur.",
+    "type": "error"
+  },
   "B_KOM_NOT_FOUND": {
     "title": "URL inexistante",
     "message": "La requète HTTP à retourné un status 404. Voir la console pour plus de details.",

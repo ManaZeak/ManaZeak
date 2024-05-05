@@ -1,4 +1,14 @@
 {
+  "AUTH_NETWORK_ERROR": {
+    "title": "Network error",
+    "message": "Couldn't perform the request. Please contact support or check browser logs.",
+    "type": "error"
+  },
+  "AUTH_PARSE_ERROR": {
+    "title": "Parsing error",
+    "message": "Couldn't parse the server response. Please contact support or check browser logs.",
+    "type": "error"
+  },
   "B_KOM_NOT_FOUND": {
     "title": "URL not found",
     "message": "The HTTP request returned a 404 status. See log for details.",
