@@ -1,12 +1,20 @@
 package org.manazeak.manazeak.constant.cache;
 
+import lombok.Getter;
+import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
+
 /**
  * Contains the information about the cache of the application.
  */
+@Getter
 public enum CacheEnum {
     /**
      * Contains the artists name linked to their id in the database.
@@ -31,7 +39,19 @@ public enum CacheEnum {
     /**
      * Contains the keys names linked to their id in the reference table of the database.
      */
-    KEY_ID_BY_NAME("key_id_by_name", String.class, Long.class, true, 100);
+    KEY_ID_BY_NAME("key_id_by_name", String.class, Long.class, true, 100),
+    /**
+     * Contains the all artist view results.
+     */
+    ALL_ARTISTS_VIEW("all_artists_view", String.class, ArtistMinimalInfoDto.class, Duration.of(30, ChronoUnit.MINUTES), 1),
+    /**
+     * Contains the result of a genre detail.
+     */
+    DETAIL_GENRE_VIEW("detail_genre_view", String.class, GenreMinimalInfoDto.class, Duration.of(30, ChronoUnit.MINUTES), 500),
+    /**
+     * Contains the locale of the user by identifier.
+     */
+    USER_LOCALE("user_locale", Long.class, Locale.class, Duration.of(30, ChronoUnit.MINUTES), 100);
 
 
     private static final int UNLIMITED_SIZE = 100000;
@@ -53,9 +73,13 @@ public enum CacheEnum {
      */
     private final Class<?> valueType;
     /**
-     * The number of element contained in the cache.
+     * The number of elements contained in the cache.
      */
     private final long capacity;
+    /**
+     * The duration before the elements contained in the cache are evicted after being written.
+     */
+    private final Duration expiry;
 
     CacheEnum(String cacheName, Class<?> keyType, Class<?> valueType, boolean isEternal, long capacity) {
         this.cacheName = cacheName;
@@ -63,6 +87,7 @@ public enum CacheEnum {
         this.valueType = valueType;
         this.isEternal = isEternal;
         this.capacity = capacity;
+        this.expiry = null;
     }
 
     CacheEnum(String cacheName, Class<?> keyType, Class<?> valueType, boolean isEternal) {
@@ -71,6 +96,16 @@ public enum CacheEnum {
         this.valueType = valueType;
         this.isEternal = isEternal;
         this.capacity = UNLIMITED_SIZE;
+        this.expiry = null;
+    }
+
+    CacheEnum(String cacheName, Class<?> keyType, Class<?> valueType, Duration expiry, long capacity) {
+        this.cacheName = cacheName;
+        this.keyType = keyType;
+        this.valueType = valueType;
+        this.isEternal = false;
+        this.expiry = expiry;
+        this.capacity = capacity;
     }
 
     /**
@@ -88,40 +123,5 @@ public enum CacheEnum {
         }
 
         return fetchedCache;
-    }
-
-    /**
-     * @return The cache name.
-     */
-    public String getCacheName() {
-        return cacheName;
-    }
-
-    /**
-     * @return The type of the key of the cache.
-     */
-    public Class<?> getKeyType() {
-        return keyType;
-    }
-
-    /**
-     * @return The type of the value of the cache.
-     */
-    public Class<?> getValueType() {
-        return valueType;
-    }
-
-    /**
-     * @return If the cache is eternal.
-     */
-    public boolean isEternal() {
-        return isEternal;
-    }
-
-    /**
-     * @return The capacity of the cache.
-     */
-    public long getCapacity() {
-        return capacity;
     }
 }

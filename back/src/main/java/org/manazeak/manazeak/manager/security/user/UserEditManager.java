@@ -1,11 +1,13 @@
 package org.manazeak.manazeak.manager.security.user;
 
 import lombok.RequiredArgsConstructor;
+import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.entity.dto.user.MzkUserEditDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.service.reference.country.CountryService;
 import org.manazeak.manazeak.service.reference.locale.LocaleService;
 import org.manazeak.manazeak.util.DateUtil;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,6 +22,8 @@ public class UserEditManager {
     private final CountryService countryService;
 
     private final LocaleService localeService;
+
+    private final CacheManager cacheManager;
 
 
     /**
@@ -49,13 +53,16 @@ public class UserEditManager {
     }
 
     /**
-     * Allows to save the modified user with the information send by the user.
+     * Allows saving the modified user with the information send by the user.
      *
      * @param editedUser The information modified by the user.
      */
     public void saveCurrentUserModification(MzkUserEditDto editedUser) {
         // Getting the current user connected
         MzkUser user = userManager.getCurrentUser();
+
+        // Evicting the cache for the locale resolution.
+        CacheEnum.getCache(CacheEnum.USER_LOCALE, cacheManager).evict(user.getUserId());
 
         // Setting the new fields on the user.
         user.setSurname(editedUser.getSurname());

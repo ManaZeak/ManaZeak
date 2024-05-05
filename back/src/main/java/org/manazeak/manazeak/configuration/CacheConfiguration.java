@@ -20,6 +20,7 @@ public class CacheConfiguration {
      * @param cacheManager The manager that will be used in the application to get all caches.
      */
     private static void configureCaches(SpringCache2kCacheManager cacheManager) {
+        // Creating the caches for the library scan.
         for (CacheEnum cache : CacheEnum.values()) {
             // Adding a new cache into the manager.
             cacheManager.addCaches(builder -> {
@@ -29,6 +30,10 @@ public class CacheConfiguration {
                 builder.valueType(cache.getValueType());
                 builder.eternal(cache.isEternal());
                 builder.entryCapacity(cache.getCapacity());
+                // Set the duration of the element in the cache.
+                if (!cache.isEternal() && cache.getExpiry() != null) {
+                    builder.expireAfterWrite(cache.getExpiry());
+                }
 
                 return builder;
             });
