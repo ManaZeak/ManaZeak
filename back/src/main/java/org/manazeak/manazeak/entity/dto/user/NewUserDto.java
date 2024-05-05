@@ -16,17 +16,17 @@ import org.manazeak.manazeak.entity.validator.user.UniqueUsername;
 @Data
 public class NewUserDto implements PasswordContainer {
 
-    @NotEmpty(message = "{user.register.error.empty_username}")
+    @NotEmpty(message = "{user.register.error.empty_username.message}")
     @Size(max = 200)
     @UniqueUsername
     private String username;
-    @NotEmpty(message = "{user.register.error.empty_password}")
+    @NotEmpty(message = "{user.register.error.empty_password.message}")
     @Password
     @Size(max = 512)
     private String password1;
-    @NotEmpty(message = "{user.register.error.empty_confirm_password}")
+    @NotEmpty(message = "{user.register.error.empty_confirm_password.message}")
     private String password2;
-    @NotEmpty(message = "{user.register.error.empty_invite_code}")
+    @NotEmpty(message = "{user.register.error.empty_invite_code.message}")
     @InviteCode
     private String inviteCode;
 

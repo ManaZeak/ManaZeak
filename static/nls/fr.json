@@ -5,7 +5,7 @@
     "type": "error"
   },
   "AUTH_PARSE_ERROR": {
-    "title": "Erreur ",
+    "title": "Erreur de décodage",
     "message": "Impossible de décoder la réponse du serveur. Contactez un administrateur ou regarder les log du navigateur.",
     "type": "error"
   },

@@ -34,8 +34,8 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
      * @param constraintValidatorContext The validation context.
      */
     private void setErrorMessagePasswordTooShort(ConstraintValidatorContext constraintValidatorContext) {
-        String sb = "{user.register.error.pass_too_short} " + passwordLength +
-                " {user.register.error.pass_too_short_end}";
+        String sb = "{user.register.error.pass_too_short.message} " + passwordLength +
+                " {user.register.error.pass_too_short_end.message}";
         ValidatorErrorHelper.addErrorMessage(sb, constraintValidatorContext);
     }
 }

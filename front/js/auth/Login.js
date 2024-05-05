@@ -1,4 +1,3 @@
-import Lang from '../core/Lang';
 import Notification from '../utils/Notification';
 // Required utils and class for UI feedback
 const SUPPORTED_LANG = ['en', 'fr'];
@@ -15,7 +14,6 @@ const submitLogin = options => {
   fetch('/login/', options).then(data => {
     if (data.ok) {
       data.text().then(response => {
-        // Otherwise, the server gave a token
         localStorage.setItem('mzk-jwt-token', response);
         // Redirect to boarding to x-check JWT and build /app
         window.location = '/';
@@ -29,7 +27,7 @@ const submitLogin = options => {
         for (let i = 0; i < err.notifications.length; ++i) {
           notif.new(err.notifications[i]);
         }
-        console.error(`Error ${data.status} on /login/`, data.body);
+        console.error(`Error ${data.status} on /login/`, data);
       });
     }
   }).catch(err => {

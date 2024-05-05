@@ -57,7 +57,7 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         try {
             inviteCodeService.checkInviteCode(InviteCodeConstants.VALUE);
         } catch (MzkValidationException e) {
-            Assertions.assertEquals("{user.register.error.wrong_invite_code}", e.getMessage(),
+            Assertions.assertEquals("{user.register.error.wrong_invite_code.message}", e.getMessage(),
                     "The invite code was refused for the wrong reason");
             return;
         }
@@ -81,7 +81,7 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
         try {
             inviteCodeService.checkInviteCode(InviteCodeConstants.VALUE);
         } catch (MzkValidationException e) {
-            Assertions.assertEquals("{user.register.error.wrong_invite_code}", e.getMessage(),
+            Assertions.assertEquals("{user.register.error.wrong_invite_code.message}", e.getMessage(),
                     "The invite code was refused for the wrong reason");
         }
         // Checking if the parent has another invite code.
@@ -104,7 +104,7 @@ class InviteCodeServiceTest extends AbstractManaZeakTest {
             try {
                 inviteCodeService.checkInviteCode(invite.getValue());
             } catch (MzkValidationException e) {
-                Assertions.assertEquals("{user.register.error.invite_code_deep}", e.getMessage(),
+                Assertions.assertEquals("{user.register.error.invite_code_deep.message}", e.getMessage(),
                         "The invite code was refused for the wrong reason");
             }
         }
