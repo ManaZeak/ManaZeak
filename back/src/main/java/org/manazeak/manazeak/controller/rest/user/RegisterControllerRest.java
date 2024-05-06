@@ -6,6 +6,7 @@ import org.manazeak.manazeak.constant.notification.NotificationTypeEnum;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
+import org.manazeak.manazeak.service.security.JWTService;
 import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ public class RegisterControllerRest {
      */
     private final ErrorHandlerManager errorHandler;
     private final UserService userService;
+    private final JWTService jwtService;
 
     /**
      * Adding a new user into the app.
@@ -44,6 +46,6 @@ public class RegisterControllerRest {
         userService.createUser(newUser);
 
         // Creating the JWT for the new user.
-        return userService.createJwtToken(newUser.getUsername(), newUser.getPassword1());
+        return jwtService.createJwtToken(newUser.getUsername(), newUser.getPassword1());
     }
 }

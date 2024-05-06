@@ -125,12 +125,12 @@ public class SecurityConfiguration {
 
 
     @Bean
-    JwtDecoder jwtDecoder() {
+    public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(this.key).build();
     }
 
     @Bean
-    JwtEncoder jwtEncoder() {
+    public JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(this.key).privateKey(this.privateKey).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);

@@ -5,11 +5,13 @@ import org.manazeak.manazeak.constant.message.ErrorEnum;
 import org.manazeak.manazeak.constant.notification.user.UserNotificationEnum;
 import org.manazeak.manazeak.constant.security.RoleEnum;
 import org.manazeak.manazeak.daos.security.MzkUserDAO;
+import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.daos.security.RoleDAO;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.entity.security.Privilege;
 import org.manazeak.manazeak.entity.security.Role;
 import org.manazeak.manazeak.exception.MzkObjectNotFoundException;
 import org.manazeak.manazeak.exception.MzkRestException;
@@ -24,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -48,6 +51,10 @@ public class UserManager {
      * Used to manipulate the user in the database.
      */
     private final MzkUserDAO userDAO;
+    /**
+     * Manipulate the privileges in the database.
+     */
+    private final PrivilegeDAO privilegeDAO;
     /**
      * The Service to encode the password.
      */
@@ -155,6 +162,16 @@ public class UserManager {
             // If the user wasn't found.
             errorHandlerManager.generateRestErrorFromErrorEnum(ErrorEnum.USER_NOT_FOUND);
         }
+    }
+
+    /**
+     * List the privileges of a user.
+     *
+     * @param username the username.
+     * @return The privilege list of the user.
+     */
+    public List<Privilege> getPrivilegeByUsername(final String username) {
+        return privilegeDAO.getPrivilegesByUsername(username);
     }
 
     /**

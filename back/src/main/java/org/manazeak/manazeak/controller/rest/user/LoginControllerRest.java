@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.entity.dto.user.UserLoginDto;
 import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
-import org.manazeak.manazeak.service.security.user.UserService;
+import org.manazeak.manazeak.service.security.JWTService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LoginControllerRest {
 
-    private final UserService userService;
+    private final JWTService jwtService;
 
     private final ErrorHandlerManager errorHandlerManager;
 
@@ -35,7 +35,16 @@ public class LoginControllerRest {
     @PostMapping("/login/")
     public String getToken(@RequestBody @Valid UserLoginDto loginInfo, BindingResult bindingResult) {
         errorHandlerManager.handleValidationErrors(bindingResult);
-        return userService.createJwtToken(loginInfo.getUsername(), loginInfo.getPassword());
+        return jwtService.createJwtToken(loginInfo.getUsername(), loginInfo.getPassword());
+    }
+
+    /**
+     * @return Sends a new token to an already connected user.
+     */
+    @GetMapping("/renew-token/")
+    public String renewToken() {
+        // Sending a new token for the connected user.
+        return jwtService.renewToken();
     }
 
 }

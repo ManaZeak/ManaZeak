@@ -1,35 +1,23 @@
 package org.manazeak.manazeak.service.security.user;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
-import org.manazeak.manazeak.daos.security.MzkUserDAO;
-import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.entity.security.Privilege;
-import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.manager.security.invitecode.InviteCodeManager;
 import org.manazeak.manazeak.manager.security.user.AdminUserManager;
 import org.manazeak.manazeak.manager.security.user.UserManager;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * This service is used get user in the database.
@@ -40,14 +28,6 @@ import java.util.Set;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private static final long TOKEN_EXPIRY = 86400L;
-    /**
-     * The DAO for the privileges of the users.
-     */
-    private final PrivilegeDAO privilegeDAO;
-    private final PasswordEncoder passwordEncoder;
-    private final MzkUserDAO userDAO;
-    private final JwtEncoder encoder;
     /**
      * The user manipulator object.
      */
@@ -83,14 +63,6 @@ public class UserServiceImpl implements UserService {
         // Invalidating the parent invite code.
         inviteCodeManager.useInviteCode(userToCreate.getInviteCode(), user);
         return user;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Privilege> getPrivilegeByUsername(String username) {
-        return privilegeDAO.getPrivilegesByUsername(username);
     }
 
     @Override
@@ -143,38 +115,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deactivateUser(Long userId) {
         adminUserManager.deactivateUserById(userId);
-    }
-
-    @Override
-    public String createJwtToken(@NonNull String username, @NonNull String password) {
-        // Getting the user from the database.
-        MzkUser user = userDAO.getByUsername(username)
-                .orElseThrow(
-                        () -> MzkRestException.error("user.login.error.title", "user.login.error.message")
-                );
-
-        // Checking if the passwords match.
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw MzkRestException.error("user.login.error.title", "user.login.error.message");
-        }
-
-        // All the checks are ok, building the token with the user information.
-        // Adding rights
-        final Set<String> grantedAuthorities = new HashSet<>();
-        for (final Privilege privilege : getPrivilegeByUsername(user.getUsername())) {
-            // Adding the roles of the user into the object.
-            grantedAuthorities.add(privilege.getCodePrivilege());
-        }
-
-        Instant now = Instant.now();
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self")
-                .issuedAt(now)
-                .expiresAt(now.plusSeconds(TOKEN_EXPIRY))
-                .subject(user.getUsername())
-                .claim("scope", grantedAuthorities)
-                .build();
-
-        return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }

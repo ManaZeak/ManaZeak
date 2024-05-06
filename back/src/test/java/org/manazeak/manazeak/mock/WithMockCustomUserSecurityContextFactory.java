@@ -6,7 +6,7 @@ import org.manazeak.manazeak.configuration.security.MzkUserDetail;
 import org.manazeak.manazeak.datacreation.security.user.MzkUserDataCreation;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
-import org.manazeak.manazeak.service.security.user.UserService;
+import org.manazeak.manazeak.manager.security.user.UserManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,7 +23,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
 
     private final MzkUserDataCreation userDataCreation;
 
-    private final UserService userService;
+    private final UserManager userManager;
 
 
     @Override
@@ -34,7 +34,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
 
 
         final List<MzkGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (final Privilege privilege : userService.getPrivilegeByUsername(annotation.username())) {
+        for (final Privilege privilege : userManager.getPrivilegeByUsername(annotation.username())) {
             // Adding the roles of the user into the object.
             grantedAuthorities.add(new MzkGrantedAuthority(privilege));
         }

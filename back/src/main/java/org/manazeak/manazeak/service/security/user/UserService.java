@@ -6,7 +6,6 @@ import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.entity.security.Privilege;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,14 +27,6 @@ public interface UserService {
      * @return the created user.
      */
     MzkUser createUser(final NewUserDto userToCreate);
-
-    /**
-     * Get the list of privileges of a username.
-     *
-     * @param username the username.
-     * @return The list of privileges of a user.
-     */
-    List<Privilege> getPrivilegeByUsername(final String username);
 
     /**
      * Change the password of the user in the application.
@@ -86,12 +77,4 @@ public interface UserService {
      */
     void deactivateUser(Long userId);
 
-    /**
-     * Create a JWT token for the user provided.
-     *
-     * @param username The username.
-     * @param password The password of the user to check.
-     * @return The JWT token for the user.
-     */
-    String createJwtToken(String username, String password);
 }
