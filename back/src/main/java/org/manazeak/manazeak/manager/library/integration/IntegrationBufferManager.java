@@ -40,7 +40,7 @@ public class IntegrationBufferManager {
      *
      * @param bands The information about the extracted tags.
      */
-    public synchronized void integrateBuffer(List<ExtractedBandDto> bands) {
+    public void integrateBuffer(List<ExtractedBandDto> bands) {
         // Init caches with the buffer.
         LOG.info("Started: populating caches.");
         cacheIntegrationInitializer.initCacheWithBuffer(bands);
