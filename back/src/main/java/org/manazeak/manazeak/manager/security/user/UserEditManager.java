@@ -62,7 +62,7 @@ public class UserEditManager {
         MzkUser user = userManager.getCurrentUser();
 
         // Evicting the cache for the locale resolution.
-        CacheEnum.getCache(CacheEnum.USER_LOCALE, cacheManager).evict(user.getUserId());
+        CacheEnum.getCache(CacheEnum.USER_LOCALE, cacheManager).evict(user.getUsername());
 
         // Setting the new fields on the user.
         user.setSurname(editedUser.getSurname());
