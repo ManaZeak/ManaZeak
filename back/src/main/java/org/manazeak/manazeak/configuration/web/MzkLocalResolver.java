@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.service.security.user.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 public class MzkLocalResolver extends SessionLocaleResolver {
 
-    private final UserService userService;
+    private final MzkCachedLocaleResolver mzkCachedLocaleResolver;
 
     /**
      * Get the local from the user agent.
@@ -41,28 +40,7 @@ public class MzkLocalResolver extends SessionLocaleResolver {
             return Locale.US;
         }
         // The user has the header checking if the language exists.
-        return getAvailableLocale(request.getLocale());
-    }
-
-    /**
-     * Check if the local is available and send a fallback if not.
-     *
-     * @param askedLocale the locale we want to display.
-     * @return the available locale.
-     */
-    private static Locale getAvailableLocale(Locale askedLocale) {
-        final String languageCode;
-        // Getting the language code if there is one.
-        if (askedLocale != null) {
-            languageCode = askedLocale.getLanguage();
-        } else {
-            languageCode = "";
-        }
-        // Checking the language code and choosing the available language.
-        if (languageCode.equals("fr")) {
-            return Locale.FRANCE;
-        }
-        return Locale.US;
+        return MzkCachedLocaleResolver.getAvailableLocale(request.getLocale());
     }
 
     /**
@@ -83,16 +61,10 @@ public class MzkLocalResolver extends SessionLocaleResolver {
             return getLocalFromRequestHeader(request);
         }
         // Getting the username from the security context.
-        Optional<MzkUser> user = userService.findByUsername(auth.getName());
-        if (user.isEmpty()) {
-            log.warn("A user has no user name and is connected.");
-            return Locale.US;
-        }
-        // Database user.
-        if (user.get().getLocale() != null) {
-            return getAvailableLocale(Locale.forLanguageTag(user.get().getLocale().getCode()));
-        } else {
-            return getLocalFromRequestHeader(request);
-        }
+        MzkUser user = ((MzkUserDetail) auth.getPrincipal()).getUser();
+
+        // Resolving the user locale, if not found, use the information provided by the browser.
+        return mzkCachedLocaleResolver.resolveUserLocale(user)
+                .orElseGet(() -> getLocalFromRequestHeader(request));
     }
 }

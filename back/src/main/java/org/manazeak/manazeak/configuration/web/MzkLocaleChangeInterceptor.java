@@ -2,6 +2,7 @@ package org.manazeak.manazeak.configuration.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 public class MzkLocaleChangeInterceptor extends LocaleChangeInterceptor {
 
     /**
-     * Before every request we will check the language of the user/
+     * Before every request, we will check the language of the user.
      *
      * @param request  the request of the user.
      * @param response the response for the user.
@@ -21,7 +22,7 @@ public class MzkLocaleChangeInterceptor extends LocaleChangeInterceptor {
      * @return true if the request was handled correctly.
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
         // Checking the http method.
         if (checkHttpMethod(request.getMethod())) {
             // Getting the local resolver of the app (MzkLocaleResolver)

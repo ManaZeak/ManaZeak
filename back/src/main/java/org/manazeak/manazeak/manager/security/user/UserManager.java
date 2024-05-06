@@ -65,7 +65,7 @@ public class UserManager {
     private final ErrorHandlerManager errorHandlerManager;
 
     /**
-     * {@inheritDoc}
+     * Get the current user logged in.
      */
     public MzkUser getCurrentUser() {
         // Getting the security context and the user.
@@ -88,7 +88,7 @@ public class UserManager {
     }
 
     /**
-     * {@inheritDoc}
+     * Create a new user in the database.
      */
     public MzkUser insertUser(NewUserDto newUser) {
         // Getting the default role for a new user.
@@ -116,7 +116,7 @@ public class UserManager {
     }
 
     /**
-     * {@inheritDoc}
+     * Get a user by its username.
      */
     public Optional<MzkUser> findByUsername(String username) {
         return userDAO.getByUsername(username);

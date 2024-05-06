@@ -41,7 +41,7 @@ public class GenreFragment {
     @Security(PrivilegeEnum.PLAY)
     @GetMapping("/library/genre/all/")
     public String getAllGenreViewFragment(Model model) {
-        model.addAttribute("genres", genreService.getAllRandomGenreMinimal());
+        model.addAttribute("genres", genreService.getAllGenreMinimal());
 
         return GenreFragmentEnum.ALL_GENRES.getPage();
     }
