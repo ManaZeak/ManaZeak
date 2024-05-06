@@ -24,7 +24,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class JWTService {
 
-    private static final long TOKEN_EXPIRY = 86400L;
+    /**
+     * The number of seconds before the token expire. In this case, 14 days.
+     */
+    private static final long TOKEN_EXPIRY = 1209600L;
 
     private final MzkUserDAO userDAO;
 
