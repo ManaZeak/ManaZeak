@@ -1,11 +1,14 @@
-// Boarding's purpose is to redirect user to the proper page (part of mzk authentication)
+// Boarding's purpose is to redirect user to the proper page (part of Mzk authentication)
+// It's the main entry point for Mzk app (/)
+// When changing location, we use replace instead of direct set (with =) to avoid saving this view in location history
+// https://developer.mozilla.org/en-US/docs/Web/API/Location/replace
 // Three possible path :
 //   1. No JWT token, redirect user to login
 //   2. JWT token AND register in progress, build /additionalRegisterInfo/
 //   3. JWT token, build /app/
 
-// Registration in progress, load /additionalRegisterInfo/
-const additionnalRegister = () => {
+// Callback for registration in progress, load /additionalRegisterInfo/ page
+const loadAdditionnalRegisterInfo = () => {
   fetch('/additionalRegisterInfo/', {
     method: 'GET',
     headers: new Headers([
@@ -15,24 +18,17 @@ const additionnalRegister = () => {
     ])
   }).then(raw => {
     raw.text().then(parsed => {
-      // First update location
+      // First update displayed location
       window.history.pushState('', '', '/additionalRegisterInfo/');
-      // Then parse string into HTML
-      const newHTML = document.open('text/html', 'replace'); 
+      // Then parse string to update HTML
+      const newHTML = document.open('text/html', 'replace');
       newHTML.write(parsed);
       newHTML.close();
-    })
-    .catch(() => {
-      // Sorry, back to startx
-      window.location = '/login/';
-    });
-  })
-  .catch(() => {
-    // Sorry, back to startx
-    window.location = '/login/';
-  });
+    }).catch(() => window.location.replace('/login/'));
+  }).catch(() => window.location.replace('/login/'));
 };
-// User logged in, load ManaZeak /app/
+
+// Callback for succesfull login, load /app/ page
 const loadApp = () => {
   fetch('/app/', {
     method: 'GET',
@@ -43,29 +39,19 @@ const loadApp = () => {
     ])
   }).then(raw => {
     raw.text().then(parsed => {
-      // First update location
-      window.history.pushState('', '', '/');
-      // Then parse string into HTML
-      const newHTML = document.open('text/html', 'replace'); 
+      // Then parse string to update HTML
+      const newHTML = document.open('text/html', 'replace');
       newHTML.write(parsed);
       newHTML.close();
-    })
-    .catch(() => {
-      // Sorry, back to startx
-      window.location = '/login/';
-    });
-  })
-  .catch(() => {
-    // Sorry, back to startx
-    window.location = '/login/';
-  });
+    }).catch(() => window.location.replace('/login/'));
+  }).catch(() => window.location.replace('/login/'));
 };
+
 // Determine the user situation depending on localStorgae state
 if (localStorage.getItem('mzk-jwt-token') === null) {
-  window.location = '/login/';
+  window.location.replace('/login/'); // No token set, redirect to /login/
 } else if (localStorage.getItem('mzk-register-wip') === 'true') {
-  additionnalRegister();
+  loadAdditionnalRegisterInfo(); // Registration in progress, redirect to /additionalRegisterInfo/
 } else {
-  // Now the fun starts : fetch / page, build DOM, load bundles and GO
-  loadApp();
+  loadApp(); // Valid JWT set, redirect to /app/
 }
