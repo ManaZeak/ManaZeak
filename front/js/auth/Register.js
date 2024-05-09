@@ -1,8 +1,8 @@
 import Notification from '../utils/Notification';
 
 // We first need to check if the user already have a JWT token.
-// If so, we need to verify if it hasn't expire, in this case,
-// we simply redirect the user to Boarding (/)
+// If so, we check token validity, and if the user has already completed
+// the registration proccess, in this case, redirect to Boarding (/)
 if (localStorage.getItem('mzk-jwt-token') !== null) {
   const splitedToken = localStorage.getItem('mzk-jwt-token').split('.');
   if (splitedToken.length === 3) {
@@ -10,16 +10,16 @@ if (localStorage.getItem('mzk-jwt-token') !== null) {
     const tokenInfo = JSON.parse(atob(splitedToken[1]));
     const tokenExpiration = tokenInfo.exp * 1000; // Convert expiration from s to ms
     if (tokenExpiration - Date.now() <= 0) {
-      // JWT token expiration date has passed, clear localStorage item and let login play its part
+      // JWT token expiration date has passed, clear localStorage item,
+      // and send back to Boarding for proper redirection to /login/
       localStorage.removeItem('mzk-jwt-token');
-    } else {
-      // JWT token is currently valid, redirect user to /
-      // We use replace instead of direct set (with =) to avoid saving this redirect view in location history
-      // https://developer.mozilla.org/en-US/docs/Web/API/Location/replace
+      window.location.replace('/');
+    } else if (tokenInfo['register-wip'] === false) {
+      // User registration is complete, send back to Boarding for proper redirection to /login/
       window.location.replace('/');
     }
   } else {
-    // Otherwise, clear localStorage item and let login play its part
+    // Otherwise, JWT is invalid, clear localStorage item and let register play its part
     localStorage.removeItem('mzk-jwt-token');
   }
 }

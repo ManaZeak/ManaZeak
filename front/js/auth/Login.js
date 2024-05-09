@@ -1,25 +1,30 @@
 import Notification from '../utils/Notification';
 
+// When changing location, we use replace instead of direct set (with =) to avoid saving this view in location history
+// https://developer.mozilla.org/en-US/docs/Web/API/Location/replace
+
 // We first need to check if the user already have a JWT token.
-// If so, we need to verify if it hasn't expire, in this case,
-// we simply redirect the user to Boarding (/)
+// If so, we then need to check if the registration process is in progress,
+// in this case, we redirect user to Boarding (/) which will handle the redirection.
+// If registration is completed, we then need to verify if it hasn't expire, in this case,
+// we simply redirect the user to Boarding (/) to load the app.
 if (localStorage.getItem('mzk-jwt-token') !== null) {
   const splitedToken = localStorage.getItem('mzk-jwt-token').split('.');
   if (splitedToken.length === 3) {
     // JWT token must be splitted in 3 parts, algo, user data and token data
     const tokenInfo = JSON.parse(atob(splitedToken[1]));
-    const tokenExpiration = tokenInfo.exp * 1000; // Convert expiration from s to ms
-    if (tokenExpiration - Date.now() <= 0) {
+    if (tokenInfo['register-wip'] === true) {
+      // User already registered but did not filled, send back to Boarding for proper redirection
+      window.location.replace('/');
+    } else if ((tokenInfo.exp * 1000) - Date.now() <= 0) { // Convert expiration from s to ms
       // JWT token expiration date has passed, clear localStorage item and let login play its part
       localStorage.removeItem('mzk-jwt-token');
     } else {
       // JWT token is currently valid, redirect user to /
-      // We use replace instead of direct set (with =) to avoid saving this redirect view in location history
-      // https://developer.mozilla.org/en-US/docs/Web/API/Location/replace
       window.location.replace('/');
     }
   } else {
-    // Otherwise, clear localStorage item and let login play its part
+    // Otherwise, JWT is invalid, clear localStorage item and let login play its part
     localStorage.removeItem('mzk-jwt-token');
   }
 }
@@ -43,8 +48,6 @@ const submitLogin = options => {
       data.text().then(response => {
         localStorage.setItem('mzk-jwt-token', response);
         // Redirect to boarding to x-check JWT and build /app/
-        // We use replace instead of direct set (with =) to avoid saving this view in location history
-        // https://developer.mozilla.org/en-US/docs/Web/API/Location/replace
         window.location.replace('/');
       }).catch(err => {
         // Only use notification if i18n keys/values are set

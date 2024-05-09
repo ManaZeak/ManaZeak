@@ -49,9 +49,28 @@ const loadApp = () => {
 
 // Determine the user situation depending on localStorgae state
 if (localStorage.getItem('mzk-jwt-token') === null) {
-  window.location.replace('/login/'); // No token set, redirect to /login/
-} else if (localStorage.getItem('mzk-register-wip') === 'true') {
-  loadAdditionnalRegisterInfo(); // Registration in progress, redirect to /additionalRegisterInfo/
+  // No token set, redirect to /login/
+  window.location.replace('/login/');
 } else {
-  loadApp(); // Valid JWT set, redirect to /app/
+  const splitedToken = localStorage.getItem('mzk-jwt-token').split('.');
+  if (splitedToken.length === 3) {
+    // JWT token must be splitted in 3 parts, algo, user data and token data
+    const tokenInfo = JSON.parse(atob(splitedToken[1]));
+    if (tokenInfo['register-wip'] === true) {
+      // Registration in progress, redirect to /additionalRegisterInfo/
+      loadAdditionnalRegisterInfo();
+    } else if ((tokenInfo.exp * 1000) - Date.now() <= 0) { // Convert expiration from s to ms
+      // JWT token expiration date has passed, clear localStorage item and redirect to login
+      localStorage.removeItem('mzk-jwt-token');
+      window.location.replace('/login/');
+    } else {
+      // Valid JWT set, redirect to /app/
+      loadApp();
+    }
+  } else {
+    // This use case should not happen. But if, for some reason it does,
+    // we clear token and redirect user to login
+    localStorage.removeItem('mzk-jwt-token');
+    window.location.replace('/login/');
+  }
 }
