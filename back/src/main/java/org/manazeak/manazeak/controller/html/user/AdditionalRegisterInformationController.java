@@ -73,7 +73,7 @@ public class AdditionalRegisterInformationController {
         // Adding the information to the user.
         additionalInfoManager.addUserInformation(userInfo);
         // Redirecting to the main page.
-        return UserPageEnum.MAIN_PAGE.getRedirectToPage();
+        return "fragments/blank";
     }
 
     /**
