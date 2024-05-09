@@ -35,33 +35,32 @@ public abstract class AbstractThumbnailGenerator {
      */
     public void generateThumbnails() {
         // Creating an executor for generating multiple thumbs at the same time.
-        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
 
-        // Setting the last element id.
-        Long lastElementId = 0L;
-        while (true) {
-            // Building a pageable for the SQL request.
-            Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
+            // Setting the last element id.
+            Long lastElementId = 0L;
+            while (true) {
+                // Building a pageable for the SQL request.
+                Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
 
-            // Getting a packet of elements.
-            List<ThumbnailGenerationProjection> elements = getElementsPacket(lastElementId, pageable);
+                // Getting a packet of elements.
+                List<ThumbnailGenerationProjection> elements = getElementsPacket(lastElementId, pageable);
 
-            // If the list is empty, then exiting the loop.
-            if (elements.isEmpty()) {
-                break;
+                // If the list is empty, then exiting the loop.
+                if (elements.isEmpty()) {
+                    break;
+                }
+
+                // Adding the job to the thread pool.
+                executor.submit(processThumbsPacket(elements));
+
+                // Getting the last element of the list.
+                lastElementId = elements.get(elements.size() - 1).getElementId();
             }
 
-            // Adding the job to the thread pool.
-            executor.submit(processThumbsPacket(elements));
+            // Stopping the thread pool.
+            executor.shutdown();
 
-            // Getting the last element of the list.
-            lastElementId = elements.get(elements.size() - 1).getElementId();
-        }
-
-        // Stopping the thread pool.
-        executor.shutdown();
-
-        try {
             if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
                 throw new MzkRuntimeException("The time out for the artist profile picture generation was reached, stopping.");
             }
@@ -149,7 +148,7 @@ public abstract class AbstractThumbnailGenerator {
         }
 
         // Nothing as been generated, this is an error.
-        thumbnailErrors.add(new ThumbnailErrorDto(getThumbType(), "["+ getThumbType() +"] The thumbnail wasn't found on the FS for the file : "
+        thumbnailErrors.add(new ThumbnailErrorDto(getThumbType(), "[" + getThumbType() + "] The thumbnail wasn't found on the FS for the file : "
                 + thumbProjection.getName(), thumbProjection.getElementId(), ThumbnailErrorTypeEnum.FILE_NOT_FOUND));
         return null;
     }
