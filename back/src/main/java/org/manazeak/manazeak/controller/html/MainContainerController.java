@@ -35,9 +35,6 @@ public class MainContainerController {
     @GetMapping("/app/")
     @Security(PrivilegeEnum.PLAY)
     public String getMainPage() {
-        if (!additionalInfoManager.isUserComplete()) {
-            return UserPageEnum.ADDITIONAL_INFO.getRedirectToPage();
-        }
         return "index";
     }
 }
