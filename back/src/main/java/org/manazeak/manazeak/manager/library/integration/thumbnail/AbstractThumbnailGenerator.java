@@ -6,8 +6,8 @@ import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailErrorTypeEnum;
 import org.manazeak.manazeak.constant.library.thumbnail.ThumbnailTypeEnum;
 import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailErrorDto;
 import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailGenerationProjection;
-import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.integration.error.ThumbnailErrorManager;
+import org.manazeak.manazeak.util.ThreadUtils;
 import org.manazeak.manazeak.util.thumb.ThumbnailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Contains the base for generating the thumbnails in the application.
@@ -27,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractThumbnailGenerator {
 
     private static final int BUFFER_SIZE = 500;
+
     @Autowired
     private ThumbnailErrorManager thumbnailErrorManager;
 
@@ -55,18 +55,14 @@ public abstract class AbstractThumbnailGenerator {
                 executor.submit(processThumbsPacket(elements));
 
                 // Getting the last element of the list.
-                lastElementId = elements.get(elements.size() - 1).getElementId();
+                lastElementId = elements.getLast().getElementId();
             }
 
-            // Stopping the thread pool.
+            // No more jobs accepted for this thread pool.
             executor.shutdown();
 
-            if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                throw new MzkRuntimeException("The time out for the artist profile picture generation was reached, stopping.");
-            }
-        } catch (InterruptedException e) {
-            log.error("Thread interrupted during the artist profile integration.", e);
-            Thread.currentThread().interrupt();
+            // Wait for the executor to finish all the threads.
+            ThreadUtils.awaitExecutorTermination(executor, "artist profile thumbnails generation");
         }
     }
 

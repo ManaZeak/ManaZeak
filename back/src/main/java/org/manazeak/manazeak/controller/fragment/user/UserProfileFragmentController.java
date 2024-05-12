@@ -60,9 +60,10 @@ public class UserProfileFragmentController {
     @PostMapping("/account/profile-edit/")
     public String saveProfileEditFragment(@RequestBody @Valid MzkUserEditDto userInfo,
                                           BindingResult result, Model model) {
-        // Checking if the user send was validated.
+        // Checking if the user sent was validated.
         if (result.hasErrors()) {
             model.addAttribute("userInfo", userInfo);
+            // Adding the binding results for the errors to display on the page.
             model.addAttribute("org.springframework.validation.BindingResult.userInfo", result);
             addLocalesToPage(model);
             addCountriesToPage(model);

@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.service.library.moodbar;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
@@ -16,6 +17,7 @@ import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.moodbar.MoodbarManager;
 import org.manazeak.manazeak.manager.library.status.LibraryScanStatusManager;
+import org.manazeak.manazeak.util.ThreadUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
@@ -29,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -79,36 +80,14 @@ public class MoodbarGenerationService {
 
             // Creating the thread pool.
             try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
-                Long lastTrackId = 0L;
-                while (true) {
-                    // Building a pageable for the SQL request.
-                    Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
+                // Launching the threads associated to
+                launchMoodbarImageGenerationThreads(executor);
 
-                    // Getting a packet of elements.
-                    List<MoodbarImageGenerationProjection> elements = trackDAO.getAllMoodbars(lastTrackId, pageable);
-
-                    // If the list is empty, then exiting the loop.
-                    if (elements.isEmpty()) {
-                        break;
-                    }
-
-                    // Adding the job to the thread pool.
-                    executor.submit(processMoodFileToPicture(elements));
-
-                    // Getting the last element of the list.
-                    lastTrackId = elements.get(elements.size() - 1).getId();
-                }
-
+                // The service doesn't accept any other jobs.
                 executor.shutdown();
 
-                try {
-                    if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                        throw new MzkRuntimeException("The timeout for the moodbar gen.");
-                    }
-                } catch (InterruptedException e) {
-                    log.error("Thread interrupted during the moodbar gen.", e);
-                    Thread.currentThread().interrupt();
-                }
+                // Waiting for the task to finish.
+                ThreadUtils.awaitExecutorTermination(executor, "moodbar image generation");
             }
         } catch (IOException e) {
             throw new MzkRuntimeException("Error when processing files during moodbar image regeneration.", e);
@@ -128,42 +107,78 @@ public class MoodbarGenerationService {
             log.info("Launching moodbar generation.");
             isRunning.set(true);
             // Creating the thread pool.
-            ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+            try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+                // Launching the threads generating the missing moodbars in the application.
+                launchMissingMoodbarGeneration(executor);
 
-            Long lastTrackId = 0L;
-            while (true) {
-                // Building a pageable for the SQL request.
-                Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
+                // The service doesn't accept any other jobs.
+                executor.shutdown();
 
-                // Getting a packet of elements.
-                List<MoodbarGenerationProjection> elements = trackDAO.getTracksWithoutMoodbar(lastTrackId, pageable);
-
-                // If the list is empty, then exiting the loop.
-                if (elements.isEmpty()) {
-                    break;
-                }
-
-                // Adding the job to the thread pool.
-                executor.submit(processTracksPacket(elements));
-
-                // Getting the last element of the list.
-                lastTrackId = elements.get(elements.size() - 1).getId();
-            }
-
-            executor.shutdown();
-
-            try {
-                if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                    throw new MzkRuntimeException("The timeout for the moodbar gen.");
-                }
-            } catch (InterruptedException e) {
-                log.error("Thread interrupted during the moodbar gen.", e);
-                Thread.currentThread().interrupt();
+                // Waiting for the task to finish.
+                ThreadUtils.awaitExecutorTermination(executor, "missing moodbar generation");
             }
         } finally {
             // The job isn't running anymore.
             isRunning.set(false);
-            log.info("Moodbar generation has ended.");
+            log.info("Missing moodbar generation has ended.");
+        }
+    }
+
+    /**
+     * Launch the threads for the moodbar image generation.
+     *
+     * @param executor The service handling the parallel threads.
+     */
+    private void launchMoodbarImageGenerationThreads(@NonNull final ExecutorService executor) {
+        Long lastTrackId = 0L;
+        while (true) {
+            // Building a pageable for the SQL request.
+            // This pageable is only there to limit the number of results.
+            // We don't use the offset option, it is faster to sort by identifier and using it has a filter.
+            Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
+
+            // Getting a packet of elements.
+            List<MoodbarImageGenerationProjection> elements = trackDAO.getAllMoodbars(lastTrackId, pageable);
+
+            // If the list is empty, then exiting the loop.
+            if (elements.isEmpty()) {
+                break;
+            }
+
+            // Adding the job to the thread pool.
+            executor.submit(processMoodFileToPicture(elements));
+
+            // Getting the last element of the list.
+            lastTrackId = elements.getLast().getId();
+        }
+    }
+
+    /**
+     * Launch the threads to generate missing moodbars in the application.
+     *
+     * @param executor The service handling the parallel threads.
+     */
+    private void launchMissingMoodbarGeneration(@NonNull final ExecutorService executor) {
+        Long lastTrackId = 0L;
+        while (true) {
+            // Building a pageable for the SQL request.
+            // This pageable is only there to limit the number of results.
+            // We don't use the offset option, it is faster to sort by identifier and using it has a filter.
+            Pageable pageable = PageRequest.of(0, BUFFER_SIZE);
+
+            // Getting a packet of elements.
+            List<MoodbarGenerationProjection> elements = trackDAO.getTracksWithoutMoodbar(lastTrackId, pageable);
+
+            // If the list is empty, then exiting the loop.
+            if (elements.isEmpty()) {
+                break;
+            }
+
+            // Adding the job to the thread pool.
+            executor.submit(processTracksPacket(elements));
+
+            // Getting the last element of the list.
+            lastTrackId = elements.getLast().getId();
         }
     }
 
@@ -199,14 +214,16 @@ public class MoodbarGenerationService {
                         .substring(0, moodbar.getMoodbar().length() - FileExtensionEnum.WEBP.getExtension().length());
                 // Generating a moodbar for each size.
                 for (MoodbarSizeEnum size : MoodbarSizeEnum.values()) {
+                    // Getting the moodbar raw file.
                     Path moodbarFile = ResourcePathEnum.MOOD_ENCODED_FOLDER.getPath()
                             .resolve(size.getFolderName())
-                            .resolve( moodbarMd5 + FileExtensionEnum.MOOD.getExtension());
+                            .resolve(moodbarMd5 + FileExtensionEnum.MOOD.getExtension());
 
+                    // Launching the image generation from the encoded moodbar file.
                     try {
                         moodbarManager.launchMoodbarImageGen(moodbarFile, moodbarMd5, size);
                     } catch (IOException e) {
-                        log.error("Error when generating the moodbar image for this moodbar : " + moodbar, e);
+                        log.error("Error when generating the moodbar image for this moodbar : {}", moodbar, e);
                     }
                 }
             }
