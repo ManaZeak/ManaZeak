@@ -73,8 +73,6 @@ public class LibraryIntegrationManager {
 
             // Waiting for each thread to finish and complete the process in a synchronous way.
             processThreadResults(completionService, totalNumberOfPackages);
-        } catch (InterruptedException e) {
-            log.error("The thread has been interrupted, this is not normal.", e);
         }
         // Flushing all the modification of the database.
         entityManager.flush();
@@ -87,7 +85,7 @@ public class LibraryIntegrationManager {
      * @param completionService The service giving the threads results.
      * @param numberOfPackages  The number of packages done for the track integration.
      */
-    private void processThreadResults(@NonNull final CompletionService<List<ExtractedBandDto>> completionService, final int numberOfPackages) throws InterruptedException {
+    private void processThreadResults(@NonNull final CompletionService<List<ExtractedBandDto>> completionService, final int numberOfPackages) {
         for (int i = 0; i < numberOfPackages; ++i) {
             final int finalI = i;
             // Creating transaction for each insert in the database.
@@ -96,8 +94,11 @@ public class LibraryIntegrationManager {
                     log.info("Waiting for the next tag extraction thread to finish.");
                     // Launch the integration of the artist data.
                     integrationBufferManager.integrateBuffer(completionService.take().get(), finalI, numberOfPackages);
-                } catch (ExecutionException | InterruptedException e) {
+                } catch (ExecutionException e) {
                     log.error("Error while integrating the scanned track results into the database.", e);
+                } catch (InterruptedException e) {
+                    log.error("The thread has been interrupted, this is not normal.", e);
+                    Thread.currentThread().interrupt();
                 }
             });
         }

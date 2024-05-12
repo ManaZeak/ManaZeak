@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractThumbnailGenerator {
 
     private static final int BUFFER_SIZE = 500;
+
     @Autowired
     private ThumbnailErrorManager thumbnailErrorManager;
 
