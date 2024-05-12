@@ -1,36 +1,36 @@
 package org.manazeak.manazeak.manager.library.integration;
 
 import jakarta.persistence.EntityManager;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistFolderExtractorHelper;
 import org.manazeak.manazeak.manager.library.integration.cache.CacheIntegrationInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.manazeak.manazeak.util.database.transaction.AutonomousTransactionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Integrate the data contains in the track tags into the database.
  */
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class LibraryIntegrationManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LibraryIntegrationManager.class);
     private final CacheManager cacheManager;
     private final IntegrationBufferManager integrationBufferManager;
     private final EntityManager entityManager;
     private final CacheIntegrationInitializer cacheIntegrationInitializer;
+    private final AutonomousTransactionManager autonomousTransactionManager;
     /**
      * The number of artist folder that will be integrated by thread.
      */
@@ -49,39 +49,59 @@ public class LibraryIntegrationManager {
         // Adding the data needed to complete the integration.
         cacheIntegrationInitializer.initCacheIntegration();
 
-        final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-
-        int startIndex = 0;
-        int numberOfPackage = 1;
-        int totalNumberOfPackages = (int) Math.ceil((double) artists.size() / bufferSize);
-        // Splitting the list in multiple lists.
-        for (int endIndex = bufferSize; endIndex <= artists.size(); endIndex += bufferSize) {
-            // Launch the integration of the sub element of the list.
-            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex), numberOfPackage, totalNumberOfPackages));
-            startIndex = endIndex;
-            numberOfPackage++;
-        }
-
-        // Checking if the is any artists left in the integration buffer not processed.
-        if (startIndex < artists.size()) {
-            // There is some artist not processed.
-            executor.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size()), numberOfPackage, totalNumberOfPackages));
-        }
-        // No more job accepted.
-        executor.shutdown();
-
-        try {
-            // Waiting for all the jobs to finish.
-            if (!executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS)) {
-                LOG.error("The thread executor was terminated by the thread pool timeout.");
+        // Creating the task executor.
+        try (final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            CompletionService<List<ExtractedBandDto>> completionService = new ExecutorCompletionService<>(executor);
+            int startIndex = 0;
+            int numberOfPackage = 1;
+            int totalNumberOfPackages = (int) Math.ceil((double) artists.size() / bufferSize);
+            // Splitting the list in multiple lists.
+            for (int endIndex = bufferSize; endIndex <= artists.size(); endIndex += bufferSize) {
+                // Launch the integration of the sub element of the list.
+                completionService.submit(launchArtistFoldersIntegration(artists.subList(startIndex, endIndex), numberOfPackage, totalNumberOfPackages));
+                startIndex = endIndex;
+                numberOfPackage++;
             }
-        } catch (InterruptedException e) {
-            LOG.warn("The integration thread interrupted.", e);
-            Thread.currentThread().interrupt();
+
+            // Checking if the is any artists left in the integration buffer not processed.
+            if (startIndex < artists.size()) {
+                // There is some artist not processed.
+                completionService.submit(launchArtistFoldersIntegration(artists.subList(startIndex, artists.size()), numberOfPackage, totalNumberOfPackages));
+            }
+            // No more job accepted.
+            executor.shutdown();
+
+            // Waiting for each thread to finish and complete the process in a synchronous way.
+            processThreadResults(completionService, totalNumberOfPackages);
         }
         // Flushing all the modification of the database.
         entityManager.flush();
         clearAllIntegrationCaches();
+    }
+
+    /**
+     * Process the threads results synchronously when the process is finished.
+     *
+     * @param completionService The service giving the threads results.
+     * @param numberOfPackages  The number of packages done for the track integration.
+     */
+    private void processThreadResults(@NonNull final CompletionService<List<ExtractedBandDto>> completionService, final int numberOfPackages) {
+        for (int i = 0; i < numberOfPackages; ++i) {
+            final int finalI = i;
+            // Creating transaction for each insert in the database.
+            autonomousTransactionManager.runInTransaction(() -> {
+                try {
+                    log.info("Waiting for the next tag extraction thread to finish.");
+                    // Launch the integration of the artist data.
+                    integrationBufferManager.integrateBuffer(completionService.take().get(), finalI, numberOfPackages);
+                } catch (ExecutionException e) {
+                    log.error("Error while integrating the scanned track results into the database.", e);
+                } catch (InterruptedException e) {
+                    log.error("The thread has been interrupted, this is not normal.", e);
+                    Thread.currentThread().interrupt();
+                }
+            });
+        }
     }
 
     /**
@@ -90,27 +110,20 @@ public class LibraryIntegrationManager {
      * @param artistFolders A list of artists folder to process.
      * @return The runnable to launch the integration into the thread pool.
      */
-    private Runnable launchArtistFoldersIntegration(final List<ScannedArtistDto> artistFolders,
-                                                    final int currentPackageNumber, final int totalPackageNumber) {
+    private Callable<List<ExtractedBandDto>> launchArtistFoldersIntegration(final List<ScannedArtistDto> artistFolders,
+                                                                            final int currentPackageNumber, final int totalPackageNumber) {
         return () -> {
-            try {
-                LOG.info("Processing the {} / {} package.", currentPackageNumber, totalPackageNumber);
+            log.info("Processing the {} / {} package.", currentPackageNumber, totalPackageNumber);
 
-                // Launch the tag extraction of the artist.
-                List<ExtractedBandDto> bands = new ArrayList<>();
-                LOG.info("Starting the extraction the tags from the tracks.");
-                for (ScannedArtistDto artistFolder : artistFolders) {
-                    bands.add(ArtistFolderExtractorHelper.extractArtistFolder(artistFolder));
-                }
-                LOG.info("Finished the tag extractions.");
-
-                LOG.info("Starting the database insertion of the tags.");
-                // Launch the integration of the artist data.
-                integrationBufferManager.integrateBuffer(bands);
-                LOG.info("Finished the database insertion.");
-            } catch (Exception e) {
-                LOG.error("An error occurred during the artist folder integration.", e);
+            // Launch the tag extraction of the artist.
+            List<ExtractedBandDto> bands = new ArrayList<>();
+            log.info("Starting the extraction for the package  {}/{}.", currentPackageNumber, totalPackageNumber);
+            for (ScannedArtistDto artistFolder : artistFolders) {
+                bands.add(ArtistFolderExtractorHelper.extractArtistFolder(artistFolder));
             }
+            log.info("Finished the tag extractions for the package {}/{}.", currentPackageNumber, totalPackageNumber);
+
+            return bands;
         };
     }
 

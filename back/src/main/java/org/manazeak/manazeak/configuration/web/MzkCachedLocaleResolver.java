@@ -36,9 +36,9 @@ public class MzkCachedLocaleResolver {
         }
         // Checking the language code and choosing the available language.
         if (languageCode.equals("fr")) {
-            return java.util.Locale.FRANCE;
+             return Locale.FRANCE;
         }
-        return java.util.Locale.US;
+        return Locale.US;
     }
 
     /**
@@ -54,7 +54,7 @@ public class MzkCachedLocaleResolver {
         if (user.getLocale() != null) {
             // If the user has a locale set in his profile, load the complete user.
             MzkUser dbUser = userService.findByUsername(user.getUsername()).orElseThrow();
-            return Optional.of(getAvailableLocale(java.util.Locale.forLanguageTag(dbUser.getLocale().getCode())));
+            return Optional.of(getAvailableLocale(Locale.forLanguageTag(dbUser.getLocale().getCode())));
         }
 
         // No locale can be resolved from the user.
