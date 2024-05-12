@@ -7,7 +7,6 @@ import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Privilege;
 import org.manazeak.manazeak.exception.MzkRestException;
 import org.manazeak.manazeak.manager.security.user.UserManager;
-import org.manazeak.manazeak.manager.security.user.info.AdditionalInfoManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -38,7 +37,6 @@ public class JWTService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AdditionalInfoManager additionalInfoManager;
 
     /**
      * Create a JWT token for the user provided.
