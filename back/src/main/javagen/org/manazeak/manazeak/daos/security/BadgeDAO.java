@@ -1,17 +1,17 @@
 package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.security.Badge;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 /**
- * Data Access Object for Badge using Spring CrudRepository interface
+ * Data Access Object for Badge using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface BadgeDAO extends CrudRepository<Badge, Long> {
+public interface BadgeDAO extends JpaRepository<Badge, Long> {
 
     /**
      * Get the badges in the application.

@@ -1,14 +1,14 @@
 package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.security.Role;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Data Access Object for Role using Spring CrudRepository interface
+ * Data Access Object for Role using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface RoleDAO extends CrudRepository<Role, Long> {
+public interface RoleDAO extends JpaRepository<Role, Long> {
 
     /**
      * Get a role by it's id.

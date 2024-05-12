@@ -1,17 +1,17 @@
 package org.manazeak.manazeak.daos.management;
 
 import org.manazeak.manazeak.entity.management.ThumbnailError;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
- * Data Access Object for ThumbnailError using Spring CrudRepository interface
+ * Data Access Object for ThumbnailError using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface ThumbnailErrorDAO extends CrudRepository<ThumbnailError, Long> {
+public interface ThumbnailErrorDAO extends JpaRepository<ThumbnailError, Long> {
 
     /**
      * Pass the status of a thumbnail error to processed.

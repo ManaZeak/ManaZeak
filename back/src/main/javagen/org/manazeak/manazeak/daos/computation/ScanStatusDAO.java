@@ -2,17 +2,17 @@ package org.manazeak.manazeak.daos.computation;
 
 import org.manazeak.manazeak.entity.computation.ScanStatus;
 import org.manazeak.manazeak.entity.dto.library.scan.ScanStatusDto;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
 /**
- * Data Access Object for ScanStatus using Spring CrudRepository interface
+ * Data Access Object for ScanStatus using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface ScanStatusDAO extends CrudRepository<ScanStatus, Long> {
+public interface ScanStatusDAO extends JpaRepository<ScanStatus, Long> {
 
     /**
      * Get the active scan status.

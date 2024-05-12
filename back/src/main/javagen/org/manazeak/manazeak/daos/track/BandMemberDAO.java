@@ -2,18 +2,18 @@ package org.manazeak.manazeak.daos.track;
 
 import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.entity.track.BandMember;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 /**
- * Data Access Object for BandMember using Spring CrudRepository interface
+ * Data Access Object for BandMember using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface BandMemberDAO extends CrudRepository<BandMember, Long> {
+public interface BandMemberDAO extends JpaRepository<BandMember, Long> {
 
     /**
      * Get the artist information

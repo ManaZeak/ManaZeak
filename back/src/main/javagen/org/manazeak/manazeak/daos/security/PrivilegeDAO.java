@@ -1,18 +1,18 @@
 package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.security.Privilege;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 /**
- * Data Access Object for Privilege using Spring CrudRepository interface
+ * Data Access Object for Privilege using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface PrivilegeDAO extends CrudRepository<Privilege, Long> {
+public interface PrivilegeDAO extends JpaRepository<Privilege, Long> {
 
     /**
      * Getting all the privileges of a user.

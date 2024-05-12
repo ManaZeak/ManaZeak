@@ -8,18 +8,18 @@ import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailG
 import org.manazeak.manazeak.entity.track.Genre;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Data Access Object for Genre using Spring CrudRepository interface
+ * Data Access Object for Genre using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface GenreDAO extends CrudRepository<Genre, Long> {
+public interface GenreDAO extends JpaRepository<Genre, Long> {
 
     /**
      * Select a list of genre inside the database.

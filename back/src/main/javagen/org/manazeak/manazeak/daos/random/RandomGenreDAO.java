@@ -3,19 +3,19 @@ package org.manazeak.manazeak.daos.random;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
 import org.manazeak.manazeak.entity.random.RandomGenre;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
 
 /**
- * Data Access Object for RandomGenre using Spring CrudRepository interface
+ * Data Access Object for RandomGenre using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface RandomGenreDAO extends CrudRepository<RandomGenre, Long> {
+public interface RandomGenreDAO extends JpaRepository<RandomGenre, Long> {
 
     /**
      * @return Get the minimum and the maximum index of the random table.

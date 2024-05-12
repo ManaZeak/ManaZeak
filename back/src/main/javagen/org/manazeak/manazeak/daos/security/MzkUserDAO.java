@@ -3,19 +3,19 @@ package org.manazeak.manazeak.daos.security;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineProjection;
 import org.manazeak.manazeak.entity.dto.user.MzkUserDetailDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Data Access Object for MzkUser using Spring CrudRepository interface
+ * Data Access Object for MzkUser using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface MzkUserDAO extends CrudRepository<MzkUser, Long> {
+public interface MzkUserDAO extends JpaRepository<MzkUser, Long> {
 
     /**
      * Get a user from the username.

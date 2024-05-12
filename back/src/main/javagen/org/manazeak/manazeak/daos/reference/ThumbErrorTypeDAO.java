@@ -1,14 +1,14 @@
 package org.manazeak.manazeak.daos.reference;
 
-import org.springframework.data.repository.CrudRepository;
 import org.manazeak.manazeak.entity.reference.ThumbErrorType;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Data Access Object for ThumbErrorType using Spring CrudRepository interface
- *
+ * Data Access Object for ThumbErrorType using Spring JpaRepository interface
+ * <p>
  * This file has been automatically generated
  */
-public interface ThumbErrorTypeDAO extends CrudRepository<ThumbErrorType,  Long> {
+public interface ThumbErrorTypeDAO extends JpaRepository<ThumbErrorType, Long> {
 
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

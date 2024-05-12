@@ -8,7 +8,7 @@ import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailG
 import org.manazeak.manazeak.entity.track.Album;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Data Access Object for Album using Spring CrudRepository interface
+ * Data Access Object for Album using Spring JpaRepository interface
  * This file has been automatically generated
  */
-public interface AlbumDAO extends CrudRepository<Album, Long> {
+public interface AlbumDAO extends JpaRepository<Album, Long> {
 
     /**
      * Get the artist id from the artist name.

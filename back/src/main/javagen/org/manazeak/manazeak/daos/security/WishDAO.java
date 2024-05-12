@@ -2,16 +2,16 @@ package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.entity.security.Wish;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 /**
- * Data Access Object for Wish using Spring CrudRepository interface
+ * Data Access Object for Wish using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface WishDAO extends CrudRepository<Wish, Long> {
+public interface WishDAO extends JpaRepository<Wish, Long> {
 
     /**
      * Get all the wishes for a user sorted by content type in a descendant order.

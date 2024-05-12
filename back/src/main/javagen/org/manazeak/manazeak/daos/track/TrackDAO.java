@@ -10,17 +10,17 @@ import org.manazeak.manazeak.entity.dto.library.track.TrackWithPartialPerformerD
 import org.manazeak.manazeak.entity.track.Track;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 /**
- * Data Access Object for Track using Spring CrudRepository interface
+ * Data Access Object for Track using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface TrackDAO extends CrudRepository<Track, Long> {
+public interface TrackDAO extends JpaRepository<Track, Long> {
 
     @Query("select location, trackId from Track where location in (:locations)")
     List<TrackLinkerProjection> getTrackIdByLocation(@Param("locations") List<String> locations);

@@ -3,19 +3,19 @@ package org.manazeak.manazeak.daos.random;
 import org.manazeak.manazeak.entity.dto.library.artist.ArtistMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
 import org.manazeak.manazeak.entity.random.RandomReleaseArtist;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
 
 /**
- * Data Access Object for RandomReleaseArtist using Spring CrudRepository interface
+ * Data Access Object for RandomReleaseArtist using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface RandomReleaseArtistDAO extends CrudRepository<RandomReleaseArtist, Long> {
+public interface RandomReleaseArtistDAO extends JpaRepository<RandomReleaseArtist, Long> {
 
     /**
      * @return Get the minimum and the maximum index of the random table.

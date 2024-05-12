@@ -3,19 +3,19 @@ package org.manazeak.manazeak.daos.random;
 import org.manazeak.manazeak.entity.dto.library.label.LabelMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.random.RandomMinMaxProjection;
 import org.manazeak.manazeak.entity.random.RandomLabel;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
 
 /**
- * Data Access Object for RandomLabel using Spring CrudRepository interface
+ * Data Access Object for RandomLabel using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface RandomLabelDAO extends CrudRepository<RandomLabel, Long> {
+public interface RandomLabelDAO extends JpaRepository<RandomLabel, Long> {
 
 
     /**

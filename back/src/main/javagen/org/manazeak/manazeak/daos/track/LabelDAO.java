@@ -5,18 +5,18 @@ import org.manazeak.manazeak.entity.dto.library.integration.thumbnail.ThumbnailG
 import org.manazeak.manazeak.entity.track.Label;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Data Access Object for Label using Spring CrudRepository interface
+ * Data Access Object for Label using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface LabelDAO extends CrudRepository<Label, Long> {
+public interface LabelDAO extends JpaRepository<Label, Long> {
 
     /**
      * Get a list of labels inside the database corresponding to a list of names.

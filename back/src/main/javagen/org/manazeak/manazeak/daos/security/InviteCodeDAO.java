@@ -2,23 +2,23 @@ package org.manazeak.manazeak.daos.security;
 
 import org.manazeak.manazeak.entity.security.InviteCode;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Data Access Object for InviteCode using Spring CrudRepository interface
+ * Data Access Object for InviteCode using Spring JpaRepository interface
  * <p>
  * This file has been automatically generated
  */
-public interface InviteCodeDAO extends CrudRepository<InviteCode, Long> {
+public interface InviteCodeDAO extends JpaRepository<InviteCode, Long> {
 
     /**
-     * Trying to get an active invite code by it's value.
+     * Trying to get an active invite code by its value.
      *
      * @param inviteCodeValue the invite code value.
      * @return the invite code if it exists.
