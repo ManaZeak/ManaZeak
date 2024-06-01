@@ -35,4 +35,14 @@ class LibraryScanServiceTest extends AbstractManaZeakTest {
         // Checking the track
         Assertions.assertEquals(2, album.getTracks().size(), "Wrong number of tracks.");
     }
+
+    @Test
+    void testPackageSplit() {
+        List<String> artists = List.of("artist1", "artist2", "artist3", "artist4", "artist5", "artist6");
+        // Splitting this list
+        int startIndex = 0;
+        int endIndex = 2;
+
+        Assertions.assertEquals(2, artists.subList(startIndex, endIndex).size());
+    }
 }

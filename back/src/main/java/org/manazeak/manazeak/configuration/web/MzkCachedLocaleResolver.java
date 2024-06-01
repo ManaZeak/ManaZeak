@@ -38,9 +38,9 @@ public class MzkCachedLocaleResolver {
         }
         // Checking the language code and choosing the available language.
         if (languageCode.equals("fr")) {
-            return java.util.Locale.FRANCE;
+             return Locale.FRANCE;
         }
-        return java.util.Locale.US;
+        return Locale.US;
     }
 
     /**

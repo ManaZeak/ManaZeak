@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.manager.library.integration;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.daos.library.integration.album.AlbumIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.genre.GenreIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.label.LabelIntegrationDAO;
@@ -11,8 +12,6 @@ import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.manager.library.integration.artist.ArtistIntegrationManager;
 import org.manazeak.manazeak.manager.library.integration.cache.CacheIntegrationInitializer;
 import org.manazeak.manazeak.manager.library.integration.track.TrackIntegrationManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,10 +21,10 @@ import java.util.List;
  * Integrate a buffer of scanned tracks into the database.
  */
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class IntegrationBufferManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IntegrationBufferManager.class);
     private final ArtistIntegrationManager artistIntegrationManager;
     private final CacheIntegrationInitializer cacheIntegrationInitializer;
     private final CacheAccessManager cacheAccessManager;
@@ -40,43 +39,47 @@ public class IntegrationBufferManager {
      *
      * @param bands The information about the extracted tags.
      */
-    public synchronized void integrateBuffer(List<ExtractedBandDto> bands) {
-        // Init caches with the buffer.
-        LOG.info("Started: populating caches.");
-        cacheIntegrationInitializer.initCacheWithBuffer(bands);
-        LOG.info("Finished: populating caches.");
+    public synchronized void integrateBuffer(List<ExtractedBandDto> bands, int packageNumber, int totalPackages) {
+        log.info("Starting the database insertion of the tags for the package {}/{}.", packageNumber + 1, totalPackages);
 
-        LOG.info("Started: conversion of the extracted tracks to DTOs.");
+        // Init caches with the buffer.
+        log.info("Started: populating caches.");
+        cacheIntegrationInitializer.initCacheWithBuffer(bands);
+        log.info("Finished: populating caches.");
+
+        log.info("Started: conversion of the extracted tracks to DTOs.");
         // Launching the extraction of the tags contained in the library.
         LibraryIntegrationContainer integrationContainer = launchTagDtoConversion(bands);
-        LOG.info("Finished: conversion of the extracted tracks to DTOs.");
+        log.info("Finished: conversion of the extracted tracks to DTOs.");
 
         // Launching the integration of objects.
-        LOG.info("Started: merging the labels.");
+        log.info("Started: merging the labels.");
         labelIntegrationDAO.mergeLabel(new ArrayList<>(integrationContainer.getLabelIntegrationHelper().getLabels().values()));
-        LOG.info("Finihed: merging the labels");
+        log.info("Finihed: merging the labels");
 
-        LOG.info("Started: merging the artists.");
+        log.info("Started: merging the artists.");
         artistIntegrationManager.mergeArtistsIntoDatabase(integrationContainer.getArtistIntegrationHelper().getArtists());
-        LOG.info("Started: merging the artists.");
+        log.info("Started: merging the artists.");
 
-        LOG.info("Started : merging the albums.");
+        log.info("Started : merging the albums.");
         albumIntegrationDAO.mergeAlbums(new ArrayList<>(integrationContainer.getAlbumIntegrationHelper().getAlbumMap().values()));
-        LOG.info("Finished: merging the albums.");
+        log.info("Finished: merging the albums.");
 
-        LOG.info("Started: merging the genres.");
+        log.info("Started: merging the genres.");
         genreIntegrationDAO.mergeGenres(new ArrayList<>(integrationContainer.getGenreIntegrationHelper().getGenres().values()));
-        LOG.info("Finished: merging the genres.");
+        log.info("Finished: merging the genres.");
 
         // Integrating the tracks into the database.
         // Generating the track ids before their integration into the database.
-        LOG.info("Started: generating and associating the track ids.");
+        log.info("Started: generating and associating the track ids.");
         trackIntegrationManager.fillTrackIds(integrationContainer.getTrackIntegrationHelper().getTracksByLocation());
-        LOG.info("Finished: generating and associating the track ids.");
+        log.info("Finished: generating and associating the track ids.");
 
-        LOG.info("Starting: merging the tracks.");
+        log.info("Starting: merging the tracks.");
         trackIntegrationManager.mergeTracksIntoDatabase(new ArrayList<>(integrationContainer.getTrackIntegrationHelper().getTracksByLocation().values()));
-        LOG.info("Finished: merging the tracks.");
+        log.info("Finished: merging the tracks.");
+
+        log.info("Finished the database insertion of the tags for the package {}/{}.", packageNumber + 1, totalPackages);
     }
 
     /**

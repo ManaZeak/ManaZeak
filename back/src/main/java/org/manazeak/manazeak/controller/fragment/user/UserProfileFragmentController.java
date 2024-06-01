@@ -63,6 +63,7 @@ public class UserProfileFragmentController {
          // Checking if the user form was valid.
         if (result.hasErrors()) {
             model.addAttribute("userInfo", userInfo);
+            // Adding the binding results for the errors to display on the page.
             model.addAttribute("org.springframework.validation.BindingResult.userInfo", result);
             addLocalesToPage(model);
             addCountriesToPage(model);
