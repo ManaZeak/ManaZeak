@@ -1,16 +1,19 @@
 package org.manazeak.manazeak;
 
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
 
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +32,8 @@ public abstract class AbstractManaZeakTest {
 
     @Autowired
     protected EntityManager entityManager;
+
+    protected CacheManager cacheManager;
 
     /**
      * Flush et clear de la session
@@ -58,6 +63,13 @@ public abstract class AbstractManaZeakTest {
     void doTearDown() throws IOException {
         // Cleaning the folder
         FileUtils.deleteDirectory(getTempAppFolderPath().toFile());
+        // Cleaning the caches
+        for (CacheEnum cacheConfig : CacheEnum.values()) {
+            Cache cache = cacheManager.getCache(cacheConfig.getCacheName());
+            if (cache != null) {
+                cache.clear();
+            }
+        }
     }
 
     @BeforeEach
