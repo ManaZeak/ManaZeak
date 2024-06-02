@@ -42,11 +42,8 @@
           <img src="/static/img/navigation/menu.svg" alt="menu-page">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.menu}"></span>
         </div>
-        <div class="item tooltip">
-          <form method="post" th:action="@{/logout}">
-            <img src="/static/img/actions/logout.svg" alt="user-logout">
-            <input type="submit" value="">
-          </form>
+        <div class="item tooltip" id="logout-button">
+          <img src="/static/img/actions/logout.svg" alt="user-logout">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.logout}"></span>
         </div>
       </div>

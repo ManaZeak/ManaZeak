@@ -48,14 +48,6 @@ public class AdditionalInfoManager {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public boolean isUserComplete() {
-        MzkUser user = userManager.getCurrentUser();
-        return user.getIsComplete();
-    }
-
-    /**
      * Adding the country to the user if any provided.
      *
      * @param user      The user that will be modified.

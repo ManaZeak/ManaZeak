@@ -30,42 +30,34 @@
     <span th:text="#{user.register.header}"></span>
     <span><a href="/login/" alt="login-link"><span th:text="#{user.register.login}"></span></a></span>
   </p>
-  <!-- Intellij doesn't detect the controller filling the model. The type of object in the for is this. -->
-  <!--/*@thymesVar id="user" type="org.manazeak.manazeak.entity.dto.user.NewUserDto"*/-->
-  <form method="POST" th:object="${user}" id="register-form">
-    <!-- Account username field (128 char) and specific errors -->
+  <form id="register-form">
+    <!-- Account username field (match db max 200 char) -->
     <div class="tooltip">
       <label for="username-input" th:text="#{user.register.username}"></label>
       <span class="tooltip-top" th:text="#{user.register.username.help}"></span>
     </div>
-    <p class="error" th:each="error : ${#fields.errors('username')}" th:text="${error}"></p>
-    <input id="username-input" maxlength="128" th:errorClass="'error'" th:field="*{username}" type="text"/>
-    <!-- Invite code from an already registered user field (16 char) and specific errors -->
+    <input id="username-input" maxlength="200" type="text"/>
+    <!-- Invite code from an already registered user field (match backend 32 char) -->
     <div class="tooltip">
       <label for="inviteCode-input" th:text="#{user.register.invite_code}"></label>
       <span class="tooltip-top" th:text="#{user.register.invite_code.help}"></span>
     </div>
-    <p class="error" th:each="error : ${#fields.errors('inviteCode')}" th:text="${error}"></p>
-    <input id="inviteCode-input" maxlength="32" th:errorClass="'error'" th:field="*{inviteCode}" type="text"/>
-    <!-- Account password field (256 char) and specific errors -->
+    <input id="inviteCode-input" maxlength="32" type="text"/>
+    <!-- Account password field (match db max 512 char) -->
     <div class="tooltip">
       <label for="password-one-input" th:text="#{user.register.password_one}"></label>
       <span class="tooltip-top" th:text="#{user.register.password_one.help}"></span>
     </div>
-    <p class="error" th:each="error : ${#fields.errors('password1')}" th:text="${error}"></p>
-    <input id="password-one-input" maxlength="256" th:errorClass="'error'" th:field="*{password1}" type="password"/>
-    <!-- Confirm password field (256 char) and specific errors -->
+    <input id="password-one-input" maxlength="512" type="password"/>
+    <!-- Account confirm password field (match db max 512 char) -->
     <div class="tooltip">
       <label for="password-two-input" th:text="#{user.register.password_two}"></label>
       <span class="tooltip-top" th:text="#{user.register.password_two.help}"></span>
     </div>
-    <p class="error" th:each="error : ${#fields.errors('password2')}" th:text="${error}"></p>
-    <input id="password-two-input" maxlength="256" th:errorClass="'error'" th:field="*{password2}" type="password"/>
-    <!-- Global form errors -->
-    <p class="global-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    <input id="password-two-input" maxlength="512" type="password"/>
     <!-- Required csrf token from session cookies -->
-    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-    <button th:text="#{user.register.submit}" type="submit"></button>
+    <input th:name="${_csrf.parameterName}" id="csrf-token" th:value="${_csrf.token}" type="hidden"/>
+    <button th:text="#{user.register.submit}" id="submit-register"></button>
   </form>
   <p th:utext="#{user.register.footer}"></p>
 </div>

@@ -1,4 +1,14 @@
 {
+  "AUTH_NETWORK_ERROR": {
+    "title": "Network error",
+    "message": "Couldn't perform the request. Please contact support or check browser logs.",
+    "type": "error"
+  },
+  "AUTH_PARSE_ERROR": {
+    "title": "Parsing error",
+    "message": "Couldn't parse the server response. Please contact support or check browser logs.",
+    "type": "error"
+  },
   "B_KOM_NOT_FOUND": {
     "title": "URL not found",
     "message": "The HTTP request returned a 404 status. See log for details.",
@@ -24,11 +34,6 @@
     "message": "A method is missing arguments. See log for details.",
     "severity": "error"
   },
-  "F_KOM_INIT_FAILED": {
-    "title": "No CSRF token",
-    "message": "Local session will not be allowed to perform some server calls. See log for details.",
-    "severity": "error"
-  },
   "F_KOM_XHR_ERROR": {
     "title": "Communication error",
     "message": "An XHR request as failed. See log for details.",
@@ -49,44 +54,14 @@
     "message": "The fragment couldn't be loaded",
     "severity": "error"
   },
-  "F_INVIT_CODE_CLIPBOARD_ERROR": {
-    "title": "Unable to save code in clipboard",
-    "message": "The invitation code wasn't saved in the clipboard",
-    "severity": "error"
-  },
   "F_INVIT_LINK_CLIPBOARD_ERROR": {
     "title": "Unable to save link in clipboard",
     "message": "The invitation link wasn't saved in the clipboard",
     "severity": "error"
   },
-  "F_VIEW_SET_SUCCESS": {
-    "title": "View updated",
-    "message": "The view has been succesfully instantiated and displayed",
-    "severity": "success"
-  },
-  "F_MODAL_SET_SUCCESS": {
-    "title": "Modal opened",
-    "message": "The modal has been succesfully instantiated and opened",
-    "severity": "success"
-  },
-  "F_FRAGMENT_GET_SUCCESS": {
-    "title": "Fragment fetched",
-    "message": "The fragment has been succesfully loaded",
-    "severity": "success"
-  },
-  "F_INVIT_CODE_CLIPBOARD_SUCCESS": {
-    "title": "Code saved in clipboard",
-    "message": "The invitation code was saved in the clipboard successfully",
-    "severity": "success"
-  },
   "F_INVIT_LINK_CLIPBOARD_SUCCESS": {
     "title": "Link saved in clipboard",
     "message": "The invitation link was saved in the clipboard successfully",
     "severity": "success"
-  },
-  "F_SCAN_REQUEST_ERROR": {
-    "title": "Scan could'nt be performed",
-    "message": "Please contact administrator as it is a major failure",
-    "severity": "error"
   }
 }

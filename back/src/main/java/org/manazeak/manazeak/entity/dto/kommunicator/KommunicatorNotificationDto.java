@@ -10,6 +10,6 @@ public class KommunicatorNotificationDto {
 
     private String title;
     private String message;
-    private String severity;
+    private String type;
 
 }

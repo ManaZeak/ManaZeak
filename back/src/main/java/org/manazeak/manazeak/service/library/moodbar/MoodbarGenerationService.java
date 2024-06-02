@@ -7,7 +7,7 @@ import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.file.FileExtensionEnum;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
 import org.manazeak.manazeak.constant.library.moodbar.MoodbarSizeEnum;
-import org.manazeak.manazeak.constant.notification.NotificationSeverityEnum;
+import org.manazeak.manazeak.constant.notification.NotificationTypeEnum;
 import org.manazeak.manazeak.daos.library.management.mood.MoodbarGeneratorDAO;
 import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
@@ -56,14 +56,14 @@ public class MoodbarGenerationService {
         // Checking if the moodbar generation isn't running.
         if (isRunning.get()) {
             throw new MzkRestException("admin.library.moodbar.gen.fail.message",
-                    "admin.library.moodbar.gen.fail.mood.message", NotificationSeverityEnum.WARNING);
+                    "admin.library.moodbar.gen.fail.mood.message", NotificationTypeEnum.WARNING);
         }
 
         try {
             libraryScanStatusManager.checkNoActiveScan();
         } catch (MzkRuntimeException e) {
             throw new MzkRestException("admin.library.moodbar.gen.fail.message",
-                    "admin.library.moodbar.gen.fail.scanning.message", NotificationSeverityEnum.WARNING);
+                    "admin.library.moodbar.gen.fail.scanning.message", NotificationTypeEnum.WARNING);
         }
     }
 

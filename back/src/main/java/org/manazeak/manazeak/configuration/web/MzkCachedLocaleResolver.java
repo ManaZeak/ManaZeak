@@ -1,5 +1,6 @@
 package org.manazeak.manazeak.configuration.web;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -26,6 +27,7 @@ public class MzkCachedLocaleResolver {
      * @param askedLocale the locale we want to display.
      * @return the available locale.
      */
+    @NonNull
     public static Locale getAvailableLocale(Locale askedLocale) {
         final String languageCode;
         // Getting the language code if there is one.
@@ -45,20 +47,23 @@ public class MzkCachedLocaleResolver {
      * Get the user from the database and resolve the locale set.
      * This is cached to avoid spamming the database with requests.
      *
-     * @param user The user requesting its locale.
+     * @param username The name of the user requesting the locale.
      * @return The locale of the user if one is set.
      */
-    @Cacheable(value = "user_locale", key = "#user.userId")
-    public Optional<Locale> resolveUserLocale(final MzkUser user) {
-        // Database user.
-        if (user.getLocale() != null) {
-            // If the user has a locale set in his profile, load the complete user.
-            MzkUser dbUser = userService.findByUsername(user.getUsername()).orElseThrow();
-            return Optional.of(getAvailableLocale(Locale.forLanguageTag(dbUser.getLocale().getCode())));
+    @Cacheable(value = "user_locale", key = "#username")
+    public Optional<Locale> resolveUserLocale(final String username) {
+        // If the user has a locale set in his profile, load the complete user.
+        MzkUser dbUser = userService.findByUsername(username).orElseThrow();
+
+        // No locale set in the user, letting the browser choose.
+        if (dbUser.getLocale() == null) {
+            return Optional.empty();
         }
 
-        // No locale can be resolved from the user.
-        return Optional.empty();
+        // Setting the local of the user.
+        return Optional.of(
+                getAvailableLocale(Locale.forLanguageTag(dbUser.getLocale().getCode()))
+        );
     }
 
 }

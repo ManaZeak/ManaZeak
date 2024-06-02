@@ -259,7 +259,7 @@ class UserInterface {
       type: 'info',
       title: 'Track(s) queue',
       message: `There is now currently ${queuedTracks.length} track(s) in the queue`
-    })
+    });
   }
 
 

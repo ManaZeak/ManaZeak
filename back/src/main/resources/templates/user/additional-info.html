@@ -28,7 +28,7 @@
   <img alt="manazeak-text-logo" src="/static/img/logo/manazeak-text.svg"/>
   <p th:utext="#{user.tellusmore.header}"></p>
   <!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.UserFirstInfoDto"*/-->
-  <form class="two-col-form" enctype="multipart/form-data" method="POST" th:object="${userInfo}" id="tellusmore-form">
+  <form class="two-col-form" th:object="${userInfo}" id="tellusmore-form">
     <div class="left-col">
       <!-- Email address field (256 char) and specific errors -->
       <div class="tooltip">
@@ -101,8 +101,8 @@
       <input accept=".jpg,.png" id="avatar-input" th:field="*{avatar}" type="file"/>
     </div>
     <!-- Required csrf token from session cookies -->
-    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-    <button th:text="#{user.tellusmore.submit}" type="submit"></button>
+    <input th:name="${_csrf.parameterName}" id="csrf-token" th:value="${_csrf.token}" type="hidden"/>
+    <button th:text="#{user.tellusmore.submit}" id="submit-tellusmore"></button>
   </form>
   <p th:utext="#{user.tellusmore.footer}"></p>
 </div>

@@ -51,7 +51,7 @@ public enum CacheEnum {
     /**
      * Contains the locale of the user by identifier.
      */
-    USER_LOCALE("user_locale", Long.class, Locale.class, Duration.of(30, ChronoUnit.MINUTES), 100);
+    USER_LOCALE("user_locale", String.class, Locale.class, Duration.of(30, ChronoUnit.MINUTES), 100);
 
 
     private static final int UNLIMITED_SIZE = 100000;

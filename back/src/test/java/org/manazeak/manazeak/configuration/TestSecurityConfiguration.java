@@ -1,4 +1,4 @@
-package org.manazeak.manazeak.configuration.security;
+package org.manazeak.manazeak.configuration;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -43,26 +42,25 @@ import java.util.function.Supplier;
  */
 @Configuration
 @EnableWebSecurity
-@Profile("!test") // Disabling the security configuration when testing.
 @Slf4j
-public class SecurityConfiguration {
+public class TestSecurityConfiguration {
 
     private static final int CSRF_SIZE = 36;
     @Value("${app.dev}")
     private boolean devMode;
 
 
-    @Value("file:/key/public")
+    @Value("classpath:/configuration/public")
     private RSAPublicKey key;
 
-    @Value("file:/key/private")
+    @Value("classpath:/configuration/private")
     private RSAPrivateKey privateKey;
 
 
     /**
      * Setting the context of the security to the local thread.
      */
-    public SecurityConfiguration() {
+    public TestSecurityConfiguration() {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 

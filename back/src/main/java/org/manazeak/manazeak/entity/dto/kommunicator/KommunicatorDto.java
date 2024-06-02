@@ -21,10 +21,6 @@ public class KommunicatorDto implements Serializable {
         done = true;
     }
 
-    public boolean isDone() {
-        return done;
-    }
-
     /**
      * Add a list of errors to the object.
      *

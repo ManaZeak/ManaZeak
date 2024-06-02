@@ -1,20 +1,17 @@
 package org.manazeak.manazeak.service.security.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
-import org.manazeak.manazeak.daos.security.PrivilegeDAO;
 import org.manazeak.manazeak.entity.dto.admin.UserHierarchyDto;
 import org.manazeak.manazeak.entity.dto.admin.UserListLineDto;
 import org.manazeak.manazeak.entity.dto.user.NewUserDto;
 import org.manazeak.manazeak.entity.dto.user.ResetPasswordDto;
 import org.manazeak.manazeak.entity.dto.user.ResetUserPasswordDto;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import org.manazeak.manazeak.entity.security.Privilege;
 import org.manazeak.manazeak.manager.security.invitecode.InviteCodeManager;
 import org.manazeak.manazeak.manager.security.user.AdminUserManager;
 import org.manazeak.manazeak.manager.security.user.UserManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,13 +25,9 @@ import java.util.Optional;
 @Service
 @TransactionalWithRollback
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-    /**
-     * The DAO for the privileges of the users.
-     */
-    private final PrivilegeDAO privilegeDAO;
     /**
      * The user manipulator object.
      */
@@ -62,7 +55,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public MzkUser createUser(NewUserDto userToCreate) {
-        LOG.info("Creating the user {}", userToCreate.getUsername());
+        log.info("Creating the user {}", userToCreate.getUsername());
         // Creating the user.
         MzkUser user = userManager.insertUser(userToCreate);
         // Creating the invite code of the user.
@@ -70,14 +63,6 @@ public class UserServiceImpl implements UserService {
         // Invalidating the parent invite code.
         inviteCodeManager.useInviteCode(userToCreate.getInviteCode(), user);
         return user;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Privilege> getPrivilegeByUsername(String username) {
-        return privilegeDAO.getPrivilegesByUsername(username);
     }
 
     @Override

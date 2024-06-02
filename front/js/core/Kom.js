@@ -24,6 +24,9 @@ class Kom {
      * @member {string} - User session CSRF token to use in POST request */
     this._csrfToken = this._getCsrfCookie();
     /** @private
+     * @member {string} - User JWT token to use in POST request */
+    this._jwtToken = this._getJWTToken();
+    /** @private
      * @member {Array[]} - Array of HTTP headers to be used in HTTP calls */
     this._headers = this._createRequestHeaders();
 
@@ -66,6 +69,14 @@ class Kom {
   }
 
 
+  _getJWTToken() {
+    if (localStorage && localStorage.getItem('mzk-jwt-token') !== null) {
+      return localStorage.getItem('mzk-jwt-token');
+    }
+    return '';
+  }
+
+
   /**
    * @method
    * @name _createRequestHeaders
@@ -82,7 +93,8 @@ class Kom {
     return [
       ['Content-Type', 'application/json; charset=UTF-8'],
       ['Accept', 'application/json'],
-      ['X-XSRF-TOKEN', this._csrfToken]
+      ['X-XSRF-TOKEN', this._csrfToken],
+      ['Authorization', `Bearer ${this._jwtToken}`]
     ];
   }
 
@@ -98,8 +110,8 @@ class Kom {
    * </blockquote>
    **/
   _checkValidity() {
-    if (this._csrfToken !== '') {
-      if (this._headers.length !== 3) {
+    if (this._csrfToken !== '' && this._jwtToken !== '') {
+      if (this._headers.length !== 4) {
         console.error('F_KOM_HEADERS_ERROR');
       }
     } else {
@@ -263,7 +275,7 @@ class Kom {
     return new Promise((resolve, reject) => {
       const options = {
         method: 'GET',
-        headers: new Headers([this._headers[0]]) // Content type to JSON
+        headers: new Headers(this._headers) // Content type to JSON
       };
 
       fetch(url, options)
@@ -502,6 +514,11 @@ class Kom {
       };
       xhr.send(data);
     });
+  }
+
+
+  get jwt() {
+    return this._jwtToken;
   }
 
 

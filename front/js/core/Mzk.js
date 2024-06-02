@@ -1,4 +1,5 @@
 import Kom from './Kom';
+import User from './User';
 import Lang from './Lang';
 import UserInterface from '../view/UserInterface';
 import Controller from './Controller.js';
@@ -10,6 +11,7 @@ class Mzk {
 
   constructor() {
     this.kom = null;
+    this.user = null;
     this.nls = null;
     this.ui = null;
     this.ctrl = null;
@@ -21,7 +23,8 @@ class Mzk {
     // HTML template is loaded with loading overlay
     // Initializing communication and UI controllers
     this.kom = new Kom();
-    this.nls = new Lang('en');
+    this.user = new User();
+    this.nls = new Lang(this.user.lang);
     this.ctrl = new Controller();
     this.ui = new UserInterface();
     this.data = new Data();
