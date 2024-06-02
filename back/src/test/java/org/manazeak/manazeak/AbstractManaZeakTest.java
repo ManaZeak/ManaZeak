@@ -32,7 +32,7 @@ public abstract class AbstractManaZeakTest {
 
     @Autowired
     protected EntityManager entityManager;
-
+    @Autowired
     protected CacheManager cacheManager;
 
     /**
