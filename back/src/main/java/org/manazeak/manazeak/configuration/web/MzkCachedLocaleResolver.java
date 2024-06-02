@@ -62,7 +62,7 @@ public class MzkCachedLocaleResolver {
 
         // Setting the local of the user.
         return Optional.of(
-                getAvailableLocale(java.util.Locale.forLanguageTag(dbUser.getLocale().getCode()))
+                getAvailableLocale(Locale.forLanguageTag(dbUser.getLocale().getCode()))
         );
     }
 

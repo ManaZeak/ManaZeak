@@ -2,7 +2,6 @@ package org.manazeak.manazeak.controller.html;
 
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
-import org.manazeak.manazeak.controller.page.user.UserPageEnum;
 import org.manazeak.manazeak.manager.security.user.info.AdditionalInfoManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
