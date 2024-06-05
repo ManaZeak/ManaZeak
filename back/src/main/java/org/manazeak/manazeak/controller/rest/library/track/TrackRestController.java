@@ -9,17 +9,22 @@ import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackQueueInfoDto;
 import org.manazeak.manazeak.entity.track.Track;
+import org.manazeak.manazeak.exception.MzkSecurityException;
 import org.manazeak.manazeak.service.library.track.TrackService;
 import org.manazeak.manazeak.service.message.KommunicatorService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,15 +37,20 @@ public class TrackRestController {
 
     private final KommunicatorService kommunicatorService;
 
+    private final JwtDecoder jwtDecoder;
+
     /**
      * Send a request to the nginx to play the given track.
      *
      * @param trackId The id of the track in the database.
      * @return The redirection to the nginx to
      */
-    @RestSecurity(PrivilegeEnum.PLAY)
-    @GetMapping("/play/{trackId}/")
-    public ResponseEntity<Object> playTrackFromId(@PathVariable @NotNull(message = "general.error.no_id") Long trackId) throws URISyntaxException {
+    @GetMapping("/jwt_custom/play/{trackId}/")
+    public ResponseEntity<Object> playTrackFromId(@PathVariable @NotNull(message = "general.error.no_id") Long trackId, @RequestParam String jwt) throws URISyntaxException {
+        if (!isAuthorizedToPlay(jwt)) {
+            throw new MzkSecurityException("Not auth", "Not authorized");
+        }
+
         // Getting the track for the id.
         Track track = trackService.getTrackById(trackId);
 
@@ -62,6 +72,29 @@ public class TrackRestController {
 
         // Sending the response to the client.
         return new ResponseEntity<>(header, HttpStatus.SEE_OTHER);
+    }
+
+    /**
+     * Checks if the user can play a track with its JWT token.
+     *
+     * @param jwt The JWT of the user.
+     * @return If the user can play the track.
+     */
+    private boolean isAuthorizedToPlay(String jwt) {
+        // Validating if the user can play the track.
+        Jwt token = jwtDecoder.decode(jwt);
+        Object scope = token.getClaims().get("scope");
+        if (scope instanceof ArrayList<?> elements) {
+            for (Object element : elements) {
+                if (element instanceof String role) {
+                    if (PrivilegeEnum.PLAY.name().equals(role)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        // The user doesn't have the play role.
+        return false;
     }
 
     /**
