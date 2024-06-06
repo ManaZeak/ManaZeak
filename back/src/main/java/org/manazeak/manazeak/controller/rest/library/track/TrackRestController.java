@@ -12,6 +12,7 @@ import org.manazeak.manazeak.entity.track.Track;
 import org.manazeak.manazeak.exception.MzkSecurityException;
 import org.manazeak.manazeak.service.library.track.TrackService;
 import org.manazeak.manazeak.service.message.KommunicatorService;
+import org.manazeak.manazeak.service.security.JWTService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,7 +37,18 @@ public class TrackRestController {
 
     private final KommunicatorService kommunicatorService;
 
+    private final JWTService jwtService;
+
     private final JwtDecoder jwtDecoder;
+
+    /**
+     * @return The JWT token used to play the tracks.
+     */
+    @RestSecurity(PrivilegeEnum.PLAY)
+    @GetMapping("/play-token/")
+    public String getPlayToken() {
+        return jwtService.getJwtPlayToken();
+    }
 
     /**
      * Send a request to the nginx to play the given track.
@@ -83,15 +94,9 @@ public class TrackRestController {
     private boolean isAuthorizedToPlay(String jwt) {
         // Validating if the user can play the track.
         Jwt token = jwtDecoder.decode(jwt);
-        Object scope = token.getClaims().get("scope");
-        if (scope instanceof ArrayList<?> elements) {
-            for (Object element : elements) {
-                if (element instanceof String role) {
-                    if (PrivilegeEnum.PLAY.name().equals(role)) {
-                        return true;
-                    }
-                }
-            }
+        Object scope = token.getClaims().get("play");
+        if (scope instanceof Boolean authorized) {
+            return authorized;
         }
         // The user doesn't have the play role.
         return false;

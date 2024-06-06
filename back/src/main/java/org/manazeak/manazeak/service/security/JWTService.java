@@ -29,6 +29,8 @@ public class JWTService {
      */
     private static final long TOKEN_EXPIRY = 1209600L;
 
+    private static final long PLAY_TOKEN_EXPIRY = 86400L;
+
     private final MzkUserDAO userDAO;
 
     private final JwtEncoder encoder;
@@ -59,6 +61,25 @@ public class JWTService {
         }
 
         return buildJwt(user);
+    }
+
+    /**
+     * Get a token used to validate if the user can play tracks.
+     *
+     * @return The token only used by the player.
+     */
+    public String getJwtPlayToken() {
+        Instant now = Instant.now();
+
+        // This JWT doesn't contains any roles to on all the mzk endpoints.
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(now)
+                .expiresAt(now.plusSeconds(PLAY_TOKEN_EXPIRY))
+                .claim("play", true)
+                .build();
+
+        return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
     /**

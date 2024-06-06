@@ -2,6 +2,8 @@ package org.manazeak.manazeak.controller.rest.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.manazeak.manazeak.configuration.security.rest.RestSecurity;
+import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.user.UserLoginDto;
 import org.manazeak.manazeak.manager.error.ErrorHandlerManager;
 import org.manazeak.manazeak.service.security.JWTService;
@@ -41,6 +43,7 @@ public class LoginControllerRest {
     /**
      * @return Sends a new token to an already connected user.
      */
+    @RestSecurity(PrivilegeEnum.PLAY)
     @GetMapping("/renew-token/")
     public String renewToken() {
         // Sending a new token for the connected user.
