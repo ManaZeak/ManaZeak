@@ -72,6 +72,7 @@ services:
         # For local discovery use this :
         # network_mode: "host"
         volumes:
+            - ${SYNCTHING_CONFIG_PATH}:/var/syncthing
             - ${LIBRARY_PATH}:/ManaZeak
             - ${ASSETS_PATH}:/Pictures # Path leading to the ManaZeak Pictures (artists face, genre and producer logo)
         ports:
