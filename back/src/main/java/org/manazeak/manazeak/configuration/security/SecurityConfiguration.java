@@ -104,8 +104,8 @@ public class SecurityConfiguration {
 
         httpSecurity
                 .authorizeHttpRequests(authorizeRequest -> {
-                    // Public URLs.
-                    authorizeRequest.requestMatchers("/register/", "/logoutSuccess/", "/login/", "/").permitAll();
+                    // Public URLs. The play url is public, because the user validation is done manually.
+                    authorizeRequest.requestMatchers("/register/", "/logoutSuccess/", "/login/", "/", "/jwt_custom/play/*/").permitAll();
                     // To see the other URLs, you must be authenticated.
                     authorizeRequest.anyRequest().authenticated();
                 })

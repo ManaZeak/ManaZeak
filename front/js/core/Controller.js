@@ -349,7 +349,7 @@ class Controller {
         };
       }
       // Request a track change on pPlayer with track information
-      this._player.changeTrack(`/play/${track.id}/`, data.startTimePercentage).then(() => {
+      this._player.changeTrack(`/jwt_custom/play/${track.id}/?jwt=${window.mzk.user.playToken}`, data.startTimePercentage).then(() => {
         this._addTrackHistory(data.playObject, track); // Update track history for previous feature
         this._playingId = track.id; // Store playing track ID
         // Dispatch global event for components to react

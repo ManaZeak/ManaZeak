@@ -120,6 +120,11 @@ class Kom {
   }
 
 
+  updateJWTToken() {
+    this._jwtToken = this._getJWTToken();
+  }
+
+
   // ======================================================================== //
   // ----------------- Request resolution internal methods ------------------ //
   // ======================================================================== //
@@ -520,7 +525,6 @@ class Kom {
   get jwt() {
     return this._jwtToken;
   }
-
 
 
 }
