@@ -841,7 +841,7 @@ class Controller {
     if (DEBUG) { console.log('Controller.download : called with (data)', data); }
     const link = document.createElement('A');
     link.download = data.name;
-    link.href = `/play/${data.id}/`;
+    link.href = `/jwt_custom/play/${data.id}/?jwt=${window.mzk.user.playToken}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
