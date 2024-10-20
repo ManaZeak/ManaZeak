@@ -12,6 +12,7 @@ CREATE TABLE playlist (
                           is_public_editable BOOLEAN not null,
                           image_path VARCHAR(500),
                           user_id BIGINT,
+                          append_track BOOLEAN not null,
                           CONSTRAINT PK_PLAYLIST PRIMARY KEY (playlist_id)
 );
 COMMENT ON COLUMN playlist.user_id IS 'ManyToOne FK mzk_user';

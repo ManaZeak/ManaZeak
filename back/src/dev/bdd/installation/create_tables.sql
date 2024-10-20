@@ -473,6 +473,7 @@ CREATE TABLE playlist (
 	is_public BOOLEAN not null,
 	is_public_editable BOOLEAN not null,
 	image_path VARCHAR(500),
+	append_track BOOLEAN not null,
 	user_id BIGINT,
 	CONSTRAINT PK_PLAYLIST PRIMARY KEY (playlist_id)
 );
