@@ -1,18 +1,10 @@
 package org.manazeak.manazeak.entity.playlist;
 
-import java.io.Serializable;
-import jakarta.persistence.GeneratedValue;
-import java.time.LocalDateTime;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import org.manazeak.manazeak.entity.security.MzkUser;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.GenerationType;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * No comment found in model diagram
@@ -32,6 +24,7 @@ public class Playlist implements Serializable{
 	private Boolean isPublic;
 	private Boolean isPublicEditable;
 	private String imagePath;
+	private Boolean appendTrack;
 	private MzkUser creator;
 
     /**
@@ -143,6 +136,21 @@ public class Playlist implements Serializable{
 		this.imagePath = imagePath;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of appendTrack
+     */
+    @Column(name="append_track", nullable=false)
+	public Boolean getAppendTrack(){
+		return appendTrack;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param appendTrack new value to give to appendTrack
+     */
+	public void setAppendTrack(final Boolean appendTrack){
+		this.appendTrack = appendTrack;
+    }  
+    /**
      * Association playlist_creator to MzkUser
      * @return value of creator
      */
@@ -172,6 +180,7 @@ public class Playlist implements Serializable{
 		result = 31 * result + (isPublic == null? 0 : isPublic.hashCode());
 		result = 31 * result + (isPublicEditable == null? 0 : isPublicEditable.hashCode());
 		result = 31 * result + (imagePath == null? 0 : imagePath.hashCode());
+		result = 31 * result + (appendTrack == null? 0 : appendTrack.hashCode());
 			
 		return result;
 	}
@@ -203,6 +212,7 @@ public class Playlist implements Serializable{
 			&& (isPublic == null ?  (otherPlaylist.isPublic == null) : isPublic.equals(otherPlaylist.isPublic))
 			&& (isPublicEditable == null ?  (otherPlaylist.isPublicEditable == null) : isPublicEditable.equals(otherPlaylist.isPublicEditable))
 			&& (imagePath == null ?  (otherPlaylist.imagePath == null) : imagePath.equals(otherPlaylist.imagePath))
+			&& (appendTrack == null ?  (otherPlaylist.appendTrack == null) : appendTrack.equals(otherPlaylist.appendTrack))
 		;
 	}
 

@@ -143,5 +143,18 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
             where alb.label.labelId = :labelId
             """)
     List<AlbumMinimalInfoDto> getMinimalAlbumsByLabelId(@Param("labelId") Long labelId);
+
+    /**
+     * Get all the track identifier contained in an album ordered by track number.
+     *
+     * @param albumId The identifier of the album.
+     * @return The identifier of the tracks in the album.
+     */
+    @Query("""
+            select t.id from Album a
+            join Track t on t.album = a
+            order by t.trackNumber
+            """)
+    List<Long> getAllAlbumTrackIdentifier(Long albumId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

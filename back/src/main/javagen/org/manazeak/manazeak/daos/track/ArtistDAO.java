@@ -137,5 +137,20 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
             order by artistId
             """)
     List<ThumbnailGenerationProjection> getArtistsToGenerateThumbPacket(@Param("lastArtistId") Long lastArtistId, Pageable pageable);
+
+    /**
+     * Get all the tracks of an artist.
+     *
+     * @param artistId The identifier of the artist.
+     * @return The identifier of the tracks.
+     */
+    @Query("""
+            select trk.id from Artist art
+            join Album alb on alb.artist = art
+            join Track trk on trk.album = alb
+            where art.id = :artistId
+            order by alb.releaseDate desc, trk.trackNumber
+            """)
+    List<Long> getAllArtistTrackIds(Long artistId);
 }
 // STOP GENERATION -> Comment used to prevent generator from generate the file again, DO NOT REMOVE IT

@@ -17,7 +17,8 @@ public enum ResourcePathEnum {
     GENRE_PICTURE_FOLDER(Paths.get("/resources/genre_pictures/")),
     MOOD_FOLDER(Paths.get("/resources/moods/")),
     MOOD_METADATA_FOLDER(Paths.get("/resources/moods_meta/")),
-    MOOD_ENCODED_FOLDER(Paths.get("/resources/encoded_mood/"));
+    MOOD_ENCODED_FOLDER(Paths.get("/resources/encoded_mood/")),
+    PLAYLIST_IMAGE_FOLDER(Paths.get("/resources/playlist_images/"));
 
 
     /**
