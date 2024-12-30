@@ -29,7 +29,7 @@ public class PlaylistRestController {
      * @param playlistCreation The information on the playlist to be created.
      * @return The status of the playlist creation.
      */
-    @PostMapping("/playlist/create²")
+    @PostMapping("/playlist/create")
     @Security(PrivilegeEnum.PLAY)
     public KommunicatorDto createPlaylist(@RequestBody PlaylistCreationDto playlistCreation) {
         // Creating the playlist.
