@@ -36,6 +36,7 @@ CREATE SEQUENCE SEQ_PRIVILEGE START WITH 1000 CACHE 20;
 CREATE SEQUENCE SEQ_ROLE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_WISH START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_PLAYLIST START WITH 1000 CACHE 20; 
+CREATE SEQUENCE SEQ_PLAYLIST_ASIDE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_PLAYLIST_TRACK START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RANDOM_GENRE START WITH 1000 CACHE 20; 
 CREATE SEQUENCE SEQ_RANDOM_LABEL START WITH 1000 CACHE 20; 
@@ -479,6 +480,16 @@ CREATE TABLE playlist (
 );
 COMMENT ON COLUMN playlist.user_id IS 'ManyToOne FK mzk_user';
 
+CREATE TABLE playlist_aside (
+	playlist_aside_id BIGINT not null,
+	rank INTEGER not null,
+	playlist_id BIGINT,
+	user_id BIGINT,
+	CONSTRAINT PK_PLAYLIST_ASIDE PRIMARY KEY (playlist_aside_id)
+);
+COMMENT ON COLUMN playlist_aside.playlist_id IS 'ManyToOne FK playlist';
+COMMENT ON COLUMN playlist_aside.user_id IS 'ManyToOne FK mzk_user';
+
 CREATE TABLE playlist_track (
 	playlist_track_id BIGINT not null,
 	date_added TIMESTAMP not null,
@@ -589,6 +600,8 @@ ALTER TABLE privileges_role ADD CONSTRAINT FK_privileges_role_2 FOREIGN KEY (pri
 ALTER TABLE wish ADD CONSTRAINT FK_user_wish FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE wish ADD CONSTRAINT FK_wish_status FOREIGN KEY (wish_status_id) REFERENCES wish_status(wish_status_id);
 ALTER TABLE playlist ADD CONSTRAINT FK_playlist_creator FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
+ALTER TABLE playlist_aside ADD CONSTRAINT FK_playlist_aside_playlist FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id);
+ALTER TABLE playlist_aside ADD CONSTRAINT FK_playlist_aside_user FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE playlist_track ADD CONSTRAINT FK_playlist_track_playlist FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id);
 ALTER TABLE playlist_track ADD CONSTRAINT FK_added_by FOREIGN KEY (user_id) REFERENCES mzk_user(user_id);
 ALTER TABLE playlist_track ADD CONSTRAINT FK_track_playlist FOREIGN KEY (track_id) REFERENCES track(track_id);
@@ -657,6 +670,8 @@ CREATE INDEX IDX_privileges_role_2 ON privileges_role (privilege_id);
 CREATE INDEX IDX_user_wish ON wish (user_id);
 CREATE INDEX IDX_wish_status ON wish (wish_status_id);
 CREATE INDEX IDX_playlist_creator ON playlist (user_id);
+CREATE INDEX IDX_playlist_aside_playlist ON playlist_aside (playlist_id);
+CREATE INDEX IDX_playlist_aside_user ON playlist_aside (user_id);
 CREATE INDEX IDX_playlist_track_playlist ON playlist_track (playlist_id);
 CREATE INDEX IDX_added_by ON playlist_track (user_id);
 CREATE INDEX IDX_track_playlist ON playlist_track (track_id);

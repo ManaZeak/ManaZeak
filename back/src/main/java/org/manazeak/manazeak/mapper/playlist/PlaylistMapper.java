@@ -34,7 +34,7 @@ public abstract class PlaylistMapper {
     @Mapping(target = "creator", source = "user")
     @Mapping(target = "creationDate", expression = "java(LocalDateTime.now())")
     @Mapping(target = "name", source = "playlistCreation.name")
-    @Mapping(target = "appendTrack", expression = "java(!playlistCreation.getAddItemAtStartRank())")
+    @Mapping(target = "appendTrack", expression = "java(!playlistCreation.addItemAtStartRank())")
     public abstract Playlist buildPlaylist(MzkUser user, PlaylistCreationDto playlistCreation);
 
     public abstract PlaylistAsideDto buildPlaylistAside(Playlist playlist);

@@ -10,8 +10,10 @@ import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.manager.playlist.PlaylistManager;
 import org.manazeak.manazeak.manager.security.user.UserManager;
-import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
+import org.manazeak.manazeak.mapper.playlist.PlaylistAsideManager;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Handles the playlist manipulation in the application.
@@ -25,22 +27,30 @@ public class PlaylistService {
 
     private final PlaylistManager playlistManager;
 
-    private final PlaylistMapper playlistMapper;
+    private final PlaylistAsideManager playlistAsideManager;
 
     /**
      * Create a playlist for the current user.
      *
      * @param playlistCreation The information on the playlist to create.
-     * @return The information on the created playlist to be displayed in the aside.
      */
-    public PlaylistAsideDto createPlaylist(PlaylistCreationDto playlistCreation) {
+    public void createPlaylist(PlaylistCreationDto playlistCreation) {
         // The user creating the playlist.
         MzkUser user = userManager.getCurrentUser();
 
         // Creating the playlist
         Playlist playlist = playlistManager.createPlaylist(user, playlistCreation);
+        // Add the playlist in the aside of the current user.
+        playlistAsideManager.addPlaylistToAside(user, playlist);
+    }
 
-        return playlistMapper.buildPlaylistAside(playlist);
+    /**
+     * Get all the playlist available to the user in his aside.
+     *
+     * @return The playlist element available for the user.
+     */
+    public List<PlaylistAsideDto> getPlaylistsAsideInfo() {
+        return playlistAsideManager.listPlaylistAside(userManager.getCurrentUser());
     }
 
     /**
@@ -50,13 +60,13 @@ public class PlaylistService {
      * @param itemType   The type of item to add in the playlist.
      * @param itemId     The identifier of the item to add.
      */
-    public void addItemToPlaylist(@NonNull MzkUser user, @NonNull Long playlistId,
+    public void addItemToPlaylist(@NonNull Long playlistId,
                                   @NonNull LibraryItemTypeEnum itemType, @NonNull Long itemId) {
-        MzkUser currentUser = userManager.getCurrentUser();
-        Playlist playlist = playlistManager.getPlaylist(currentUser, playlistId);
+        MzkUser user = userManager.getCurrentUser();
+        Playlist playlist = playlistManager.getPlaylist(user, playlistId);
 
         // Checking if the user can modify the playlist.
-        playlistManager.checkUserCanEditPlaylist(currentUser, playlist);
+        playlistManager.checkUserCanEditPlaylist(user, playlist);
 
         // Adding the item to the playlist depending on the type.
         switch (itemType) {
