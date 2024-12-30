@@ -29,7 +29,7 @@ public class PlaylistRestController {
      * @param playlistCreation The information on the playlist to be created.
      * @return The status of the playlist creation.
      */
-    @PostMapping("/playlist/create")
+    @PostMapping("/playlist/create²")
     @Security(PrivilegeEnum.PLAY)
     public KommunicatorDto createPlaylist(@RequestBody PlaylistCreationDto playlistCreation) {
         // Creating the playlist.
@@ -48,10 +48,10 @@ public class PlaylistRestController {
      */
     @PostMapping("/playlist/{playlistId}/add/{itemId}")
     @Security(PrivilegeEnum.PLAY)
-    public KommunicatorDto addItemToPlaylist(@PathVariable Long playlistId, @PathVariable String itemId,
+    public KommunicatorDto addItemToPlaylist(@PathVariable Long playlistId, @PathVariable Long itemId,
                                              @RequestBody String itemType) {
         // Adding the element into the playlist.
-        playlistService.addItemToPlaylist(playlistId, libraryItemMapper.parseItem(itemId), playlistId);
+        playlistService.addItemToPlaylist(playlistId, libraryItemMapper.parseItem(itemType), itemId);
         // Sending the response to the front.
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.add_item");
     }
