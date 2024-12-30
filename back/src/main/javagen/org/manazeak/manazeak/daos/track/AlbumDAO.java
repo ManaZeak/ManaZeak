@@ -153,6 +153,7 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
     @Query("""
             select t.id from Album a
             join Track t on t.album = a
+            where a.albumId = :albumId
             order by t.trackNumber
             """)
     List<Long> getAllAlbumTrackIdentifier(Long albumId);

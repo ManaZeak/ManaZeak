@@ -30,7 +30,7 @@ public class PlaylistInsertDao {
                                         user_id,
                                         track_id)
             VALUES (
-                    nextval(seq_playlist_track),
+                    nextval('SEQ_PLAYLIST_TRACK'),
                     ?,
                     ?,
                     ?,
