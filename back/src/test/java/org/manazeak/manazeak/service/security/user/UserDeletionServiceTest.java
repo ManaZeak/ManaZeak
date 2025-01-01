@@ -51,11 +51,11 @@ class UserDeletionServiceTest extends AbstractManaZeakTest {
         // Creating multiple users.
         MzkUser son1 = userDataCreation.createUserWithParent(parent, "a");
         Long sonId = userDataCreation.createUserWithParent(son1, "b").getUserId();
+        cleanJpa();
         // Trying to delete the last user created.
         Long lastUserId = son1.getUserId();
         userService.deleteUser(lastUserId);
         testUserHasBeenDeleted(lastUserId);
-        cleanJpa();
         // Check that the parent of the son2 is the parent of the deleted user.
         Long newParentId = userDAO.findById(sonId).get().getInviteCode().getParent().getUserId();
         Assertions.assertEquals(parent.getUserId(), newParentId, "The delete user children haven't been transferred to the parent.");

@@ -92,7 +92,7 @@ class WishServiceTest extends AbstractManaZeakTest {
     @Test
     @WithMockUser(username = UserTestConstants.USERNAME)
     void testDeleteWishForOtherUserNotPermitted() {
-        // Creating the logged in user.
+        // Creating the logged-in user.
         userDataCreation.createDefaultMzkUser();
         // Creating the user linked to the wish
         MzkUser user = userDataCreation.createMultipleMzkUser(1);
