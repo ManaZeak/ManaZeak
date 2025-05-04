@@ -1,7 +1,9 @@
 package org.manazeak.manazeak.mapper.playlist;
 
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.mapstruct.Mapper;
@@ -9,6 +11,7 @@ import org.mapstruct.Mapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -38,6 +41,14 @@ public abstract class PlaylistMapper {
     public abstract Playlist buildPlaylist(MzkUser user, PlaylistCreationDto playlistCreation);
 
     public abstract PlaylistAsideDto buildPlaylistAside(Playlist playlist);
+
+    @Mapping(target = "genres", source = "genresInPlaylist")
+    @Mapping(target = "userCreator", source = "playlist.creator.name")
+    @Mapping(target = "playlistName", source = "playlist.name")
+    @Mapping(target = "playlistDescription", source = "playlist.description")
+    @Mapping(target = "created", source = "playlist.creationDate")
+    public abstract PlaylistInfoDto buildPlaylistInfo(Playlist playlist, int nbTracks,
+                                                      List<GenreMinimalInfoDto> genresInPlaylist);
 
     /**
      * Build an identifier for the playlist picture if there is one.

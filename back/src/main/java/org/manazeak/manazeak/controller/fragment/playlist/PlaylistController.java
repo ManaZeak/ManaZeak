@@ -6,9 +6,11 @@ import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.playlist.PlaylistFragmentEnum;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -19,13 +21,27 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
 
-
     @Security(PrivilegeEnum.PLAY)
     @GetMapping("/playlist/aside")
     public String getPlaylistAside(Model model) {
         List<PlaylistAsideDto> playlistsAsideInfo = playlistService.getPlaylistsAsideInfo();
         model.addAttribute("playlists", playlistsAsideInfo);
         return PlaylistFragmentEnum.PLAYLIST_ASIDE.getPage();
+    }
+
+    /**
+     * Get the information containing the playlist information.
+     *
+     * @param model      The information needed to build the page.
+     * @param playlistId The identifier of the playlist to load.
+     * @return The playlist information.
+     */
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/playlist/{playlistId}/getInfo")
+    public String getPlaylistInfo(Model model, @PathVariable Long playlistId) {
+        PlaylistInfoDto playlistInfo = playlistService.getPlaylistInfo(playlistId);
+        model.addAttribute("playlist", playlistInfo);
+        return PlaylistFragmentEnum.PLAYLIST_INFO.getPage();
     }
 
 }

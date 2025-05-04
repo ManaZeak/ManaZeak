@@ -20,7 +20,7 @@ public final class ThreadUtils {
      */
     public static void awaitExecutorTermination(@NonNull final ExecutorService executor, @NonNull String taskName) {
         // Checking if the executor is terminated.
-        if (!executor.isTerminated()) {
+        if (!executor.isShutdown()) {
             log.error("The executor must be terminated, otherwise this method will forever.");
             throw new MzkRuntimeException("Executor is not terminated");
         }

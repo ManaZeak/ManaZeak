@@ -1,0 +1,17 @@
+<div class="modal" xmlns:th="http://www.thymeleaf.org">
+  <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto"*/-->
+  <p th:text="${playlist.playlistId}"></p>
+  <p th:text="${playlist.playlistName}"></p>
+  <p th:text="${playlist.playlistDescription}"></p>
+  <p th:text="${playlist.isPublic}"></p>
+  <p th:text="${playlist.isPublicEditable}"></p>
+  <p th:text="${playlist.appendTrack}"></p>
+  <p th:text="${playlist.imagePath}"></p>
+  <p th:text="${playlist.userCreator}"></p>
+  <p th:text="${playlist.created}"></p>
+  <p th:text="${playlist.nbTracks}"></p>
+  <p th:text="${playlist.nbTracks}"></p>
+  <div th:each="genre : ${playlist.genres}" th:attr="data-id=*{genre.genreId}"> <!-- Replicating ID for click evt -->
+    <div th:replace="~{/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)}"></div>
+  </div>
+</div>

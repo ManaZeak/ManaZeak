@@ -13,7 +13,8 @@ public enum PlaylistFragmentEnum {
     /**
      * Fragment to display the playlists in the user aside.
      */
-    PLAYLIST_ASIDE("fragments/playlist/playlist-aside.html");
+    PLAYLIST_ASIDE("fragments/playlist/playlist-aside.html"),
+    PLAYLIST_INFO("fragments/playlist/playlist-info.html");
 
     private final String page;
 }

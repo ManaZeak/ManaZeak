@@ -7,7 +7,9 @@ import org.manazeak.manazeak.daos.playlist.PlaylistDAO;
 import org.manazeak.manazeak.daos.playlist.PlaylistInsertDao;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
@@ -32,7 +34,9 @@ public class PlaylistManager {
     private final PlaylistDAO playlistDAO;
 
     private final PlaylistInsertDao playlistInsertDao;
+
     private final AlbumDAO albumDAO;
+
     private final ArtistDAO artistDAO;
 
     /**
@@ -75,6 +79,32 @@ public class PlaylistManager {
         }
 
         return playlist;
+    }
+
+    /**
+     * Get the playlist information for a user.
+     *
+     * @param user       The user requesting the playlist.
+     * @param playlistId The identifier of the playlist.
+     * @return The information of the playlist.
+     */
+    public PlaylistInfoDto getPlaylistInformation(MzkUser user, Long playlistId) {
+        // Getting the playlist
+        Playlist playlist = playlistDAO.getPlaylistByIdentifier(user, playlistId)
+                .orElseThrow(() -> new MzkRuntimeException("Playlist not found"));
+
+        // Getting the tracks contained in the playlist.
+        int nbTracks = playlistDAO.countTrackInPlaylist(playlist);
+
+        // Getting the genres contained in the playlist.
+        List<GenreMinimalInfoDto> genreInPlaylist = playlistDAO.getGenresContainedInPlaylist(user, playlistId);
+
+        // Build the response object.
+        return playlistMapper.buildPlaylistInfo(
+                playlist,
+                nbTracks,
+                genreInPlaylist
+        );
     }
 
     /**

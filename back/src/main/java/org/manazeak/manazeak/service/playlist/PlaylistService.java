@@ -6,6 +6,7 @@ import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.library.LibraryItemTypeEnum;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.manager.playlist.PlaylistManager;
@@ -51,6 +52,20 @@ public class PlaylistService {
      */
     public List<PlaylistAsideDto> getPlaylistsAsideInfo() {
         return playlistAsideManager.listPlaylistAside(userManager.getCurrentUser());
+    }
+
+    /**
+     * Get the information of the playlist.
+     *
+     * @param playlistId The identifier of the playlist.
+     * @return The information of the playlist.
+     */
+    public PlaylistInfoDto getPlaylistInfo(Long playlistId) {
+        // Getting the user requesting the playlist.
+        MzkUser user = userManager.getCurrentUser();
+
+        // Build the playlist information.
+        return playlistManager.getPlaylistInformation(user, playlistId);
     }
 
     /**

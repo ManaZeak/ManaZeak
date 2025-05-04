@@ -1,11 +1,13 @@
 package org.manazeak.manazeak.daos.playlist;
 
+import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -50,6 +52,27 @@ public interface PlaylistDAO extends JpaRepository<Playlist, Long> {
             where p.playlist = :playlist
             """)
     int countTrackInPlaylist(Playlist playlist);
+
+    /**
+     * Get the genres contained in the playlist.
+     *
+     * @param user       The user requesting the information.
+     * @param playlistId The identifier of the playlist.
+     * @return The genre contained in the playlist.
+     */
+    @Query("""
+            select distinct new org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto(
+                g.id,
+                g.name,
+                g.pictureFilename
+            ) from PlaylistTrack pt
+            join pt.playlist pl
+            join pt.track t
+            join t.genreList g
+            where (pl.creator = :user or pl.isPublic)
+            order by g.name
+            """)
+    List<GenreMinimalInfoDto> getGenresContainedInPlaylist(MzkUser user, Long playlistId);
 
     /**
      * Add an offset to all the tracks of a playlist.

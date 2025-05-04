@@ -1,5 +1,5 @@
 <div class="modal" xmlns:th="http://www.thymeleaf.org">
-  <!--/*@thymesVar id="track" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
+  <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
   <div th:each="playlist : ${playlists}">
     <p th:text="*{playlist.name}"></p>
     <p th:text="*{playlist.imagePath}"></p>

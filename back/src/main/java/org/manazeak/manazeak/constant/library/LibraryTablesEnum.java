@@ -28,5 +28,6 @@ public enum LibraryTablesEnum {
     ARTIST,
     LABEL,
     THUMBNAIL_ERROR,
-    MOODBAR_ERROR
+    MOODBAR_ERROR,
+    PLAYLIST_TRACK
 }
