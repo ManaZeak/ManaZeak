@@ -5,6 +5,7 @@ import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.playlist.PlaylistFragmentEnum;
+import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
@@ -42,6 +43,21 @@ public class PlaylistController {
         PlaylistInfoDto playlistInfo = playlistService.getPlaylistInfo(playlistId);
         model.addAttribute("playlist", playlistInfo);
         return PlaylistFragmentEnum.PLAYLIST_INFO.getPage();
+    }
+
+    /**
+     * Get the all the tracks of a playlist.
+     *
+     * @param model      The information to build the page.
+     * @param playlistId The identifier of the playlist.
+     * @return The tracks contained in the playlist sorted by rank.
+     */
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/playlist/{playlistId}/getTracks")
+    public String getPlaylistTracks(Model model, @PathVariable Long playlistId) {
+        List<TrackCompleteInfoDto> tracks = playlistService.getPlaylistTracks(playlistId);
+        model.addAttribute("tracks", tracks);
+        return PlaylistFragmentEnum.PLAYLIST_TRACKS.getPage();
     }
 
 }

@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.library.LibraryItemTypeEnum;
+import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
@@ -66,6 +67,18 @@ public class PlaylistService {
 
         // Build the playlist information.
         return playlistManager.getPlaylistInformation(user, playlistId);
+    }
+
+    /**
+     * Get the tracks in a user playlist.
+     *
+     * @param playlistId The identifier of the user playlist.
+     * @return The list of the tracks contained in the playlist.
+     */
+    public List<TrackCompleteInfoDto> getPlaylistTracks(Long playlistId) {
+        // Fetching the playlist to check if the user is allowed to access this playlist.
+        PlaylistInfoDto playlistInfo = getPlaylistInfo(playlistId);
+        return playlistManager.getPlaylistTracks(playlistInfo.playlistId());
     }
 
     /**

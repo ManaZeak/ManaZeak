@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.daos.playlist;
 
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -73,6 +74,55 @@ public interface PlaylistDAO extends JpaRepository<Playlist, Long> {
             order by g.name
             """)
     List<GenreMinimalInfoDto> getGenresContainedInPlaylist(MzkUser user, Long playlistId);
+
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto(
+                trk.trackId,
+                trk.title,
+                trk.duration,
+                trk.isrc,
+                trk.bpm,
+                trk.mood,
+                keys.label,
+                keys.keyId,
+                perf.artistId,
+                perf.name,
+                perf.pictureFilename,
+                perf.isLabel,
+                genre.genreId,
+                genre.name,
+                genre.pictureFilename,
+                comp.artistId,
+                comp.name,
+                comp.pictureFilename,
+                comp.isLabel,
+                lyr.artistId,
+                lyr.name,
+                lyr.pictureFilename,
+                lyr.isLabel,
+                pro.artistId,
+                pro.name,
+                pro.pictureFilename,
+                pro.isLabel,
+                eng.artistId,
+                eng.name,
+                eng.pictureFilename,
+                eng.isLabel
+            )
+            from Track trk
+            join trk.album alb
+            left join trk.keyList keys
+            left join trk.performerList perf
+            left join trk.genreList genre
+            left join trk.composerList comp
+            left join trk.lyricistList lyr
+            left join trk.producerList pro
+            left join trk.engineerList eng
+            join PlaylistTrack pl on pl.track = trk
+            where pl.playlist.id = :playlistId
+            order by pl.rank
+            """)
+    List<TrackCompleteInfoDbDto> getPlaylistTracks(Long playlistId);
 
     /**
      * Add an offset to all the tracks of a playlist.

@@ -8,11 +8,13 @@ import org.manazeak.manazeak.daos.playlist.PlaylistInsertDao;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
+import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
+import org.manazeak.manazeak.manager.library.track.TrackConverterManager;
 import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +25,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Handle the playlist manipulation.
+ * The PlaylistManager class provides functionalities to manage playlists,
+ * including creation, adding tracks from different sources, and retrieving playlist information.
+ * It ensures consistency in playlist attributes and interacts with various DAO components to handle persistence.
  */
 @RequiredArgsConstructor
 @Component
 public class PlaylistManager {
 
     private final PlaylistMapper playlistMapper;
+
+    private final TrackConverterManager converterManager;
 
     private final PlaylistDAO playlistDAO;
 
@@ -38,6 +44,7 @@ public class PlaylistManager {
     private final AlbumDAO albumDAO;
 
     private final ArtistDAO artistDAO;
+
 
     /**
      * Checking if the playlist public and private flags are coherent.
@@ -104,6 +111,18 @@ public class PlaylistManager {
                 playlist,
                 nbTracks,
                 genreInPlaylist
+        );
+    }
+
+    /**
+     * Get the tracks contained in the playlist.
+     *
+     * @param playlistId The identifier of the playlist
+     * @return The tracks of the playlist ordered by rank.
+     */
+    public List<TrackCompleteInfoDto> getPlaylistTracks(Long playlistId) {
+        return converterManager.convertTrackCompleteInfoDbToTrackCompleteInfo(
+                playlistDAO.getPlaylistTracks(playlistId)
         );
     }
 
