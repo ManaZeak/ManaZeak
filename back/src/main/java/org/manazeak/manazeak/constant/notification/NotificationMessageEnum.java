@@ -8,6 +8,6 @@ public interface NotificationMessageEnum {
     /**
      * @return the information about tne notification messages.
      */
-    NotificationMessage getNotificationMessages();
+    NotificationMessage getNotificationMessage();
 
 }

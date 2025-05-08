@@ -1,16 +1,15 @@
 package org.manazeak.manazeak.exception;
 
+import lombok.Getter;
 import org.manazeak.manazeak.constant.notification.NotificationMessage;
 import org.manazeak.manazeak.constant.notification.NotificationMessageEnum;
 
 /**
  * Runtime exception for ManaZeak
  */
+@Getter
 public class MzkRuntimeException extends RuntimeException {
 
-    /**
-     * Contains the messages contained in the notification.
-     */
     private final NotificationMessage notificationMessage;
 
     /**
@@ -23,7 +22,7 @@ public class MzkRuntimeException extends RuntimeException {
     public MzkRuntimeException(String message, NotificationMessageEnum notification, Throwable e) {
         super(message, e);
         if (notification != null) {
-            notificationMessage = notification.getNotificationMessages();
+            notificationMessage = notification.getNotificationMessage();
         } else {
             notificationMessage = null;
         }
@@ -49,7 +48,7 @@ public class MzkRuntimeException extends RuntimeException {
     public MzkRuntimeException(String message, NotificationMessageEnum notification) {
         super(message);
         if (notification != null) {
-            notificationMessage = notification.getNotificationMessages();
+            notificationMessage = notification.getNotificationMessage();
         } else {
             notificationMessage = null;
         }
@@ -65,10 +64,4 @@ public class MzkRuntimeException extends RuntimeException {
         notificationMessage = null;
     }
 
-    /**
-     * @return The key of the messages inside the notification.
-     */
-    public NotificationMessage getNotificationMessage() {
-        return notificationMessage;
-    }
 }

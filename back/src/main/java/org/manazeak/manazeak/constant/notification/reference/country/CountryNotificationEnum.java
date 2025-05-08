@@ -22,7 +22,7 @@ public enum CountryNotificationEnum implements NotificationMessageEnum {
      * @return the information about tne notification messages.
      */
     @Override
-    public NotificationMessage getNotificationMessages() {
+    public NotificationMessage getNotificationMessage() {
         return message;
     }
 }

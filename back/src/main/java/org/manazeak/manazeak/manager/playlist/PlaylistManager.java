@@ -3,8 +3,10 @@ package org.manazeak.manazeak.manager.playlist;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.file.ResourcePathEnum;
+import org.manazeak.manazeak.constant.notification.playlist.PlaylistNotificationEnum;
 import org.manazeak.manazeak.daos.playlist.PlaylistDAO;
 import org.manazeak.manazeak.daos.playlist.PlaylistInsertDao;
+import org.manazeak.manazeak.daos.playlist.PlaylistTrackDAO;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
@@ -44,6 +46,7 @@ public class PlaylistManager {
     private final AlbumDAO albumDAO;
 
     private final ArtistDAO artistDAO;
+    private final PlaylistTrackDAO playlistTrackDAO;
 
 
     /**
@@ -178,7 +181,33 @@ public class PlaylistManager {
      */
     public Playlist getPlaylist(MzkUser user, Long playlistId) {
         return playlistDAO.getPlaylistByIdentifier(user, playlistId)
-                .orElseThrow(() -> new MzkRuntimeException("No playlist found for the provided identifier."));
+                .orElseThrow(() -> new MzkRuntimeException("No playlist found for the provided identifier.", PlaylistNotificationEnum.PLAYLIST_NOT_FOUND_ERROR));
+    }
+
+    /**
+     * Delete a playlist.
+     *
+     * @param playlist The playlist to delete.
+     */
+    public void deletePlaylist(Playlist playlist) {
+        playlistTrackDAO.deleteByPlaylist(playlist);
+        playlistDAO.delete(playlist);
+    }
+
+    /**
+     * Checks if a user can delete a playlist.
+     *
+     * @param user     The user trying to delete the playlist.
+     * @param playlist The playlist to be deleted.
+     */
+    public void checkUserCanDeletePlaylist(MzkUser user, @NonNull Playlist playlist) {
+        // If the user is the creator of the playlist, he can always delete it.
+        if (playlist.getCreator().getUserId().equals(user.getUserId())) {
+            return;
+        }
+
+        // Otherwise, nobody can delete the playlist.
+        throw new MzkRuntimeException("You are not allowed to delete this playlist.");
     }
 
     /**

@@ -1,33 +1,16 @@
 package org.manazeak.manazeak.constant.notification;
 
-import lombok.Getter;
+import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
+import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorNotificationDto;
+import org.manazeak.manazeak.manager.MessageManager;
 
 import java.io.Serializable;
 
 /**
  * Contains the messages used to build the notification.
  */
-@Getter
-public final class NotificationMessage implements Serializable {
-
-    private final String messageKey;
-
-    private final String titleKey;
-
-    private final NotificationTypeEnum type;
-
-    /**
-     * Build an instance of the notification message.
-     *
-     * @param messageKey The i18n key of the message.
-     * @param titleKey   The i18n key of the title.
-     * @param type   The severity of the notification in the front.
-     */
-    private NotificationMessage(String messageKey, String titleKey, NotificationTypeEnum type) {
-        this.messageKey = messageKey;
-        this.titleKey = titleKey;
-        this.type = type;
-    }
+public record NotificationMessage(String messageKey, String titleKey,
+                                  NotificationTypeEnum type) implements Serializable {
 
     public static NotificationMessage of(String messageKey, String titleKey, NotificationTypeEnum type) {
         return new NotificationMessage(messageKey, titleKey, type);
@@ -37,4 +20,17 @@ public final class NotificationMessage implements Serializable {
         return new NotificationMessage(messageKey, titleKey, NotificationTypeEnum.ERROR);
     }
 
+    public KommunicatorDto buildKommunicator(MessageManager messageManager) {
+        KommunicatorDto kom = new KommunicatorDto(type.isSuccess());
+        kom.addNotification(buildKommunicatorNotification(messageManager));
+        return kom;
+    }
+
+    private KommunicatorNotificationDto buildKommunicatorNotification(MessageManager messageManager) {
+        KommunicatorNotificationDto notif = new KommunicatorNotificationDto();
+        notif.setMessage(messageManager.getMessage(messageKey));
+        notif.setTitle(messageManager.getMessage(titleKey));
+        notif.setType(type.getStatus());
+        return notif;
+    }
 }

@@ -47,6 +47,22 @@ public class PlaylistService {
     }
 
     /**
+     * Delete a playlist for the current user.
+     *
+     * @param playlistId The identifier of the playlist to delete.
+     */
+    public void deletePlaylist(Long playlistId) {
+        MzkUser user = userManager.getCurrentUser();
+        Playlist playlist = playlistManager.getPlaylist(user, playlistId);
+
+        // Checking if the user can delete the playlist.
+        playlistManager.checkUserCanDeletePlaylist(user, playlist);
+
+        // Deleting the tracks associated with this playlist.
+        playlistManager.deletePlaylist(playlist);
+    }
+
+    /**
      * Get all the playlist available to the user in his aside.
      *
      * @return The playlist element available for the user.

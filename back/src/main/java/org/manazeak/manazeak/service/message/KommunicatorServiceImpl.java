@@ -104,7 +104,7 @@ public class KommunicatorServiceImpl implements KommunicatorService {
     }
 
     private KommunicatorDto buildKomFromMzkException(MzkException e) {
-        // The application is in a error state.
+        // The application is in an error state.
         KommunicatorDto kom = new KommunicatorDto(false);
 
         // Building the error from the exception.

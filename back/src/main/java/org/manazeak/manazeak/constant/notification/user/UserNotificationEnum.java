@@ -18,7 +18,7 @@ public enum UserNotificationEnum implements NotificationMessageEnum {
     ERROR_DELETING_ADMIN(NotificationMessage.of("user.error.delete_parent",
             "user.error.lock_out_protection_title"));
 
-    NotificationMessage messages;
+    private final NotificationMessage messages;
 
     UserNotificationEnum(NotificationMessage messages) {
         this.messages = messages;
@@ -28,7 +28,7 @@ public enum UserNotificationEnum implements NotificationMessageEnum {
      * @return the information about tne notification messages.
      */
     @Override
-    public NotificationMessage getNotificationMessages() {
+    public NotificationMessage getNotificationMessage() {
         return messages;
     }
 }

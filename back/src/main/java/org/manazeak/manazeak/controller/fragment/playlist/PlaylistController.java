@@ -23,7 +23,7 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/playlist/aside")
+    @GetMapping("/playlist/aside/")
     public String getPlaylistAside(Model model) {
         List<PlaylistAsideDto> playlistsAsideInfo = playlistService.getPlaylistsAsideInfo();
         model.addAttribute("playlists", playlistsAsideInfo);
@@ -38,7 +38,7 @@ public class PlaylistController {
      * @return The playlist information.
      */
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/playlist/{playlistId}/getInfo")
+    @GetMapping("/playlist/{playlistId}/getInfo/")
     public String getPlaylistInfo(Model model, @PathVariable Long playlistId) {
         PlaylistInfoDto playlistInfo = playlistService.getPlaylistInfo(playlistId);
         model.addAttribute("playlist", playlistInfo);
@@ -53,7 +53,7 @@ public class PlaylistController {
      * @return The tracks contained in the playlist sorted by rank.
      */
     @Security(PrivilegeEnum.PLAY)
-    @GetMapping("/playlist/{playlistId}/getTracks")
+    @GetMapping("/playlist/{playlistId}/getTracks/")
     public String getPlaylistTracks(Model model, @PathVariable Long playlistId) {
         List<TrackCompleteInfoDto> tracks = playlistService.getPlaylistTracks(playlistId);
         model.addAttribute("tracks", tracks);

@@ -8,10 +8,7 @@ import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
 import org.manazeak.manazeak.mapper.gobal.LibraryItemMapper;
 import org.manazeak.manazeak.service.message.KommunicatorService;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,13 +26,19 @@ public class PlaylistRestController {
      * @param playlistCreation The information on the playlist to be created.
      * @return The status of the playlist creation.
      */
-    @PostMapping("/playlist/create")
+    @PostMapping("/playlist/create/")
     @Security(PrivilegeEnum.PLAY)
     public KommunicatorDto createPlaylist(@RequestBody PlaylistCreationDto playlistCreation) {
         // Creating the playlist.
         playlistService.createPlaylist(playlistCreation);
         // Sending the response to the front.
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.creation.success_title");
+    }
+
+    @DeleteMapping("/playlist/{playlistId}/")
+    public KommunicatorDto deletePlaylist(@PathVariable Long playlistId) {
+        playlistService.deletePlaylist(playlistId);
+        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.delete");
     }
 
     /**
@@ -46,7 +49,7 @@ public class PlaylistRestController {
      * @param itemType   The type of item, it can be a track, an album or an artist.
      * @return The status of the request.
      */
-    @PostMapping("/playlist/{playlistId}/add/{itemId}")
+    @PostMapping("/playlist/{playlistId}/add/{itemId}/")
     @Security(PrivilegeEnum.PLAY)
     public KommunicatorDto addItemToPlaylist(@PathVariable Long playlistId, @PathVariable Long itemId,
                                              @RequestBody String itemType) {
