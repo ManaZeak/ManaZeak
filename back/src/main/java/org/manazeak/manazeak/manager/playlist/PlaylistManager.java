@@ -14,7 +14,9 @@ import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
+import org.manazeak.manazeak.entity.playlist.PlaylistTrack;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.track.TrackConverterManager;
 import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
@@ -46,6 +48,7 @@ public class PlaylistManager {
     private final AlbumDAO albumDAO;
 
     private final ArtistDAO artistDAO;
+
     private final PlaylistTrackDAO playlistTrackDAO;
 
 
@@ -173,6 +176,23 @@ public class PlaylistManager {
     }
 
     /**
+     * Remove a track from a playlist.
+     *
+     * @param playlist The playlist containing the track.
+     * @param trackId  The identifier of the track.
+     */
+    public void removeTrackFromPlaylist(Playlist playlist, Long trackId) {
+        // Getting the track from the playlist.
+        PlaylistTrack playlistTrack = playlistTrackDAO.findByPlaylistAndTrack_TrackId(playlist, trackId)
+                .orElseThrow(
+                        MzkExceptionHelper.generateMzkRuntimeException("Track not found in playlist.", PlaylistNotificationEnum.PLAYLIST_TRACK_NOT_FOUND_ERROR)
+                );
+
+        // Deleting the track.
+        playlistTrackDAO.delete(playlistTrack);
+    }
+
+    /**
      * Get the playlist for the user.
      *
      * @param user       The user associated with this playlist.
@@ -272,9 +292,16 @@ public class PlaylistManager {
         playlistInsertDao.addPlaylistTracks(user, playlist, existingTracks, trackIds);
     }
 
+    /**
+     * Prepend the tracks to the playlist.
+     *
+     * @param user     The user making this action.
+     * @param playlist The information on the playlist where the tracks must be added.
+     * @param trackIds The identifier of the tracks to add.
+     */
     private void prependTracks(MzkUser user, Playlist playlist, List<Long> trackIds) {
         int tracksToAdd = trackIds.size();
-        // Offseting the existing tracks
+        // Offsetting the existing tracks
         playlistDAO.offsetPlaylistTracks(playlist, tracksToAdd);
         // Adding the tracks starting with rank 1.
         playlistInsertDao.addPlaylistTracks(user, playlist, 1, trackIds.stream().toList());

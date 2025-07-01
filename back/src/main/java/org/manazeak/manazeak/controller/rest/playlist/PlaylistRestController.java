@@ -35,10 +35,29 @@ public class PlaylistRestController {
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.creation.success_title");
     }
 
+    /**
+     * Allows deleting a playlist in the database.
+     *
+     * @param playlistId The playlist identifier.
+     * @return The status of the playlist deletion.
+     */
     @DeleteMapping("/playlist/{playlistId}/")
     public KommunicatorDto deletePlaylist(@PathVariable Long playlistId) {
         playlistService.deletePlaylist(playlistId);
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.delete");
+    }
+
+    /**
+     * Allows deleting a track from a playlist in the database.
+     *
+     * @param playlistId The identifier of the playlist.
+     * @param trackId    The identifier of the track.
+     * @return The status of the track removal from the playlist.
+     */
+    @DeleteMapping("/playlist/{playlistId}/track/{trackId}/")
+    public KommunicatorDto deletePlaylistTrack(@PathVariable Long playlistId, @PathVariable Long trackId) {
+        playlistService.deletePlaylistTrack(playlistId, trackId);
+        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.track.delete");
     }
 
     /**

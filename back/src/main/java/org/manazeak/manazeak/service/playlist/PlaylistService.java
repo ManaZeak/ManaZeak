@@ -98,6 +98,24 @@ public class PlaylistService {
     }
 
     /**
+     * Delete a track from a playlist.
+     *
+     * @param playlistId The identifier of the playlist.
+     * @param trackId    The identifier of the track to delete.
+     */
+    public void deletePlaylistTrack(Long playlistId, Long trackId) {
+        // Getting the user requesting the playlist.
+        MzkUser user = userManager.getCurrentUser();
+
+        // Fetching the playlist to check if the user is allowed to access this playlist.
+        Playlist playlist = playlistManager.getPlaylist(user, playlistId);
+
+        // Checking if the user can delete the track from the playlist and remove it.
+        playlistManager.checkUserCanEditPlaylist(user, playlist);
+        playlistManager.removeTrackFromPlaylist(playlist, trackId);
+    }
+
+    /**
      * Add an item to a playlist.
      *
      * @param playlistId The playlist identifier.

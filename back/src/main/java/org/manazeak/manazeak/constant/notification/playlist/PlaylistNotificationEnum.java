@@ -15,7 +15,8 @@ import org.manazeak.manazeak.constant.notification.NotificationMessageEnum;
 @Getter
 public enum PlaylistNotificationEnum implements NotificationMessageEnum {
 
-    PLAYLIST_NOT_FOUND_ERROR(NotificationMessage.of("playlist.error.not_found", "playlist.error.not_found_title"));
+    PLAYLIST_NOT_FOUND_ERROR(NotificationMessage.of("playlist.error.not_found", "playlist.error.not_found_title")),
+    PLAYLIST_TRACK_NOT_FOUND_ERROR(NotificationMessage.of("playlist.error.track_not_found", "playlist.error.track_not_found_title"));
 
     private final NotificationMessage notificationMessage;
 
