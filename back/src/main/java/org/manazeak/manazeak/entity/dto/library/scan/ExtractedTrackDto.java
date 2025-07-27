@@ -3,6 +3,7 @@ package org.manazeak.manazeak.entity.dto.library.scan;
 import lombok.Data;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,5 +59,7 @@ public class ExtractedTrackDto {
     private List<String> keys;
 
     private boolean isMp3;
+
+    private LocalDateTime modificationDate;
 
 }

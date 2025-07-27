@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.manazeak.manazeak.daos.library.integration.album.AlbumIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.genre.GenreIntegrationDAO;
 import org.manazeak.manazeak.daos.library.integration.label.LabelIntegrationDAO;
+import org.manazeak.manazeak.daos.track.AlbumDAO;
+import org.manazeak.manazeak.daos.track.ArtistDAO;
+import org.manazeak.manazeak.daos.track.LabelDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
@@ -32,6 +35,9 @@ public class IntegrationBufferManager {
     private final AlbumIntegrationDAO albumIntegrationDAO;
     private final GenreIntegrationDAO genreIntegrationDAO;
     private final TrackIntegrationManager trackIntegrationManager;
+    private final ArtistDAO artistDAO;
+    private final LabelDAO labelDAO;
+    private final AlbumDAO albumDAO;
 
     /**
      * Integrate a buffer of tracks into the database.
@@ -90,7 +96,8 @@ public class IntegrationBufferManager {
      * @return An object containing all the entities that must be inserted.
      */
     public LibraryIntegrationContainer launchTagDtoConversion(List<ExtractedBandDto> bands) {
-        LibraryIntegrationContainer integrationHelper = new LibraryIntegrationContainer(cacheAccessManager);
+        LibraryIntegrationContainer integrationHelper = new LibraryIntegrationContainer(cacheAccessManager, artistDAO,
+                labelDAO);
 
         // Iterating over the objects of the buffer to create the object to be inserted into the database.
         for (ExtractedBandDto band : bands) {
@@ -98,7 +105,7 @@ public class IntegrationBufferManager {
             integrationHelper.convertBandIntoDto(band);
             for (ExtractedAlbumDto album : band.getAlbums()) {
                 // Extracting the information from the album.
-                integrationHelper.convertAlbumIntoDto(album, band);
+                integrationHelper.convertAlbumIntoDto(album, band, albumDAO);
                 for (ExtractedTrackDto track : album.getTracks()) {
                     // Extracting the information from the track.
                     integrationHelper.convertTrackIntoDto(track, album);

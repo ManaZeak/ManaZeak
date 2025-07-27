@@ -67,6 +67,7 @@ public class TrackIntegrationHelper {
         track.setOpus(extractedTrack.getOpus());
         track.setSubtitle(extractedTrack.getSubtitle());
         track.setMp3(extractedTrack.isMp3());
+        track.setLastModified(extractedTrack.getModificationDate());
         // Getting the ID of the genre.
         track.setGenreIds(getElementIdsByNames(extractedTrack.getGenres(), CacheEnum.GENRE_ID_BY_NAME));
         track.setKeyIds(getElementIdsByNames(extractedTrack.getKeys(), CacheEnum.KEY_ID_BY_NAME));

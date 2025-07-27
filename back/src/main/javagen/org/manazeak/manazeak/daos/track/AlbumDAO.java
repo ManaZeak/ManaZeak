@@ -145,6 +145,15 @@ public interface AlbumDAO extends CrudRepository<Album, Long> {
     List<AlbumMinimalInfoDto> getMinimalAlbumsByLabelId(@Param("labelId") Long labelId);
 
     /**
+     * Get the album identifier from the location of the album.
+     *
+     * @param location The location of the album.
+     * @return The identifier of the album if there is one.
+     */
+    @Query("select albumId from Album where location = :location")
+    Optional<Long> getAlbumIdByLocation(String location);
+
+    /**
      * Get all the track identifier contained in an album ordered by track number.
      *
      * @param albumId The identifier of the album.

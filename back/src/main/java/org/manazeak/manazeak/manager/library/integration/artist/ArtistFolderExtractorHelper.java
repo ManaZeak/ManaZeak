@@ -89,6 +89,7 @@ public final class ArtistFolderExtractorHelper {
             // Mapping the container with the extracted objects.
             ExtractedTrackDto track = TrackTagMapper.mapExtractedTrackToObjects(fileContainer, album, band);
             track.setMp3(scannedTrack.isMp3());
+            track.setModificationDate(scannedTrack.getLastModificationDate());
             return track;
         } catch (MzkTagException e) {
             LOG.warn("Error during the extraction of the track tag : {}", scannedTrack.getTrackPath(), e);

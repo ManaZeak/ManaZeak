@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.entity.track;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.Set;
@@ -45,6 +46,7 @@ public class Track implements Serializable{
 	private Boolean isMp3;
 	private String subtitle;
 	private String mood;
+	private LocalDateTime lastModified;
 	private Set<MoodbarError> moodbarErrorList;
 	private Album album;
 	private Set<Artist> producerList;
@@ -286,6 +288,21 @@ public class Track implements Serializable{
 		this.mood = mood;
     }  
     /**
+     * No comment found in model diagram
+     * @return value of lastModified
+     */
+    @Column(name="last_modified", nullable=false)
+	public LocalDateTime getLastModified(){
+		return lastModified;
+    }  
+    /**
+     * No comment found in model diagram
+     * @param lastModified new value to give to lastModified
+     */
+	public void setLastModified(final LocalDateTime lastModified){
+		this.lastModified = lastModified;
+    }  
+    /**
      * Association moobar_error_track to MoodbarError
      * @return value of moodbarErrorList
      */
@@ -482,6 +499,7 @@ public class Track implements Serializable{
 		result = 31 * result + (isMp3 == null? 0 : isMp3.hashCode());
 		result = 31 * result + (subtitle == null? 0 : subtitle.hashCode());
 		result = 31 * result + (mood == null? 0 : mood.hashCode());
+		result = 31 * result + (lastModified == null? 0 : lastModified.hashCode());
 			
 		return result;
 	}
@@ -521,6 +539,7 @@ public class Track implements Serializable{
 			&& (isMp3 == null ?  (otherTrack.isMp3 == null) : isMp3.equals(otherTrack.isMp3))
 			&& (subtitle == null ?  (otherTrack.subtitle == null) : subtitle.equals(otherTrack.subtitle))
 			&& (mood == null ?  (otherTrack.mood == null) : mood.equals(otherTrack.mood))
+			&& (lastModified == null ?  (otherTrack.lastModified == null) : lastModified.equals(otherTrack.lastModified))
 		;
 	}
 

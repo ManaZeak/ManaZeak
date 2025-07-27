@@ -193,6 +193,15 @@ public class PlaylistManager {
     }
 
     /**
+     * Remove tracks from all the playlists of the application.
+     *
+     * @param trackIds The identifier of the tracks to remove.
+     */
+    public void removeTracksFromAllPlaylist(List<Long> trackIds) {
+        playlistTrackDAO.deleteAllPlaylistTracks(trackIds);
+    }
+
+    /**
      * Get the playlist for the user.
      *
      * @param user       The user associated with this playlist.

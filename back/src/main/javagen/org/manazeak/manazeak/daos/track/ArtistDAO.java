@@ -32,6 +32,17 @@ public interface ArtistDAO extends CrudRepository<Artist, Long> {
     List<ArtistLinkerProjection> getArtistByNames(@Param("artistNames") Collection<String> artistNames);
 
     /**
+     * Get an artist by its name in the database.
+     *
+     * @param artistName The name of the artist.
+     * @return The identifier of the artist.
+     */
+    @Query("""
+            select artistId from Artist where name = :artistName
+            """)
+    Optional<Long> getArtistIdByArtistName(String artistName);
+
+    /**
      * Get the artists by the locations.
      *
      * @param locations The locations of the bands.

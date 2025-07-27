@@ -1,7 +1,9 @@
 package org.manazeak.manazeak.manager.library.integration.album;
 
+import lombok.Getter;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
 import org.manazeak.manazeak.constant.tag.CompilationTypeEnum;
+import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.album.AlbumIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 public class AlbumIntegrationHelper {
 
+    @Getter
     private final Map<String, AlbumIntegrationDto> albumMap = new HashMap<>();
 
     /**
@@ -34,18 +37,18 @@ public class AlbumIntegrationHelper {
      *
      * @param album The extracted album information.
      */
-    public void extractAlbum(ExtractedAlbumDto album, ExtractedBandDto band) {
+    public void extractAlbum(ExtractedAlbumDto album, ExtractedBandDto band, AlbumDAO albumDAO) {
         // Checking if the album has been extracted already.
         if (!albumMap.containsKey(album.getLocation().toString())) {
             // Creating the album.
-            addNewAlbum(album, band);
+            addNewAlbum(album, band, albumDAO);
         }
     }
 
     /**
      * Adds a new album into the maps of albums to add into the database.
      */
-    private void addNewAlbum(ExtractedAlbumDto album, ExtractedBandDto band) {
+    private void addNewAlbum(ExtractedAlbumDto album, ExtractedBandDto band, AlbumDAO albumDAO) {
         AlbumIntegrationDto newAlbum = new AlbumIntegrationDto();
         // Getting the album id from the cache.
         newAlbum.setAlbumId(cacheAccessManager.getLongValue(CacheEnum.ALBUM_ID_BY_LOCATION, album.getLocation().toString()));
@@ -68,7 +71,8 @@ public class AlbumIntegrationHelper {
 
         // If there is no album id, generating one.
         if (newAlbum.getAlbumId() == null) {
-            newAlbum.setAlbumId(PkIdProvider.singleton().getNewPkId(Album.class));
+            newAlbum.setAlbumId(albumDAO.getAlbumIdByLocation(album.getLocation().toString())
+                    .orElseGet(() -> PkIdProvider.singleton().getNewPkId(Album.class)));
             // Adding the new album id into the cache.
             cacheAccessManager.put(CacheEnum.ALBUM_ID_BY_LOCATION, newAlbum.getLocation(), newAlbum.getAlbumId());
         }
@@ -77,7 +81,4 @@ public class AlbumIntegrationHelper {
         albumMap.put(album.getLocation().toString(), newAlbum);
     }
 
-    public Map<String, AlbumIntegrationDto> getAlbumMap() {
-        return albumMap;
-    }
 }

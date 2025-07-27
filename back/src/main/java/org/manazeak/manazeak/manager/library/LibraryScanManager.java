@@ -1,16 +1,16 @@
 package org.manazeak.manazeak.manager.library;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
-import org.manazeak.manazeak.daos.track.ArtistDAO;
-import org.manazeak.manazeak.entity.dto.library.scan.LibraryScanResultDto;
-import org.manazeak.manazeak.entity.dto.library.scan.ScannedArtistDto;
-import org.manazeak.manazeak.entity.track.Artist;
+import org.manazeak.manazeak.daos.track.TrackDAO;
+import org.manazeak.manazeak.entity.dto.library.scan.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -20,7 +20,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class LibraryScanManager {
 
-    private final ArtistDAO artistDAO;
+    private final TrackDAO trackDAO;
 
     /**
      * Scan the library folder to find the tracks of the library.
@@ -40,69 +40,80 @@ public class LibraryScanManager {
     }
 
     /**
-     * Remove all the artists that are not updated for the rescan.
+     * Remove all the tracks not updated after the last scan / rescan
      *
-     * @param artists The list of artists to filter.
-     * @return The list of the artist to add or update into the library.
+     * @param libraryScanResult The result of the initial filesystem scan.
      */
-    public List<ScannedArtistDto> removeArtistNotUpdated(List<ScannedArtistDto> artists) {
-        // Creating the artist buffer.
-        Map<String, ScannedArtistDto> artistBatch = new HashMap<>();
-        // Creating the output list.
-        List<ScannedArtistDto> artistsToUpdate = new ArrayList<>();
-        int elementCounter = 0;
+    public List<String> removeArtistNotUpdated(LibraryScanResultDto libraryScanResult) {
+        int trackToProcess = 0;
+        List<String> deletedTracks = new ArrayList<>();
+        for (Iterator<ScannedArtistDto> artistIterator = libraryScanResult.getArtists().iterator(); artistIterator.hasNext(); ) {
+            ScannedArtistDto scannedArtist = artistIterator.next();
+            // Fetching all the track of the scannedArtist.
+            Map<String, LocalDateTime> artistTrackLastModifiedDate = loadLastModifiedDateForArtist(scannedArtist.getArtistPath().toString());
 
-        // Iterating over the artists
-        for (ScannedArtistDto artist : artists) {
-            // Adding the scanned artist to the map.
-            artistBatch.put(artist.getArtistPath().toString(), artist);
-            elementCounter++;
-            // If the buffer is full, requesting the database.
-            if (elementCounter > LibraryConstant.SCAN_BUFFER_SIZE) {
-                // Adding the artists to the exit list.
-                artistsToUpdate.addAll(compareWithDataBaseArtists(artistBatch));
-                // Clearing the map and resetting the counter
-                elementCounter = 0;
-                artistBatch.clear();
+            // Get all the location of the tracks not existing anymore in the database.
+            deletedTracks.addAll(getDeleteTrackPath(artistTrackLastModifiedDate.keySet(), scannedArtist));
+
+            for (Iterator<ScannedAlbumDto> albumIterator = scannedArtist.getAlbums().iterator(); albumIterator.hasNext(); ) {
+                ScannedAlbumDto scannedAlbum = albumIterator.next();
+
+                for (Iterator<ScannedTrackDto> trackIterator = scannedAlbum.getTracks().iterator(); trackIterator.hasNext(); ) {
+                    ScannedTrackDto track = trackIterator.next();
+                    // Comparing the last modified date of the track on the file system and in the database.
+                    LocalDateTime lastModifiedDateDbDate = artistTrackLastModifiedDate.get(track.getTrackPath().toString());
+                    if (lastModifiedDateDbDate != null && !track.getLastModificationDate().isAfter(lastModifiedDateDbDate)) {
+                        trackIterator.remove();
+                    } else {
+                        trackToProcess++;
+                    }
+
+                }
+
+                // Removing the album if no tracks are present inside.
+                if (scannedAlbum.getTracks().isEmpty()) {
+                    albumIterator.remove();
+                }
+            }
+
+            // Removing the artist if no albums are associated with this artist.
+            if (scannedArtist.getAlbums().isEmpty()) {
+                artistIterator.remove();
+            }
+        }
+        // Updating the number of tracks to be updated by the scan.
+        libraryScanResult.setTotalScannedTracks(trackToProcess);
+        return deletedTracks;
+    }
+
+    private List<String> getDeleteTrackPath(Set<String> databaseTrackLocation, ScannedArtistDto scannedArtist) {
+        List<String> deletedTracks = new ArrayList<>();
+        Set<String> scannedTracks = new HashSet<>();
+        for (ScannedAlbumDto album : scannedArtist.getAlbums()) {
+            for (ScannedTrackDto track : album.getTracks()) {
+                scannedTracks.add(track.getTrackPath().toString());
             }
         }
 
-        // If there is any artist left in the buffer, we process them
-        if (elementCounter != 0) {
-            artistsToUpdate.addAll(compareWithDataBaseArtists(artistBatch));
+        for (String location : databaseTrackLocation) {
+            if (!scannedTracks.contains(location)) {
+                deletedTracks.add(location);
+            }
         }
 
-        return artistsToUpdate;
+        return deletedTracks;
     }
 
     /**
-     * Getting the artist from the database and comparing
-     *
-     * @param artists The map of artists linked to their location.
-     * @return The list of the artists filtered.
+     * @return The map containing the last modified date for a track location.
      */
-    private List<ScannedArtistDto> compareWithDataBaseArtists(Map<String, ScannedArtistDto> artists) {
-        // Getting the location of the artists to get.
-        Set<String> locations = artists.keySet();
-        // Getting the locations to get in the database
-        List<Artist> bands = artistDAO.getArtistByLocations(locations);
-
-        // Creating the result list containing the artists that must be updated.
-        List<ScannedArtistDto> artistsToUpdate = new ArrayList<>();
-        for (Artist artist : bands) {
-            ScannedArtistDto scannedArtist = artists.get(artist.getLocation());
-            // Checking if the last modification date of the artist.
-            if (scannedArtist.getLastModificationDate().isAfter(artist.getLastModificationDate())) {
-                // The artist must be updated
-                artistsToUpdate.add(scannedArtist);
-                // Removing from the artist from the map
-                artists.remove(artist.getLocation());
-            }
+    private Map<String, LocalDateTime> loadLastModifiedDateForArtist(@NonNull String artistPath) {
+        List<TrackLastModifiedDto> artistTracks = trackDAO.getTrackPathStartWith(artistPath);
+        Map<String, LocalDateTime> locationLastModified = new HashMap<>();
+        for (TrackLastModifiedDto trackLastModified : artistTracks) {
+            locationLastModified.put(trackLastModified.trackPath(), trackLastModified.lastModified());
         }
 
-        // The bands that still are in the map were not found in the database, we must add them.
-        artistsToUpdate.addAll(artists.values());
-
-        return artistsToUpdate;
+        return locationLastModified;
     }
 }

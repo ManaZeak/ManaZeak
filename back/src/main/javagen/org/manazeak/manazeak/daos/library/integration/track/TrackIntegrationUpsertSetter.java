@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.daos.library.integration.track;
 
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackIntegrationDto;
+import org.manazeak.manazeak.util.DateUtil;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import java.sql.PreparedStatement;
@@ -34,6 +35,7 @@ public class TrackIntegrationUpsertSetter implements BatchPreparedStatementSette
         ps.setObject(12, track.getBpm());
         ps.setBoolean(13, track.isMp3());
         ps.setString(14, track.getMoodbar());
+        ps.setTimestamp(15, DateUtil.getTimeStamp(track.getLastModified()));
     }
 
     @Override

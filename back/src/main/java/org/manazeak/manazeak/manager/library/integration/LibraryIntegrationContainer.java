@@ -1,5 +1,10 @@
 package org.manazeak.manazeak.manager.library.integration;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.manazeak.manazeak.daos.track.AlbumDAO;
+import org.manazeak.manazeak.daos.track.ArtistDAO;
+import org.manazeak.manazeak.daos.track.LabelDAO;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
@@ -11,9 +16,11 @@ import org.manazeak.manazeak.manager.library.integration.label.LabelIntegrationH
 import org.manazeak.manazeak.manager.library.integration.track.TrackIntegrationHelper;
 
 /**
- * Contains and allows to convert the data contained that has been extracted from the tracks into the
+ * Contains and allows converting the data contained that has been extracted from the tracks into the
  * object for the database.
  */
+@Getter
+@RequiredArgsConstructor
 public class LibraryIntegrationContainer {
 
     private final ArtistIntegrationHelper artistIntegrationHelper;
@@ -23,12 +30,14 @@ public class LibraryIntegrationContainer {
     private final LabelIntegrationHelper labelIntegrationHelper;
 
     private final TrackIntegrationHelper trackIntegrationHelper;
+    
     private final GenreIntegrationHelper genreIntegrationHelper;
 
-    public LibraryIntegrationContainer(CacheAccessManager cacheAccessManager) {
-        artistIntegrationHelper = new ArtistIntegrationHelper(cacheAccessManager);
+    public LibraryIntegrationContainer(CacheAccessManager cacheAccessManager,
+                                       ArtistDAO artistDAO, LabelDAO labelDAO) {
+        artistIntegrationHelper = new ArtistIntegrationHelper(cacheAccessManager, artistDAO);
         albumIntegrationHelper = new AlbumIntegrationHelper(cacheAccessManager);
-        labelIntegrationHelper = new LabelIntegrationHelper(cacheAccessManager);
+        labelIntegrationHelper = new LabelIntegrationHelper(cacheAccessManager, labelDAO);
         trackIntegrationHelper = new TrackIntegrationHelper(cacheAccessManager);
         genreIntegrationHelper = new GenreIntegrationHelper(cacheAccessManager);
     }
@@ -61,34 +70,10 @@ public class LibraryIntegrationContainer {
      *
      * @param album The extracted album information from the album folder.
      */
-    public void convertAlbumIntoDto(ExtractedAlbumDto album, ExtractedBandDto band) {
+    public void convertAlbumIntoDto(ExtractedAlbumDto album, ExtractedBandDto band, AlbumDAO albumDAO) {
         // Adding the album information.
-        albumIntegrationHelper.extractAlbum(album, band);
+        albumIntegrationHelper.extractAlbum(album, band, albumDAO);
         labelIntegrationHelper.extractLabelFromAlbum(album);
     }
 
-    /**
-     * Get the helper containing the artists.
-     *
-     * @return The helper for the artists integration.
-     */
-    public ArtistIntegrationHelper getArtistIntegrationHelper() {
-        return artistIntegrationHelper;
-    }
-
-    public AlbumIntegrationHelper getAlbumIntegrationHelper() {
-        return albumIntegrationHelper;
-    }
-
-    public LabelIntegrationHelper getLabelIntegrationHelper() {
-        return labelIntegrationHelper;
-    }
-
-    public TrackIntegrationHelper getTrackIntegrationHelper() {
-        return trackIntegrationHelper;
-    }
-
-    public GenreIntegrationHelper getGenreIntegrationHelper() {
-        return genreIntegrationHelper;
-    }
 }

@@ -14,8 +14,8 @@ public class TrackIntegrationDAO {
 
     private static final String SQL_TRACK_MERGE = """
             INSERT INTO track (track_id, title, disc_number, track_number, isrc, lyrics, duration, opus, subtitle, album_id,
-                               location, bpm, is_mp3, mood)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               location, bpm, is_mp3, mood, last_modified)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT (track_id) DO UPDATE SET title        = excluded.title,
                                                  disc_number  = excluded.disc_number,
                                                  track_number = excluded.track_number,
@@ -28,7 +28,8 @@ public class TrackIntegrationDAO {
                                                  location     = excluded.location,
                                                  bpm          = excluded.bpm,
                                                  is_mp3       = excluded.is_mp3,
-                                                 mood         = excluded.mood
+                                                 mood         = excluded.mood,
+                                                 last_modified= excluded.last_modified
             """;
 
     private final JdbcTemplate jdbcTemplate;

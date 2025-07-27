@@ -22,6 +22,16 @@ public class ArtistIntegrationDAO {
             VALUES (nextval('seq_band_member'), ?, ?) ON CONFLICT (band_id, member_id) DO NOTHING
             """;
 
+    private static final String MERGE_ARTIST = """
+            INSERT INTO artist (artist_id, name, location, is_label, last_modification_date, label_id)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT (name) DO
+            UPDATE SET
+               location = coalesce(excluded.location, artist.location),
+               is_label = excluded.is_label,
+               last_modification_date = coalesce(excluded.last_modification_date, artist.last_modification_date)
+            """;
+
     private static final String UPDATE_ARTIST_THUMB = "UPDATE artist SET picture_filename = ? WHERE artist_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -35,15 +45,7 @@ public class ArtistIntegrationDAO {
      */
     public void mergeArtists(List<ArtistIntegrationDto> artists) {
         // Preparing the request to insert or update the artist in the database.
-        jdbcTemplate.batchUpdate("""
-                        INSERT INTO artist (artist_id, name, location, is_label, last_modification_date, label_id)
-                        VALUES (?, ?, ?, ?, ?, ?) 
-                        ON CONFLICT (artist_id) DO 
-                            UPDATE SET location = coalesce(excluded.location, artist.location),
-                                       is_label = excluded.is_label, 
-                           last_modification_date = coalesce(excluded.last_modification_date, artist.last_modification_date)
-                        """,
-                new ArtistIntegrationUpsertSetter(artists, cacheAccessManager)
+        jdbcTemplate.batchUpdate(MERGE_ARTIST, new ArtistIntegrationUpsertSetter(artists, cacheAccessManager)
         );
     }
 

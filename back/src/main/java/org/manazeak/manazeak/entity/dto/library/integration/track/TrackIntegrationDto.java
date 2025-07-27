@@ -2,6 +2,7 @@ package org.manazeak.manazeak.entity.dto.library.integration.track;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -33,6 +34,7 @@ public class TrackIntegrationDto {
     private Set<Long> genreIds;
     private Set<Long> keyIds;
     private boolean isMp3;
+    private LocalDateTime lastModified;
 
     public void addKeyId(Long keyId) {
         keyIds.add(keyId);

@@ -202,6 +202,7 @@ CREATE TABLE track (
 	is_mp3 BOOLEAN not null,
 	subtitle VARCHAR(200),
 	mood VARCHAR(50),
+	last_modified TIMESTAMP not null,
 	album_id BIGINT,
 	CONSTRAINT PK_TRACK PRIMARY KEY (track_id)
 );

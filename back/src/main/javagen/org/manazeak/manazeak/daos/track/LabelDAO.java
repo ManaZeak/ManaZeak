@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data Access Object for Label using Spring CrudRepository interface
@@ -26,6 +27,16 @@ public interface LabelDAO extends CrudRepository<Label, Long> {
      */
     @Query("select name as labelName, labelId as labelId from Label where name in (:labelNames)")
     List<LabelLinkerProjection> getLabelsByNames(@Param("labelNames") Collection<String> labelNames);
+
+    /**
+     * Retrieves the identifier of a label based on its name.
+     *
+     * @param name The name of the label for which the identifier needs to be fetched.
+     * @return An {@link Optional} containing the label identifier if found,
+     * or an empty {@link Optional} if no label with the specified name exists.
+     */
+    @Query("select labelId from Label where name = :name")
+    Optional<Long> getLabelIdByName(String name);
 
     @Query("""
             select

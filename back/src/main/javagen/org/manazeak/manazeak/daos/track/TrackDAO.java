@@ -3,6 +3,7 @@ package org.manazeak.manazeak.daos.track;
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarGenerationProjection;
 import org.manazeak.manazeak.entity.dto.library.moodbar.MoodbarImageGenerationProjection;
+import org.manazeak.manazeak.entity.dto.library.scan.TrackLastModifiedDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackWithPartialPerformerDto;
 import org.manazeak.manazeak.entity.track.Track;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public interface TrackDAO extends CrudRepository<Track, Long> {
 
-    @Query("select location, trackId from Track where location in (:locations)")
+    @Query("select location as location, trackId as trackId from Track where location in (:locations)")
     List<TrackLinkerProjection> getTrackIdByLocation(@Param("locations") List<String> locations);
 
     /**
@@ -40,6 +41,16 @@ public interface TrackDAO extends CrudRepository<Track, Long> {
             order by trk.trackId
             """)
     List<MoodbarGenerationProjection> getTracksWithoutMoodbar(@Param("lastTrackId") Long lastTrackId, Pageable pageable);
+
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.library.scan.TrackLastModifiedDto(
+                trk.location,
+                trk.lastModified
+            )
+            from Track trk
+            where trk.location like :pathStartWith%
+            """)
+    List<TrackLastModifiedDto> getTrackPathStartWith(String pathStartWith);
 
     /**
      * Get all the tracks contained in the albums of an artist.

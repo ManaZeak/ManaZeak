@@ -1,14 +1,14 @@
 package org.manazeak.manazeak.manager.library.integration.artist;
 
-import org.manazeak.manazeak.constant.cache.CacheEnum;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ArtistIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedBandDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedTrackDto;
-import org.manazeak.manazeak.entity.track.Artist;
 import org.manazeak.manazeak.manager.cache.CacheAccessManager;
 import org.manazeak.manazeak.util.audio.tag.TagCheckerUtil;
 import org.manazeak.manazeak.util.audio.tag.TagSplitterUtil;
-import org.manazeak.manazeak.util.database.PkIdProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +16,13 @@ import java.util.Map;
 /**
  * Handles the artist insertion into the database.
  */
+@RequiredArgsConstructor
 public class ArtistIntegrationHelper {
 
     /**
      * The artists to be integrated into the database.
      */
+    @Getter
     private final Map<String, ArtistIntegrationDto> artists = new HashMap<>();
 
     /**
@@ -28,9 +30,7 @@ public class ArtistIntegrationHelper {
      */
     private final CacheAccessManager cacheAccessManager;
 
-    public ArtistIntegrationHelper(CacheAccessManager cacheAccessManager) {
-        this.cacheAccessManager = cacheAccessManager;
-    }
+    private final ArtistDAO artistDAO;
 
     /**
      * Add to the artists list the information contained in the band.
@@ -62,16 +62,7 @@ public class ArtistIntegrationHelper {
      */
     public void extractArtistFromTrack(ExtractedTrackDto track) {
         // Adding the artists
-        ArtistIntegrationTrackExtractorHelper.extractArtistsFromTrackTag(track, artists, cacheAccessManager);
-    }
-
-    /**
-     * Get the artists with their name linked to the object that will be inserted into the database.
-     *
-     * @return The map.
-     */
-    public Map<String, ArtistIntegrationDto> getArtists() {
-        return artists;
+        ArtistIntegrationTrackExtractorHelper.extractArtistsFromTrackTag(track, artists, cacheAccessManager, artistDAO);
     }
 
     /**
@@ -82,18 +73,12 @@ public class ArtistIntegrationHelper {
      */
     private ArtistIntegrationDto createIntegrationArtistFromBand(ExtractedBandDto band) {
         ArtistIntegrationDto artist = new ArtistIntegrationDto();
-        artist.setId(cacheAccessManager.getLongValue(CacheEnum.ARTIST_ID_BY_NAME, band.getName()));
         artist.setName(band.getName());
         artist.setLocation(TagSplitterUtil.removeRootPath(band.getLocation()));
         artist.setLabel(TagCheckerUtil.isArtistRecord(band.getName()));
         artist.setModificationDate(band.getModificationDate());
 
-        // If the artist isn't in the database, getting a new id.
-        if (artist.getId() == null) {
-            artist.setId(PkIdProvider.singleton().getNewPkId(Artist.class));
-            // Adding the new artist id into the cache.
-            cacheAccessManager.put(CacheEnum.ARTIST_ID_BY_NAME, artist.getName(), artist.getId());
-        }
+        ArtistIntegrationTrackExtractorHelper.setArtistIdentifierFromDatabase(artist, artistDAO, cacheAccessManager);
 
         return artist;
     }

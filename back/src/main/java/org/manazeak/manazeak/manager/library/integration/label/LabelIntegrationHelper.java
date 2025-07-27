@@ -1,6 +1,9 @@
 package org.manazeak.manazeak.manager.library.integration.label;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.constant.cache.CacheEnum;
+import org.manazeak.manazeak.daos.track.LabelDAO;
 import org.manazeak.manazeak.entity.dto.library.integration.label.LabelIntegrationDto;
 import org.manazeak.manazeak.entity.dto.library.scan.ExtractedAlbumDto;
 import org.manazeak.manazeak.entity.track.Label;
@@ -11,10 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Allows to store an prepare the objects before the database insertion of the labels.
+ * Allows storing and preparing the objects before the database insertion of the labels.
  */
+@RequiredArgsConstructor
 public class LabelIntegrationHelper {
 
+    @Getter
     private final Map<String, LabelIntegrationDto> labels = new HashMap<>();
 
     /**
@@ -22,9 +27,7 @@ public class LabelIntegrationHelper {
      */
     private final CacheAccessManager cacheAccessManager;
 
-    public LabelIntegrationHelper(CacheAccessManager cacheAccessManager) {
-        this.cacheAccessManager = cacheAccessManager;
-    }
+    private final LabelDAO labelDAO;
 
     /**
      * Extract a label from the album information.
@@ -39,10 +42,6 @@ public class LabelIntegrationHelper {
         }
     }
 
-    public Map<String, LabelIntegrationDto> getLabels() {
-        return labels;
-    }
-
     private void addNewLabel(String labelName) {
         // Creating a new label.
         final LabelIntegrationDto label = new LabelIntegrationDto();
@@ -51,7 +50,8 @@ public class LabelIntegrationHelper {
 
         // If the artist isn't in the database, getting a new id.
         if (label.getLabelId() == null) {
-            label.setLabelId(PkIdProvider.singleton().getNewPkId(Label.class));
+            label.setLabelId(labelDAO.getLabelIdByName(labelName)
+                    .orElseGet(() -> PkIdProvider.singleton().getNewPkId(Label.class)));
             cacheAccessManager.put(CacheEnum.LABEL_ID_BY_NAME, labelName, label.getLabelId());
         }
 
