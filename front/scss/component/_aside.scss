@@ -58,6 +58,12 @@
         }
       }
     }
+
+    hr {
+      margin: var(--margin-tiny) auto;
+      width: 75%;
+    }
+
     /* This class is only for the mobile track preview, not the one in navbar */
     &.track-preview {
       flex-direction: column;
