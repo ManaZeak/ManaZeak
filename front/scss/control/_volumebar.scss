@@ -1,3 +1,5 @@
+@use '/front/scss/tool/mixin';
+
 .volumebar-wrapper {
     align-items: center;
     display: flex;
@@ -8,18 +10,18 @@
     width: 14rem;
   
     .volumebar-container {
-      @include bar-container();
+      @include mixin.bar-container;
   
       .volumebar-current {
         width: 100%;
   
-        @include bar-current();
+        @include mixin.bar-current;
       }
   
       .volumebar-thumb {
         left: 100%; // Volume is init with max value
   
-        @include bar-thumb();
+        @include mixin.bar-thumb;
       }
   
       &:hover > .volumebar-current {

@@ -1,5 +1,6 @@
-@import 'front/scss/control/volumebar';
-@import 'front/scss/control/progressbar';
+@use '/front/scss/control/volumebar';
+@use '/front/scss/control/progressbar';
+@use '/front/scss/tool/mixin';
 
 .navbar {
   background-color: var(--color-bg-light);
@@ -28,7 +29,7 @@
       position: relative;
       width: calc(100% - 16rem);
 
-      @include user-select(none);
+      @include mixin.user-select(none);
 
       .image-wrapper {
         cursor: pointer;

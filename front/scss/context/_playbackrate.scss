@@ -1,18 +1,20 @@
+@use '/front/scss/tool/mixin';
+
 /* Parent element is in context subfolder */
 .playback-rate-container {
-    @include bar-container();
+    @include mixin.bar-container;
   
     .playback-rate-current {
       width: 50%;
   
-      @include bar-current();
+      @include mixin.bar-current;
     }
   
     .playback-rate-thumb {
       left: 50%;
       z-index: 999; // Since playback rate bar is in a context high in z-index
   
-      @include bar-thumb();
+      @include mixin.bar-thumb;
     }
   
     &:hover > .playback-rate-current {
@@ -37,7 +39,7 @@
     transform: translateY(3rem);
     // Volumebar width and speedometer icon only
     width: calc(14rem + (2 * 3rem) - (4 * var(--margin-tiny)));
-    @include user-select(none);
+    @include mixin.user-select(none);
 
     transition: transform .2s ease-out, opacity .2s ease-in;
   
@@ -46,7 +48,7 @@
       margin: 0 var(--margin-tiny);
       width: 3rem;
 
-      @include user-select(none);
+      @include mixin.user-select(none);
     }
   
     div#playback-rate-text {

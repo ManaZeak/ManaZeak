@@ -1,3 +1,5 @@
+@use '/front/scss/tool/mixin';
+
 .aside {
   background-color: var(--color-bg-dark-alpha-25);
   border-bottom: solid 1px var(--color-txt-alpha-10);
@@ -68,7 +70,7 @@
         margin: 0;
         font-size: var(--font-size-small);
         font-style: italic;
-        @include text-ellipsis();
+        @include mixin.text-ellipsis;
 
         &:first-child {
           font-style: inherit;
