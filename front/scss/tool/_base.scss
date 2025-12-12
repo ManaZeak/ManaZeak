@@ -1,11 +1,11 @@
-@import "front/scss/tool/color";
-@import "front/scss/tool/variable";
-@import "front/scss/tool/keyframe";
-@import "front/scss/tool/mixin";
-@import "front/scss/tool/overlay";
-@import "front/scss/tool/modal";
-@import "front/scss/tool/notification";
-@import 'front/scss/context/context';
+@use '/front/scss/tool/color';
+@use '/front/scss/tool/variable';
+@use '/front/scss/tool/keyframe';
+@use '/front/scss/tool/mixin';
+@use '/front/scss/tool/overlay';
+@use '/front/scss/tool/modal';
+@use '/front/scss/tool/notification';
+@use '/front/scss/context/context';
 /* Make sizes be true sizes */
 * {
   box-sizing: border-box;

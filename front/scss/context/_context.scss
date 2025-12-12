@@ -1,3 +1,7 @@
+@use '/front/scss/context/playbackrate';
+@use '/front/scss/context/track';
+@use '/front/scss/context/queue';
+
 .context-transparent-overlay {
   height: 100%;
   left: 0;
@@ -6,7 +10,3 @@
   width: 100%;
   z-index: 999;
 }
-
-@import 'front/scss/context/playbackrate';
-@import 'front/scss/context/track';
-@import 'front/scss/context/queue';

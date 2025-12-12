@@ -1,3 +1,5 @@
+@use '/front/scss/tool/mixin';
+
 .progress-container {
     align-items: center;
     background: url('/static/img/logo/manazeak-text.svg') no-repeat center;
@@ -18,7 +20,7 @@
       width: 100%;
       z-index: 999; // To make thumb appear always on top of moodbar
   
-      @include transition(opacity .2s ease);
+      transition: opacity .2s ease;
   
       .progress-current {
         background-color: var(--color-primary);
@@ -26,11 +28,11 @@
         height: 100%;
         width: 0;
   
-        @include transition(width 0 ease);
+        transition: width 0 ease;
       }
   
       .progress-thumb {
-        @include bar-thumb();
+        @include mixin.bar-thumb;
       }
   
       &:hover {
@@ -61,7 +63,7 @@
         width: 60px;
         z-index: 1000; /* So hover is over navbar commands */
   
-        @include transition(opacity .2s ease);
+        transition: opacity .2s ease;
       }
     }
   
