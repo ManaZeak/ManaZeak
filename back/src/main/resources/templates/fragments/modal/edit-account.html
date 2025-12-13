@@ -7,7 +7,7 @@
   <div class="container">
     <!-- Email address field (256 char) and specific errors -->
     <p class="error" th:each="error : ${#fields.errors('email')}" th:text="${error}"></p>
-    <label for="email-input" th:text="#{user.tellusmore.email}"/>
+    <label for="email-input" th:text="#{user.tellusmore.email}"></label>
     <input id="email-input" th:field="*{email}" maxlength="256" type="email"/>
     <!-- Surname field (256 char) and specific errors -->
     <p class="error" th:each="error : ${#fields.errors('surname')}" th:text="${error}"></p>
@@ -15,7 +15,7 @@
     <input id="surname-input" th:field="*{surname}" maxlength="256" type="text"/>
     <!-- Name field (256 char) and specific errors -->
     <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
-    <label for="name-input" th:text="#{user.tellusmore.name}"/>
+    <label for="name-input" th:text="#{user.tellusmore.name}"></label>
     <input id="name-input" th:field="*{name}" maxlength="256" type="text"/>
     <!-- Bio field (4096 char) -->
     <p class="error" th:each="error : ${#fields.errors('bio')}" th:text="${error}"></p>

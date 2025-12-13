@@ -32,4 +32,4 @@ The complete installation process is described in this [article](https://github.
 
 ---
 
-ManaZeak organisation – 2017/2024
+ManaZeak organisation – 2017/2026

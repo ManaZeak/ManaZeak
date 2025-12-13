@@ -1,22 +1,27 @@
-import ArtistPictureModal from './mainpage/ArtistPictureModal.js';
+import EditAccountModal from './accountpage/EditAccountModal.js';
+import ResetPasswordModal from './accountpage/ResetPasswordModal.js';
+
+import BadgeModal from './adminpage/BadgeModal.js';
+
 import AlbumCoverModal from './mainpage/AlbumCoverModal.js';
+import ArtistPictureModal from './mainpage/ArtistPictureModal.js';
+import NewPlaylistModal from './mainpage/NewPlaylistModal.js';
 import TrackDetailModal from './mainpage/TrackDetailModal.js';
+
 import AboutModal from './menupage/AboutModal.js';
 import WishModal from './menupage/WishModal.js';
-import BadgeModal from './adminpage/BadgeModal.js';
-import ResetPasswordModal from './accountpage/ResetPasswordModal.js';
-import EditAccountModal from './accountpage/EditAccountModal.js';
 
 
 const Classes = {
-  ArtistPictureModal,
+  ResetPasswordModal,
+  EditAccountModal,
+  BadgeModal,
   AlbumCoverModal,
+  ArtistPictureModal,
+  NewPlaylistModal,
   TrackDetailModal,
   AboutModal,
-  WishModal,
-  BadgeModal,
-  ResetPasswordModal,
-  EditAccountModal
+  WishModal
 };
 
 

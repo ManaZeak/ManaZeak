@@ -8,30 +8,32 @@
   justify-content: space-between;
   width: 100%;
 
+  .item {
+    align-items: center;
+    display: flex;
+    height: var(--aside-size);
+    justify-content: center;
+    width: var(--aside-size);
+    position: relative;
+    transition: background-color .2s;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--color-primary-alpha-10);
+    }
+
+    img {
+      cursor: pointer;
+      max-height: 85%;
+      max-width: 85%;
+    }
+  }
+
   .item-group {
     display: flex;
 
     .item {
-      align-items: center;
-      display: flex;
-      height: var(--aside-size);
-      justify-content: center;
-      width: var(--aside-size);
-      position: relative;
-      transition: background-color .2s;
-
-      &:active,
-      &:focus,
-      &:hover {
-        background-color: var(--color-primary-alpha-10);
-      }
-
-      img {
-        cursor: pointer;
-        max-height: 85%;
-        max-width: 85%;
-      }
-
       form { /* Logout require a form */
         align-items: center;
         display: flex;
@@ -60,8 +62,10 @@
     }
 
     hr {
-      margin: var(--margin-tiny) auto;
-      width: 75%;
+      color: var(--color-txt-alpha-10);
+      margin: auto var(--margin-tiny);
+      height: 75%;
+      width: 1px;
     }
 
     /* This class is only for the mobile track preview, not the one in navbar */
@@ -83,6 +87,19 @@
           font-weight: bold;
         }
       }
+    }
+  }
+
+  .playlist-wrapper {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(auto-fill, var(--aside-size));
+    height: var(--aside-size);
+    width: 100%; /* To be computed in JS */
+
+    .playlist {
+      height: var(--aside-size);
+      width: var(--aside-size);
     }
   }
 }

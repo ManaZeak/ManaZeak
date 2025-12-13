@@ -221,6 +221,7 @@ a {
     grid-column: 2;
     grid-row: 1;
     grid-template-columns: 1fr 0 1fr;
+    position: relative;
 
     .topbar-left,
     .topbar-right {
@@ -235,7 +236,9 @@ a {
     }
 
     .topbar-left {
+      height: 100%;
       padding-left: var(--padding-small);
+      position: absolute;
 
       img {
         cursor: pointer;
@@ -258,6 +261,7 @@ a {
     }
 
     .topbar-right {
+      display: none;
       justify-content: flex-end;
       padding-right: var(--padding-small);
       opacity: 0;
@@ -267,12 +271,6 @@ a {
         color: var(--color-txt-darker);
         font-size: var(--font-size-smaller);
         width: max-content;
-      }
-
-      a {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
       }
     }
   }

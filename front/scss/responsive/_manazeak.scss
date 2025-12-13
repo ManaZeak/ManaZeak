@@ -1,25 +1,48 @@
 /* Desktop rules */
-@media only screen and (min-width: 800px) {
-  /* Aside mobile rules */
-  .aside {
-    border-bottom: none;
-    border-right: solid 1px var(--color-txt-alpha-10);
-    flex-direction: column;
-    height: 100%;
-    width: var(--aside-size);
-
-    .item-group {
+@media only screen and (min-width: 801px) {
+  .scene-wrapper {
+    /* Aside mobile rules */
+    .aside {
+      border-bottom: none;
+      border-right: solid 1px var(--color-txt-alpha-10);
       flex-direction: column;
-    }
-  }
-  /* Scene desktop rules */
-  .scene {
-    .admin-page .admin-tabs,
-    .account-page .account-tabs {
-      width: 85%;
+      height: 100%;
+      width: var(--aside-size);
 
-      p {
-        padding: 0 var(--padding-bigger);
+      .item-group {
+        flex-direction: column;
+
+        hr {
+          height: 1px;
+          margin: var(--margin-tiny) auto;
+          width: 75%;
+        }
+      }
+
+      .playlist-wrapper {
+        height: 100%;
+        width: var(--aside-size);
+      }
+    }
+    /* Scene desktop rules */
+    .scene {
+      .admin-page .admin-tabs,
+      .account-page .account-tabs {
+        width: 85%;
+
+        p {
+          padding: 0 var(--padding-bigger);
+        }
+      }
+    }
+    .topbar {
+      .topbar-left {
+        height: inherit;
+        position: inherit;
+      }
+
+      .topbar-right {
+        display: flex;
       }
     }
   }
