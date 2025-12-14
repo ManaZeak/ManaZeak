@@ -1,7 +1,6 @@
 package org.manazeak.manazeak.manager.library.moodbar;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sksamuel.scrimage.ImmutableImage;
 import com.sksamuel.scrimage.pixels.Pixel;
 import com.sksamuel.scrimage.webp.WebpWriter;
@@ -18,6 +17,7 @@ import org.manazeak.manazeak.entity.management.MoodbarError;
 import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.database.transaction.AutonomousTransactionManager;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
