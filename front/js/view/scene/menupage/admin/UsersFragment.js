@@ -45,14 +45,14 @@ class UsersFragment {
     for (let i = 0; i < usersWrapper.children.length; ++i) {
       this._users.push(usersWrapper.children[i]);
     }
-/*
+
     this._scrolls.push(new ScrollBar({
       target: usersWrapper,
       style: {
         color: '#56D45B'
       }
     }));
-*/
+
     const badgesWrapper = this._target.querySelector('#badges-wrapper');
     for (let i = 0; i < badgesWrapper.children.length; ++i) {
       this._badges.push(badgesWrapper.children[i]);
