@@ -23,6 +23,7 @@ import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -78,12 +79,13 @@ public class PlaylistManager {
         checkIsPlaylistFlagCoherence(playlist);
 
         playlist = playlistDAO.save(playlist);
-        if (playlistCreation.getImage() == null) {
+        if (playlistCreation.getImage() == null || playlistCreation.getImage().isEmpty()) {
             return playlist;
         }
 
         // Save the file in the FS.
         try {
+            Files.createDirectories(ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath());
             playlistCreation.getImage().transferTo(
                     ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath().resolve(playlist.getPlaylistId().toString())
             );
