@@ -5,7 +5,7 @@
   </div>
   <div class="container">
     <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto"*/-->
-    <form method="POST" th:object="${playlist}">
+    <form method="POST" th:object="${playlist}" id="new-playlist-form">
       <!-- Playlist name field (256 char) and specific errors -->
       <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
       <label for="playlist-name-input" th:text="#{modal.newplaylist.name}"></label>

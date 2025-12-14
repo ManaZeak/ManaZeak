@@ -528,6 +528,11 @@ class Kom {
   }
 
 
+  get csrf() {
+    return this._jwtToken;
+  }
+
+
 }
 
 

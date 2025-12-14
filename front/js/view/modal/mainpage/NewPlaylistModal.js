@@ -81,32 +81,37 @@ class NewPlaylistModal extends Modal {
   _submitClicked(event) {
     // Avoid form submit default behavior
     event.preventDefault();
-    //this._url = '/playlist/create/';
-    // Calling the modal url in post allow its resolution
-    mzk.kom.postForm(this._url, {
-      name: this._rootElement.querySelector('#playlist-name-input').value,
-      description: this._rootElement.querySelector('#playlist-description-input').value,
-      isPublicEditable: this._rootElement.querySelector('#playlist-public-editable').checked,
-      isPrivate: this._rootElement.querySelector('#playlist-private-input').checked,
-      addItemAtStartRank: this._rootElement.querySelector('#playlist-at-start-input').checked,
-      image: this._rootElement.querySelector('#playlist-image-input').value
-    }).then(response => {
-      Logger.raise(response);
-      this.close();
-    }).catch(response => {
-      // Parse new modal content as DOM object
-      this._rootElement = Utils.parseHTMLFragment(response);
-      // Clear overlay content
-      this._modalOverlay.innerHTML = '';
-      // Restore new modal content
-      this._modalOverlay.appendChild(this._rootElement);
-      // Avoid event stacking
-      Evts.removeEvent(this._submitEvtId);
-      // Reset submit event id
-      this._submitEvtId = -1;
-      // Re-save internals with new template
-      this._fillAttributes();
-    });
+    const formData = new FormData(this._rootElement.querySelector('#new-playlist-form'));
+    const options = {
+      method: 'POST',
+      headers: new Headers([
+        ['X-XSRF-TOKEN', mzk.kom.csrf],
+        ['Authorization', `Bearer ${mzk.kom.jwt}`]
+      ]),
+      body: formData
+    };
+
+    fetch(this._url, options).then(data => {
+      data.text().then(parsed => {
+        if (parsed === '') {
+          Logger.raise(response);
+          this.close();
+        } else {
+          // Parse new modal content as DOM object
+          this._rootElement = Utils.parseHTMLFragment(response);
+          // Clear overlay content
+          this._modalOverlay.innerHTML = '';
+          // Restore new modal content
+          this._modalOverlay.appendChild(this._rootElement);
+          // Avoid event stacking
+          Evts.removeEvent(this._submitEvtId);
+          // Reset submit event id
+          this._submitEvtId = -1;
+          // Re-save internals with new template
+          this._fillAttributes();
+        }
+      }).catch(err => {});
+    }).catch(err => {});
   }
 
 
