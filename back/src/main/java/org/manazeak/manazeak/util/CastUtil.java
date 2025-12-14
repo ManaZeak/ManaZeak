@@ -1,6 +1,7 @@
 package org.manazeak.manazeak.util;
 
-import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package org.manazeak.manazeak.util.audio.tag;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.manazeak.manazeak.constant.library.LibraryConstant;
 import org.manazeak.manazeak.entity.dto.library.integration.artist.ExtractedComposerDto;
 
