@@ -58,8 +58,8 @@ public class UserProfileFragmentController {
      */
     @RestSecurity(PrivilegeEnum.PLAY)
     @PostMapping("/account/profile-edit/")
-    public String saveProfileEditFragment(@RequestBody @Valid MzkUserEditDto userInfo,
-                                          BindingResult result, Model model) {
+    public String saveProfileEditFragment(@RequestBody @Valid MzkUserEditDto userInfo, BindingResult result,
+                                          Model model) {
          // Checking if the user form was valid.
         if (result.hasErrors()) {
             model.addAttribute("userInfo", userInfo);

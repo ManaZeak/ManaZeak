@@ -32,7 +32,7 @@ public class PlaylistRestController {
         // Creating the playlist.
         playlistService.createPlaylist(playlistCreation);
         // Sending the response to the front.
-        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.creation.success_title");
+        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.creation.success_message");
     }
 
     /**

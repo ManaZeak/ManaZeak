@@ -1,9 +1,11 @@
 package org.manazeak.manazeak.controller.fragment.playlist;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.controller.fragment.FragmentController;
+import org.manazeak.manazeak.controller.fragment.JsonResponseHandler;
 import org.manazeak.manazeak.controller.page.playlist.PlaylistFragmentEnum;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
@@ -11,8 +13,11 @@ import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -20,6 +25,8 @@ import java.util.List;
 @FragmentController
 @RequiredArgsConstructor
 public class PlaylistController {
+
+    private final JsonResponseHandler jsonResponseHandler;
 
     private final PlaylistService playlistService;
 
@@ -36,6 +43,22 @@ public class PlaylistController {
     public String getPlaylistCreationModal(Model model) {
         model.addAttribute("playlist", new PlaylistCreationDto());
         return PlaylistFragmentEnum.PLAYLIST_CREATION_MODAL.getPage();
+    }
+
+    @Security(PrivilegeEnum.PLAY)
+    @PostMapping("/modal/new-playlist/")
+    public String createPlaylist(@RequestBody @Valid PlaylistCreationDto playlistCreation, BindingResult result,
+                                 Model model) {
+        // If the form is invalid, resend the modal
+        if (result.hasErrors()) {
+            model.addAttribute("playlist", playlistCreation);
+            // Adding the binding results for the error display
+            model.addAttribute("org.springframework.validation.BindingResult.playlist", result);
+            return PlaylistFragmentEnum.PLAYLIST_CREATION_MODAL.getPage();
+        }
+        // Creating the play list.
+        playlistService.createPlaylist(playlistCreation);
+        return jsonResponseHandler.prepareJsonSuccess("general.notification.success_title", "playlist.creation.success_message", model);
     }
 
     /**
