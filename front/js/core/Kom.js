@@ -455,6 +455,7 @@ class Kom {
       const xhr = new XMLHttpRequest();
       xhr.open('POST', url);
       xhr.setRequestHeader('X-XSRF-TOKEN', this._csrfToken);
+      xhr.setRequestHeader('Authorization', `Bearer ${this._jwtToken}`);
       // Register the state change event
       xhr.onreadystatechange = response => {
         if (response.target.readyState === 4) { // Ready state changed has reach the response state

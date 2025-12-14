@@ -721,7 +721,7 @@ class Controller {
    * </blockquote> **/
    togglePlaybackMode() {
     if (DEBUG) { console.log('Controller.togglePlaybackMode : called'); }
-    this._playbackMode = (++this._playbackMode) % 3;    
+    this._playbackMode = (++this._playbackMode) % 3;
     // When toggling on shuffle, reset shuffle queue
     if (this._playbackMode === PlayerPlaybackModeEnum.SHUFFLE && this._playObject?.tracks?.length) {
       this._initShuffleQueue();

@@ -41,30 +41,23 @@
           <img src="/static/img/actions/new.svg" alt="lib-info">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.newplaylist}"></span>
         </div>
-        <div id="playlist-navigation-previous" class="item tooltip">
+        <div id="playlist-navigation-previous" class="item tooltip playlist-navigator">
           <img src="/static/img/navigation/nav-left.svg" alt="previous-playlists">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.previouspl}"></span>
         </div>
       </div>
       <div id="playlist-wrapper" class="playlist-wrapper">
-        <div class="playlist"></div>
-        <div class="playlist"></div>
-        <div class="playlist"></div>
-        <div class="playlist"></div>
-        <div class="playlist"></div>
-        <div class="playlist"></div>
-        <div class="playlist"></div>
-            <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
-          <!--  
-            <div th:each="playlist : ${playlists}">
-              <p th:text="*{playlist.name}"></p>
-              <p th:text="*{playlist.imagePath}"></p>
-              <p th:text="*{playlist.playlistId}"></p>
-            </div>
-          -->
+        <div id="playlist-container" class="playlist-container">
+          <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
+          <div class="playlist" th:each="playlist : ${playlists}">
+            <p th:text="*{playlist.name}"></p>
+            <p th:text="*{playlist.imagePath}"></p>
+            <p th:text="*{playlist.playlistId}"></p>
+          </div>
+        </div>
       </div>
       <div class="item-group">
-        <div id="playlist-navigation-next" class="item tooltip">
+        <div id="playlist-navigation-next" class="item tooltip playlist-navigator">
           <img src="/static/img/navigation/nav-right.svg" alt="next-playlists">
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.nextpl}"></span>
         </div>

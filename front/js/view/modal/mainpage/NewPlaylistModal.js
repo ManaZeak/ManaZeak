@@ -12,16 +12,12 @@ class NewPlaylistModal extends Modal {
    * to create a playlist.</blockquote> **/
   constructor(options) {
     super('new-playlist');
-
-    this._path = options.path;
-    this._title = options.title;
-    this._artist = options.artist;
     /** @private
-     * @member {object} - The modal close button */
-    this._footerCloseButton = null;
+     * @member {object} - The form submit input */
+    this._submitInput = null;
     /** @private
-     * @member {number} - The event ID for the close button clicked */
-    this._footerCloseEvtId = -1;
+     * @member {number} - The event ID for the submit input clicked */
+    this._submitEvtId = -1;
   }
 
 
@@ -50,10 +46,9 @@ class NewPlaylistModal extends Modal {
    * @memberof NewPlaylistModal
    * @author Arthur Beaulieu
    * @since December 2025
-   * @description <blockquote>This method doesn't do anything, the about modal is only for reading.</blockquote> **/
+   * @description <blockquote></blockquote> **/
   _fillAttributes() {
-    // The modal doesn't contain any interaction with user inputs
-    this._footerCloseButton = this._rootElement.querySelector('#modal-footer-close');
+    this._submitInput = this._rootElement.querySelector('#submit-new-playlist');
     this._events();
   }
 
@@ -67,11 +62,52 @@ class NewPlaylistModal extends Modal {
    * @description <blockquote>This method will listen to any click on the submit button to process the textarea
    * content to send it to the backend if needed.</blockquote> **/
   _events() {
-    this._footerCloseEvtId = Evts.addEvent('click', this._footerCloseButton, this.close, this);
+    this._submitEvtId = Evts.addEvent('click', this._submitInput, this._submitClicked, this);
   }
 
 
-
+  /** @method
+   * @name _submitClicked
+   * @private
+   * @async
+   * @memberof WishModal
+   * @author Arthur Beaulieu
+   * @since November 2020
+   * @description <blockquote>This method is the submit button callback. If the textarea content is empty, the server
+   * response to the post call will be the wish modal HTML template, completed with an error message. This callback
+   * will refresh the interface to display this error message. Otherwise, if the textarea isn't empty, the server will
+   * respond with a JSON object that contains the success information, to be displayed as a notification.</blockquote>
+   * @param {object} event - The click event (on submit button) **/
+  _submitClicked(event) {
+    // Avoid form submit default behavior
+    event.preventDefault();
+    //this._url = '/playlist/create/';
+    // Calling the modal url in post allow its resolution
+    mzk.kom.postForm(this._url, {
+      name: this._rootElement.querySelector('#playlist-name-input').value,
+      description: this._rootElement.querySelector('#playlist-description-input').value,
+      isPublicEditable: this._rootElement.querySelector('#playlist-public-editable').checked,
+      isPrivate: this._rootElement.querySelector('#playlist-private-input').checked,
+      addItemAtStartRank: this._rootElement.querySelector('#playlist-at-start-input').checked,
+      image: this._rootElement.querySelector('#playlist-image-input').value
+    }).then(response => {
+      Logger.raise(response);
+      this.close();
+    }).catch(response => {
+      // Parse new modal content as DOM object
+      this._rootElement = Utils.parseHTMLFragment(response);
+      // Clear overlay content
+      this._modalOverlay.innerHTML = '';
+      // Restore new modal content
+      this._modalOverlay.appendChild(this._rootElement);
+      // Avoid event stacking
+      Evts.removeEvent(this._submitEvtId);
+      // Reset submit event id
+      this._submitEvtId = -1;
+      // Re-save internals with new template
+      this._fillAttributes();
+    });
+  }
 
 
 }

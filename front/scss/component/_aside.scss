@@ -88,18 +88,36 @@
         }
       }
     }
+
+    .playlist-navigator {
+      display: none;
+
+      &.disabled {
+        pointer-events: none;
+        filter: opacity(.3);
+      }
+    }
   }
 
   .playlist-wrapper {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: repeat(auto-fill, var(--aside-size));
     height: var(--aside-size);
+    overflow: hidden;
+    position: relative;
     width: 100%; /* To be computed in JS */
 
-    .playlist {
-      height: var(--aside-size);
-      width: var(--aside-size);
+    .playlist-container {
+      display: flex;
+      width: fit-content;
+
+      .playlist {
+        align-items: center;
+        background-color: rebeccapurple;
+        display: flex;
+        height: var(--aside-size);
+        justify-content: center;
+        width: var(--aside-size);
+      }
     }
+
   }
 }

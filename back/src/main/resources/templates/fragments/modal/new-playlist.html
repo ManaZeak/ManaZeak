@@ -1,11 +1,11 @@
-<!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto"*/-->
 <div class="modal" xmlns:th="http://www.thymeleaf.org" th:object="${playlist}">
   <div class="header">
     <p th:text="#{modal.newplaylist.title}"></p>
     <span class="close" id="modal-close">&#10006;</span>
   </div>
   <div class="container">
-    <form method="POST">
+    <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto"*/-->
+    <form method="POST" th:object="${playlist}">
       <!-- Playlist name field (256 char) and specific errors -->
       <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
       <label for="playlist-name-input" th:text="#{modal.newplaylist.name}"></label>
@@ -33,6 +33,6 @@
     </form>
   </div>
   <div class="footer">
-    <label class="submit" for="submit-form" id="submit-badge-button" th:text="#{modal.newplaylist.submit}"></label>
+    <label class="submit" for="submit-form" id="submit-new-playlist" th:text="#{modal.newplaylist.submit}"></label>
   </div>
 </div>

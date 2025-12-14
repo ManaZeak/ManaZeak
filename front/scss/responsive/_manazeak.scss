@@ -22,6 +22,10 @@
       .playlist-wrapper {
         height: 100%;
         width: var(--aside-size);
+
+        .playlist-container {
+          flex-direction: column;
+        }
       }
     }
     /* Scene desktop rules */
