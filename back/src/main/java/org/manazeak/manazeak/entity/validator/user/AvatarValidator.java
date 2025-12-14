@@ -22,7 +22,7 @@ public class AvatarValidator implements ConstraintValidator<Avatar, MultipartFil
     @Override
     public boolean isValid(MultipartFile file, ConstraintValidatorContext constraintValidatorContext) {
         // If the file is empty, the image is safe.
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             return true;
         }
         // If there is something in the file we check that's an image.

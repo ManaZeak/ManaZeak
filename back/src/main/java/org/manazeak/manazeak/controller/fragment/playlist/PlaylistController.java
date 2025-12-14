@@ -15,9 +15,9 @@ import org.manazeak.manazeak.service.playlist.PlaylistService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -47,13 +47,10 @@ public class PlaylistController {
 
     @Security(PrivilegeEnum.PLAY)
     @PostMapping("/modal/new-playlist/")
-    public String createPlaylist(@RequestBody @Valid PlaylistCreationDto playlistCreation, BindingResult result,
+    public String createPlaylist(@ModelAttribute("playlist") @Valid PlaylistCreationDto playlistCreation, BindingResult result,
                                  Model model) {
         // If the form is invalid, resend the modal
         if (result.hasErrors()) {
-            model.addAttribute("playlist", playlistCreation);
-            // Adding the binding results for the error display
-            model.addAttribute("org.springframework.validation.BindingResult.playlist", result);
             return PlaylistFragmentEnum.PLAYLIST_CREATION_MODAL.getPage();
         }
         // Creating the play list.
