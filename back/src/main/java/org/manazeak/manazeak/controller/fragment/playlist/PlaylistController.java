@@ -7,6 +7,7 @@ import org.manazeak.manazeak.controller.fragment.FragmentController;
 import org.manazeak.manazeak.controller.page.playlist.PlaylistFragmentEnum;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
 import org.springframework.ui.Model;
@@ -28,6 +29,13 @@ public class PlaylistController {
         List<PlaylistAsideDto> playlistsAsideInfo = playlistService.getPlaylistsAsideInfo();
         model.addAttribute("playlists", playlistsAsideInfo);
         return PlaylistFragmentEnum.PLAYLIST_ASIDE.getPage();
+    }
+
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/modal/new-playlist/")
+    public String getPlaylistCreationModal(Model model) {
+        model.addAttribute("playlist", new PlaylistCreationDto());
+        return PlaylistFragmentEnum.PLAYLIST_CREATION_MODAL.getPage();
     }
 
     /**

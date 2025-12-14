@@ -1,11 +1,11 @@
-<!--/*@thymesVar id="userInfo" type="org.manazeak.manazeak.entity.dto.user.MzkUserEditDto*"*/-->
-<div class="modal" xmlns:th="http://www.thymeleaf.org" th:object="${userInfo}">
+<!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto"*/-->
+<div class="modal" xmlns:th="http://www.thymeleaf.org" th:object="${playlist}">
   <div class="header">
     <p th:text="#{modal.newplaylist.title}"></p>
     <span class="close" id="modal-close">&#10006;</span>
   </div>
   <div class="container">
-    <form method="POST" th:object="${playlist}">
+    <form method="POST">
       <!-- Playlist name field (256 char) and specific errors -->
       <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
       <label for="playlist-name-input" th:text="#{modal.newplaylist.name}"></label>
@@ -13,13 +13,16 @@
       <!-- Playlist description field (4096 char) -->
       <p class="error" th:each="error : ${#fields.errors('description')}" th:text="${error}"></p>
       <label for="playlist-description-input" th:text="#{modal.newplaylist.description}"></label>
-      <textarea id="playlist-description-input" th:field="*{bio}" maxlength="4096" th:placeholder="#{modal.newplaylist.descriptionplaceholder}"></textarea>
+      <textarea id="playlist-description-input" th:field="*{description}" maxlength="4096" th:placeholder="#{modal.newplaylist.descriptionplaceholder}"></textarea>
+      <!-- Playlist private state field (boolean), no specific error can occur on a checkbox -->
+      <label for="playlist-public-editable" th:text="#{modal.newplaylist.public_editable}"></label>
+      <input id="playlist-public-editable" type="checkbox" th:field="*{publicEditable}"/>
       <!-- Playlist private state field (boolean), no specific error can occur on a checkbox -->
       <label for="playlist-private-input" th:text="#{modal.newplaylist.private}"></label>
-      <input id="playlist-private-input" type="checkbox" th:field="${isPrivate}"></input>
+      <input id="playlist-private-input" type="checkbox" th:field="*{private}"/>
       <!-- Playlist add at start state field (boolean), no specific error can occur on a checkbox -->
       <label for="playlist-at-start-input" th:text="#{modal.newplaylist.atstart}"></label>
-      <input id="playlist-at-start-input" type="checkbox" th:field="${isPrivate}"></input>
+      <input id="playlist-at-start-input" type="checkbox" th:field="*{addItemAtStartRank}"/>
       <!-- Playlist image field (multipart, only PNG/JPG) and specific errors -->
       <p class="error" th:each="error : ${#fields.errors('image')}" th:text="${error}"></p>
       <label for="playlist-image-input" th:text="#{modal.newplaylist.image}"></label>

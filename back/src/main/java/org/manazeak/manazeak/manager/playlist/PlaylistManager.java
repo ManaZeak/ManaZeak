@@ -78,13 +78,13 @@ public class PlaylistManager {
         checkIsPlaylistFlagCoherence(playlist);
 
         playlist = playlistDAO.save(playlist);
-        if (playlistCreation.image() == null) {
+        if (playlistCreation.getImage() == null) {
             return playlist;
         }
 
         // Save the file in the FS.
         try {
-            playlistCreation.image().transferTo(
+            playlistCreation.getImage().transferTo(
                     ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath().resolve(playlist.getPlaylistId().toString())
             );
         } catch (IOException e) {

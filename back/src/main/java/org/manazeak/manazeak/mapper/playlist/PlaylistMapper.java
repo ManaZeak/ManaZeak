@@ -31,13 +31,14 @@ public abstract class PlaylistMapper {
      * @param playlistCreation The information about the playlist.
      * @return The playlist to be saved in the database.
      */
+    @Mapping(target = "isPublicEditable", source = "playlistCreation.publicEditable")
     @Mapping(target = "playlistId", ignore = true)
     @Mapping(target = "imagePath", source = "playlistCreation.image")
     @Mapping(target = "isPublic", expression = "java(!playlistCreation.isPrivate())")
     @Mapping(target = "creator", source = "user")
     @Mapping(target = "creationDate", expression = "java(LocalDateTime.now())")
     @Mapping(target = "name", source = "playlistCreation.name")
-    @Mapping(target = "appendTrack", expression = "java(!playlistCreation.addItemAtStartRank())")
+    @Mapping(target = "appendTrack", expression = "java(!playlistCreation.isAddItemAtStartRank())")
     public abstract Playlist buildPlaylist(MzkUser user, PlaylistCreationDto playlistCreation);
 
     public abstract PlaylistAsideDto buildPlaylistAside(Playlist playlist);
