@@ -17,7 +17,7 @@ import java.util.Locale;
  * This class allows selecting the local for a given user.
  * If there is no user, we select the user agent language.
  */
-@Component
+@Component("localResolver")
 @RequiredArgsConstructor
 @TransactionalWithRollback
 @Slf4j
