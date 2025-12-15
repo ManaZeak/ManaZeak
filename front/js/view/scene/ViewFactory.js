@@ -4,6 +4,7 @@ import ReleaseArtistView from './mainpage/ReleaseArtistView.js';
 import AlbumView from './mainpage/AlbumView.js';
 import GenreView from './mainpage/GenreView.js';
 import LabelView from './mainpage/LabelView.js';
+import PlaylistView from './mainpage/PlaylistView.js';
 /* Special views */
 import GenreGraphView from './mainpage/GenreGraphView.js';
 /* All item view */
@@ -22,6 +23,7 @@ const Classes = {
   AlbumView,
   GenreView,
   LabelView,
+  PlaylistView,
   GenreGraphView,
   AllReleaseArtistView,
   AllGenreView,

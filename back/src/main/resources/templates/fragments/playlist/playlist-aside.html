@@ -1,6 +1,11 @@
-<!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
-<div th:each="playlist : ${playlists}">
-  <p th:text="*{playlist.name}"></p>
-  <p th:text="*{playlist.imagePath}"></p>
-  <p th:text="*{playlist.playlistId}"></p>
+<div id="playlist-container" class="playlist-container">
+  <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
+  <div th:each="playlist : ${playlists}" th:data-id="*{playlist.playlistId}" th:data-name="*{playlist.name}" class="playlist">
+    <div th:if="*{playlist.imagePath != null}">
+      <img th:src="*{playlist.imagePath}">
+    </div>
+    <div th:if="*{playlist.imagePath == null}">
+      <p th:text="*{playlist.name}"></p>
+    </div>
+  </div>
 </div>

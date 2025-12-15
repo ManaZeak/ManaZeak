@@ -46,16 +46,7 @@
           <span class="tooltip-text right" th:text="#{mp.aside.tooltip.previouspl}"></span>
         </div>
       </div>
-      <div id="playlist-wrapper" class="playlist-wrapper">
-        <div id="playlist-container" class="playlist-container">
-          <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
-          <div class="playlist" th:each="playlist : ${playlists}">
-            <p th:text="*{playlist.name}"></p>
-            <p th:text="*{playlist.imagePath}"></p>
-            <p th:text="*{playlist.playlistId}"></p>
-          </div>
-        </div>
-      </div>
+      <div id="playlist-wrapper" class="playlist-wrapper"></div>
       <div class="item-group">
         <div id="playlist-navigation-next" class="item tooltip playlist-navigator">
           <img src="/static/img/navigation/nav-right.svg" alt="next-playlists">
