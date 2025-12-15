@@ -156,7 +156,6 @@ class ThumbsFragment {
 
     _errorSubmitClicked(id) {
       mzk.kom.post(`/admin/thumb/${id}/processed/`, {}).then(response => {
-        response.notifications[0].type = response.notifications[0].severity;
         Notif.new(response.notifications[0]);
         this._updateView();
       });

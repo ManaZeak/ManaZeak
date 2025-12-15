@@ -52,7 +52,7 @@ constructor(options) {
   setActions(doc) {
     this._commands.download = doc.getElementsByClassName('download')[0];
     this._commands.queue = doc.getElementsByClassName('add-to-queue')[0];
-    this._commands.tapBpm = doc.getElementsByClassName('tap-bpm')[0];
+    //this._commands.tapBpm = doc.getElementsByClassName('tap-bpm')[0];
 
     this._text.download = doc.getElementsByClassName('track-download')[0];
     this._text.queue = doc.getElementsByClassName('track-queue')[0];
@@ -60,8 +60,8 @@ constructor(options) {
     this._commands.queue.addEventListener('click', this._addToQueue.bind(this), false);
 
     if (true/*mzk.user.hasPermission('TAGE')*/) {
-      this._text.tapBpm = doc.getElementsByClassName('track-tap-bpm')[0];
-      this._commands.tapBpm.addEventListener('click', this._tapBpm.bind(this), false);
+      //this._text.tapBpm = doc.getElementsByClassName('track-tap-bpm')[0];
+      //this._commands.tapBpm.addEventListener('click', this._tapBpm.bind(this), false);
     } else {
       this._commands.tapBpm.parentNode.removeChild(this._commands.tapBpm);
     }

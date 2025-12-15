@@ -12,6 +12,7 @@ class Aside {
     this._playlistContainer = document.getElementById('playlist-container');
 
     this._initPlaylistWrapper();
+    this.updatePlaylists();
     this._events();
   }
 
@@ -95,6 +96,13 @@ class Aside {
   _logoutSession() {
     localStorage.removeItem('mzk-jwt-token');
     window.location = '/logoutSuccess/';
+  }
+
+
+  updatePlaylists() {
+    mzk.kom.getText('/fragment/playlist/aside/').then(dom => {
+      console.log(dom);
+    })
   }
 
 

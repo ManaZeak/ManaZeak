@@ -79,7 +79,7 @@ class NewPlaylistModal extends Modal {
    * respond with a JSON object that contains the success information, to be displayed as a notification.</blockquote>
    * @param {object} event - The click event (on submit button) **/
   _submitClicked(event) {
-    // Avoid form submit default behavior
+    // Avoid form submit default behavior TODO factorize in postrForm method
     event.preventDefault();
     const formData = new FormData(this._rootElement.querySelector('#new-playlist-form'));
     const options = {
@@ -92,23 +92,29 @@ class NewPlaylistModal extends Modal {
     };
 
     fetch(this._url, options).then(data => {
-      data.text().then(parsed => {
+      data.json().then(parsed => {
         if (parsed === '') {
-          Logger.raise(response);
+          Logger.raise(parsed);
+          mzk.ui.updateAsidePlaylist();
           this.close();
         } else {
-          // Parse new modal content as DOM object
-          this._rootElement = Utils.parseHTMLFragment(response);
-          // Clear overlay content
-          this._modalOverlay.innerHTML = '';
-          // Restore new modal content
-          this._modalOverlay.appendChild(this._rootElement);
-          // Avoid event stacking
-          Evts.removeEvent(this._submitEvtId);
-          // Reset submit event id
-          this._submitEvtId = -1;
-          // Re-save internals with new template
-          this._fillAttributes();
+          if (parsed.done === 'true') {
+            Notif.new(parsed);
+            this.close();
+          } else {
+            // Parse new modal content as DOM object
+            this._rootElement = Utils.parseHTMLFragment(parsed);
+            // Clear overlay content
+            this._modalOverlay.innerHTML = '';
+            // Restore new modal content
+            this._modalOverlay.appendChild(this._rootElement);
+            // Avoid event stacking
+            Evts.removeEvent(this._submitEvtId);
+            // Reset submit event id
+            this._submitEvtId = -1;
+            // Re-save internals with new template
+            this._fillAttributes();
+          }
         }
       }).catch(err => {});
     }).catch(err => {});

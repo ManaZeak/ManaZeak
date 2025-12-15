@@ -881,6 +881,10 @@
           color: var(--color-txt-darker);
           margin: var(--margin-small);
           text-indent: var(--font-size);
+
+          &:first-of-type {
+            color: red;
+          }
         }
 
         .link {

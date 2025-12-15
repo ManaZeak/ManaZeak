@@ -35,7 +35,6 @@ class CommandsFragment {
 
   _scanClicked() {
     mzk.kom.get('/admin/library/scan/').then(response => {
-      response.notifications[0].type = response.notifications[0].severity;
       Notif.new(response.notifications[0]);
     }).catch(error => {
       Notif.new(error.notifications[0]);
@@ -45,7 +44,6 @@ class CommandsFragment {
 
   _thumbsClicked() {
     mzk.kom.get('/admin/library/regenThumbs/').then(response => {
-      response.notifications[0].type = response.notifications[0].severity;
       Notif.new(response.notifications[0]);
     }).catch(() => {
       Notif.new(error.notifications[0]);
@@ -55,7 +53,6 @@ class CommandsFragment {
 
   _moodsClicked() {
     mzk.kom.get('/admin/library/genMoods/').then(response => {
-      response.notifications[0].type = response.notifications[0].severity;
       Notif.new(response.notifications[0]);
     }).catch(() => {
       Notif.new(error.notifications[0]);
@@ -64,7 +61,6 @@ class CommandsFragment {
 
   _moodsImageClicked() {
     mzk.kom.get('/admin/library/regenMoodImage/').then(response => {
-      response.notifications[0].type = response.notifications[0].severity;
       Notif.new(response.notifications[0]);
     }).catch(() => {
       Notif.new(error.notifications[0]);

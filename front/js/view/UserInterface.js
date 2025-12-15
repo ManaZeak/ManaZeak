@@ -362,6 +362,12 @@ class UserInterface {
   }
 
 
+  updateAsidePlaylist() {
+    if (DEBUG) { console.log('UserInterface.updateAsidePlaylist : called'); }
+    return this._aside.updatePlaylists();
+  }
+
+
 }
 
 
