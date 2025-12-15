@@ -111,12 +111,32 @@
 
       .playlist {
         align-items: center;
-        background-color: rebeccapurple;
         cursor: pointer;
         display: flex;
         height: var(--aside-size);
         justify-content: center;
         width: var(--aside-size);
+
+        div {
+          align-items: center;
+          border-radius: var(--border-radius);
+          display: flex;
+          height: 85%;
+          justify-content: center;
+          width: 85%;
+
+          p {
+            margin: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 2.5ch; /* Only display 2 chars */
+          }
+
+          img {
+            height: 100%;
+            width: 100%;
+          }
+        }
       }
     }
 

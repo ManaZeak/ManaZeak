@@ -110,6 +110,10 @@ class Aside {
           name: 'Playlist',
           id: this._playlistContainer.children[i].dataset.id
         }), this);
+        if (this._playlistContainer.children[i].children[0].children[0].tagName === 'P') {
+          this._playlistContainer.children[i].children[0].children[0].innerHTML = this._playlistContainer.children[i].children[0].children[0].innerHTML.slice(0, 2);
+          this._playlistContainer.children[i].children[0].style.backgroundColor = Utils.randomColor();
+        }
       }
       resolve();
     });
