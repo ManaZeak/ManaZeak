@@ -1,11 +1,12 @@
 <div id="playlist-container" class="playlist-container">
   <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto"*/-->
-  <div th:each="playlist : ${playlists}" th:data-id="*{playlist.playlistId}" th:data-name="*{playlist.name}" class="playlist item">
+  <div th:each="playlist : ${playlists}" th:data-id="*{playlist.playlistId}" th:data-name="*{playlist.name}" class="playlist item tooltip">
     <div th:if="*{playlist.imagePath != null}">
       <img th:src="*{playlist.imagePath}">
     </div>
     <div th:if="*{playlist.imagePath == null}">
       <p th:text="*{playlist.name}"></p>
     </div>
+    <span class="tooltip-text right" th:text="*{playlist.name}"></span>
   </div>
 </div>

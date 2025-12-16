@@ -15,6 +15,7 @@
     justify-content: center;
     width: var(--aside-size);
     position: relative;
+    user-select: none;
     transition: background-color .2s;
 
     &:active,
@@ -110,11 +111,8 @@
       width: fit-content;
 
       .playlist {
-        align-items: center;
         cursor: pointer;
-        display: flex;
         height: var(--aside-size);
-        justify-content: center;
         width: var(--aside-size);
 
         div {

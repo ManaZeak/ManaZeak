@@ -21,7 +21,7 @@
 
       .playlist-wrapper {
         height: 100%;
-        width: var(--aside-size);
+        width: 100vw; /* Allow tooltips to be displayed */
 
         .playlist-container {
           flex-direction: column;
