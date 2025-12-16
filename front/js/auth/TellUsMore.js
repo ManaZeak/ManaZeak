@@ -9,10 +9,7 @@ const submitForm = options => {
   fetch('/additionalRegisterInfo/', options).then(data => {
     data.text().then(parsed => {
       if (parsed === '') {
-        // Clear register wip key to allow Boarding to redirect to /app/
-        localStorage.removeItem('mzk-register-wip');
-        // Redirect to boarding to check JWT and build /app
-        window.location.replace('/');
+        renewToken();
       } else {
         const newHTML = document.open('text/html', 'replace');
         newHTML.write(parsed);
@@ -42,6 +39,7 @@ const tellUsMoreForm = document.getElementById('tellusmore-form');
 const csrfToken = document.getElementById('csrf-token');
 // Create output string and update max attribute on birthday date input
 birthdayInput.setAttribute('max', `${yyyy}-${mm}-${dd}`);
+
 // Submit button click event listener
 submitButton.addEventListener('click', e => {
   e.preventDefault();
@@ -64,3 +62,30 @@ document.addEventListener('keypress', e => {
     submitButton.click();
   }
 });
+
+const renewToken = () => {
+  const options = {
+    method: 'GET',
+    headers: new Headers([
+      ['X-XSRF-TOKEN', csrfToken.value],
+      ['Authorization', `Bearer ${localStorage.getItem('mzk-jwt-token')}`]
+    ])
+  };
+
+  fetch('/renew-token/', options)
+    .then(data => {
+      if (data.ok) {
+        // Parse server response to extract and save JWT token
+        data.text().then(token => {
+          // Clear register wip key to allow Boarding to redirect to /app/
+          localStorage.removeItem('mzk-register-wip');
+          // Save registered JWT token
+          localStorage.setItem('mzk-jwt-token', token);
+          // Redirect to boarding to check JWT and build /app
+          window.location.replace('/');
+        }).catch(err => console.error(err));
+      } else {
+        console.error('Unable to renew token. Contact administrator.');
+      }
+    }).catch(err => console.error(err));
+};
