@@ -58,7 +58,7 @@ public abstract class PlaylistMapper {
      * @return The identifier of the library image.
      */
     protected String buildPlaylistImagePath(MultipartFile file) {
-        if (file == null) {
+        if (file == null || file.isEmpty()) {
             return null;
         }
 
