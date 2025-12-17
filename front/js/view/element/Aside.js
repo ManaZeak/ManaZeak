@@ -44,6 +44,7 @@ class Aside {
       if (playlistAmount === 0) {
         document.getElementById('playlist-navigation-previous').style.display = 'none';
         document.getElementById('playlist-navigation-next').style.display = 'none';
+        resolve();
         return; // No need to do anything here until some playlists exists.
       }
   

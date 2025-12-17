@@ -95,11 +95,11 @@ class NewPlaylistModal extends Modal {
       data.json().then(parsed => {
         if (parsed === '') {
           Logger.raise(parsed);
-          mzk.ui.updateAsidePlaylist();
           this.close();
         } else {
           if (parsed.done === 'true') {
             Notif.new(parsed);
+            mzk.ui.updateAsidePlaylist();
             this.close();
           } else {
             // Parse new modal content as DOM object
