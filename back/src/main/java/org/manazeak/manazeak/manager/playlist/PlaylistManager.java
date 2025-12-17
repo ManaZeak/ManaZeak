@@ -87,7 +87,7 @@ public class PlaylistManager {
         try {
             Files.createDirectories(ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath());
             playlistCreation.getImage().transferTo(
-                    ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath().resolve(playlist.getPlaylistId().toString())
+                    ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath().resolve(playlist.getImagePath())
             );
         } catch (IOException e) {
             throw new MzkRuntimeException("Error while saving the playlist image.", e);
