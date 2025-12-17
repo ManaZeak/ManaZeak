@@ -45,6 +45,11 @@ class Mzk {
   }
 
 
+  setDialog(options) {
+    return this.ui.setDialog(options);
+  }
+
+
   changeTrack(options) {
     this.ctrl.changeTrack(options)
       .then(track => this.ui.changeTrack(track))

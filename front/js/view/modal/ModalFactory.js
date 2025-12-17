@@ -11,6 +11,7 @@ import TrackDetailModal from './mainpage/TrackDetailModal.js';
 import AboutModal from './menupage/AboutModal.js';
 import WishModal from './menupage/WishModal.js';
 
+import YesNoModal from './utils/YesNoModal.js';
 
 const Classes = {
   ResetPasswordModal,
@@ -21,7 +22,8 @@ const Classes = {
   NewPlaylistModal,
   TrackDetailModal,
   AboutModal,
-  WishModal
+  WishModal,
+  YesNoModal
 };
 
 

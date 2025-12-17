@@ -57,10 +57,16 @@ class PlaylistView extends ItemViewHelperMixin(PlayableView) {
 
 
   _deletePlaylist() {
-    mzk.kom.delete(`/playlist/${this._id}/`).then(() => {
-      mzk.ui.updateAsidePlaylist();
-      mzk.setView({ name: 'MainPage' });
-    }).catch(err => console.error(err));
+    mzk.setDialog({
+      name: 'YesNo',
+      title: "Suppri",
+      description: "Vous etes sure le coran ?"
+    }).then(() => {
+      mzk.kom.delete(`/playlist/${this._id}/`).then(() => {
+        mzk.ui.updateAsidePlaylist();
+        mzk.setView({ name: 'MainPage' });
+      }).catch(err => console.error(err));
+    }).catch(() => {});
   }
 
 

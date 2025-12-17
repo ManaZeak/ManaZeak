@@ -84,6 +84,16 @@ class UserInterface {
   }
 
 
+  setDialog(options) { // Almost like a modal, but yes resolves and no rejects
+    if (DEBUG) { console.log('UserInterface.setDialog : called with (options)', options); }
+    return new Promise((resolve, reject) => {
+      this._scene.buildDialog(options)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
   getFragment(url) {
     if (DEBUG) { console.log('UserInterface.getFragment : called with (url)', url); }
     // The loading overlay must be handled caller, since fragment is only a part of viewport

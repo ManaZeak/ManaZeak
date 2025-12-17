@@ -9,11 +9,15 @@ class Modal {
    * exposes an open and a close method. Finally, it allows the user to click on the modal overlay, or on the close icon
    * to close the modal. The developer must override <code>destroy()</code> and <code>_fillAttributes()</code> methods
    * to fully cover the modal lifecycle (see each of these methods documentation).</blockquote>
-   * @param {string} type - The modal type to load (must match html template filename, no extension) **/
-  constructor(type) {
+   * @param {string} type - The modal type to load (must match html template filename, no extension)
+   * @param {boolean} [isDialog=false] - Make the modal a dialog, the .open method MUST be called by caller after construction **/
+  constructor(type, isDialog = false) {
     /** @private
      * @member {string} - The modal type */
      this._type = type;
+    /** @private
+     * @member {boolean} - The modal's dialog type */
+    this._isDialog = isDialog;
     /** @private
      * @member {string} - The HTML template url to fetch */
     this._url = `/fragment/modal/${this._type}/`;
@@ -92,8 +96,11 @@ class Modal {
       this._modalOverlay.appendChild(this._rootElement);
       // Get close button from template
       this._closeButton = this._rootElement.querySelector('#modal-close');
-      this.open();
+      if (!this._isDialog) {
+        this.open();
+      }
       this._fillAttributes();
+      Evts.publish('ModalReady');
     }).catch(error => {
       console.error(error);
     });

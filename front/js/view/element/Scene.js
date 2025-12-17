@@ -53,6 +53,17 @@ class Scene {
   }
 
 
+  buildDialog(options) {
+    return new Promise((resolve, reject) => {
+      this._dialog = null;
+      Evts.subscribe('ModalReady', () => {
+        this.dialog.open().then(resolve).catch(reject).finally(() => this.dialog.close());
+      }, true);
+      this.dialog = new ModalFactory(options.name, options);
+    });
+  }
+
+
   closeModal() {
     if (this.modal) {
       this.modal.close();
