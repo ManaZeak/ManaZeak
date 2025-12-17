@@ -482,6 +482,26 @@ class Kom {
 
 
   // ======================================================================== //
+  // ---------------------- HTTP DELETE calls methods ----------------------- //
+  // ======================================================================== //
+
+
+  delete(url, resolution = this._resolveAsJSON.bind(this)) {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: 'DELETE',
+        headers: new Headers(this._headers) // Content type to JSON
+      };
+
+      fetch(url, options)
+        .then(resolution)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+
+  // ======================================================================== //
   // ------------------ Generic HTTP server calls methods ------------------- //
   // ======================================================================== //
 

@@ -49,8 +49,25 @@ class PlaylistView extends ItemViewHelperMixin(PlayableView) {
 
   _events() {
     return new Promise((resolve, reject) => {
+      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#playlist-delete'), this._deletePlaylist, this));
+      this._evtIds.push(Evts.addEvent('click', this.dom.querySelector('#playlist-edit'), this._editPlaylist, this));
       resolve();
     });    
+  }
+
+
+  _deletePlaylist() {
+    mzk.kom.delete(`/playlist/${this._id}/`).then(() => {
+      mzk.ui.updateAsidePlaylist();
+      mzk.setView({ name: 'MainPage' });
+    }).catch(err => console.error(err));
+  }
+
+
+  _editPlaylist() {
+    mzk.kom.get(`/api/playlist/${this._id}/edit/`).then(() => {
+
+    }).catch(err => console.error(err));
   }
 
 

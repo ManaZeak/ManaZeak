@@ -1,4 +1,6 @@
 <div class="modal" xmlns:th="http://www.thymeleaf.org">
+  <button id="playlist-delete">Delete me</button>
+  <button id="playlist-edit">Edit me</button>
   <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto"*/-->
   <p th:text="${playlist.playlistId}"></p>
   <p th:text="${playlist.playlistName}"></p>
@@ -15,3 +17,4 @@
     <div th:replace="~{/include/genre/minimalGenreFragment.html :: displayMinimalGenre(*{genre}, medium)}"></div>
   </div>
 </div>
+editor
