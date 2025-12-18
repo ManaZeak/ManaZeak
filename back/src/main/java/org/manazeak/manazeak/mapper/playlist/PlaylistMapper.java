@@ -3,6 +3,7 @@ package org.manazeak.manazeak.mapper.playlist;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistEditDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -40,6 +41,20 @@ public abstract class PlaylistMapper {
     @Mapping(target = "name", source = "playlistCreation.name")
     @Mapping(target = "appendTrack", expression = "java(!playlistCreation.isAddItemAtStartRank())")
     public abstract Playlist buildPlaylist(MzkUser user, PlaylistCreationDto playlistCreation);
+
+    @Mapping(target = "playlistId", source = "originPlaylist.playlistId")
+    @Mapping(target = "name", source = "playlistEdit.name")
+    @Mapping(target = "description", source = "playlistEdit.description")
+    @Mapping(target = "isPublic", expression = "java(!playlistEdit.isPrivate())")
+    @Mapping(target = "isPublicEditable", source = "playlistEdit.publicEditable")
+    @Mapping(target = "appendTrack", expression = "java(!playlistEdit.isAddItemAtStartRank())")
+    public abstract Playlist buildPlaylist(Playlist originPlaylist, PlaylistEditDto playlistEdit);
+
+    @Mapping(target = "private", expression = "java(!playlist.getIsPublic())")
+    @Mapping(target = "addItemAtStartRank", expression = "java(!playlist.getAppendTrack())")
+    @Mapping(target = "publicEditable", source = "isPublicEditable")
+    @Mapping(target = "image", ignore = true)
+    public abstract PlaylistEditDto buildPlaylistEdit(Playlist playlist);
 
     public abstract PlaylistAsideDto buildPlaylistAside(Playlist playlist);
 

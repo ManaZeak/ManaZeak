@@ -1,0 +1,27 @@
+<!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto"*/-->
+<th:block th:fragment="playlistForm(playlist)" xmlns:th="http://www.thymeleaf.org" th:object="${playlist}">
+  <!-- Playlist name field (256 char) and specific errors -->
+  <p class="error" th:each="error : ${#fields.errors('name')}" th:text="${error}"></p>
+  <label for="playlist-name-input" th:text="#{modal.newplaylist.name}"></label>
+  <input id="playlist-name-input" th:field="*{name}" maxlength="256" type="text"/>
+  <!-- Playlist description field (4096 char) -->x
+  <p class="error" th:each="error : ${#fields.errors('description')}" th:text="${error}"></p>
+  <label for="playlist-description-input" th:text="#{modal.newplaylist.description}"></label>
+  <textarea id="playlist-description-input" th:field="*{description}" maxlength="4096" th:placeholder="#{modal.newplaylist.descriptionplaceholder}"></textarea>
+  <!-- Playlist private state field (boolean), no specific error can occur on a checkbox -->
+  <label for="playlist-public-editable" th:text="#{modal.newplaylist.public_editable}"></label>
+  <input id="playlist-public-editable" type="checkbox" th:field="*{publicEditable}"/>
+  <!-- Playlist private state field (boolean), no specific error can occur on a checkbox -->
+  <label for="playlist-private-input" th:text="#{modal.newplaylist.private}"></label>
+  <input id="playlist-private-input" type="checkbox" th:field="*{private}"/>
+  <!-- Playlist add at start state field (boolean), no specific error can occur on a checkbox -->
+  <label for="playlist-at-start-input" th:text="#{modal.newplaylist.atstart}"></label>
+  <input id="playlist-at-start-input" type="checkbox" th:field="*{addItemAtStartRank}"/>
+  <!-- Playlist image field (multipart, only PNG/JPG) and specific errors -->
+  <p class="error" th:each="error : ${#fields.errors('image')}" th:text="${error}"></p>
+  <label for="playlist-image-input" th:text="#{modal.newplaylist.image}"></label>
+  <input id="playlist-image-input" type="file" accept="image/png, image/jpeg" th:field="*{image}"/>
+  <!-- Required csrf token from session cookies -->
+  <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+  <button id="submit-form" type="submit"></button>
+</th:block>

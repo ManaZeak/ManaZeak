@@ -10,14 +10,12 @@ import org.manazeak.manazeak.controller.page.playlist.PlaylistFragmentEnum;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistEditDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,9 +51,31 @@ public class PlaylistController {
         if (result.hasErrors()) {
             return PlaylistFragmentEnum.PLAYLIST_CREATION_MODAL.getPage();
         }
-        // Creating the play list.
+
+        // Creating the playlist.
         playlistService.createPlaylist(playlistCreation);
         return jsonResponseHandler.prepareJsonSuccess("general.notification.success_title", "playlist.creation.success_message", model);
+    }
+
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/modal/{playlistId}/edit-playlist/")
+    public String getEditPlaylist(Model model, @PathVariable Long playlistId) {
+        model.addAttribute("playlist", playlistService.getPlaylistEditDto(playlistId));
+        return PlaylistFragmentEnum.PLAYLIST_EDIT_MODAL.getPage();
+    }
+
+
+    @Security(PrivilegeEnum.PLAY)
+    @PutMapping("/modal/edit-playlist/")
+    public String editPlaylist(@ModelAttribute("playlist") @Valid PlaylistEditDto playlistEditDto, BindingResult result,
+                               Model model) {
+        if (result.hasErrors()) {
+            return PlaylistFragmentEnum.PLAYLIST_EDIT_MODAL.getPage();
+        }
+
+        // Update the playlist.
+        playlistService.updatePlaylist(playlistEditDto);
+        return jsonResponseHandler.prepareJsonSuccess("general.notification.success_title", "playlist.edit.success_message", model);
     }
 
     /**

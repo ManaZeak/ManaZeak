@@ -12,6 +12,7 @@ import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistEditDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.playlist.PlaylistTrack;
@@ -21,13 +22,12 @@ import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.track.TrackConverterManager;
 import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Path;
+import java.util.*;
 
 /**
  * The PlaylistManager class provides functionalities to manage playlists,
@@ -83,17 +83,47 @@ public class PlaylistManager {
             return playlist;
         }
 
+        savePlaylistImage(playlistCreation.getImage(), playlist.getImagePath());
+
+        return playlist;
+    }
+
+    /**
+     * Updates an existing paylist.
+     *
+     * @param existingPlaylist The existing playlist in the database.
+     * @param playlistEdit     The information sent by the user.
+     */
+    public void updatePlaylist(Playlist existingPlaylist, PlaylistEditDto playlistEdit) {
+        // Building the playlist to save.
+        Playlist playlist = playlistMapper.buildPlaylist(existingPlaylist, playlistEdit);
+
+        // Handling the image if there is a new one.
+        if (playlistEdit.getImage() != null && !playlistEdit.getImage().isEmpty()) {
+            if (existingPlaylist.getImagePath() == null) {
+                // Generate an image name.
+                playlist.setImagePath(UUID.randomUUID().toString());
+            }
+            savePlaylistImage(playlistEdit.getImage(), playlist.getImagePath());
+        }
+
+        playlistDAO.save(playlist);
+    }
+
+    private void savePlaylistImage(MultipartFile image, String imageName) {
         // Save the file in the FS.
         try {
             Files.createDirectories(ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath());
-            playlistCreation.getImage().transferTo(
-                    ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath().resolve(playlist.getImagePath())
-            );
+            Path imagePath = ResourcePathEnum.PLAYLIST_IMAGE_FOLDER.getPath().resolve(imageName);
+            // Deleting the image if there is already one.
+            if (Files.exists(imagePath)) {
+                Files.delete(imagePath);
+            }
+            // Moving the resource.
+            image.transferTo(imagePath);
         } catch (IOException e) {
             throw new MzkRuntimeException("Error while saving the playlist image.", e);
         }
-
-        return playlist;
     }
 
     /**

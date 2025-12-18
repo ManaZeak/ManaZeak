@@ -16,7 +16,8 @@ public enum PlaylistFragmentEnum {
     PLAYLIST_ASIDE("fragments/playlist/playlist-aside.html"),
     PLAYLIST_INFO("fragments/playlist/playlist-info.html"),
     PLAYLIST_TRACKS("fragments/playlist/playlist-tracks.html"),
-    PLAYLIST_CREATION_MODAL("fragments/modal/new-playlist.html");
+    PLAYLIST_CREATION_MODAL("fragments/modal/new-playlist.html"),
+    PLAYLIST_EDIT_MODAL("fragments/modal/edit-playlist.html");
 
     private final String page;
 }

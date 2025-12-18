@@ -7,12 +7,15 @@ import org.manazeak.manazeak.constant.library.LibraryItemTypeEnum;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistEditDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.playlist.PlaylistManager;
 import org.manazeak.manazeak.manager.security.user.UserManager;
 import org.manazeak.manazeak.mapper.playlist.PlaylistAsideManager;
+import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +33,7 @@ public class PlaylistService {
     private final PlaylistManager playlistManager;
 
     private final PlaylistAsideManager playlistAsideManager;
+    private final PlaylistMapper playlistMapper;
 
     /**
      * Create a playlist for the current user.
@@ -47,6 +51,23 @@ public class PlaylistService {
     }
 
     /**
+     * Edit an existing playlist.
+     *
+     * @param playlistEdit The playlist to be edited.
+     */
+    public void updatePlaylist(PlaylistEditDto playlistEdit) {
+        MzkUser user = userManager.getCurrentUser();
+        // Checking if the playlist is the one of the user.
+        Playlist playlist = playlistManager.getPlaylist(user, playlistEdit.getPlaylistId());
+        if (!playlist.getCreator().getName().equals(user.getName())) {
+            throw new MzkRuntimeException("You are not allowed to do this.");
+        }
+
+        // Updating the existing playlist.
+        playlistManager.updatePlaylist(playlist, playlistEdit);
+    }
+
+    /**
      * Delete a playlist for the current user.
      *
      * @param playlistId The identifier of the playlist to delete.
@@ -60,6 +81,19 @@ public class PlaylistService {
 
         // Deleting the tracks associated with this playlist.
         playlistManager.deletePlaylist(playlist);
+    }
+
+    /**
+     * Get a playlist edit information.
+     *
+     * @param playlistId The identifier of the playlist.
+     * @return The playlist edit DTO.
+     */
+    public PlaylistEditDto getPlaylistEditDto(Long playlistId) {
+        MzkUser user = userManager.getCurrentUser();
+        Playlist playlist = playlistManager.getPlaylist(user, playlistId);
+
+        return playlistMapper.buildPlaylistEdit(playlist);
     }
 
     /**
