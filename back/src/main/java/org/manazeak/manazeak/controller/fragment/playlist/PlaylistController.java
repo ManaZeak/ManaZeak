@@ -78,6 +78,15 @@ public class PlaylistController {
         return jsonResponseHandler.prepareJsonSuccess("general.notification.success_title", "playlist.edit.success_message", model);
     }
 
+    @Security(PrivilegeEnum.PLAY)
+    @GetMapping("/playlist/list/")
+    public String listPlaylists(Model model) {
+        // Getting the available playlists for the current user.
+        model.addAttribute("playlistContainer", playlistService.getPlaylists());
+
+        return PlaylistFragmentEnum.PLAYLIST_LIST.getPage();
+    }
+
     /**
      * Get the information containing the playlist information.
      *

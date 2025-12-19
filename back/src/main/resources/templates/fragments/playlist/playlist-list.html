@@ -1,0 +1,17 @@
+<!--/*@thymesVar id="playlistContainer" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistContainerDto"*/-->
+<div th:object="${playlistContainer}" xmlns:th="http://www.thymeleaf.org">
+  <th:block th:if="*{!#lists.isEmpty(userPlaylists)}">
+    <p>Your playlist</p>
+    <div th:each="playlist : *{userPlaylists}">
+      <div
+          th:replace="~{/include/playlist/minimalPlaylistFragment.html :: displayMinimalPlaylist(playlist=${playlist})}"></div>
+    </div>
+  </th:block>
+  <th:block th:if="*{!#lists.isEmpty(publicPlaylists)}">
+    <p>Other’s playlist</p>
+    <div th:each="playlist : *{publicPlaylists}">
+      <div
+          th:replace="~{/include/playlist/minimalPlaylistFragment.html :: displayMinimalPlaylist(playlist=${playlist})}"></div>
+    </div>
+  </th:block>
+</div>

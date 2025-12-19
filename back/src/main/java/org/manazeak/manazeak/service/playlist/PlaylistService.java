@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.annotations.TransactionalWithRollback;
 import org.manazeak.manazeak.constant.library.LibraryItemTypeEnum;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
-import org.manazeak.manazeak.entity.dto.playlist.PlaylistAsideDto;
-import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
-import org.manazeak.manazeak.entity.dto.playlist.PlaylistEditDto;
-import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
+import org.manazeak.manazeak.entity.dto.playlist.*;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
@@ -117,6 +114,22 @@ public class PlaylistService {
 
         // Build the playlist information.
         return playlistManager.getPlaylistInformation(user, playlistId);
+    }
+
+    /**
+     * Get the list of playlist available for the user.
+     *
+     * @return The list of playlist.
+     */
+    public PlaylistContainerDto getPlaylists() {
+        // Getting the user requesting the playlist.
+        MzkUser user = userManager.getCurrentUser();
+
+        // Filling the container with playlist information.
+        return new PlaylistContainerDto(
+                playlistManager.filterPlaylist(user, PlaylistSearchModeEnum.PRIVATE_PLAYLIST),
+                playlistManager.filterPlaylist(user, PlaylistSearchModeEnum.PUBLIC_PLAYLIST)
+        );
     }
 
     /**

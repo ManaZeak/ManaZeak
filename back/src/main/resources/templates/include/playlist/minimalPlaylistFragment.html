@@ -1,0 +1,8 @@
+<!-- Display the information about a minimal artist. -->
+<div th:fragment="displayMinimalPlaylist(playlist)" xmlns:th="http://www.thymeleaf.org" class="item" th:object="${playlist}" th:data-id="${playlist.playlistId}">
+  <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistMinimalInfoDto"*/-->
+  <p th:text="*{name}"></p>
+  <img th:src="*{imagePath}" alt="Playlist image">
+  <p th:text="*{creator}"></p>
+  <p th:text="*{nbTracks}"></p>
+</div>

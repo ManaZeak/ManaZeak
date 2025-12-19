@@ -2,6 +2,7 @@ package org.manazeak.manazeak.daos.playlist;
 
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistMinimalInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -123,6 +124,69 @@ public interface PlaylistDAO extends JpaRepository<Playlist, Long> {
             order by pl.rank
             """)
     List<TrackCompleteInfoDbDto> getPlaylistTracks(Long playlistId);
+
+    /**
+     * Get the playlist created by the user.
+     *
+     * @param username The user requesting the playlist.
+     * @return The list of playlist created by the user.
+     */
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.playlist.PlaylistMinimalInfoDto(
+                pl.playlistId,
+                pl.name,
+                pl.imagePath,
+                creator.username,
+                count(distinct track)
+            ) from Playlist pl
+            left join PlaylistTrack track on pl = track.playlist
+            join pl.creator creator
+            where creator.username = :username
+            group by pl, creator.username
+            """)
+    List<PlaylistMinimalInfoDto> getPersonalPlaylist(String username);
+
+    /**
+     * Get the public playlist created by other users.
+     *
+     * @param username The user requesting the playlist.
+     * @return The list of public playlist created by other users.
+     */
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.playlist.PlaylistMinimalInfoDto(
+                pl.playlistId,
+                pl.name,
+                pl.imagePath,
+                creator.username,
+                count(distinct track)
+            ) from Playlist pl
+            left join PlaylistTrack track on pl = track.playlist
+            join pl.creator creator
+            where creator.username != :username and pl.isPublic = true
+            group by pl, creator.username
+            """)
+    List<PlaylistMinimalInfoDto> getOtherPublicPlaylist(String username);
+
+    /**
+     * Get all the playlist that can be accessed by the user.
+     *
+     * @param username The user requesting the playlist.
+     * @return The list of playlist that can be accessed by the user.
+     */
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.playlist.PlaylistMinimalInfoDto(
+                pl.playlistId,
+                pl.name,
+                pl.imagePath,
+                creator.username,
+                count(distinct track)
+            ) from Playlist pl
+            left join PlaylistTrack track on pl = track.playlist
+            join pl.creator creator
+            where (creator.username != :username and pl.isPublic = true) or (creator.username = :username)
+            group by pl, creator.username
+            """)
+    List<PlaylistMinimalInfoDto> getAllPlaylist(String username);
 
     /**
      * Add an offset to all the tracks of a playlist.

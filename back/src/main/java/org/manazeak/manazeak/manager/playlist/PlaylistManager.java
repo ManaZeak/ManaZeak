@@ -11,9 +11,7 @@ import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.genre.GenreMinimalInfoDto;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
-import org.manazeak.manazeak.entity.dto.playlist.PlaylistCreationDto;
-import org.manazeak.manazeak.entity.dto.playlist.PlaylistEditDto;
-import org.manazeak.manazeak.entity.dto.playlist.PlaylistInfoDto;
+import org.manazeak.manazeak.entity.dto.playlist.*;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.playlist.PlaylistTrack;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -150,6 +148,20 @@ public class PlaylistManager {
                 nbTracks,
                 genreInPlaylist
         );
+    }
+
+    /**
+     * Filter the playlist available for the user.
+     * @param user The user searching the playlist.
+     * @param searchMode The type of search to be applied for the playlist.
+     * @return The playlist information.
+     */
+    public List<PlaylistMinimalInfoDto> filterPlaylist(MzkUser user, PlaylistSearchModeEnum searchMode) {
+        return switch (searchMode) {
+            case BOTH -> playlistDAO.getAllPlaylist(user.getUsername());
+            case PRIVATE_PLAYLIST -> playlistDAO.getPersonalPlaylist(user.getUsername());
+            case PUBLIC_PLAYLIST -> playlistDAO.getOtherPublicPlaylist(user.getUsername());
+        };
     }
 
     /**
