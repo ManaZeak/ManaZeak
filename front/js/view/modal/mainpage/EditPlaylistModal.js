@@ -14,6 +14,7 @@ class EditPlaylistModal extends Modal {
     super(`${options.id}/edit-playlist`);
 
     this._url = '/fragment/modal/edit-playlist/'; // As per spec, remove ID from url, so the PUT call is done well (ID already included in HTML form as a field)
+    this._id = options.id;
     /** @private
      * @member {object} - The form submit input */
     this._submitInput = null;
@@ -101,12 +102,13 @@ class EditPlaylistModal extends Modal {
         } else {
           if (parsed.done === 'true') {
             Notif.new(parsed);
-            mzk.ui.updateAsidePlaylist();
-            mzk.ui.setView({
-              name: 'Playlist',
-              id: this._id
-            })
-            this.close();
+            mzk.ui.updateAsidePlaylist().then(() => {
+              mzk.setView({
+                name: 'Playlist',
+                id: this._id
+              });// TODO catch
+              this.close();
+            });
           } else {
             // Parse new modal content as DOM object
             this._rootElement = Utils.parseHTMLFragment(parsed);

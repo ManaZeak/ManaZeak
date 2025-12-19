@@ -140,7 +140,7 @@ class Aside {
       this._playlistWrapper.innerHTML = '';
       this._playlists = [];
 
-      // Display previous/next playlist
+      // Hide previous/next playlist so it is restored to default state
       document.getElementById('playlist-navigation-previous').style.display = 'none';
       document.getElementById('playlist-navigation-next').style.display = 'none';
 
