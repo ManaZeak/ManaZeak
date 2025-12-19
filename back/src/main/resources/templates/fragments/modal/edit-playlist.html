@@ -6,9 +6,9 @@
   <div class="container">
     <!--/*@thymesVar id="playlist" type="org.manazeak.manazeak.entity.dto.playlist.PlaylistEditDto"*/-->
     <form method="POST" th:object="${playlist}" id="new-playlist-form">
-      <!-- TODO: Hide this. -->
-      <label for="playlist-id" th:text="#{modal.newplaylist.name}"></label>
-      <input id="playlist-id" th:field="*{playlistId}" maxlength="256" type="text"/>
+      <!-- TODO: Hide this. TODO-ABU6 Other than w/ just display non, ie in CSS plz -->
+      <label for="playlist-id" style="display: none" th:text="#{modal.newplaylist.name}"></label>
+      <input id="playlist-id" style="display: none" th:field="*{playlistId}" maxlength="256" type="text"/>
       <!-- Inserting the fragment. -->
       <div th:replace="~{/include/playlist/playlistForm.html :: playlistForm (${playlist})}"></div>
     </form>

@@ -5,6 +5,7 @@ import BadgeModal from './adminpage/BadgeModal.js';
 
 import AlbumCoverModal from './mainpage/AlbumCoverModal.js';
 import ArtistPictureModal from './mainpage/ArtistPictureModal.js';
+import EditPlaylistModal from './mainpage/EditPlaylistModal.js';
 import NewPlaylistModal from './mainpage/NewPlaylistModal.js';
 import TrackDetailModal from './mainpage/TrackDetailModal.js';
 
@@ -19,6 +20,7 @@ const Classes = {
   BadgeModal,
   AlbumCoverModal,
   ArtistPictureModal,
+  EditPlaylistModal,
   NewPlaylistModal,
   TrackDetailModal,
   AboutModal,

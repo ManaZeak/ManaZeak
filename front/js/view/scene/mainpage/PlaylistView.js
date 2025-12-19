@@ -59,8 +59,8 @@ class PlaylistView extends ItemViewHelperMixin(PlayableView) {
   _deletePlaylist() {
     mzk.setDialog({
       name: 'YesNo',
-      title: "Suppri",
-      description: "Vous etes sure le coran ?"
+      title: "Suppri", // TODO translate dat
+      description: "Vous etes sur ?" // TODO translate dat
     }).then(() => {
       mzk.kom.delete(`/playlist/${this._id}/`).then(() => {
         mzk.ui.updateAsidePlaylist();
@@ -71,9 +71,10 @@ class PlaylistView extends ItemViewHelperMixin(PlayableView) {
 
 
   _editPlaylist() {
-    mzk.kom.get(`/api/playlist/${this._id}/edit/`).then(() => {
-
-    }).catch(err => console.error(err));
+    mzk.setModal({
+      name: 'EditPlaylist',
+      id: this._id
+    });
   }
 
 
