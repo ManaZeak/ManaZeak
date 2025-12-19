@@ -140,6 +140,10 @@ class Aside {
       this._playlistWrapper.innerHTML = '';
       this._playlists = [];
 
+      // Display previous/next playlist
+      document.getElementById('playlist-navigation-previous').style.display = 'none';
+      document.getElementById('playlist-navigation-next').style.display = 'none';
+
       this._fetchPlaylists()
         .then(this._initPlaylistContainer.bind(this))
         .then(this._initPlaylist.bind(this))

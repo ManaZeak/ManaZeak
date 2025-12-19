@@ -121,13 +121,11 @@
           display: flex;
           height: 85%;
           justify-content: center;
+          text-align: center;
           width: 85%;
 
           p {
             margin: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            width: 2.5ch; /* Only display 2 chars */
           }
 
           img {
