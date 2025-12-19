@@ -59,7 +59,7 @@ public class PlaylistService {
         MzkUser user = userManager.getCurrentUser();
         // Checking if the playlist is the one of the user.
         Playlist playlist = playlistManager.getPlaylist(user, playlistEdit.getPlaylistId());
-        if (!playlist.getCreator().getName().equals(user.getName())) {
+        if (!playlist.getCreator().getUsername().equals(user.getUsername())) {
             throw new MzkRuntimeException("You are not allowed to do this.");
         }
 
