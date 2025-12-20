@@ -5,7 +5,7 @@ import org.manazeak.manazeak.daos.track.TrackDAO;
 import org.manazeak.manazeak.entity.dto.library.album.AlbumDetailsDto;
 import org.manazeak.manazeak.entity.dto.library.integration.track.TrackLinkerProjection;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
-import org.manazeak.manazeak.manager.playlist.PlaylistManager;
+import org.manazeak.manazeak.manager.playlist.PlaylistTrackManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,7 +20,8 @@ public class TrackManager {
     private final TrackDAO trackDAO;
 
     private final TrackConverterManager converterManager;
-    private final PlaylistManager playlistManager;
+
+    private final PlaylistTrackManager playlistTrackManager;
 
     /**
      * Get the tracks of an album and set the performer of the album.
@@ -40,6 +41,7 @@ public class TrackManager {
 
     /**
      * Delete a list of tracks from the database.
+     *
      * @param trackLocations The location of the deleted tracks.
      */
     public void removeTracks(List<String> trackLocations) {
@@ -47,7 +49,8 @@ public class TrackManager {
         List<Long> trackIds = trackDAO.getTrackIdByLocation(trackLocations).stream()
                 .map(TrackLinkerProjection::getTrackId).toList();
         // Remove the tracks from all the user playlist.
-        playlistManager.removeTracksFromAllPlaylist(trackIds);
-        //
+        playlistTrackManager.removeTracksFromAllPlaylist(trackIds);
+        // Delete the tracks from the database.
+        trackDAO.deleteAllById(trackIds);
     }
 }
