@@ -8,6 +8,7 @@ import org.manazeak.manazeak.daos.playlist.PlaylistTrackDAO;
 import org.manazeak.manazeak.daos.track.AlbumDAO;
 import org.manazeak.manazeak.daos.track.ArtistDAO;
 import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistTrackMoveDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.playlist.PlaylistTrack;
 import org.manazeak.manazeak.entity.security.MzkUser;
@@ -118,6 +119,47 @@ public class PlaylistTrackManager {
      */
     public void removeTracksFromAllPlaylist(List<Long> trackIds) {
         playlistTrackDAO.deleteAllPlaylistTracks(trackIds);
+    }
+
+    /**
+     * Move tracks position in the playlist.
+     *
+     * @param playlist          The playlist containing the tracks.
+     * @param playlistTrackMove The information on the move to be done.
+     */
+    public void movePlaylistTracks(Playlist playlist, PlaylistTrackMoveDto playlistTrackMove) {
+        // Getting the track of the playlist.
+        List<PlaylistTrack> tracks = playlistTrackDAO.findByPlaylistOrderByRank(playlist);
+
+        // Nothing to do if there is one or less track.
+        if (tracks.size() <= 1) {
+            return;
+        }
+
+        // Creating a list of track to move.
+        List<PlaylistTrack> tracksToMove = tracks.stream()
+                .filter(track -> playlistTrackMove.trackIds().contains(track.getTrack().getTrackId()))
+                .toList();
+
+        // Count how many moved tracks are before targetIndex
+        int removedBeforeTarget = 0;
+        for (PlaylistTrack t : tracksToMove) {
+            int idx = tracks.indexOf(t);
+            if (idx <= playlistTrackMove.newPosition()) {
+                removedBeforeTarget++;
+            }
+        }
+
+        // Removing the tracks from the playlist.
+        tracks.removeAll(tracksToMove);
+
+        tracks.addAll(Math.max(0, playlistTrackMove.newPosition() - removedBeforeTarget), tracksToMove);
+
+        // Adding the track back at the right rank.
+        int rank = 1;
+        for (PlaylistTrack track : tracks) {
+            track.setRank(rank++);
+        }
     }
 
     /**

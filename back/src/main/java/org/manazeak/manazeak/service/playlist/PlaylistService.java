@@ -168,6 +168,28 @@ public class PlaylistService {
     }
 
     /**
+     * Move the tracks contained in a playlist to a new position.
+     *
+     * @param playlistId           The identifier of the playlist to edit.
+     * @param playlistTrackMoveDto The information on the move to do.
+     */
+    public void movePlaylistTracks(Long playlistId, PlaylistTrackMoveDto playlistTrackMoveDto) {
+        // No track to move, nothing to do.
+        if (playlistTrackMoveDto.trackIds().isEmpty()) {
+            return;
+        }
+        MzkUser user = userManager.getCurrentUser();
+        // Getting the playlist.
+        Playlist playlist = playlistManager.getPlaylist(user, playlistId);
+
+        // Checking if the user can modify the playlist.
+        playlistManager.checkUserCanEditPlaylist(user, playlist);
+
+        // Updating the playlist tracks.
+        playlistTrackManager.movePlaylistTracks(playlist, playlistTrackMoveDto);
+    }
+
+    /**
      * Add an item to a playlist.
      *
      * @param playlistId The playlist identifier.

@@ -103,7 +103,7 @@ public class PlaylistController {
     }
 
     /**
-     * Get the all the tracks of a playlist.
+     * Get all the tracks of a playlist.
      *
      * @param model      The information to build the page.
      * @param playlistId The identifier of the playlist.

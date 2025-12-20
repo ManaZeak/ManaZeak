@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.manazeak.manazeak.configuration.security.Security;
 import org.manazeak.manazeak.constant.security.PrivilegeEnum;
 import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
+import org.manazeak.manazeak.entity.dto.playlist.PlaylistTrackMoveDto;
 import org.manazeak.manazeak.mapper.gobal.LibraryItemMapper;
 import org.manazeak.manazeak.service.message.KommunicatorService;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
@@ -24,6 +25,7 @@ public class PlaylistRestController {
      * @param playlistId The playlist identifier.
      * @return The status of the playlist deletion.
      */
+    @Security(PrivilegeEnum.PLAY)
     @DeleteMapping("/playlist/{playlistId}/")
     public KommunicatorDto deletePlaylist(@PathVariable Long playlistId) {
         playlistService.deletePlaylist(playlistId);
@@ -37,10 +39,18 @@ public class PlaylistRestController {
      * @param trackId    The identifier of the track.
      * @return The status of the track removal from the playlist.
      */
+    @Security(PrivilegeEnum.PLAY)
     @DeleteMapping("/playlist/{playlistId}/track/{trackId}/")
     public KommunicatorDto deletePlaylistTrack(@PathVariable Long playlistId, @PathVariable Long trackId) {
         playlistService.deletePlaylistTrack(playlistId, trackId);
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.track.delete");
+    }
+
+    @Security(PrivilegeEnum.PLAY)
+    @PatchMapping("/playlist/{playlistId}/move/")
+    public KommunicatorDto moveTracks(@PathVariable Long playlistId, @RequestBody PlaylistTrackMoveDto tracksMoveDto) {
+        playlistService.movePlaylistTracks(playlistId, tracksMoveDto);
+        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.track.moved");
     }
 
     /**

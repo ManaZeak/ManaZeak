@@ -21,6 +21,14 @@ public interface PlaylistTrackDAO extends JpaRepository<PlaylistTrack, Long> {
     Optional<PlaylistTrack> findByPlaylistAndTrack_TrackId(Playlist playlist, Long trackId);
 
     /**
+     * Get the tracks of a playlist.
+     *
+     * @param playlist The playlist.
+     * @return The tracks of the playlist.
+     */
+    List<PlaylistTrack> findByPlaylistOrderByRank(Playlist playlist);
+
+    /**
      * Delete the track from all the playlist of the application.
      *
      * @param trackIds The identifier of the tracks to delete.
