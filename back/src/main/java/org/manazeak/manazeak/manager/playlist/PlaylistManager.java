@@ -19,6 +19,7 @@ import org.manazeak.manazeak.exception.MzkExceptionHelper;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.library.track.TrackConverterManager;
 import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -140,7 +141,7 @@ public class PlaylistManager {
         int nbTracks = playlistDAO.countTrackInPlaylist(playlist);
 
         // Getting the genres contained in the playlist.
-        List<GenreMinimalInfoDto> genreInPlaylist = playlistDAO.getGenresContainedInPlaylist(user, playlistId);
+        List<GenreMinimalInfoDto> genreInPlaylist = playlistDAO.getGenresContainedInPlaylist(playlistId);
 
         // Build the response object.
         return playlistMapper.buildPlaylistInfo(
@@ -152,7 +153,8 @@ public class PlaylistManager {
 
     /**
      * Filter the playlist available for the user.
-     * @param user The user searching the playlist.
+     *
+     * @param user       The user searching the playlist.
      * @param searchMode The type of search to be applied for the playlist.
      * @return The playlist information.
      */
@@ -162,6 +164,19 @@ public class PlaylistManager {
             case PRIVATE_PLAYLIST -> playlistDAO.getPersonalPlaylist(user.getUsername());
             case PUBLIC_PLAYLIST -> playlistDAO.getOtherPublicPlaylist(user.getUsername());
         };
+    }
+
+    /**
+     * Get the last playlists the user added tracks to.
+     *
+     * @param user       The user requesting the playlists.
+     * @param nbPlaylist The number of playlists to return.
+     * @return The last playlists modified by the user.
+     */
+    public List<PlaylistMinimalInfoDto> getLastPlaylist(MzkUser user, int nbPlaylist) {
+        return playlistDAO.getPlaylistByIds(
+                playlistDAO.getLastPlaylistWithAddedTrack(user.getUsername(), Pageable.ofSize(nbPlaylist))
+        );
     }
 
     /**

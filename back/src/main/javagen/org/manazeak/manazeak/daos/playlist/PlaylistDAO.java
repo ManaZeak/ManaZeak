@@ -5,6 +5,7 @@ import org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistMinimalInfoDto;
 import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -58,7 +59,6 @@ public interface PlaylistDAO extends JpaRepository<Playlist, Long> {
     /**
      * Get the genres contained in the playlist.
      *
-     * @param user       The user requesting the information.
      * @param playlistId The identifier of the playlist.
      * @return The genre contained in the playlist.
      */
@@ -71,10 +71,10 @@ public interface PlaylistDAO extends JpaRepository<Playlist, Long> {
             join pt.playlist pl
             join pt.track t
             join t.genreList g
-            where (pl.creator = :user or pl.isPublic)
+            where pl.playlistId = :playlistId
             order by g.name
             """)
-    List<GenreMinimalInfoDto> getGenresContainedInPlaylist(MzkUser user, Long playlistId);
+    List<GenreMinimalInfoDto> getGenresContainedInPlaylist(Long playlistId);
 
     @Query("""
             select new org.manazeak.manazeak.entity.dto.library.track.TrackCompleteInfoDbDto(
@@ -187,6 +187,44 @@ public interface PlaylistDAO extends JpaRepository<Playlist, Long> {
             group by pl, creator.username
             """)
     List<PlaylistMinimalInfoDto> getAllPlaylist(String username);
+
+    /**
+     * Get the playlist by their identifiers.
+     *
+     * @param playlistIds The playlist identifiers.
+     * @return The playlist matching the identifiers.
+     */
+    @Query("""
+            select new org.manazeak.manazeak.entity.dto.playlist.PlaylistMinimalInfoDto(
+                pl.playlistId,
+                pl.name,
+                pl.imagePath,
+                creator.username,
+                count(distinct track)
+            ) from Playlist pl
+            left join PlaylistTrack track on pl = track.playlist
+            join pl.creator creator
+            where pl.playlistId in (:playlistIds)
+            group by pl, creator.username
+            """)
+    List<PlaylistMinimalInfoDto> getPlaylistByIds(List<Long> playlistIds);
+
+    /**
+     * Get the last identifier of the playlist
+     *
+     * @param username The name of the user.
+     * @param pageable The number of results to return.
+     * @return The last playlist identifier where the user added a track.
+     */
+    @Query("""
+            select pl.playlistId from Playlist pl
+            join PlaylistTrack pt on pl = pt.playlist
+            join pt.addedBy user
+            where user.username = :username
+            group by pl.playlistId, pt.dateAdded
+            order by pt.dateAdded desc
+            """)
+    List<Long> getLastPlaylistWithAddedTrack(String username, Pageable pageable);
 
     /**
      * Add an offset to all the tracks of a playlist.

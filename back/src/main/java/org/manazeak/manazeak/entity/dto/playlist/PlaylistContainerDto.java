@@ -9,5 +9,6 @@ import java.util.List;
  * @param publicPlaylists The playlist shared with the user.
  */
 public record PlaylistContainerDto(List<PlaylistMinimalInfoDto> userPlaylists,
-                                   List<PlaylistMinimalInfoDto> publicPlaylists) {
+                                   List<PlaylistMinimalInfoDto> publicPlaylists,
+                                   List<PlaylistMinimalInfoDto> lastUpdatedPlaylists) {
 }

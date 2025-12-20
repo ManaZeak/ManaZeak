@@ -14,4 +14,11 @@
           th:replace="~{/include/playlist/minimalPlaylistFragment.html :: displayMinimalPlaylist(playlist=${playlist})}"></div>
     </div>
   </th:block>
+  <th:block th:if="*{!#lists.isEmpty(lastUpdatedPlaylists)}">
+    <p>Other’s playlist</p>
+    <div th:each="playlist : *{lastUpdatedPlaylists}">
+      <div
+          th:replace="~{/include/playlist/minimalPlaylistFragment.html :: displayMinimalPlaylist(playlist=${playlist})}"></div>
+    </div>
+  </th:block>
 </div>

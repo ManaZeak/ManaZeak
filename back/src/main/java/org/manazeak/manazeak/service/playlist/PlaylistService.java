@@ -128,7 +128,8 @@ public class PlaylistService {
         // Filling the container with playlist information.
         return new PlaylistContainerDto(
                 playlistManager.filterPlaylist(user, PlaylistSearchModeEnum.PRIVATE_PLAYLIST),
-                playlistManager.filterPlaylist(user, PlaylistSearchModeEnum.PUBLIC_PLAYLIST)
+                playlistManager.filterPlaylist(user, PlaylistSearchModeEnum.PUBLIC_PLAYLIST),
+                playlistManager.getLastPlaylist(user, 5)
         );
     }
 
