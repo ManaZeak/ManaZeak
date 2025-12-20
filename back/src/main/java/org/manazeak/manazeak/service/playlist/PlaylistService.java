@@ -10,6 +10,7 @@ import org.manazeak.manazeak.entity.playlist.Playlist;
 import org.manazeak.manazeak.entity.security.MzkUser;
 import org.manazeak.manazeak.exception.MzkRuntimeException;
 import org.manazeak.manazeak.manager.playlist.PlaylistManager;
+import org.manazeak.manazeak.manager.playlist.PlaylistTrackManager;
 import org.manazeak.manazeak.manager.security.user.UserManager;
 import org.manazeak.manazeak.mapper.playlist.PlaylistAsideManager;
 import org.manazeak.manazeak.mapper.playlist.PlaylistMapper;
@@ -29,7 +30,10 @@ public class PlaylistService {
 
     private final PlaylistManager playlistManager;
 
+    private final PlaylistTrackManager playlistTrackManager;
+
     private final PlaylistAsideManager playlistAsideManager;
+
     private final PlaylistMapper playlistMapper;
 
     /**
@@ -142,7 +146,7 @@ public class PlaylistService {
     public List<TrackCompleteInfoDto> getPlaylistTracks(Long playlistId) {
         // Fetching the playlist to check if the user is allowed to access this playlist.
         PlaylistInfoDto playlistInfo = getPlaylistInfo(playlistId);
-        return playlistManager.getPlaylistTracks(playlistInfo.playlistId());
+        return playlistTrackManager.getPlaylistTracks(playlistInfo.playlistId());
     }
 
     /**
@@ -160,7 +164,7 @@ public class PlaylistService {
 
         // Checking if the user can delete the track from the playlist and remove it.
         playlistManager.checkUserCanEditPlaylist(user, playlist);
-        playlistManager.removeTrackFromPlaylist(playlist, trackId);
+        playlistTrackManager.removeTrackFromPlaylist(playlist, trackId);
     }
 
     /**
@@ -180,9 +184,9 @@ public class PlaylistService {
 
         // Adding the item to the playlist depending on the type.
         switch (itemType) {
-            case TRACK -> playlistManager.addTrackToPlaylist(user, playlist, itemId);
-            case ALBUM -> playlistManager.addAlbumToPlaylist(user, playlist, itemId);
-            case ARTIST -> playlistManager.addArtistToPlaylist(user, playlist, itemId);
+            case TRACK -> playlistTrackManager.addTrackToPlaylist(user, playlist, itemId);
+            case ALBUM -> playlistTrackManager.addAlbumToPlaylist(user, playlist, itemId);
+            case ARTIST -> playlistTrackManager.addArtistToPlaylist(user, playlist, itemId);
         }
     }
 

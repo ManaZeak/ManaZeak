@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * This class validate the avatar of a user.
+ * This class validates the avatar of a user.
  */
 @Component
 public class AvatarValidator implements ConstraintValidator<Avatar, MultipartFile> {
@@ -25,7 +25,7 @@ public class AvatarValidator implements ConstraintValidator<Avatar, MultipartFil
         if (file == null || file.isEmpty()) {
             return true;
         }
-        // If there is something in the file we check that's an image.
+        // If there is something in the file, we check that's an image.
         return FormatFileCheckerUtil.isValidImage(file);
     }
 }
