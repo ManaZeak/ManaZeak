@@ -7,6 +7,7 @@ import org.manazeak.manazeak.entity.dto.kommunicator.KommunicatorDto;
 import org.manazeak.manazeak.entity.dto.playlist.PlaylistTrackMoveDto;
 import org.manazeak.manazeak.mapper.gobal.LibraryItemMapper;
 import org.manazeak.manazeak.service.message.KommunicatorService;
+import org.manazeak.manazeak.service.playlist.PlaylistAsideService;
 import org.manazeak.manazeak.service.playlist.PlaylistService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,10 @@ public class PlaylistRestController {
 
     private final PlaylistService playlistService;
 
+    private final PlaylistAsideService playlistAsideService;
+
     private final KommunicatorService kommunicatorService;
+
     private final LibraryItemMapper libraryItemMapper;
 
     /**
@@ -46,11 +50,58 @@ public class PlaylistRestController {
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.track.delete");
     }
 
+    /**
+     * Move a list of tracks to a different position in the playlist.
+     *
+     * @param playlistId    The identifier of the playlist.
+     * @param tracksMoveDto The information on the tracks to move.
+     * @return A success message.
+     */
     @Security(PrivilegeEnum.PLAY)
     @PatchMapping("/playlist/{playlistId}/move/")
     public KommunicatorDto moveTracks(@PathVariable Long playlistId, @RequestBody PlaylistTrackMoveDto tracksMoveDto) {
         playlistService.movePlaylistTracks(playlistId, tracksMoveDto);
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.track.moved");
+    }
+
+    /**
+     * Adds a playlist in the aside bar.
+     *
+     * @param playlistId The identifier of the playlist.
+     * @return A success message.
+     */
+    @Security(PrivilegeEnum.PLAY)
+    @PostMapping("/playlist/{playlistId}/aside/")
+    public KommunicatorDto addPlaylistInAside(@PathVariable Long playlistId) {
+        playlistAsideService.addPlaylistInAside(playlistId);
+        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.aside.added");
+    }
+
+    /**
+     * Remove a playlist from the aside bar of a user.
+     *
+     * @param playlistId The identifier of the playlist to remove.
+     * @return The success message.
+     */
+    @Security(PrivilegeEnum.PLAY)
+    @DeleteMapping("/playlist/{playlistId}/aside/")
+    public KommunicatorDto removePlaylistFromAside(@PathVariable Long playlistId) {
+        playlistAsideService.removePlaylistInAside(playlistId);
+        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.aside.removed");
+    }
+
+    /**
+     * Change the position of a playlist in the aside bar.
+     *
+     * @param playlistId  The identifier of the playlist.
+     * @param newPosition The new position of the playlist.
+     * @return A success message.
+     */
+    @Security(PrivilegeEnum.PLAY)
+    @PatchMapping("/playlist/{playlistId}/aside/move/")
+    public KommunicatorDto movePlaylistInAside(@PathVariable Long playlistId, @RequestBody int newPosition) {
+        playlistAsideService.movePlaylistInAside(playlistId, newPosition);
+        return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.aside.moved");
     }
 
     /**
