@@ -19,7 +19,7 @@
         <sonar.exclusions>
             src/main/javagen/org/manazeak/manazeak/entity/**/*,src/main/java/org/manazeak/manazeak/entity/dto/**/*
         </sonar.exclusions>
-        <thumbnailator.version>0.4.20</thumbnailator.version>
+        <thumbnailator.version>0.4.21</thumbnailator.version>
         <guava.version>32.0.0-jre</guava.version>
         <scrimage.version>4.1.3</scrimage.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
