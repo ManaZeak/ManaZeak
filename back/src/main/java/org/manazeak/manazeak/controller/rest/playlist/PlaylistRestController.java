@@ -98,7 +98,7 @@ public class PlaylistRestController {
      * @return A success message.
      */
     @Security(PrivilegeEnum.PLAY)
-    @PatchMapping("/playlist/{playlistId}/aside/move/")
+    @PatchMapping("/playlist/{playlistId}/aside/")
     public KommunicatorDto movePlaylistInAside(@PathVariable Long playlistId, @RequestBody int newPosition) {
         playlistAsideService.movePlaylistInAside(playlistId, newPosition);
         return kommunicatorService.buildSuccessKom("general.notification.success_title", "playlist.aside.moved");
