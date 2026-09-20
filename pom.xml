@@ -66,11 +66,6 @@
             <version>0.8.15</version>
         </dependency>
         <dependency>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>5.8.0.7211</version>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.version}</version>
@@ -104,6 +99,12 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <!-- Plugin for SonarCloud analysis -->
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                        <version>5.8.0.7211</version>
                     </plugin>
                 </plugins>
             </build>
