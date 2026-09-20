@@ -51,7 +51,7 @@
     "coverage-istanbul-loader": "^3.0.5",
     "css-loader": "^7.1.2",
     "cssnano": "^7.0.6",
-    "eslint": "^9.22.0",
+    "eslint": "^10.10.0",
     "eslint-webpack-plugin": "^5.0.0",
     "file-loader": "^6.2.0",
     "http-server": "^14.1.1",
