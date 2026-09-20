@@ -266,7 +266,7 @@
                         <path>
                             <groupId>org.hibernate.orm</groupId>
                             <artifactId>hibernate-processor</artifactId>
-                            <version>7.2.0.Final</version>
+                            <version>7.4.9.Final</version>
                         </path>
                         <dependency>
                             <groupId>org.projectlombok</groupId>
