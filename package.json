@@ -55,7 +55,7 @@
     "eslint-webpack-plugin": "^5.0.0",
     "file-loader": "^6.2.0",
     "http-server": "^14.1.1",
-    "jasmine": "^5.1.0",
+    "jasmine": "^7.0.0",
     "jasmine-core": "^5.1.1",
     "jsdoc": "^4.0.2",
     "karma": "^6.4.2",
