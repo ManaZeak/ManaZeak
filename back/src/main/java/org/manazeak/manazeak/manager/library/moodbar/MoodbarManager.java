@@ -1,6 +1,5 @@
 package org.manazeak.manazeak.manager.library.moodbar;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sksamuel.scrimage.ImmutableImage;
 import com.sksamuel.scrimage.pixels.Pixel;
 import com.sksamuel.scrimage.webp.WebpWriter;
@@ -17,6 +16,7 @@ import org.manazeak.manazeak.entity.management.MoodbarError;
 import org.manazeak.manazeak.util.HashUtil;
 import org.manazeak.manazeak.util.database.transaction.AutonomousTransactionManager;
 import org.springframework.stereotype.Component;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
 import java.awt.image.BufferedImage;
@@ -134,7 +134,7 @@ public class MoodbarManager {
 
                 // Launching the generation of the webp file from the mood file.
                 launchMoodbarImageGen(moodbarDestination, report.getMoodMd5(), size);
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
                 log.error("Error converting the payload to JSON.", e);
             } catch (IOException e) {
                 log.error("Error when communicating with the moodbar container.", e);
