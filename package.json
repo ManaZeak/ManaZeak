@@ -50,7 +50,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "coverage-istanbul-loader": "^3.0.5",
     "css-loader": "^7.1.2",
-    "cssnano": "^7.0.6",
+    "cssnano": "^9.2.0",
     "eslint": "^9.22.0",
     "eslint-webpack-plugin": "^5.0.0",
     "file-loader": "^6.2.0",
