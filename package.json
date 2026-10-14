@@ -45,7 +45,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.26.10",
-    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-env": "^8.0.7",
     "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "coverage-istanbul-loader": "^3.0.5",
